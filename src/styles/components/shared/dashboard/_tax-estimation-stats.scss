@@ -1,0 +1,297 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.dashboard-tax-estimation-wrapper {
+	.tax-estimation-container {
+		position: relative;
+		padding: 0 40px;
+		min-height: 348px;
+	}
+
+	.chartHeader {
+		position: relative;
+		z-index: 1;
+
+		.col-xs-6:first-child {
+			margin-left: -40px;
+			margin-right: 40px;
+		}
+	}
+
+	.btn-edit-tax-estimation {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	
+	.donut-chart-wrapper {
+		position: relative;
+		@include rem(width, 400);
+		@include rem(height, 300);
+
+		.chartist-donut-chart {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+
+			&.chartState_init {
+				visibility: hidden;
+			}
+			
+			&.donutChartPlaceholder {
+				pointer-events: none;
+			}
+		}
+
+		.chartLabel {
+			position: absolute;
+			width: 100%;
+			text-align: center;
+			pointer-events: none;
+			&_netProfit_value {
+				@include rem(top, 28);
+				@include rem(font-size, 18);
+				font-weight: 600;
+				color: white;
+			}
+			&_netProfit {
+				@include rem(top, 54);
+				@include rem(font-size, 14);
+				color: white;
+			}
+			&_grossTurnover_value {
+				@include rem(top, 131);
+				@include rem(font-size, 18);
+				font-weight: 600;
+				color: $color-text;
+			}
+			&_grossTurnover {
+				@include rem(top, 157);
+				@include rem(font-size, 14);
+				color: $color-text-muted;
+			}
+			span {
+				@include rem(padding, 2, 4);
+			}
+		}
+
+		.ct-inner-circle .ct-slice-pie {
+			fill: white;
+		}
+
+		.ct-label {
+			@include rem(font-size, 18);
+			color: white;
+			fill: white;
+			font-weight: 600;
+		}
+
+		.ct-series {
+			.ct-slice-donut {
+				stroke-width: 80px !important;
+			}
+			&.ct-series-netProfit {
+				.ct-slice-donut {
+					stroke: $color-primary;
+					stroke-width: 100px !important;
+				}
+			}
+			&.ct-series-expenses {
+				.ct-slice-donut {
+					stroke: $color-expenses;
+				}
+			}
+			&.ct-series-salesTax {
+				.ct-slice-donut {
+					stroke: $color-salesTax;
+				}
+			}
+			&.ct-series-tradeTax {
+				.ct-slice-donut {
+					stroke: $color-tradeTax;
+				}
+			}
+			&.ct-series-incomeTax {
+				.ct-slice-donut {
+					stroke: $color-incomeTax;
+				}
+			}
+		}
+	}
+	
+	.chartBackground_expenses {
+		background: $color-expenses;
+	}
+	
+	.chartBackground_salesTax {
+		background: $color-salesTax;
+	}
+	
+	.chartBackground_tradeTax {
+		background: $color-tradeTax;
+	}
+	
+	.chartBackground_incomeTax {
+		background: $color-incomeTax;
+	}
+	
+	.net-profit-summary-table {
+		@include rem(margin-top, 8);
+		.table-header,
+		.table-footer {
+			position: relative;
+			@include rem(padding, 10, 0);
+			@include rem(font-size, 17);
+			font-weight: 600;
+			color: $color-text;
+			border-bottom: 1px #e2e2e2 solid;
+			display: flex;
+		}
+		.table-header {
+			@include rem(margin-bottom, 12);
+		}
+		.table-footer {
+			border-top: 1px #e2e2e2 solid;
+			@include rem(margin-top, 12);
+			color: $color-primary;
+			&.negative-value {
+				color: $color-secondary;
+			}
+			&:before {
+				position: absolute;
+				@include rem(bottom, -5);
+				width: 100%;
+				height: 1px;
+				background: #e2e2e2;
+				content: " ";
+			}
+		}
+		.table-row {
+			@include rem(font-size, 14);
+			@include rem(padding, 8, 0);
+			display: flex;
+		}
+		.table-col-left {
+			position: relative;
+			width: 60%;
+			display: flex;
+			.legend-small {
+				font-size: 11px;
+			}
+			.chart-legend-dot {
+				position: relative;
+				@include rem(margin-right, 22);
+				&.legend-expenses {
+					&:before {
+						background: $color-expenses;
+					}
+				}
+				&.legend-salestax {
+					&:before {
+						background: $color-salesTax;
+					}
+				}
+				&.legend-tradetax {
+					&:before {
+						background: $color-tradeTax;
+					}
+				}
+				&.legend-incometax {
+					&:before {
+						background: $color-incomeTax;
+					}
+				}
+				&:before {
+					position: absolute;
+					@include rem(top, 6);
+					@include rem(width, 8);
+					@include rem(height, 8);
+					border-radius: 50%;
+					content: " ";
+				}
+			}
+		}
+		.table-col-right {
+			position: relative;
+			width: 40%;
+			text-align: right;
+			.tax-value {
+				position: absolute;
+				right: 0;
+				text-align: right;
+				.label-minus {
+					position: absolute;
+					left: 0;
+					@include rem(font-size, 19);
+					@include rem(line-height, 16);
+				}
+			}
+		}
+	}
+	
+	.tax-estimation-placeholder-chart {
+		position: relative;
+		width: 100%;
+		height: 290px;
+		margin: 0 auto;
+		.tax-estimation-placeholder-info {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			width: 100%;
+			@include rem(font-size, 15);
+			font-weight: 500;
+			text-align: center;
+			margin: (-40px) 0 0 0;
+		}
+		&:before {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 290px;
+			background: url(../assets/images/tax_estimation_placeholder_chart.png) no-repeat top center;
+			opacity: 0.12;
+			content: " ";
+		}
+	}
+	
+	.tax-estimation-placeholder-box {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 380px;
+
+		.tax-estimation-placeholder-info {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 250px;
+			height: 100px;
+			@include rem(font-size, 17);
+			font-weight: 500;
+			text-align: center;
+			margin: (-60px) 0 0 -125px;
+		}
+		
+		.button {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 250px;
+			margin: 22px 0 0 -125px;
+		}
+
+		&:before {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 765px;
+			height: 380px;
+			background: url(../assets/images/tax_estimation_placeholder_box.png) no-repeat 10px 0;
+			opacity: 0.12;
+			content: " ";
+		}
+	}
+}

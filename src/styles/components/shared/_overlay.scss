@@ -1,0 +1,26 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.restricted-overlay-wrapper {
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background: rgba(255, 255, 255, 0.95);
+	text-align: center;
+	position: absolute;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	.restricted-overlay-component {
+		height: 200px;
+		width: 400px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-evenly;
+
+		.message {
+			font-size: 14px;
+		}
+	}
+}

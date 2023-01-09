@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 22.0.1, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="Ebene_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 1000 1000" style="enable-background:new 0 0 1000 1000;" xml:space="preserve">
+<style type="text/css">
+		.dunningEmailSvg .st0{fill:#B9D8FF;}
+		.dunningEmailSvg .st1{fill:#FFFFFF;}
+		.dunningEmailSvg .st2{fill:#69A8F6;}
+		.dunningEmailSvg .st3{fill:#1D79F0;}
+</style>
+<g>
+	<g class="dunningEmailSvg">
+		<path class="st0" d="M938.8,355.5c1.1,0-11.5-9.8-28-21.9L501.1,35c-16.5-12-43.5-12-60.1,0L31.4,333.6
+			c-16.5,12-31.9,23.5-30.2,21.9c0.1-0.1-0.3,16.7-0.3,37.1v478c0,20.4,16.7,37.1,37.1,37.1h861.5c20.4,0,37.1-16.7,37.1-37.1v-478
+			C936.7,372.2,937.6,355.5,938.8,355.5z"/>
+		<path class="st1" d="M728.7,798.7H212c-3.7,0-6.6-3-6.6-6.6V271.7c0-3.7,3-6.6,6.6-6.6h516.7c3.7,0,6.6,3,6.6,6.6V792
+			C735.3,795.8,732.4,798.7,728.7,798.7z"/>
+		<path class="st2" d="M27.3,906.6L939,355.4l1,526.6c0,0-14,26.6-40.5,26.6C872.9,908.6,27.3,906.6,27.3,906.6z"/>
+		<path class="st2" d="M469.4,638.9L-0.2,355.6l0.9,514.5c0,13.7,7,26.6,18.8,33.4c5,2.9,11.1,4.9,18.4,4.9c12.9,0,221.1,0,431.4,0
+			V638.9H469.4z"/>
+		<rect x="278" y="350.2" class="st0" width="303.1" height="37.2"/>
+		<rect x="278" y="424.7" class="st0" width="192.1" height="37.2"/>
+		<circle class="st3" cx="815.3" cy="789.4" r="184.6"/>
+	</g>
+</g>
+<g class="dunningEmailSvg">
+	<path class="st1" d="M814.1,823.3L814.1,823.3c-9.6,0-17.5-7.8-17.5-17.5V697.3c0-9.6,7.8-17.5,17.5-17.5h0
+		c9.6,0,17.5,7.8,17.5,17.5v108.6C831.6,815.5,823.8,823.3,814.1,823.3z"/>
+	<ellipse class="st1" cx="814.7" cy="875.3" rx="18.1" ry="18.7"/>
+</g>
+</svg>

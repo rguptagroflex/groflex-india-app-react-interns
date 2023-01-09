@@ -1,0 +1,13 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: invoiz-admin-web
+  namespace: invoiz-production
+spec:
+  selector:
+    app: invoiz-admin-web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+  type: NodePort

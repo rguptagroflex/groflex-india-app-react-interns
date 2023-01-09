@@ -1,0 +1,42 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.letter-sender-component-wrapper {
+	color: $color-text-light;
+
+	.ql-container {
+		font-size: 10px;
+	}
+
+	.ql-editor {
+		max-height: 15px;
+		overflow: hidden;
+
+		&:before {
+			left: 0;
+			right: 0;
+		}
+	}
+
+	.htmlInput_input {
+		margin-bottom: 3px;
+	}
+
+	.htmlInput_bar {
+		&:before, &:after {
+			background: $color-line-light!important;
+			height: 1px!important;
+		}
+	}
+	&:hover {
+	.edit-icon {
+		@include icon(after, edit);
+		position: absolute;
+		height: 5px;
+		z-index: 11;
+		color: $color-text-light;
+		top: -8px;
+		right: -5px;
+	}	
+}
+}

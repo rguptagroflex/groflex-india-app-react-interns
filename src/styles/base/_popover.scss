@@ -1,0 +1,180 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.popover {
+	position: absolute;
+	border: 1px solid #cccccc;
+	background: white;
+	z-index: 1000;
+	@include rem(font-size, 13);
+	@include rem(border-radius, 4);
+	&:after, &:before {
+		content: " ";
+		position: absolute;
+		pointer-events: none;
+		width: 0;
+		height: 0;
+		border: solid transparent;
+	}
+	&:before {
+		border-width: 8px;
+	}
+	&:after {
+		border-width: 6px;
+	}
+
+	// element top right
+	&.tether-element-attached-top.tether-element-attached-right {
+		margin-top: 10px;
+		&:before {
+			@include rem(right, 6);
+			margin-left: -8px;
+			top: -8px;
+			border-top-width: 0;
+			border-bottom-color: #cccccc;
+		}
+		&:after {
+			@include rem(right, 8);
+			margin-left: -6px;
+			top: -6px;
+			border-top-width: 0;
+			border-bottom-color: white;
+		}
+	}
+
+	// element top right
+	&.tether-element-attached-top.tether-element-attached-left {
+		margin-top: 10px;
+		&:before {
+			@include rem(left, 6);
+			margin-right: -8px;
+			top: -8px;
+			border-top-width: 0;
+			border-bottom-color: #cccccc;
+		}
+		&:after {
+			@include rem(left, 8);
+			margin-right: -6px;
+			top: -6px;
+			border-top-width: 0;
+			border-bottom-color: white;
+		}
+	}
+
+	// element bottom right
+	&.tether-element-attached-bottom.tether-element-attached-right {
+		margin-top: -10px;
+		&:before {
+			@include rem(right, 6);
+			margin-left: -8px;
+			bottom: -8px;
+			border-bottom-width: 0;
+			border-top-color: #cccccc;
+		}
+		&:after {
+			@include rem(right, 8);
+			margin-left: -6px;
+			bottom: -6px;
+			border-bottom-width: 0;
+			border-top-color: white;
+		}
+	}
+
+	&.tether-element-attached-bottom.tether-element-attached-left {
+		margin-top: -10px;
+		&:before {
+			@include rem(left, 6);
+			margin-right: -8px;
+			bottom: -8px;
+			border-bottom-width: 0;
+			border-top-color: #cccccc;
+		}
+		&:after {
+			@include rem(left, 8);
+			margin-right: -6px;
+			bottom: -6px;
+			border-bottom-width: 0;
+			border-top-color: white;
+		}
+	}
+}
+
+.context {
+	font-weight: 300;
+	@include rem(padding, 9, 0);
+	@include rem(box-shadow, 0, 0, 10, 2, rgba(0, 0, 0, 0.1));
+	&_menu {
+		background: white;
+	}
+	&_item {
+		cursor: pointer;
+		@include rem(padding, 6, 20);
+		&[disabled] {
+			color: #aaaaaa;
+			cursor: default;
+		}
+		&:not([disabled]):hover {
+			background: #e6f0fc;
+		}
+		&-new {
+			color: $color-primary;
+		}
+	}
+}
+
+.context_arrow {
+	height: 0;
+	@include rem(margin, 0, 5, 0, 5);
+	@include rem(left, calc(50% - 10px));
+	position: absolute;
+}
+
+.context[x-placement^="bottom-end"] {
+	margin-top: 5px;
+}
+
+.context[x-placement^="bottom-end"] {
+	.context_arrow {
+		@include rem(top, -8);
+	}
+	.context_arrow_inner {
+		@include rem(border-left, 8, solid, transparent);
+		@include rem(border-right, 8, solid, transparent);
+		@include rem(border-bottom, 8, solid, white);
+		@include rem(left, calc(50% - 10px));
+		position: absolute;
+	}
+	.context_arrow_outer {
+		@include rem(border-left, 10, solid, transparent);
+		@include rem(border-right, 10, solid, transparent);
+		@include rem(border-bottom, 9, solid, #cccccc);
+		@include rem(left, calc(50% - 12px));
+		@include rem(margin-top, -1);
+		position: absolute;
+	}
+}
+
+.context[x-placement^="top-end"] {
+	margin-top: 5px;
+}
+
+.context[x-placement^="top-end"] {
+	.context_arrow {
+		@include rem(bottom, 0);
+	}
+	.context_arrow_inner {
+		@include rem(border-left, 8, solid, transparent);
+		@include rem(border-right, 8, solid, transparent);
+		@include rem(border-top, 8, solid, white);
+		@include rem(left, calc(50% - 10px));
+		position: absolute;
+	}
+	.context_arrow_outer {
+		@include rem(border-left, 10, solid, transparent);
+		@include rem(border-right, 10, solid, transparent);
+		@include rem(border-top, 9, solid, #cccccc);
+		@include rem(left, calc(50% - 12px));
+		@include rem(margin-bottom, -1);
+		position: absolute;
+	}
+}

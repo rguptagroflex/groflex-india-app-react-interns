@@ -1,0 +1,38 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.recurring-invoice-detail-wrapper {
+
+	.detail-view-document {
+		margin: -100px auto 0;
+	}
+
+	.detail-view-head-controls {
+		top: 95px;
+	}
+
+	.detail-view-head-container {
+		height: 285px;
+	}
+
+	.recurring-invoice-detail-recipient-wrapper {
+		position: relative;
+		width: 925px;
+		margin: 0 auto;
+		top: 57px;
+
+		.recurring-invoice-detail-recipient {
+			position: absolute;
+			top: 0;
+			right: 0;
+			font-size: 14px;
+
+			span {
+				font-weight: 600;
+			}
+		}
+	}
+}
+
+
+

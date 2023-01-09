@@ -1,0 +1,64 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-bankaccounts-headline {
+	font-weight: 600;
+	margin-bottom: 10px;
+}
+
+.settings-bankaccounts-accounts {
+	width: 100%;
+
+	.settings-bankaccounts-account-row {
+		width: 100%;
+		height: 60px;
+		line-height: 60px;
+		margin-top: 8px;
+		display: flex;
+
+		.account-col-left {
+			width: 10%;
+			font-size: 28px;
+			color: $color-primary;
+		}
+
+		.account-col-center {
+			width: 85%;
+			line-height: 1.4;
+
+			.row1 {
+				max-width: 100%;
+				font-weight: 600;
+				@include truncate-text();
+			}
+
+			.row2,
+			.row3 {
+				font-size: 13px;
+				@include truncate-text();
+
+				span {
+					padding: 0 5px;
+				}
+			}
+		}
+
+		.account-col-right {
+			width: 5%;
+			text-align: right;
+			cursor: pointer;
+		}
+	}
+
+	.button-component-wrapper {
+		text-align: right;
+	}
+}
+
+.settings-bankaccounts-accounts-desc {
+	margin: 10px 0;
+
+	strong {
+		font-weight: 600 !important;
+	}
+}

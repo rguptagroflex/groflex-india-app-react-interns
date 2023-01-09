@@ -1,0 +1,175 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+$dotsHeight: 40;
+$navSize: 32;
+
+.carousel {
+    -webkit-tap-highlight-color: transparent;
+
+    z-index: 1;
+    &-contain .carousel_item > * {
+        background-size: contain;
+	}
+	
+    &-hasDots {
+        margin-bottom: #{$dotsHeight}px;
+	}
+	
+    &_loading {
+        opacity: 0;
+        display: block;
+	}
+	
+    &_loaded {
+        display: block;
+	}
+	
+    &_stage {
+        background: white;
+        position: relative;
+		-ms-touch-action: pan-Y;
+		
+        &:after {
+            content: ".";
+            display: block;
+            clear: both;
+            visibility: hidden;
+            line-height: 0;
+            height: 0;
+        }
+	}
+	
+    &_stageOuter {
+        position: relative;
+        overflow: hidden;
+	}
+	
+    &.carousel_refresh .carousel_item {
+        display: none;
+	}
+	
+    &_item {
+        position: relative;
+        float: left;
+        -webkit-backface-visibility: hidden;
+        -webkit-tap-highlight-color: transparent;
+        -webkit-touch-callout: none;
+        width: 100%;
+		@include rem(min-height,1);
+		
+        img {
+            display: block;
+            width: 100%;
+            -webkit-transform-style: preserve-3d;
+		}
+		
+        > * {
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+	}
+	
+    &_drag .carousel_item {
+        user-select: none;
+	}
+	
+    &_grab .carousel_item {
+        cursor: move;
+        cursor: -webkit-grab;
+        cursor: -o-grab;
+        cursor: -ms-grab;
+        cursor: grab;
+	}
+	
+    &_dot {
+        display: inline-block;
+        cursor: pointer;
+        user-select: none;
+        span {
+            background: #d6d6d6;
+            display: block;
+            -webkit-backface-visibility: visible;
+            transition: opacity 0.2s ease;
+            @include rem(border-radius,30);
+            @include rem(height,10);
+            @include rem(margin,5,7);
+            @include rem(width,10);
+        }
+        &.active span, &:hover span {
+            background: #869791;
+        }
+	}
+	
+    &_dots {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        -webkit-tap-highlight-color: transparent;
+        @include rem(height,$dotsHeight);
+        @include rem(width,100%);
+        @include rem(bottom,-$dotsHeight);
+        &.disabled {
+            display: none;
+        }
+	}
+	
+    &_nav {
+        text-align: center;
+        -webkit-tap-highlight-color: transparent;
+        &.disabled {
+            display: none;
+            & + .carousel_dots {
+                @include rem(margin-top,10);
+            }
+        }
+	}
+	
+    &_prev, &_next {
+		position: absolute;
+		top: calc(50% - #{px-to-rem($navSize / 2)});
+        background: rgba(255,255,255,0.7);
+        cursor: pointer;
+        user-select: none;
+        @include rem(width,$navSize);
+        @include rem(height,$navSize);
+		@include rem(border-radius,16);
+		
+        &.disabled {
+            opacity: 0.5;
+            cursor: default;
+            pointer-events: none;
+            &::before {
+                color: #aaaaaa;
+            }
+		}
+		
+        &:hover:not(.disabled) {
+            background: rgba(255,255,255,0.8);
+        }
+	}
+	
+    &_prev {
+        @include rem(left,1);
+        @include icon(before, arr_left) {
+            color: #666666;
+            @include rem(line-height,$navSize);
+        }
+	}
+	
+    &_next {
+        @include rem(right,16);
+        @include icon(before, arr_right) {
+            color: #666666;
+            @include rem(line-height,$navSize);
+        }
+	}
+	
+    .page-section {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+}

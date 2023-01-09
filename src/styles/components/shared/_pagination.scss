@@ -1,0 +1,35 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.pagination-component-wrapper {
+	position: relative;
+	display: inline-block;
+
+	.pagination-page {
+		display: inline-block;
+		width: 30px;
+		height: 30px;
+		line-height: 29px;
+		margin: 0 5px;
+		text-align: center;
+		font-weight: 600;
+		border: 1px solid $color-line-light;
+		@include vendor-prefix('user-select', 'none');
+
+		&.active {
+			pointer-events: none;
+			border-color: $color-primary;
+		}
+
+		&.disabled {
+			pointer-events: none;
+			opacity: 0.7;
+		}
+
+		&:not(.pagination-page-dots):hover {
+			cursor: pointer;
+			border-color: $color-text-light;
+		}
+	}
+
+}

@@ -1,0 +1,29 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-payment-conditions-component {
+    .select-default-option {
+        margin-top: 20px;
+	}
+
+	.paymentCondition {
+        &_item {
+            &:hover {
+                button.button.u_hidden {
+                    display: inline-block !important;
+                }
+            }
+
+          &:last-child {
+                & .paymentCondition_column {
+                    margin-bottom: 30px;
+                    border-bottom: 1px solid #ccc;
+                }
+            }
+        }
+	}
+
+	.box {
+		padding-bottom: 200px;
+	}
+}

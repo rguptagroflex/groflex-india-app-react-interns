@@ -1,0 +1,52 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.item {
+	display: flex;
+	text-align: left;
+	@include rem(line-height, 28);
+
+	&_label {
+		min-width: 35%;
+		font-weight: 600;
+		text-align: left;
+	}
+
+	&_text {
+		color: $color-text-muted;
+		p {
+			@include rem(margin, 0);
+		}
+	}
+
+	&-vertical {
+		flex-direction: column;
+		@include rem(line-height, 25);
+		.item_label, .item_text {
+			flex-basis: auto;
+		}
+		&:nth-child(n+2) {
+			@include rem(margin-top, 20);
+		}
+	}
+	
+	&-description {
+		.item_label {
+			@include rem(font-size, 21);
+			@include rem(margin-bottom, 8);
+		}
+	}
+}
+
+.itemGroup {
+	@include rem(margin-bottom, 24);
+	&.text-right {
+		.item {
+			justify-content: space-between;
+		}
+	}
+
+	&:last-child {
+		@include rem(margin-bottom, 0);
+	}
+}

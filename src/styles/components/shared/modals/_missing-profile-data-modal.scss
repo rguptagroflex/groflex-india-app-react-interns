@@ -1,0 +1,30 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.missing-profile-data-modal {
+    height: 400px;
+    .missing-profile-data-headline {
+        font-size: 22px;
+        line-height: 26px;
+        letter-spacing: 0.22px;
+        margin-bottom: 10px;
+    }
+
+    .missing-profile-data-subheadline {
+        font-size: 14px;
+        line-height: 19px;
+        letter-spacing: 0.14px;
+        margin-bottom: 10px;
+    }
+
+    .missing-profile-data-modal-inputs {
+        padding-bottom: 10px;
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+            .input-outlined-rounded {
+                width: 100%;
+            }
+        }
+    }
+}

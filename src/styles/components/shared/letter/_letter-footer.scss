@@ -1,0 +1,178 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.letter-footer-component-wrapper {
+	display: flex;
+	padding-left: 0px;
+	margin-left: -3px;
+
+	.letter-footer-column {
+		position: relative;
+		width: 50%;
+
+		.htmlInput_label {
+			display: none;
+		}
+
+		.htmlInput_input {
+			padding: 0;
+			color: $color-text-light;
+			border: 0 none;
+		}
+
+		.ql-container {
+			font-size: 11px;
+		}
+	}
+
+	.letter-footer-first-two-section {
+		padding-right: 22px;
+	}
+	.footerSignatureText {
+		font-size: 11px;
+		color: #656768;
+	}
+	.signatureTextTitle {
+		top: 64px;
+    	position: absolute;
+	}
+	.signatureEmpty {
+		font-size: 12px;
+		display: inline-flex;
+		align-items: center;
+		color: $color-primary;
+		font-weight: 600;
+		border: 1px dashed transparent;
+		z-index: 29;
+
+		.icon-rounded {
+			width: 20px;
+			height: 20px;
+			&:before {
+				font-size: 8px;
+			}
+		}
+
+		.signatureEmpty_label {
+			padding-left: 10px;
+		}
+	}
+	.orSection {
+		padding-top: 3%;
+    	font-size: 12px;
+	}
+	
+	.footerEdit {
+		// top: 26px;
+		position: absolute;
+		padding-top: 4px;
+		width: 100%;
+	}
+	.signatureClose_btn {
+	    display: none;
+		position: absolute;
+		justify-content: center;
+		align-items: center;
+		background: white;
+		border: none;
+		border-radius: 50%;
+		box-shadow: 0px 1px 1px 0px black;
+		color: black;
+		outline: none;
+		top: -12px;
+		right: -9px;
+		width: 18px;
+		height: 18px;
+		padding: 0;
+		font-size: 8px;
+		z-index: 11;
+		&:before {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin: 0;
+			width: 18px;
+			height: 18px;
+			font-size: 8px;
+		}
+		&:hover {
+			color: #fa6e6e;
+		}
+	}
+	.footerSignatureWrapper {
+		margin-left: 11px;
+		display: inline-block;
+		position: relative;
+		border: 1px dashed transparent;
+		// margin: -10px -10px -10px 9px;
+		// padding: 10px;
+		left: -238px;
+		top: 16px;
+		margin-bottom: 7px;
+	}
+	.footerSignatureWrapper:hover {
+		cursor: pointer;
+		border-color: #aaaaaa;
+		border-radius: 5px;
+		.signatureClose {
+			display: flex;
+		}
+	}
+	.uploadButtonRow {
+		display: flex;
+	}
+	.footerSignatureImage {
+		position: absolute;
+		z-index: 1;
+		max-height: 90px;
+		top: 10px;
+		max-width: 180px;
+	}
+	.footerSignatureName {
+		z-index: 5;
+		top: 26px;
+		position: absolute;
+		font-family: Caveat;
+		font-size: 30px;
+	}
+	.letterFooter_tools {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+	}
+	.canvas-upper-div {
+		position: absolute;
+		top: 1px;
+	}
+	.signature-text-div {
+		position: absolute;
+		top: 51px;
+		z-index: 15;
+		font-size: 28px;
+		font-family: 'Caveat';
+		color: #272d30;
+		width: 100%;
+		input {
+			height: 47px;
+			width: 91%;
+			border: 0.5px solid #dfe6ea;
+		}
+		input::placeholder {
+			color: #d9dfe3;
+		}
+	}
+
+	&.outlined {
+		&:hover {
+			.edit-icon {
+				@include icon(after, edit);
+				position: absolute;
+				height: 5px;
+				z-index: 11;
+				color: $color-text-light;
+				top: -7px;
+				right: -6px;
+			}
+		}
+	}
+}

@@ -1,0 +1,60 @@
+{
+	"extends": ["standard"],
+	"plugins": ["standard", "import", "react"],
+	"parser": "babel-eslint",
+	"env": {
+		"browser": true,
+		"node": true
+	},
+	"globals": {
+		"$": true,
+		"ga": true,
+		"Bugsnag": true,
+		"ENV": true,
+		"expect": true,
+		"test": true,
+		"afterEach": true,
+		"beforeEach": true,
+		"PDFJS": true,
+		"pendo": true
+	},
+	"rules": {
+		"handle-callback-err": 0,
+		"no-var": "error",
+		"indent": [
+			1,
+			"tab",
+			{
+				"SwitchCase": 1
+			}
+		],
+		"no-mixed-spaces-and-tabs": 0,
+		"object-shorthand": ["error", "properties"],
+		"prefer-const": 2,
+		"generator-star-spacing": 0,
+		"arrow-parens": 0,
+		"no-return-await": 0,
+		"no-useless-return": 0,
+		"no-tabs": 0,
+		"padded-blocks": 0,
+		"semi": ["error", "always"],
+		"no-extra-semi": 0,
+		"max-len": [
+			2,
+			{
+				"code": 300,
+				"tabWidth": 2,
+				"ignoreUrls": true,
+				"ignoreComments": true,
+				"ignoreStrings": true,
+				"ignoreTemplateLiterals": true,
+				"ignoreRegExpLiterals": true
+			}
+		],
+		"space-before-function-paren": 0,
+		"standard/no-callback-literal": 0,
+		"standard/computed-property-even-spacing": "off",
+		"react/jsx-uses-react": "error",
+		"react/jsx-uses-vars": "error"
+	}
+}

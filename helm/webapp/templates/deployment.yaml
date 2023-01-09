@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "webapp.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: imprezz-webapp-{{ .Values.releaseEnvironment }}
+    chart: {{ template "webapp.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "webapp.name" . }}
+      release: {{ .Release.Name }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 10
+  template:
+    metadata:
+      labels:
+        app: {{ template "webapp.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-{{ .Values.releaseEnvironment }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        ports:
+{{- range $port := .Values.service.ports }}
+        - containerPort: {{ $port.containerPort }}
+          protocol: {{ $port.protocol }}
+{{- end }}
+      imagePullSecrets:
+        - name: india-buhl-registry

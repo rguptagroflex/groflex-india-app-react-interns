@@ -1,0 +1,111 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.popover-wrapper {
+	position: fixed;
+	z-index: $z-index-popover;
+	margin: -5px 5px;
+	padding: 20px 25px;
+	background: $color-white;
+	text-align: left;
+	font-size: 14px;
+	cursor: default;
+	line-height: normal;
+	@include vendor-prefix('box-shadow', $box-shadow-popover);
+	@include vendor-prefix('user-select', 'none');
+
+	.popover-arrow {
+		position: absolute;
+
+		&:before {
+			content: "";
+			display: block;
+			width: 10px;
+			height: 10px;
+			background: $color-white;
+			@include vendor-prefix('transform', 'rotate(45deg)');
+		}
+	}
+
+	.popover-entry {
+		margin: 10px -25px 0;
+		padding: 5px 25px;
+
+		cursor: pointer;
+
+		&:first-child {
+			margin-top: 0;
+		}
+
+		.popover-entry-label, .popover-entry-icon {
+			white-space: nowrap;
+			display: inline-block;
+		}
+
+		.popover-entry-icon {
+			margin-right: 10px;
+			vertical-align: middle;
+		}
+
+		&:not(.popover-entry-disabled):not(.popover-entry-no-hover):hover {
+			background: $color-table-hover;
+		}
+
+		&.popover-entry-disabled {
+			color: #afafaf;
+		}
+	}
+
+	.popover-entry-circle-indicator {
+		position: relative;
+		width: 13px;
+		height: 13px;
+		background-color: #ffffff;
+		border: 1px $color-shadow solid;
+		margin: 0 14px 0 0;
+		border-radius: 50%;
+		pointer-events: none;
+		display: inline-block;
+		box-sizing: border-box;
+
+		&.selected {
+			background-color: $color-primary;
+			border: 1px $color-primary solid;
+
+			&:before {
+				position: absolute;
+				width: 5px;
+				height: 5px;
+				margin: 3px 0 0 3px;
+				background-color: white;
+				color: transparent;
+				border-radius: 50%;
+				display: block;
+				transition: .2s;
+				content: " ";
+			}
+		}
+	}
+
+	.popover-divider {
+		margin: 15px 0 -5px;
+		border-bottom: 1px solid $color-line-light;
+	}
+}
+
+// .popover-overlay {
+// 	position: fixed;
+// 	top: 0;
+// 	left: 0;
+// 	width: 100%;
+// 	height: 100%;
+// 	z-index: $z-index-below-modal - 1;
+
+// 	&.white-opaque {
+// 		background: rgba(255, 255, 255, 0.6);
+// 	}
+
+// 	&.below-navmain {
+// 		z-index: $z-index-below-footer;
+// 	}
+// }

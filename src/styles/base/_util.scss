@@ -1,0 +1,143 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+@for $i from 1 through 10 {
+	@include breakpoint-md {
+		.u_grow-md-#{$i} {
+			flex-grow: $i !important;
+			flex-basis: 0;
+		}
+	}
+
+	@include breakpoint-lg {
+		.u_grow-lg-#{$i} {
+			flex-grow: $i !important;
+			flex-basis: 0;
+		}
+	}
+
+	.u_grow-#{$i} {
+		flex-grow: $i !important;
+		flex-basis: 0;
+	}
+}
+
+@include breakpoint-md {
+	.u_hide-md {
+		display: none !important;
+	}
+}
+
+
+@include breakpoint-lg {
+	.u_hide-lg {
+		display: none !important;
+	}
+}
+
+.u_bg {
+	background: $color-menu-background url(../assets/images/background.jpg) no-repeat center center fixed !important;
+	background-size: cover !important;
+}
+
+// flexbox center
+.u_vc {
+	display: flex;
+	align-items: center;
+}
+
+.u_hc {
+	display: flex;
+	justify-content: center;
+}
+
+.u_c {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.u_hidden {
+	display: none !important;
+}
+
+.u_invisible {
+	visibility: hidden !important;
+	height: 0;
+	width: 0;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	position: absolute;
+	left: -100000px;
+	top: -100000px;
+}
+
+.u_disabled {
+	pointer-events: none !important;
+	cursor: default;
+}
+
+.u_ta-r {
+	text-align: right;
+}
+
+.u_pd-r0 {
+	padding-right: 0 !important;
+}
+
+@each $key, $name in ("m": "margin", "p": "padding") {
+	@each $i in 0, 2, 4, 6, 8, 10, 12, 16, 20, 24, 28, 32, 40, 48, 60 {
+		.u_#{$key}_#{$i} {
+			@include rem($name, $i, !important);
+		}
+		.u_#{$key}t_#{$i} {
+			@include rem(#{$name}-top, $i, !important);
+		}
+		.u_#{$key}r_#{$i} {
+			@include rem(#{$name}-right, $i, !important);
+		}
+		.u_#{$key}b_#{$i} {
+			@include rem(#{$name}-bottom, $i, !important);
+		}
+		.u_#{$key}l_#{$i} {
+			@include rem(#{$name}-left, $i, !important);
+		}
+		.u_#{$key}bt_#{$i} {
+			@include rem(#{$name}-top, $i, !important);
+			@include rem(#{$name}-bottom, $i, !important);
+		}
+		.u_#{$key}lr_#{$i} {
+			@include rem(#{$name}-left, $i, !important);
+			@include rem(#{$name}-right, $i, !important);
+		}
+	}
+}
+
+@each $poskey, $pos1, $pos2 in (tl, top, left), (tr, top, right), (bl, bottom, left), (br, bottom, right) {
+	.u_abs_#{$poskey} {
+		#{$pos1}: 0;
+		#{$pos2}: 0;
+		position: absolute;
+	}
+}
+
+.uppercase {
+	text-transform: uppercase;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}
+
+@each $borkey, $borpos in (t, top), (r, right), (l, left), (b, bottom) {
+	.u_bor_#{$borkey} {
+		border-#{$borpos}: 1px solid #cccccc;
+	}
+}
+
+.u_abs_invisible {
+	position: absolute !important;
+	@include rem(top, -999999);
+	@include rem(left, -999999);
+}

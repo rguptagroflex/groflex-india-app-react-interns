@@ -1,0 +1,230 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.global-search-modal-component {
+	.modal-base-content {
+		margin: 0!important;
+	}
+
+	.global-search-input {
+		display: flex;
+
+		.icon-search {
+			padding: 15px 10px 0 0;
+			font-size: 20px;
+			color: $color-text-disabled;
+
+			&.active {
+				color: $color-text;
+			}
+		}
+
+		.text-input-component {
+			width: 100%;
+			font-size: 19px;
+
+			input {
+				padding: 0;
+				border: 0 none;
+			}
+
+			.input_label {
+				display: none;
+			}
+		}
+	}
+
+	.global-search-results {
+		display: flex;
+		height: 560px;
+		margin-top: 5px;
+		padding: 0 0 80px;
+		border-top: 1px solid $color-line-light;
+
+		.global-search-list {
+			flex-grow: 1;
+			flex-basis: 0;
+			width: 100%;
+			border-right: 1px solid $color-line-light;
+			overflow: hidden;
+			overflow-y: auto;
+
+			.global-search-list-category {
+				.global-search-list-headline{
+					height: 25px;
+					line-height: 25px;
+					padding: 0px 25px;
+					background: $color-dot-disabled;
+
+					.icon {
+						margin-right: 6px;
+						font-size: 14px;
+					}
+
+					.global-search-list-headline-text {
+						position: relative;
+						top: -1px;
+						font-size: 11px;
+						text-transform: uppercase;
+					}
+				}
+
+				.global-search-list-items {
+					margin: 5px 0;
+
+					.global-search-list-item {
+						padding: 10px 25px;
+						width: 100%;
+						overflow: hidden;
+						cursor: pointer;
+						@include truncate-text();
+
+						&:hover, &.active {
+							background: $color-primary;
+							color: $color-white;
+						}
+
+						.global-search-list-item-title {
+							font-size: 13px;
+						}
+
+						.global-search-list-item-description {
+							font-size: 12px;
+						}
+					}
+				}
+			}
+		}
+
+		.global-search-detail {
+			flex-grow: 1.5;
+			flex-basis: 0;
+			width: 100%;
+
+			.global-search-detail-content {
+				padding: 28px 34px 12px;
+
+				.global-search-detail-image {
+					@include vendor-prefix('box-shadow', '0px 2px 8px 0px rgba(0, 0, 0, 0.2)');
+					margin: 20px auto 0;
+					width: 280px;
+					height: 396px;
+				}
+
+				.global-search-detail-title {
+					font-size: 21px;
+					font-weight: 600;
+				}
+
+				.global-search-detail-description {
+					margin-bottom: 16px;
+					font-size: 13px;
+				}
+
+				.global-search-detail-item {
+					display: flex;
+					font-size: 13px;
+
+					&.global-search-detail-item-address {
+						margin-top: 20px;
+					}
+
+					.global-search-detail-item-label {
+						width: 45%;
+						font-weight: 600;
+						line-height: 28px;
+					}
+
+					.global-search-detail-item-value {
+						width: 55%;
+						// text-align: right;
+						line-height: 28px;
+					}
+
+					&.global-search-detail-item-vertical {
+						display: block;
+						margin-top: 20px;
+
+						.global-search-detail-item-label {
+							width: 100%;
+						}
+
+						.global-search-detail-item-value {
+							width: 100%;
+							text-align: left;
+							line-height: 25px;
+						}
+					}
+
+					&.global-search-detail-item-cp {
+						margin-top: 20px;
+
+						.global-search-detail-item-cp-content {
+							margin-top: 20px;
+						}
+
+						.cp_circle {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							border: 3px solid $color-primary-light;
+							border-radius: 50%;
+							color: $color-primary-light;
+							font-size: 24px;
+							height: 70px;
+							width: 70px;
+							margin: 0px;
+							text-transform: uppercase;
+						}
+
+						.global-search-detail-item-cp-details {
+							display: flex;
+							flex-direction: column;
+							justify-content: center;
+
+							.global-search-detail-item-label {
+								width: 50%;
+								line-height: 20px;
+							}
+
+							.global-search-detail-item-value {
+								text-align: left;
+								line-height: 20px;
+							}
+						}
+					}
+				}
+
+				&.global-search-detail-customer {
+					.global-search-detail-item-label {
+						width: 30%;
+					}
+
+					.global-search-detail-item-value {
+						width: 70%;
+						text-align: left;
+					}
+				}
+
+			}
+		}
+	}
+
+	.global-search-no-results {
+		height: 560px;
+		margin-top: 5px;
+		padding: 70px 0 0;
+		text-align: center;
+		border-top: 1px solid $color-line-light;
+
+		.icon {
+			line-height: 340px;
+			font-size: 340px;
+			color: $color-text-disabled;
+		}
+
+		.global-search-no-results-text {
+			font-size: 19px;
+		}
+	}
+}

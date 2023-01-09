@@ -1,0 +1,412 @@
+@mixin paperEdit($name, $overlayTransitionDuration: 0.2s) {
+	position: relative;
+	display: flex;
+	align-items: center;
+	@include rem(border, 1, solid, transparent);
+	@include rem(margin-left, -10);
+	@include rem(margin-right, -10);
+	@include rem(padding, 10, 10, 0, 10);
+
+	&_display {
+		cursor: default;
+		position: relative;
+		&_footer {
+			width: 100%;
+		}
+	}
+	&_edit {
+		padding: 0 10px;
+		display: none;
+		background: white;
+		z-index: 10000;
+		box-shadow: 1.5px 2.598px 7px 0px rgba(0, 0, 0, 0.08), 6px 10.329px 40px 0px rgba(0, 0, 0, 0.13);
+		@include trbl(0);
+		height: 120%;
+	}
+	&_overlay {
+		background: rgba(230, 230, 230, 0.95);
+		z-index: 10000;
+		@include trbl(0, fixed);
+		visibility: hidden;
+		opacity: 0;
+		transition: visibility 0s linear $overlayTransitionDuration, opacity $overlayTransitionDuration ease-in-out;
+	}
+	&_controls,
+	&_title,
+	&_menu {
+		position: absolute;
+		@include rem(height, 44);
+	}
+	&_controls {
+		@include rem(bottom, -52);
+		right: 0;
+		width: 100%;
+		display: flex;
+		> :nth-last-child(2) {
+			margin-left: auto;
+		}
+	}
+	&_menu {
+		display: flex;
+		justify-content: flex-end;
+		@include rem(bottom, -40);
+		@include rem(left, 0);
+		@include rem(right, 0);
+		@include rem(padding-top, 8);
+	}
+	&_title {
+		color: $color-text;
+		@include rem(top, -36);
+		@include rem(left, 0);
+		@include rem(padding-bottom, 8);
+	}
+	&_subtitle {
+		color: $color-text-placeholder;
+		@include rem(font-size, 19);
+	}
+	&-edit .#{$name} {
+		&_overlay {
+			visibility: visible;
+			opacity: 1;
+			transition-delay: 0s;
+		}
+		&_edit {
+			display: block;
+		}
+	}
+	// quill styles
+	.ql-container,
+	.htmlInput_placeholder {
+		@include rem(padding, 0, !important);
+	}
+
+	.htmlInput_input {
+		border: 0 none;
+	}
+}
+
+$footerBlock: "letterFooter";
+$footer-height: 142;
+
+.#{$footerBlock} {
+	@include paperEdit($footerBlock);
+	@include rem(padding, 5, 10, 0, 10);
+	align-items: start;
+	@include rem(height, $footer-height);
+	// gain space, based on documents %-based padding
+	// +rem(margin, -4%, -11%, -8%, -14%)
+	&_column {
+		position: relative;
+		@include rem(width, 30%);
+		@include rem(height, 100%);
+		color: $color-text-light;
+		border: 1px solid transparent;
+		> p {
+			@include rem(margin, 0);
+		}
+		.htmlInput_label {
+			display: none;
+		}
+		.htmlInput_input {
+			@include rem(padding, 0, !important);
+		}
+	}
+
+	&_display,
+	&_inputs {
+		color: #aaaaaa;
+		display: flex;
+		justify-content: space-between;
+	}
+
+	&_display {
+		@include rem(font-size, 11);
+	}
+
+	// quill styles
+	.ql-editor {
+		@include rem(min-height, $footer-height);
+		@include rem(font-size, 11);
+		line-height: 1.3;
+		cursor: text;
+	}
+	.htmlInput,
+	.htmlInput_wrapper {
+		height: 100%;
+		margin-bottom: 0 !important;
+	}
+	.htmlInput {
+		height: 100%;
+		@include rem(min-height, $footer-height);
+		@include rem(max-height, $footer-height);
+		overflow-y: hidden;
+
+		&:before {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 3px;
+			background: white;
+			z-index: 1;
+			content: " ";
+		}
+
+		&-active {
+			@include rem(max-height, 9999);
+
+			overflow-y: visible !important;
+			&:before {
+				display: none;
+			}
+		}
+	}
+
+	&_actions {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
+
+// Chrome/Safari (+Edge)
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+	.#{$footerBlock} {
+		.htmlInput {
+			&:before {
+				height: 4px;
+			}
+		}
+	}
+}
+
+// Edge (Undo)
+@supports (-ms-ime-align: auto) {
+	.#{$footerBlock} {
+		.htmlInput {
+			&:before {
+				height: 3px;
+			}
+		}
+	}
+}
+
+$headerBlock: "letterHeader";
+
+.#{$headerBlock} {
+	@include paperEdit($headerBlock);
+	@include rem(height, 200);
+	padding-top: 0;
+	&_controls {
+		justify-content: flex-end;
+		& > .button:nth-child(1) {
+			position: absolute !important;
+			left: 0;
+		}
+	}
+	&_display,
+	&_imageWrapper {
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+	}
+	&_imageWrapper {
+		position: absolute !important;
+		@include trbl(0);
+		@include rem(right, 10);
+		@include rem(left, 10);
+	}
+	&_image {
+		@include rem(max-width, 700);
+		@include rem(max-height, 170);
+	}
+	&_tools {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		@include rem(margin-bottom, 24);
+	}
+}
+
+.letterHeaderFontTools {
+	display: flex;
+	@include rem(margin-bottom, 10);
+
+	> div {
+		@include rem(margin-right, 24);
+
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+}
+
+.#{$headerBlock}Tools {
+	&_fontSize {
+		.input_controls {
+			margin-top: -15px;
+		}
+		@include rem(width, 150);
+
+		.form_input {
+			@include rem(height, 40);
+			input {
+				@include rem(width, 105);
+				@include rem(margin-left, 45);
+			}
+		}
+
+		.input_label {
+			@include rem(font-size, 12, !important);
+			@include rem(margin-top, 2, !important);
+		}
+
+		.input_hint,
+		.input_bar {
+			display: none;
+		}
+	}
+
+	&_fontFamily {
+		@include rem(width, 180);
+
+		.selectInput_bar {
+			display: none;
+		}
+		.Select-placeholder {
+			@include rem(line-height, 39, !important);
+		}
+		.Select-value {
+			@include rem(line-height, 39, !important);
+		}
+		.Select-control {
+			@include rem(width, 192, !important);
+			@include rem(margin-left, 0, !important);
+			@include rem(height, 39);
+		}
+		.Select-input {
+			@include rem(height, 39);
+		}
+		.Select-menu-outer {
+			@include rem(width, 192, !important);
+		}
+
+		.is-disabled {
+			.Select-control {
+				background-color: white;
+			}
+			.Select-value {
+				color: #bbbbbb;
+			}
+		}
+	}
+
+	&_fontStyle {
+		display: flex;
+		flex-direction: row;
+	}
+
+	&_action {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		border: 1px solid #d0d0d0;
+		background: white;
+		color: #333333;
+		@include rem(height, 39);
+		@include rem(width, 39);
+		@include rem(font-size, 11);
+		&.disabled {
+			cursor: default;
+			color: #bbbbbb;
+		}
+		&.active {
+			background: lighten($color-primary-light, 30);
+		}
+		&::before {
+			@include rem(font-size, 14);
+		}
+		&:not(.disabled) + &:not(.disabled) {
+			border-left-width: 0;
+		}
+	}
+	&_color {
+		.sp-replacer,
+		.sp-replacer:hover {
+			background: white;
+			border: 1px solid #dddddd;
+			@include rem(height, 39);
+			@include rem(width, 64);
+		}
+		.sp-preview {
+			@include rem(height, 29);
+			@include rem(width, 32);
+		}
+		.sp-dd {
+			@include icon(before, "arr_down");
+			@include rem(padding, 8, 0, 0, 2);
+			@include rem(font-size, 11);
+			&:before {
+				position: absolute;
+				background: white;
+				color: #888888;
+				@include rem(height, 16);
+				@include rem(width, 16);
+			}
+		}
+	}
+}
+
+// spectrum
+.sp-container {
+	border: 1px solid #dddddd;
+}
+
+.sp-dragger {
+	background: transparent;
+	border: 2px solid white;
+	@include rem(height, 8);
+	@include rem(width, 8);
+	@include rem(border-radius, 8);
+}
+
+.sp-input {
+	background: white;
+	@include rem(width, 138);
+}
+
+$senderBlock: "letterSender";
+
+.#{$senderBlock} {
+	@include rem(height, 24);
+	@include rem(width, 430);
+	@include rem(padding-top, 10);
+	color: $color-text-light;
+
+	.htmlInput_input {
+		@include rem(line-height, 16, !important);
+		@include rem(margin-bottom, 3px);
+
+		.ql-container {
+			@include rem(font-size, 10);
+		}
+	}
+
+	.htmlInput_bar:before,
+	.htmlInput_bar:after {
+		@include rem(height, 1px);
+	}
+
+	.htmlInput-active .htmlInput_wrapper .htmlInput_bar:before,
+	.htmlInput-active .htmlInput_wrapper .htmlInput_bar:after {
+		background: #eeeeee;
+	}
+
+	.ql-editor {
+		overflow: hidden;
+		white-space: nowrap;
+	}
+}

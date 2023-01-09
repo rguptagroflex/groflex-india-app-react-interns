@@ -1,0 +1,28 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.list-search-component {
+	position: relative;
+	width: 240px;
+	margin-top: 3px;
+	float: left;
+
+	.icon, .input-search {
+		display: inline-block;
+		line-height: 20px;
+		font-size: 13px;
+		color: $color-text-light;
+	}
+	input::placeholder {
+		color: $color-text-light;
+	}
+	.input-search {
+		margin-left: 10px;
+
+		input {
+			width: 200px;
+			border: 0 none;
+			outline: 0;
+		}
+	}
+}

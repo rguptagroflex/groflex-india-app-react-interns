@@ -1,0 +1,12 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.change-email-modal {
+	padding-bottom: 40px;
+
+	.change-email-hint {
+		padding-top: 30px;
+		padding-bottom: 40px;
+		font-size: 15px;
+	}
+}

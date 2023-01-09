@@ -1,0 +1,65 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.icon-button-wrapper {
+    position: relative;
+    
+    .icon-button {
+        background-color: $color-white;
+        border-radius: 50%;
+        margin: 0 auto;
+        padding: 0;
+
+        &-primary {
+            border: 1px solid $color-primary;
+            color: $color-primary;
+        }
+
+        &-secondary {
+            border: 1px solid $color-blue-white;
+            color: $color-blue-light;
+        }
+
+        &-large {
+            font-size: 15px;
+            line-height: 40px;
+            width: 40px;
+            height: 40px;
+        }
+
+        &-medium {
+            font-size: 12px;
+            line-height: 25px;
+            width: 25px;
+            height: 25px;
+        }
+
+        &-small {
+            font-size: 8px;
+            line-height: 19px;
+            width: 20px;
+            height: 20px;
+        }
+
+        &:hover {
+            background-color: $color-default-hover;
+        }
+    }
+
+    .icon-button-label-action {
+        cursor: pointer;
+
+        .icon {
+            position: relative;
+            top: 2px;
+        }
+    }
+
+    .icon-button-hint {
+        color: $color-text-lighter;
+        font-size: 10px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+}

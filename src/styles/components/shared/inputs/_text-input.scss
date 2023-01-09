@@ -1,0 +1,63 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.text-input-component {
+	position: relative;
+	outline: none;
+
+	input {
+		display: block;
+		width: 100%;
+		height: 48px;
+		padding: 10px 0 0;
+		border: 0 none;
+		border-bottom: 1px solid $color-input-bar;
+		border-radius: 0 !important;
+		outline: none;
+		box-shadow: none;
+		color: $color-text;
+		letter-spacing: inherit;
+	}
+
+	&.box-border {
+		.input {
+			border: 1px solid #ddd;
+			height: 39px;
+			padding-left: 15px;
+			padding-top: 0px;
+
+			&:focus, &:not(.input-empty), &-valid:not(.input-empty), &-invalid:not(.input-empty) {
+				& ~ .input_label {
+					top: -62px;
+				}
+			}				
+
+			&_label {
+				top: -62px;
+				font-size: 13px;
+			}
+
+			&_controls {
+				margin-top: -10px;
+			}
+			/* &_icon {
+				position: absolute;
+    			top: 20px;
+    			right: 10px;
+				color: #737779;
+			} */
+		}
+	}
+	.input_icon {
+		position: absolute;
+		top: 20px;
+		right: 10px;
+		color: #737779;
+	}
+	.pointer {
+		cursor: pointer;
+	}
+}
+.error-top {
+	top: 0px;
+}

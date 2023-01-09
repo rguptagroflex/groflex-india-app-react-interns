@@ -1,0 +1,49 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-kycform-component {
+
+    .col-xs-offset-6 {
+        margin-left: 66%!important;
+
+        &.clarification {
+            margin-left: 0!important;
+        }
+    }
+
+    .clarification {
+        display: flex;
+        justify-content: space-between;
+        
+        .status-text {
+            // margin-left: 85px;
+            margin-top: 8px;
+        }
+
+    }
+
+    .kyc-complete-text {
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+    .progress-container {
+        height: 60px;
+        .progress-text {
+            font-size: 16px;
+            color: $color-primary;
+        }
+
+        .progress-bar-outer {
+            margin-top: 5px;
+            height: 5px;
+            width: 60%;
+            background-color: $color-line-light;
+
+            .progress-bar {
+                display: block;
+                height: 100%;
+                background-color: $color-primary;
+            }
+        }
+    }
+}

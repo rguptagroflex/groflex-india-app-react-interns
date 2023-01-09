@@ -1,0 +1,111 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+@mixin heading_mixin($size) {
+	font-weight: 600;
+	@include rem(font-size, $size);
+
+	small {
+		color: $color-text-muted;
+		@include rem(font-size, 65%);
+	}
+}
+
+h1, h2, h3, h4, h5, h6 {
+	@include rem(padding, 0);
+	@include rem(margin, 20, 0, 10, 0);
+}
+
+h1, .text-h1 {
+	@include heading_mixin(31);
+}
+
+h2, .text-h2 {
+	@include heading_mixin(29);
+}
+
+h3, .text-h3 {
+	@include heading_mixin(25);
+}
+
+h4, .text-h4 {
+	@include heading_mixin(21);
+}
+
+h5, .text-h5 {
+	@include heading_mixin(18);
+}
+
+h6, .text-h6 {
+	@include heading_mixin(15);
+}
+
+.text {
+	&-small {
+		@include rem(font-size, 10);
+	}
+	&-medium {
+		@include rem(font-size, 12);
+	}
+	&-light {
+		color: $color-text-light;
+	}
+	&-muted {
+		color: $color-text-muted;
+	}
+	&-placeholder {
+		color: $color-text-placeholder;
+	}
+	&-primary {
+		color: $color-primary;
+	}
+	&-primary-light {
+		color: $color-primary-light;
+	}
+	&-left {
+		text-align: left;
+	}
+	&-right {
+		text-align: right;
+	}
+	&-center {
+		text-align: center;
+	}
+	&-justify {
+		text-align: justify;
+	}
+	&-nowrap {
+		white-space: nowrap;
+	}
+	&-normal {
+		font-weight: 400;
+	}
+	&-semibold {
+		font-weight: 600;
+	}
+	&-bold {
+		font-weight: 700;
+	}
+	&-red {
+		color: #fa6e6e;	
+	}
+	&-green {
+		color: #0ba84a;
+	}
+	&-truncate {
+		@include truncate-text();
+	}
+	&-truncatewrap {
+		@include truncate-text-nowrap();
+	}
+	&-orange {
+		color: #D94339;
+	}
+	&-yellow {
+		color: $color-kyc-verification;
+	}
+}
+
+.icon.text-placeholder {
+	color: $text-placeholder;
+}

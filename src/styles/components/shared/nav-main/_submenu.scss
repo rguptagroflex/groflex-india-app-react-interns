@@ -1,0 +1,154 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+// .submenu {
+// 	top: 0;
+// 	width: $submenu-width;
+// 	height: 100vh;
+// 	z-index: $z-index-nav-submenu;
+// 	position: fixed;
+// 	cursor: default;
+// 	background-color: $color-submenu;
+// 	display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+
+// 	@include rem(padding-right, 68);
+// 	@include rem(left, 85);
+
+// 	&.submenu-invoices {
+// 		.submenuList {
+// 			margin-bottom: 203px;
+
+// 			@include breakpoint-menu-sm {
+// 				margin-bottom: 46px;
+// 			}
+// 		}
+// 	}
+	
+// 	&.submenu-offers {
+// 		.submenuList {
+// 			margin-bottom: 130px;
+
+// 			@include breakpoint-menu-sm {
+// 				margin-bottom: -4px;
+// 			}
+// 		}
+// 	}
+
+// 	&.submenu-banking {
+// 		.submenuList {
+// 			margin-bottom: 55px;
+
+// 			@include breakpoint-menu-sm {
+// 				margin-bottom: -55px;
+// 			}
+// 		}
+// 	}
+
+// 	&.submenu-settings {
+// 		.submenuList {
+// 			margin-bottom: -44px;
+
+// 			@include breakpoint-menu-sm {
+// 				margin-bottom: -104px;
+// 			}
+// 		}
+// 	}
+
+// 	.btn-close {
+// 		position: absolute;
+// 		top: 62px;
+// 		left: 28px;
+// 		font-size: 14px;
+// 		color: #ffffff;
+// 		cursor: pointer;
+// 		transition: color 0.3s;
+
+// 		&:hover {
+// 			color: $color-primary;
+// 		}
+// 	}
+
+// 	&.submenu-visible {
+// 		-webkit-animation: 0.3s slidein;
+// 		-moz-animation: 0.3s slidein;
+// 		-ms-animation: 0.3s slidein;
+// 		-o-animation: 0.3s slidein;
+// 		animation: 0.3s slidein;
+// 	}
+// }
+
+.submenuItem {
+	width: 100%;
+	@include rem(height, 26);
+	@include rem(padding-left, 18);
+	@include rem(margin, 0px 35px 40px 0px);
+	@include rem(border-left, 3, solid, transparent);
+	font-size: 13px;
+	font-weight: 500;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+
+	>a {
+		cursor: pointer;
+		color: $color-menu-text; //$submenu-text-color;
+
+		&:hover {
+			color: $color-menu-hover; //#fff;
+		}
+	}
+
+	@include breakpoint-menu-sm {
+		@include rem(margin, 0px 35px 24px 0px);
+	}
+}
+
+.submenuItem-active {
+	>a {
+		color: $color-menu-active-item; //#fff;
+		font-weight: 600;
+	}
+}
+
+.submenuTitle {
+	font-size: 17px;
+	color: #fff;
+	margin-top: 0;
+	@include rem(margin-bottom, 50);
+	@include rem(margin-left, 18);
+
+	@include breakpoint-menu-sm {
+		@include rem(margin-bottom, 32);
+	}
+}
+
+.submenu {
+    height: 100%;
+    cursor: default;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 38px;
+    padding-top: 25px;
+
+	&.submenu-invoices {
+		.submenuList {
+			margin-bottom: 103px;
+
+			@include breakpoint-menu-sm {
+				margin-bottom: 25px;
+			}
+		}
+	}
+
+	&.submenu-visible {
+		-webkit-animation: 0.3s slidein;
+		-moz-animation: 0.3s slidein;
+		-ms-animation: 0.3s slidein;
+		-o-animation: 0.3s slidein;
+		animation: 0.3s slidein;
+	}
+}

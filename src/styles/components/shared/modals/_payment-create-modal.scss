@@ -1,0 +1,147 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.payment-create-modal-component {
+	.modal-base-content {
+		margin-top: 0!important;
+	}
+
+	.modal-base-headline {
+		margin-bottom: 10px!important;
+	}
+
+	.row {
+		margin-bottom: 15px;
+	}
+
+	.payment-create-label {
+		margin-bottom: 5px;
+		font-size: 13px;
+		color: $color-text-muted;
+	}
+
+	.utilize-credits-balance {
+		.form_input:first-of-type {
+			margin-bottom: 15px;
+		}
+		margin-top: 10px;
+	}
+
+	.payment-create-value {
+		font-size: 15px;
+	}
+
+	.payment-create-dunning-hint {
+		margin: 25px 0;
+		font-size: 12px;
+		color: $color-text-muted;
+
+		.payment-create-dunning-charge {
+			float: right;
+		}
+	}
+
+	.form_input {
+		font-size: 15px;
+	}
+
+	.dateInput_label {
+		margin-bottom: 4px;
+	}
+
+	.dateInput_input {
+		border-color: $color-input-bar;
+		font-size: 15px;
+	}
+
+	.deviation-amount {
+		//margin-left: 10px;
+		color: $color-primary;
+	}
+
+	.deviation-description {
+		font-size: 15px;
+		font-weight: normal;
+		color: $color-text-placeholder;
+	}
+
+	.payment-create-content {
+		margin: 80px 0;
+		text-align: center;
+		font-size: 13px;
+		color: $color-text-muted;
+
+		.icon {
+			color: $color-primary;
+			font-size: 66px;
+		}
+	}
+
+	.payment-deviation-choices {
+		display: flex;
+		justify-content: space-around;
+		.payment-deviation-choice {
+			//margin-top: 10px;
+			padding: 8px;
+			text-align: center;
+			cursor: pointer;
+			@include vendor-prefix('user-select', 'none');
+
+			.icon {
+				margin-top: 20px;
+				color: $color-text-placeholder;
+				font-size: 66px;
+				//margin-left: -35px;
+			}
+
+			&:hover, &.active {
+				background: $color-bg-medium;
+
+				.icon {
+					color: $color-primary;
+				}
+			}
+
+
+			.payment-deviation-choice-title {
+				margin: 10px 0;
+				font-size: 15px;
+				font-weight: 700;
+				text-align: center;
+			}
+
+			.payment-deviation-choice-description {
+				font-size: 13px;
+				color: $color-text-muted;
+				text-align: center;
+			}
+		}
+	}
+
+	.inline-checkbox-curreny-input{
+		display: flex;
+		flex-direction: row;
+		font-size: 15px;
+		height: 33px;
+		.curreny-input{
+			min-width: 100px;
+			max-width: 115px;
+			
+			.form_input{
+				height: 40px;
+				input{
+					text-align: center;
+					padding-top: 0 !important;
+					height: 20px !important;
+					margin-top: -4px;
+					margin-left: 5px;
+				}
+			}
+		}
+		.post-text{
+			margin-left: 10px;
+			margin-top: -2px;
+		}
+	}
+
+}

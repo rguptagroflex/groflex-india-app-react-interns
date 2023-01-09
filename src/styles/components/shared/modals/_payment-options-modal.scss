@@ -1,0 +1,43 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.payment-options-modal-component {
+	.modal-base-content {
+		margin-top: 0!important;
+	}
+
+	.modal-base-headline {
+		margin-bottom: 25px!important;
+	}
+
+	.form_input {
+		font-size: 15px;
+	}
+
+	.payment-options-duedays {
+		position: relative;
+		font-size: 15px;
+		margin: 20px 0;
+
+		.form_input {
+			width: 50px;
+		}
+
+		.payment-options-duedays-label {
+			position: absolute;
+			top: 18px;
+			left: 70px;
+			color: $color-text-light;
+		}
+	}
+
+	.textarea {
+		font-size: 15px;
+		margin-bottom: 25px;
+	}
+
+	.payment-options-checkbox {
+		font-size: 15px;
+		margin-top: 10px;
+	}
+}

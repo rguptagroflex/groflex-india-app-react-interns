@@ -1,0 +1,84 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.funnel-wrapper {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	z-index: 2;
+
+	&:before {
+		position: fixed;
+		height: 115px;
+		left: 30%;
+		right: 0;
+		background: $color-bg-medium;
+		content: " ";
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	&.top-topbar {
+		&:before {
+			top: $topbar-height;
+			left: 0;
+		}
+	}
+
+	.funnel {
+		position: fixed;
+		margin: 30px auto 0 auto;
+		display: flex;
+		justify-content: center;
+		z-index: 2;
+
+		.funnel-step {
+			position: relative;
+			width: 160px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			.funnel-circle {
+				width: 30px;
+				height: 30px;
+				margin-bottom: 10px;
+				color: #ffffff;
+				background: $color-button-text-disabled;
+				border-radius: 50%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: 1;
+
+				&.active {
+					background: $color-primary;
+				}
+			}
+
+			.funnel-text{
+				font-size: 12px;
+			}
+
+			&.has-rightbar {
+				margin-right: 40px;
+
+				&:before {
+					position: absolute;
+					top: 15px;
+					left: 50%;
+					width: 190px;
+					height: 2px;
+					background: $color-button-text-disabled;
+					content: " ";
+				}
+
+				&.active {
+					&:before {
+						background: $color-primary;
+					}
+				}
+			}
+		}
+	}
+}

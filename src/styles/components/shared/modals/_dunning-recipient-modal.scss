@@ -1,0 +1,71 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.dunning-recipient-modal-component {
+	.dunning-recipient-icon {
+		width: 100px;
+		height: 100px;
+		margin: 0 auto 20px;
+	}
+
+	.dunning-recipient-text {
+		text-align: center;
+		white-space: nowrap;
+	}
+
+	.dunning-recipient-select {
+		margin-top: 20px;
+
+		.email-view-select-label {
+			font-size: 13px;
+			color: $color-text-muted;
+		}
+
+		.Select-control {
+			background: $color-bg-medium;
+
+			.Select-value {
+				margin: 3px;
+				background: $color-dot-disabled;
+				font-size: 15px;
+				border: 0 none;
+				border-radius: 5px;
+
+				.Select-value-icon {
+					border: 0 none;
+				}
+
+				.Select-value-label {
+					padding: 4px 5px;
+				}
+			}
+
+			.Select-input {
+				margin-left: 0!important;
+			}
+		}
+
+		.email-view-select-option {
+			padding: 10px;
+			border-bottom: 1px solid $color-line-light;
+			cursor: pointer;
+
+			&:hover {
+				background: $color-primary-superlight;
+			}
+		}
+
+		.email-view-select-option-value {
+			font-size: 16px;
+			padding: 0 10px;
+			color: $color-text;
+			font-weight: 600;
+		}
+
+		.email-view-select-option-subvalue {
+			font-size: 11px;
+			padding: 0 10px;
+			color: $color-text-muted;
+		}
+	}
+}

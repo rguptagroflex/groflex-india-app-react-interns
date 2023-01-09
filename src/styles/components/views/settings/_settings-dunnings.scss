@@ -1,0 +1,119 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-dunnings-component {
+    .toggleSwitch_switch {
+        margin-top: 0 !important;
+    }
+
+    .dunningSettings {
+        &_block {
+            &:not(:last-of-type) {
+                @include rem(padding-bottom, 100);
+            }
+
+            &-disabled {
+                color: $color-text-disabled;
+                pointer-events: none;
+
+                input {
+                    color: $color-text-disabled;
+                }
+
+                a {
+                    color: $color-text-disabled;
+                }
+
+                .button {
+                    background: $color-text-placeholder;
+
+                    &:before {
+                        background: #cbcbcb;
+                    }
+                }
+            }
+        }
+
+        &_autoDunning {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            background: #ebf2fd;
+
+            @include rem(padding-right, 9);
+            @include rem(padding-top, 25);
+            @include rem(padding-bottom, 20);
+
+            &Toggle {
+                width: 62%;
+
+                .toggleSwitch {
+                    padding-bottom: 0px;
+                }
+
+                .dunningSettingsActive_toggle {
+                    padding-bottom: 0px;
+                }
+            }
+        }
+
+        &_textModules {
+            display: none;
+        }
+
+        &_link {
+            display: flex;
+            justify-content: flex-end;
+            @include rem(padding-bottom, 16);
+            @include rem(font-size, 13);
+        }
+
+        &Active {
+            &_toggle {
+                pointer-events: auto;
+                width: 100%;
+                @include rem(padding-bottom, 22);
+
+                .toggleSwitch_label {
+                    color: $color-text;
+                }
+            }
+        }
+
+        &Days {
+            position: relative;
+            @include rem(padding-bottom, 60);
+
+            > div {
+                &:nth-child(1) {
+                    position: absolute;
+                    left: 0;
+                }
+
+                &:nth-child(3) {
+                    position: absolute;
+                    right: 0;
+                }
+            }
+
+            &_input {
+                position: absolute;
+                left: 38%;
+                width: 17%;
+                @include rem(top, -10);
+            }
+        }
+
+        &Fees {
+            position: relative;
+            @include rem(padding-bottom, 40);
+
+            &_input {
+                position: absolute;
+                left: 38%;
+                width: 17%;
+                @include rem(top, -10);
+            }
+        }
+    }
+}

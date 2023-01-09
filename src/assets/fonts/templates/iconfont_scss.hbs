@@ -1,0 +1,16 @@
+$iconfont-name: '{{fontName}}';
+$iconfont-path: '../assets/fonts';
+
+$iconfont-icons: (
+	{{#each codepoints}}
+	'{{@key}}': '\\{{this}}',
+	{{/each}}
+);
+
+{{baseSelector}}:before {
+	font-family: '{{fontName}}' !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: middle;
+}
+

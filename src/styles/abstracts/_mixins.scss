@@ -1,0 +1,482 @@
+// @import "_variables";
+// @import "../../../generated/iconfont/iconfont";
+
+// // _breakpoint.sass
+// @mixin breakpoint-md {
+// 	@media (max-width: $viewport-lg - 1px) {
+// 		@content;
+// 	}
+// }
+
+// @mixin breakpoint-lg {
+// 	@media (min-width: #{$viewport-lg}) {
+// 		@content;
+// 	}
+// }
+
+// @mixin breakpoint-high {
+// 	@media (min-height: 900px) {
+// 		@content;
+// 	}
+// }
+
+// @mixin breakpoint-height-md {
+// 	@media (max-height: 1000px) {
+// 		@content;
+// 	}
+// }
+
+// @mixin breakpoint-height-sm {
+// 	@media (max-height: 800px) {
+// 		@content;
+// 	}
+// }
+
+// @mixin breakpoint-menu-sm {
+// 	@media (max-height: 850px) {
+// 		@content;
+// 	}
+// }
+
+// @mixin breakpoint-menu-lg {
+// 	@media (min-height: 850px) {
+// 		@content;
+// 	}
+// }
+
+// @mixin breakpoint-md-menu-sm {
+// 	@media (max-width: #{$viewport-lg - 1px}) and (min-height: 850px) {
+// 		@content;
+// 	}
+// }
+
+// @mixin font-face($name, $path) {
+// 	@font-face {
+// 		font-family: $name;
+// 		src: url("#{$path}/#{$name}.woff") format("woff"),
+// 		url("#{$path}/#{$name}.ttf") format("truetype");
+// 		font-weight: normal;
+// 		font-style: normal;
+// 	}
+// }
+
+// @mixin vendor-prefix($name, $value...) {
+// 	@each $vendor in ('-webkit-', '-moz-', '-ms-', '-o-', '') {
+// 		#{$vendor}#{$name}: #{$value};
+// 	}
+// }
+
+// @mixin icon($position: before, $icon: false, $styles: true) {
+// 	@if $position==both {
+// 		$position: "before, &:after";
+// 	}
+// 	&:#{$position} {
+// 		@if $icon {
+// 			content: "#{map-get($iconfont-icons, $icon)}";
+// 		}
+// 		@if $styles {
+// 			speak: none;
+// 			font-style: normal;
+// 			font-weight: normal;
+// 			font-size: 15px;
+// 			font-family: $iconfont-name;
+// 			width: 16px;
+// 			-webkit-font-smoothing: antialiased;
+// 			-moz-osx-font-smoothing: grayscale;
+// 		}
+// 		@content;
+// 	}
+// }
+
+// @mixin trbl($num, $position: absolute) {
+// 	position: $position;
+// 	top: $num;
+// 	right: $num;
+// 	bottom: $num;
+// 	left: $num;
+// }
+
+// @function px-to-rem($val, $base: $font-size-unitless) {
+// 	@if type-of($val)==number and unitless($val) {
+// 		@if $val==0 {
+// 			@return 0;
+// 		}
+
+// 		@return #{$val}px;
+// 	}
+
+// 	@return $val;
+// }
+
+// @mixin rem($property, $values...) {
+// 	$max: length($values);
+// 	$value: "";
+
+// 	@for $i from 1 through $max {
+// 		$value: #{$value + px-to-rem(nth($values, $i))};
+
+// 		@if $i < $max {
+// 			$value: #{$value + " "};
+// 		}
+// 	}
+
+// 	#{$property}: $value;
+// }
+
+// // custom mixins
+// @mixin disable-user-select() {
+//     -webkit-touch-callout: none;
+//     -webkit-user-select: none;
+//     -khtml-user-select: none;
+//     -moz-user-select: none;
+//     -ms-user-select: none;
+//     -o-user-select: none;
+//     user-select: none;
+// }
+
+// @mixin truncate-text() {
+//     white-space: nowrap;
+//     text-overflow: ellipsis;
+//     overflow: hidden;
+// }
+
+// @mixin triangle($direction, $size, $color) {
+//     width: 0;
+// 	height: 0;
+// 	pointer-events: none;
+
+//     @if $direction == 'up' {
+//         border-left: px-to-rem($size) solid transparent;
+//         border-right: px-to-rem($size) solid transparent;
+//         border-bottom: px-to-rem($size) solid $color;
+//     }
+//     @else if $direction == 'down' {
+//         border-left: px-to-rem($size) solid transparent;
+//         border-right: px-to-rem($size) solid transparent;
+//         border-top: px-to-rem($size) solid $color;
+//     }
+//     @else if $direction == 'right' {
+//         border-top: px-to-rem($size) solid transparent;
+//         border-bottom: px-to-rem($size) solid transparent;
+//         border-left: px-to-rem($size) solid $color;
+//     }
+//     @else if $direction == 'left' {
+//         border-top: px-to-rem($size) solid transparent;
+//         border-bottom: px-to-rem($size) solid transparent;
+//         border-right: px-to-rem($size) solid $color;
+//     }
+// }
+
+@import "_variables";
+@import "../../../generated/iconfont/iconfont";
+
+// _breakpoint.sass
+@mixin breakpoint-md {
+	@media (max-width: $viewport-lg - 1px) {
+		@content;
+	}
+}
+
+@mixin breakpoint-lg {
+	@media (min-width: #{$viewport-lg}) {
+		@content;
+	}
+}
+
+@mixin breakpoint-high {
+	@media (min-height: 900px) {
+		@content;
+	}
+}
+
+@mixin breakpoint-height-md {
+	@media (max-height: 1000px) {
+		@content;
+	}
+}
+
+@mixin breakpoint-height-sm {
+	@media (max-height: 800px) {
+		@content;
+	}
+}
+
+@mixin breakpoint-menu-sm {
+	@media (max-height: 850px) {
+		@content;
+	}
+}
+
+@mixin breakpoint-menu-lg {
+	@media (min-height: 850px) {
+		@content;
+	}
+}
+
+@mixin breakpoint-md-menu-sm {
+	@media (max-width: #{$viewport-lg - 1px}) and (min-height: 850px) {
+		@content;
+	}
+}
+
+@mixin font-face($name, $path) {
+	@font-face {
+		font-family: $name;
+		src: url("#{$path}/#{$name}.woff") format("woff"), url("#{$path}/#{$name}.ttf") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+	}
+}
+
+@mixin vendor-prefix($name, $value...) {
+	@each $vendor in ("-webkit-", "-moz-", "-ms-", "-o-", "") {
+		#{$vendor}#{$name}: #{$value};
+	}
+}
+
+@mixin icon($position: before, $icon: false, $styles: true) {
+	@if $position==both {
+		$position: "before, &:after";
+	}
+	&:#{$position} {
+		@if $icon {
+			content: "#{map-get($iconfont-icons, $icon)}";
+		}
+		@if $styles {
+			speak: none;
+			font-style: normal;
+			font-weight: normal;
+			font-size: 15px;
+			font-family: $iconfont-name;
+			width: 16px;
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+		@content;
+	}
+}
+
+@mixin trbl($num, $position: absolute) {
+	position: $position;
+	top: $num;
+	right: $num;
+	bottom: $num;
+	left: $num;
+}
+
+@function px-to-rem($val, $base: $font-size-unitless) {
+	@if type-of($val) ==number and unitless($val) {
+		@if $val==0 {
+			@return 0;
+		}
+
+		@return #{$val}px;
+	}
+
+	@return $val;
+}
+
+@mixin rem($property, $values...) {
+	$max: length($values);
+	$value: "";
+
+	@for $i from 1 through $max {
+		$value: #{$value + px-to-rem(nth($values, $i))};
+
+		@if $i < $max {
+			$value: #{$value + " "};
+		}
+	}
+
+	#{$property}: $value;
+}
+
+// custom mixins
+@mixin enable-user-select() {
+	-webkit-touch-callout: text;
+	-webkit-user-select: text;
+	-khtml-user-select: text;
+	-moz-user-select: text;
+	-ms-user-select: text;
+	-o-user-select: text;
+	user-select: text;
+}
+
+@mixin disable-user-select() {
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+}
+
+@mixin truncate-text() {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+@mixin truncate-text-nowrap() {
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+@mixin triangle($direction, $size, $color) {
+	width: 0;
+	height: 0;
+	pointer-events: none;
+
+	@if $direction == "up" {
+		border-left: px-to-rem($size) solid transparent;
+		border-right: px-to-rem($size) solid transparent;
+		border-bottom: px-to-rem($size) solid $color;
+	} @else if $direction == "down" {
+		border-left: px-to-rem($size) solid transparent;
+		border-right: px-to-rem($size) solid transparent;
+		border-top: px-to-rem($size) solid $color;
+	} @else if $direction == "right" {
+		border-top: px-to-rem($size) solid transparent;
+		border-bottom: px-to-rem($size) solid transparent;
+		border-left: px-to-rem($size) solid $color;
+	} @else if $direction == "left" {
+		border-top: px-to-rem($size) solid transparent;
+		border-bottom: px-to-rem($size) solid transparent;
+		border-right: px-to-rem($size) solid $color;
+	}
+}
+
+@mixin empty-list-box-customer($dspl) {
+	.empty-list-box-customer {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		color: $color-text;
+		line-height: 26px;
+		text-align: center;
+		.main-wrapper {
+			.todo-list-image {
+				svg {
+					fill: $color-big-icons;
+				}
+			}
+		}
+		.add {
+			display: $dspl !important;
+			position: absolute;
+			font-size: 20px;
+			svg {
+				fill: $color-blue-light;
+			}
+		}
+
+		.add-document {
+			top: 90px;
+			left: 15px;
+			width: 183px;
+			.arrow-left {
+				position: absolute;
+				left: -50%;
+				transform: translateX(50%);
+			}
+			.text-placeholder {
+				letter-spacing: 0.2px;
+				position: absolute;
+				top: 70px;
+			}
+		}
+		.add-todo {
+			top: -20px;
+			left: 50%;
+			transform: translate(-50%);
+			display: flex;
+			flex-direction: column;
+			width: 307px;
+		}
+		.main-text {
+			font-size: 26px;
+			width: 250px;
+			margin-top: 24px;
+		}
+	}
+}
+
+@mixin read-more-button-with-icon {
+	.read-more-button {
+		color: $color-primary;
+		font-size: 10px;
+		max-width: 85px;
+		cursor: pointer;
+		margin: 0px 3px 5px 0px;
+		position: relative;
+		display: flex;
+		align-items: flex-end;
+		.read-more-icon {
+			margin-left: 3px;
+			display: flex;
+			&.up {
+				transform: rotate(180deg);
+				align-self: center;
+			}
+		}
+	}
+}
+
+@mixin todo-header {
+	.todo-header {
+		font-size: 10px;
+		letter-spacing: 0.2px;
+		line-height: 14px;
+		color: $color-text-lighter;
+	}
+
+	p {
+		margin-top: 20px;
+	}
+
+	.todo-doc-number {
+		cursor: pointer;
+		color: $color-primary;
+		margin: 5px 0;
+	}
+
+	.todo-customer-name,
+	.todo-document-link {
+		.sub-text {
+			color: $color-primary;
+			cursor: pointer;
+		}
+	}
+}
+
+@mixin ag-grid-cell-status-icon($iconSize: 20px) {
+	.ag-cell {
+		.cell-status-icon {
+			.icon {
+				width: 22px;
+				font-size: 16px;
+				display: inline-block;
+				position: relative;
+				top: 1px;
+			}
+
+			&.icon-only {
+				.icon {
+					width: 100%;
+					font-size: #{$iconSize};
+					text-align: center;
+				}
+
+				.cell-status-icon-text {
+					display: none;
+				}
+			}
+		}
+	}
+}

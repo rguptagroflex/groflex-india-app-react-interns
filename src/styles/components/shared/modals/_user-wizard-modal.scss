@@ -1,0 +1,155 @@
+@import "../../../abstracts/_variables";
+
+.user-wizard-modal-scroll-container {
+    position: relative;
+    padding-right: 18px;
+    max-height: 210px;
+
+    .ps--active-y {
+        .ps__rail-y {
+        opacity: 0.5;
+    }
+}
+}
+
+.user-wizard-modal {
+    height: auto;
+
+    .business-category-field {
+        height: 300px;
+    }
+
+    .user-wizard-existing-user-block {
+        text-align: center;
+        max-width: 440px;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 80px;
+        .headline {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .image-circle {
+            // background: #a1c4f7;
+            // border-radius: 100%;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+
+    .headline {
+        margin: 20px 0;
+    }
+
+    .user-wizard-focus-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+		opacity: 0;
+		cursor: default;
+		width: 0;
+		height: 0;
+		border: none;
+    }
+
+    .form_input .input::placeholder {
+		color: $color-text-muted;
+		opacity: 1;
+	}
+
+    .customer-edit-city-select {
+        .Select-value {
+            font-size: 14px;
+        }
+    }
+
+    .radio-custom-wrapper {
+        color: $color-text;
+        margin-bottom: 10px;
+    }
+
+    .radio-wrapper-cash-system {
+        margin: 10px 0 10px 22px;
+
+        .form_input.radio {
+            display: flex;
+        }
+
+        .radio-custom-wrapper {
+            margin-right: 10px;
+        }
+
+        .cash-system-label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+    }
+
+    .large-button {
+        height: 140px;
+    }
+
+    .medium-button {
+        height: 60px;
+    }
+
+    .large-button,
+    .medium-button {
+        border: 1px solid $color-bg-dark;
+        border-radius: $border-radius-small;
+        color: $color-primary;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin-bottom: 1rem;
+
+        .text-wrapper {
+            display: block;
+            width: 100%;
+        }
+
+        &.active,
+        &:hover {
+            background: $color-primary;
+            border-color: $color-primary;
+            color: $color-white;
+
+            .subtitle {
+                color: $color-white;
+            }
+        }
+
+        .title {
+            font-size: 20px;
+        }
+
+        .subtitle {
+            color: $color-text-light;
+            font-size: 14px;
+        }
+    }
+
+    .landing-pick-businesstype {
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .landing-pick-businessturnover {
+        margin-top: 30px;
+        margin-bottom: 50px;
+    }
+
+    .landing-pick-legalform {
+        height: 200px;
+    }
+}

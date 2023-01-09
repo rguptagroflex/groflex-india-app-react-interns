@@ -1,0 +1,80 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.recurring-invoice-settings {
+
+	& > .row {
+		padding: 0 0 40px;
+
+		.recurring-invoice-settings-headline {
+			font-size: 21px;
+			font-weight: 600;
+		}
+
+		.recurring-invoice-settings-description {
+			margin-top: 12px;
+			color: $color-text-light;
+			font-size: 11px;
+			line-height: 18px;
+		}
+	}
+
+	.recurring-invoice-settings-left-wrapper {
+		position: relative;
+
+		.recurring-invoice-settings-left {
+			position: absolute;
+			padding-right: 32px;
+			top: 50%;
+			@include vendor-prefix('transform', 'translateY(-50%)');
+		}
+	}
+
+	// .recurring-invoice-form {
+	// 	padding-left: 32px;
+	// 	border-left: 1px solid $color-line-light;
+	// }
+
+	.selectInput {
+		margin-top: 10px;
+
+		.selectInput_label {
+			top: -45px;
+			color: $color-text-muted;
+		}
+
+		.Select-value {
+			line-height: 45px;
+		}
+
+		.selectInput_bar {
+			&:after, &:before {
+				height: 1px;
+			}
+		}
+	}
+
+	.recurring-invoice-settings-email-row {
+		margin-top: 20px;
+
+		.input_error {
+			position: absolute;
+			left: 0;
+			top: 50px;
+		}
+	}
+
+	.recurring-invoice-settings-advanced {
+		.row {
+			margin-top: 20px;
+		}
+	}
+
+	.recurring-invoice-settings-toggle {
+		text-align: right;
+		font-size: 13px;
+		color: $color-primary;
+		cursor: pointer;
+	}
+
+}

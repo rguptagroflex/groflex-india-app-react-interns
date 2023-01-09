@@ -1,0 +1,211 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.extended-email-modal {
+    display: flex;
+	height: 550px;
+	position: relative;
+	.loader {
+		left: unset;
+		right: 0px;
+		width: 620px;
+	}
+
+    .extended-email-sidebar {
+        background-color: $color-bg-medium;
+        border-radius: 3px 0 0 3px;
+        padding-top: 25px;
+		width: 230px;
+		position: relative;
+		
+        .extended-email-sidebar-wrapper {
+            height: 525px;
+        }
+
+        .extended-email-sidebar-scroll-container {
+            height: 475px;
+            position: relative;
+
+            .ps__rail-y {
+                background-color: transparent;
+                margin-right: 2px;
+            }
+        }
+
+        .extended-email-sidebar-header {
+            background-color: $color-white;
+            font-size: 14px;
+            height: 50px;
+            padding: 16px 20px;
+        }
+
+        .extended-email-sidebar-list-item {
+            border-bottom: 1px solid $color-big-icons;
+            cursor: pointer;
+            padding: 10px 20px;
+
+            .icon {
+                color: $color-big-icons;
+                font-size: 14px;
+                line-height: 14px;
+
+                &.up {
+                    transform: rotate(180deg);
+                }
+            }
+
+            .email-item-subject {
+                flex: 1;
+            }
+
+            &.active, &:hover {
+                background-color: $color-table-hover;
+            }
+
+            &.active .icon {
+                color: $color-primary;
+            }
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+
+    .extended-email-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;       
+		height: 100%;
+		max-width: 620px;
+
+        .extended-email-content-scroll-container {
+            height: 100%;
+            padding-right: 18px;
+			position: relative;
+			font-size: 12px;
+
+			ul {
+				display: block;
+				list-style-type: decimal;
+				margin-block-start: 1em;
+				margin-block-end: 1em;
+				margin-inline-start: 0px;
+				margin-inline-end: 0px;
+				padding-inline-start: 40px;
+				li {
+					list-style-type: decimal;
+					
+				}	
+			}
+
+			ol {
+				li {
+					list-style-type: disc;
+				}
+			}
+			
+			p {
+				margin-bottom: 10px;
+				margin-top: 0;
+			}
+
+            .ps__rail-y {
+                background-color: transparent;
+            }
+        }
+
+        .extended-email-header {
+            border-bottom: 1px solid $color-big-icons;
+            padding: 26px 40px 16px;
+
+            .extended-email-title {
+                height: 50px;
+				margin-bottom: 40px;
+
+				.avatar-container {
+					width: 40px;
+					height: 40px;
+					.extended-email-avatar {
+						border: 2px solid $color-primary;
+						border-radius: 50%;
+						color: $color-primary;
+						font-size: 14px;
+						width: 40px;
+						height: 40px;
+						text-transform: uppercase;
+						.icon-factory {
+							font-size: 19px;
+						}
+					}
+				}
+
+				
+            }
+    
+    
+            .extended-email-detail-label {
+                width: 30px;
+            }
+    
+            .extended-email-detail-text {
+                flex: 1;
+            }
+    
+            .extended-email-link {
+                cursor: pointer;
+                display: inline-block;
+			}
+			
+			.extended-email-detail-attachments-container {
+				position: relative;
+				.extended-email-detail-label {
+					position: absolute;
+					top: 10px;
+					left: 5px;
+				}
+				.extended-email-detail-text {
+					margin-left: 30px;
+				}
+			}
+    
+            .extended-email-attachment {
+                border: 1px solid transparent;
+                cursor: pointer;
+                display: inline-block;
+                margin-right: 2px;
+                padding: 4px 10px;
+                width: auto;
+    
+                &:hover {
+                    background-color: $color-table-hover;
+                    border: 1px solid $color-primary;
+                    border-radius: 20px;
+                }
+            }
+        }
+
+        .extended-email-content {
+            height: 100%;
+            padding: 20px 22px 0px 40px;
+            position: relative;
+			overflow: hidden;
+		}
+		
+		.extended-email-footer {
+            border-top: 1px solid $color-line-light;
+            min-height: 33px;
+            padding: 0 40px;
+			justify-content: flex-end;
+			color: #010202;
+            .extended-email-close-action {
+                cursor: pointer;
+                font-size: 12px;
+                line-height: 12px;
+                &:hover {
+                    color: $color-primary;
+                }
+            }
+        }
+    }
+}

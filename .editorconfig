@@ -1,0 +1,30 @@
+root = true
+
+[*]
+end_of_line = lf
+trim_trailing_whitespace = true
+max_line_length = 120
+indent_size = 4
+indent_style = tab
+
+[*.pug]
+indent_style = tab
+
+[*.js]
+charset = utf-8
+indent_size = 4
+indent_style = tab
+insert_final_newline = true
+
+[*.scss]
+indent_style = tab
+indent_size = 4
+insert_final_newline = true
+
+[*.sass]
+indent_style = tab
+indent_size = 4
+insert_final_newline = true
+
+[*.md]
+trim_trailing_whitespace = false

@@ -1,0 +1,21 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-notifications-component {
+    margin-bottom: 20px;
+
+    .ovalToggle.toggle-email {
+        width: 32%;
+        // margin-left: 8px;
+    }
+
+    .ovalToggle.toggle-phone {
+        width: 54%;
+        margin-left: 40px;
+        padding-left: 65px;
+    }
+
+    .toggleSwitch_switch {
+        margin-top: 0;
+    }
+}

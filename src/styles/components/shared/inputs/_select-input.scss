@@ -1,0 +1,555 @@
+.Select-control {
+	box-shadow: none !important;
+	border-radius: 0;
+}
+
+.selectInput {
+	&.selectInput-underlined {
+		.Select-control {
+			border: 0;
+			border-bottom: 1px solid $color-input-border;
+
+			.Select-value,
+			.Select-placeholder,
+			.Select-input {
+				padding-left: 0;
+			}
+		}
+	}
+
+	&.selectInput-outlined,
+	&.selectInput-outlined-rounded {
+		margin-bottom: 5px;
+		.Select-control {
+			border: 1px solid $color-input-border;
+			height: 40px;
+	
+			.Select-value,
+			.Select-placeholder {
+				height: inherit;
+				line-height: 38px;
+				font-size: $font-size-inputs;
+			}
+			
+			.Select-placeholder,
+			.Select-input {
+				font-size: $font-size-inputs;
+				line-height: 38px;
+				padding-left: 10px;
+				input {
+					padding: 8px 0 8px;
+				}
+			}
+
+			.Select-input {
+				line-height: 38px;
+			}
+
+			.Select-placeholder {
+				color: $color-text-muted;
+			}
+		}
+		
+		.Select-control {
+			border-radius: $border-radius-small;
+		}
+
+		.Select {
+			&.is-open {
+				.Select-menu-outer {
+					border: 1px solid $color-primary;
+					border-top: none;
+					min-width: 0px;
+
+					.Select-option {
+						font-size: $font-size-inputs;
+					}
+				}
+
+				.Select-control {
+					border: 1px solid $color-primary;
+				}
+
+				&:not(.rounded) {
+					.Select-control {
+						border-radius: $border-radius-small $border-radius-small 0 0;
+					}
+				}
+			}
+
+			.Select-control {
+				height: 40px;
+
+				.Select-placeholder {					
+					color: $color-text-muted;
+				}
+			}
+		}
+	}
+
+	&.selectInput-blank {
+		&:hover:before {
+			position: absolute;
+			left: 0;
+			bottom: 5px;
+			width: 100%;
+			height: 1px;
+			border-bottom: 1px $color-line-light dashed;
+			z-index: 1;
+			content: " ";
+		}
+
+		.Select-control {
+			border: none;
+			height: 28px;
+			cursor: text;
+	
+			.Select-value,
+			.Select-placeholder,
+			.Select-input {
+				line-height: 26px;
+				padding-left: 0;
+			}
+		}
+
+	}
+
+	&.selectInput-outlined-rounded {
+		 &.selectInput-email {
+		 	.Select-control {
+				 overflow: unset;
+
+		 		.Select-value {
+		 			line-height: 24px;
+					 padding: 0;	
+		 		}
+		 	}
+		}
+
+		input:-webkit-autofill {
+			-webkit-box-shadow: 0 0 0px 1000px white inset !important;
+		}
+
+		margin-top: 25px;
+		position: relative;
+		z-index: 2;
+
+		&.higher-z-index {
+			z-index: 3;
+		}
+
+		&.z-index-4 {
+			z-index: 4;
+		}
+
+		&.z-index-5 {
+			z-index: 5;
+		}
+
+		.selectInput_label-top {
+			position: absolute;
+			top: 10px;
+			display: block;
+			font-size: 1em;
+			padding: 0 15px;
+			color: $color-text-muted;
+			z-index: 1;
+			pointer-events: none;	
+			transition: top 0.2s ease, font-size 0.2s ease;	
+		}
+
+		.Select {
+			&.Select--single, &.Select--multi {
+				position: relative;
+				z-index: 2;
+			}
+			&.has-value, &.has-input {
+                & ~ .selectInput_label-top {
+					font-size: 13px;
+					@include rem(top,-21);					
+                }
+			}
+
+		}
+
+		&.has-input-value {
+			.selectInput_label-top {
+				font-size: 13px;
+				@include rem(top,4);
+			}
+		}
+
+		.Select-control {
+			border: 1px solid $color-input-border;
+			border-radius: 6px;
+			height: 40px;
+	
+			.Select-value,
+			.Select-placeholder,
+			.Select-input {
+				padding: 0 15px;
+			}
+		}
+
+		.Select-menu-outer {
+			position: absolute;
+			z-index: 4;
+			.Select-menu {
+				border-bottom-left-radius: 4px;
+				border-bottom-right-radius: 4px;
+			}
+		}
+
+		&.selectInput-active {
+			.Select-control, .Select-menu-outer {
+				border-color:$color-primary;
+			}
+		}
+
+		.is-open .Select-control {
+			border-radius: 6px 6px 0 0;
+		}
+
+		.is-disabled .Select-control {
+			background-color: $color-button-disabled;
+			color: $color-button-text-disabled;
+
+			.Select-placeholder {
+				color: $color-button-text-disabled;
+			}
+		}
+
+		.Select-option, .Select-noresults {
+			padding: 10px 15px;
+		}
+	}
+
+	.Select-menu-outer {
+		min-width: 180px;
+	}
+
+	&Text-matched {
+		color: $color-primary;
+		font-weight: 600;
+		background: transparent !important;
+	}
+	&_error {
+		position: relative;
+	}
+	&.email_input {
+		.selectInput_bar {
+			@include rem(top, -4);
+		}
+	}
+	&_label {
+		@include rem(font-size, 13);
+		@include rem(top, -55);
+		display: block;
+		position: relative;
+	}
+	&-active .input_label,
+	&-active ~ .selectInput_label {
+		color: $color-primary;
+	}
+	&-active .input_label,
+	.has-value ~ .input_label {
+		@include rem(font-size,13);
+		@include rem(top,-50);
+	}
+	.selectize-control {
+		border-radius: 0;
+		@include rem(padding-top, 10);
+		&.plugin-remove_button {
+			> div {
+				height: auto;
+			}
+		}
+	}
+	.optgroup:not(:first-child) .optgroup_separator {
+		border-bottom: 1px solid #cccccc;
+	}
+	.selectize-input {
+		box-shadow: 0 0 0 transparent;
+		border-radius: 0;
+		@include rem(font-size, 15);
+		@include rem(height, 38);
+		.emailTag {
+			background-color: #eeeeee;
+			padding: 3px 22px 3px 5px !important;
+			border-radius: 2px !important;
+			a {
+				@include rem(padding-left, 3px !important);
+				border: none !important;
+				color: #cccccc !important;
+				@include rem(margin-right, 5);
+				font-size: 21px !important;
+				&:hover {
+					background-color: transparent !important;
+				}
+			}
+		}
+		input {
+			@include rem(font-size, 15);
+			color: black;
+		}
+		.item {
+			display: inline-block;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+	}
+	&_bar {
+		display: block;
+		position: relative;
+		width: 100%;
+		z-index: 10;
+		&:before, &:after {
+			content: "";
+			position: absolute;
+			transition: 0.3s ease all;
+			width: 0;
+			@include rem(bottom, 1);
+			@include rem(height, 2);
+		}
+		&:before {
+			left: 50%;
+		}
+		&:after {
+			right: 50%;
+		}
+	}
+	&-active .selectInput_bar:before, &-active .selectInput_bar:after {
+		width: 50%;
+		background: $color-primary;
+	}
+	&-noBorder {
+		.selectize-input {
+			border: 0;
+			padding: 0;
+			@include rem(padding, 0);
+			&::after {
+				content: none !important;
+			}
+		}
+		.selectize-control {
+			height: auto !important;
+			@include rem(margin-bottom, 2);
+		}
+	}
+	&-disabled {
+		color: red;
+		.selectInput_label {
+			color: #dddddd !important;
+		}
+	}
+	&-borderBottom {
+		.selectize-input {
+			border: none;
+			border-bottom: 1px solid #cccccc;
+			@include rem(padding, 0);
+			@include rem(padding-right, 15);
+			&:after {
+				position: absolute !important;
+				top: 11px !important;
+				right: 0 !important;
+			}
+		}
+		.selectize-control.single {
+			&.loading {
+				&:before, &:after {
+					right: 0;
+				}
+				&:after {
+					@include rem(right, -1);
+				}
+			}
+		}
+	}
+	&-smallDropdown {
+		.selectize-dropdown-content {
+			@include rem(max-height, 130);
+		}
+	}
+	&-leftLabel {
+		.selectInput {
+			&_label {
+				color: $color-text-muted;
+				position: relative;
+				@include rem(top, -30);
+				@include rem(font-size, 16);
+			}
+			&-active ~ .selectInput_label {
+				color: $color-primary;
+			}
+			&_hint, &_error {
+				margin-left: 51%;
+				position: relative;
+				@include rem(top, -16);
+			}
+			&_bar {
+				left: 51%;
+				width: 49%;
+			}
+		}
+		.selectize-control,
+		.Select {
+			margin-left: 51%;
+			width: 49%;
+			@include rem(height, 38);
+			@include rem(padding-top, 0);
+		}
+	}
+	// hint
+	&_hint, &_error {
+		color: $color-text-muted;
+		display: block;
+		position: relative;
+		text-align: left;
+		white-space: normal;
+		word-wrap: break-word;
+		@include rem(font-size, 12);
+		@include rem(min-height, 18);
+		@include rem(top, -16);
+	}
+	&-invalid {
+		.selectize-input {
+			border: 1px solid $color-error;
+		}
+	}
+	&-noHint {
+		@include rem(margin-bottom, -20);
+		.selectInput_hint {
+			display: none;
+		}
+	}
+	// error
+	&_error {
+		color: $color-error;
+	}
+}
+
+.Select-placeholder,
+.Select--single > .Select-control .Select-value {
+	font-size: 16px;
+	color: $color-text-muted;
+}
+
+.selectize-control.single {
+	&.loading {
+		&:before, &:after {
+			@include rem(top, 20);
+			@include rem(right, 15);
+		}
+		&:after {
+			@include rem(top, 19);
+			@include rem(right, 14);
+		}
+		.selectize-input::after {
+			display: none;
+		}
+	}
+	.selectize-input, .selectize-input.focus {
+		@include icon(after, arr_down);
+		border-radius: 0;
+		box-shadow: none;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		@include rem(font-size, 15);
+		&::before {
+			display: none;
+		}
+		&::after {
+			border: none;
+			animation-play-state: paused;
+			animation-delay: 0s;
+			animation-iteration-count: 0;
+			margin: 0;
+			top: 10px;
+			color: #aaaaaa;
+			@include rem(height, 16);
+			@include rem(width, 16);
+		}
+		input {
+			@include rem(font-size, 15);
+		}
+	}
+	.selectize-dropdown-header {
+		background: transparent;
+		@include rem(margin, 0, 18, 0, 18);
+		@include rem(padding, 4, 0);
+		&-title {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			font-weight: 600;
+		}
+	}
+	.selectize-dropdown-content {
+		@include rem(max-height, 204);
+	}
+}
+
+.selectize-dropdown {
+	z-index: 11;
+	border: 1px solid $color-input-border;
+	box-shadow: none;
+	border-radius: 0;
+	@include rem(min-width, 160);
+	& [data-selectable] {
+		display: flex;
+		@include rem(margin, 0);
+		@include rem(padding, 8, 15);
+		@include rem(font-size, 14);
+		& .highlight {
+			background: transparent;
+			font-weight: bold;
+		}
+		&.create {
+			@include rem(padding, 10, 18);
+			color: $color-primary;
+		}
+	}
+	&-row {
+		width: 100%;
+		height: auto;
+		&-head {
+			font-size: 15px;
+			font-weight: 600;
+		}
+		&-head, &-foot {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+	&-column-article {
+		justify-content: flex-start;
+		align-items: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		@include breakpoint-lg {
+			&:first-child {
+				@include rem(width, 400);
+				@include rem(padding-right, 8);
+			}
+			&:nth-child(2) {
+				@include rem(width, 180);
+			}
+		}
+
+		@include breakpoint-md {
+			&:first-child {
+				@include rem(width, 370);
+				@include rem(padding-right, 8);
+			}
+			&:nth-child(2) {
+				@include rem(width, 180);
+			}
+		}
+	}
+
+}
+

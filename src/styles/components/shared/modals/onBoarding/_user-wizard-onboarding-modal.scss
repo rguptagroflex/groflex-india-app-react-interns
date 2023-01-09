@@ -1,0 +1,118 @@
+.user-wizard-onboarding-modal {
+
+    &.setup-complete-row {
+        min-height: 485px;
+
+        .col-xs-12 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-image: url('../assets/images/gifs/account-setup-completion.gif');
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        .gif {
+            height: 473px;
+            width: 568px;
+        }
+
+        .heading {
+            font-weight: 700;
+            font-size: 54px;
+            margin-bottom: 30px;
+            margin-top: 0;
+        }
+
+        .subheading {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 0;
+        }
+    }
+
+    &.explore-row {
+        padding: 50px;
+
+        .col-xs-12 {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .heading {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .sales-icon {
+            margin-top: 50px;
+        }
+
+        .create-sales-button {
+            font-size: 16px;
+            font-weight: 600;
+            padding: inherit 58px;
+            height: 44px !important;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+
+        .explore-imprezz-text {
+            color: $color-primary;
+            font-size: 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+    }
+
+    .col-left {
+        background: linear-gradient(180deg, #FEE9FF 0%, #F1FBFF 100%);
+        padding: 40px 0;
+
+        .heading {
+            font-weight: 700;
+            font-size: 24px;
+        }
+
+        .subheading {
+            font-weight: 400;
+            font-size: 18px;
+        }
+    }
+
+    .col-right {
+        .heading {
+            font-weight: 700;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .location-inputs {
+            margin-top: 10px;
+        }
+
+        .address-input {
+            textarea {
+                padding: 20px;
+            }
+        }
+
+        .input-wrapper {
+            position: relative;
+
+            .textfield-inline {
+                position: absolute;
+                right: 0;
+                top: 0;
+                z-index: 1;
+                color: $color-primary;
+                cursor: pointer;
+            }
+        }
+    }
+}

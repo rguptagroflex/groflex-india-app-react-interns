@@ -1,0 +1,144 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.impress-block-settings-modal-content {
+	.letterHeaderTools_color {
+		margin-left: 40px;
+		display: inline;
+	}
+
+	.flex-cols {
+		display: flex;
+		justify-content: space-between;
+
+		.impress-block-settings-row {
+			.form_input.radio {
+				flex-flow: column;
+
+				.radio-custom-wrapper:not(:last-child) {
+					margin-bottom: 10px;
+				}
+			}
+
+			&.separator-line-width {
+				.radio-custom-wrapper {
+					position: relative;
+					width: 190px;
+
+					&:before {
+						position: absolute;
+						width: 80px;
+						// top: 10px;
+						bottom: 6px;
+						right: 0;
+						background: #000000;
+						content: " ";
+					}
+
+					&:nth-child(1) {
+						&:before {
+							height: 1px;
+						}
+					}
+
+					&:nth-child(2) {
+						&:before {
+							height: 2px;
+						}
+					}
+
+					&:nth-child(3) {
+						&:before {
+							height: 3px;
+						}
+					}
+
+					&:nth-child(4) {
+						&:before {
+							height: 4px;
+						}
+					}
+
+					&:nth-child(5) {
+						&:before {
+							height: 5px;
+						}
+					}
+				}
+			}
+
+			&.separator-line-style {
+				.radio-custom-wrapper {
+					position: relative;
+					width: 220px;
+					margin-right: 0 !important;
+
+					&:before {
+						position: absolute;
+						width: 80px;
+						height: 1px;
+						border-top: 2px #000000 solid;
+						// top: 10px;
+						bottom: 6px;
+						right: 0;
+						content: " ";
+					}
+
+					&:nth-child(1) {
+						&:before {
+							border-top-style: solid;
+						}
+					}
+
+					&:nth-child(2) {
+						&:before {
+							border-top-style: dashed;
+						}
+					}
+
+					&:nth-child(3) {
+						&:before {
+							border-top-style: dotted;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.impress-block-settings-row {
+		&:not(:last-of-type),
+		&.margin-bottom {
+			margin-bottom: 25px;
+		}
+
+		&.flex {
+			display: flex;
+			align-items: center;
+		}
+
+		.left-col {
+			width: 200px;
+			display: inline-block;
+		}
+
+		.radio {
+			margin-top: 8px;
+			display: flex;
+
+			.radio-custom-wrapper {
+				margin-right: 25px;
+			}
+		}
+
+		.form-input-block-height {
+			width: 200px;
+			margin: 10px 10px 0 0;
+			display: inline-block;
+		}
+
+		.block-background-automatic {
+			margin-left: 20px;
+		}
+	}
+}

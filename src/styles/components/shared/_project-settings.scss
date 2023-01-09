@@ -1,0 +1,41 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.project-settings {
+
+	& > .row {
+		padding: 60px 0 40px;
+
+		.project-settings-headline {
+			font-size: 21px;
+			font-weight: 600;
+		}
+	}
+
+	.project-settings-left-wrapper {
+		position: relative;
+
+		.project-settings-left {
+			position: absolute;
+			padding-right: 32px;
+			top: 50%;
+			@include vendor-prefix('transform', 'translateY(-50%)');
+		}
+	}
+
+	.project-form {
+		padding-left: 32px;
+		border-left: 1px solid $color-line-light;
+
+		.project-title {
+			input {
+				padding-top: 13px;
+				height: 46px;
+			}
+		}
+	}
+
+	.project-settings-budget-row {
+		margin: 20px 0;
+	}
+}

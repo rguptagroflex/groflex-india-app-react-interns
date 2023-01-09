@@ -1,0 +1,53 @@
+.buy-addon-modal {
+    text-align: center !important;
+    width: 100%;
+    padding: 44px 60px;
+
+    img {
+        margin: 0 auto;
+    }
+
+    .heading {
+        text-transform: uppercase;
+        font-size: 30px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .subheading {
+        font-size: 16px;
+        font-weight: 400;
+        color: $color-text-muted;
+    }
+
+    .buy-button {
+        height: 43px !important;
+        padding: 10px 0;
+    }
+
+    .features {
+        justify-content: space-around;
+        margin: 30px 0;
+
+        .feature {
+            display: flex;
+            text-align: left;
+            justify-content: center;
+
+            div {
+                width: 100%;
+            }
+
+            img {
+                display: inline-block;
+                padding: 0 10px;
+            }
+
+            p {
+                display: inline-block;
+                font-weight: 400;
+                font-size: 14px;
+            }
+        }
+    }
+}

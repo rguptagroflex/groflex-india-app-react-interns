@@ -1,0 +1,12 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.create-dunning-modal-component {
+	.create-dunning-modal-show {
+		margin-left: 30px;
+
+		.icon-pdf {
+			color: $color-white;
+		}
+	}
+}

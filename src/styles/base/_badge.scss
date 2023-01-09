@@ -1,0 +1,41 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+@mixin badge_size($size: 14) {
+	@include rem(font-size, $size);
+	@include rem(min-height, $size);
+	@include rem(min-width, $size);
+	@include rem(border-radius, $size);
+	@include rem(padding, $size / 7, $size / 2);
+}
+
+.badge {
+	background: white;
+	border: 2px solid $badge-border-color;
+	color: $badge-text-color;
+	font-weight: bold;
+	@include badge_size;
+	&-dark {
+		background: #aaaaaa;
+		border: 1px solid white;
+		color: white;
+		&.badge-active {
+			border: 2px solid $color-primary;
+			background: $color-primary;
+			color: white;
+		}
+	}
+	&-active {
+		border: 2px solid $color-primary;
+		color: $color-primary;
+	}
+	&-small {
+		@include badge_size(12);
+	}
+	&-large {
+		@include badge_size(22);
+	}
+	&-xlarge {
+		@include badge_size(40);
+	}
+}

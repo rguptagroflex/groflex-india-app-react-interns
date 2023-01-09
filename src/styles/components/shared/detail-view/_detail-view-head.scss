@@ -1,0 +1,147 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.detail-view-head-wrapper {
+	position: relative;
+	width: 925px;
+	margin: 0 auto;
+
+	.detail-view-head-infos {
+		display: table;
+		width: 100%;
+
+		.detail-view-head-left-side {
+			float: left;
+
+			.detail-view-head-entry {
+				min-width: 240px;
+			}
+
+			.detail-view-head-value {
+					color: $color-primary;
+		
+					&:hover {
+						cursor: pointer;
+						text-decoration: underline;
+					}
+					a:link, a:visited, a:focus, a:hover, a:active {
+						color: $color-primary!important; 
+					}
+			}
+		}
+
+		.detail-view-head-entry {
+			position: relative;
+			float: left;
+			margin-right: 40px;
+
+			.detail-view-head-headline {
+				margin-bottom: 5px;
+				float: left;
+				clear: both;
+				font-size: 12px;
+				color: $color-text-light;
+				text-transform: uppercase;
+				text-align: right;
+			}
+
+			.detail-view-head-value {
+				max-width: 240px;
+				font-weight: 600;
+				font-size: 20px;
+				float: left;
+				clear: both;
+				@include truncate-text();
+			}
+
+			&.detail-view-head-entry-last {
+				margin: 0;
+
+				.detail-view-head-headline,
+				.detail-view-head-value {
+					float: right;
+				}
+			}
+
+			.detail-view-head-sub-value {
+				position: absolute;
+				font-size: 14px;
+				color: $color-text-light;
+				bottom: -30px;
+				max-width: 240px;
+
+				.detail-view-head-sub-value-project {
+					span {
+						display: inline-block;
+						overflow: hidden;
+					}
+
+					a {
+						max-width: 120px;
+						display: inline-block;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						overflow: hidden;
+					}
+				}
+			}
+		}
+
+		.detail-view-head-right-side {
+			float: right;
+
+			.detail-view-head-headline,
+			.detail-view-head-value {
+				float: right !important;
+			}
+		}
+	}
+
+	.detail-view-head-controls {
+		position: absolute;
+		top: 215px;
+		left: 0;
+
+		a {
+			color: $color-text;
+		}
+
+		.detail-view-head-controls-item {
+			float: left;
+			margin-right: 20px;
+			color: $color-text;
+			font-size: 13px;
+			font-weight: 600;
+			cursor: pointer;
+			@include vendor-prefix('user-select', 'none');
+
+			&.item-print-settings,
+			&.item-copy-options {
+				margin-right: 10px;
+			}
+
+			.icon {
+				display: inline-block;
+				margin-right: 7px;
+				vertical-align: middle;
+				color: $color-text;
+				font-size: 15px;
+
+				&.icon-pdf {
+					font-size: 11px;
+				}
+
+				&.loader_spinner {
+					margin-top: -3px;
+					width: 16px;
+					height: 16px;
+
+					&:after {
+						width: 16px;
+						height: 16px;
+					}
+				}
+			}
+		}
+	}
+}

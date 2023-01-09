@@ -1,0 +1,96 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+$border-color: #cccccc;
+$select-width: 175px;
+
+.text-with-categories-input-wrapper {
+    display: flex;
+
+    .selectInput.selectInput-outlined-rounded {
+        margin-top: 0;
+        min-width: $select-width;
+        width: $select-width;
+        font-size: 13px;
+
+        .category-value {
+            height: 100%;
+        }
+
+        .category-value-name {
+            width: 120px;
+        }
+
+        .category-item,
+        .category-item .icon {
+            line-height: 21px;
+        }
+
+        .icon.icon-mail {
+            position: relative;
+            top: 1px;
+        }
+
+        .Select.is-open {
+            .Select-control {
+                border: 1px $color-primary solid;
+                border-radius: $border-radius-small $border-radius-small 0 0;
+            }
+
+            .Select-menu-outer {
+                border: 1px $color-primary solid;
+                min-width: $select-width;
+                border-radius: 0 0 $border-radius-small $border-radius-small !important;
+                box-shadow: none;
+                overflow: hidden;
+            }
+        }
+
+        .Select-value,
+        .Select-input,
+        .Select-option,
+        .Select-placeholder {
+            padding-left: 10px !important;
+        }
+
+        .Select-input {
+            height: 100%;
+            max-width: 145px;
+            overflow: hidden;
+
+            input {
+                padding: 0;
+            }
+        }
+
+        .Select-control {
+            background-color: $color-element-background !important;
+        }
+
+        .Select-control,
+        .Select-placeholder {              
+            font-size: 13px;
+        }
+
+        .Select-option {
+            height: 38px;
+            
+            &:not(:last-child) {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+        }
+
+        .Select-value-label {
+            font-size: 13px !important;
+        }
+    }
+
+    .text-with-tags-input-component-wrapper {
+        flex: 1;
+        margin-left: 20px;
+
+        .text-with-tags-input-component .tag-btn-submit {
+            padding-top: 9px;
+        }
+    }
+} 

@@ -1,0 +1,27 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.timetracking-billing-component {
+
+	.timetracking-watch-wrapper {
+		position: relative;
+		text-align: center;
+
+		.timetracking-watch-svg {
+			width: 175px;
+		}
+
+		.timetracking-watch-text {
+			position: absolute;
+			top: 75px;
+			left: 50%;
+			@include vendor-prefix('transform', translateX(-50%));
+		}
+	}
+
+	.timetracking-billing-cell-dropdown {
+		position: relative;
+		top: 3px;
+	}
+
+}

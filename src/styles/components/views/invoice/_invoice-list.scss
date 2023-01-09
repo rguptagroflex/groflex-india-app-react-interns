@@ -1,0 +1,136 @@
+// @import "../../../abstracts/variables";
+// @import "../../../abstracts/mixins";
+
+// .invoice-list-component-wrapper {
+
+// 	.invoice-list-head {
+// 		position: relative;
+// 		width: 100%;
+// 		height: 300px;
+// 		background: $color-white;
+
+// 		.invoice-list-head-content {
+// 			position: relative;
+// 			width: 925px;
+// 			margin: 0 auto;
+// 			padding-top: 110px;
+
+// 			.filter-component-wrapper {
+// 				float: right;
+// 			}
+// 		}
+// 	}
+
+// 	.invoice-list-wrapper {
+// 		position: relative;
+// 		width: 925px;
+// 		min-height: 500px;
+// 		margin: -150px auto 50px;
+// 		padding: 10px 30px 0;
+
+// 		.empty-list-box {
+// 			text-align: center;
+// 			padding: 85px 0;
+
+// 			.text-placeholder {
+// 				font-size: 188px;
+// 			}
+
+// 			.text-h2 {
+// 				padding: 0 0 10px;
+// 			}
+
+// 			.button-component-wrapper {
+// 				margin: 30px 0 0;
+// 			}
+// 		}
+
+// 		.invoice-list-cell-dropdown {
+// 			position: relative;
+// 			top: 3px;
+// 		}
+
+// 		.invoice-list-pagination {
+// 			text-align: center;
+// 			padding: 50px 0;
+// 		}
+// 	}
+// }
+
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.invoice-view-filter .icon {
+	cursor: pointer;
+	font-size: 13px;
+	padding-top: 3px;
+
+	&:hover {
+		color: $color-primary;
+	}
+}
+
+.invoice-list-component-wrapper {
+	.invoice-list-wrapper {
+		@include ag-grid-cell-status-icon();
+
+		.ag-cell {
+			.cell-status-icon {
+				.icon {
+					&.state-draft {
+						color: $color-text-light;
+					}
+
+					&.state-locked {
+						color: $color-primary;
+					}
+
+					&.state-cancelled {
+						color: $color-menu-icon;
+					}
+
+					&.state-dunned {
+						color: $color-error;
+					}
+
+					&.state-paid {
+						color: $color-success;
+					}
+				}
+			}
+		}
+
+		.ag-filter {
+			.ag-set-filter-item {
+				.ag-set-filter-item-value {
+					margin-left: 7px !important;
+				}
+
+				.icon {
+					margin: 5px 0 0 8px;
+					font-size: 15px;
+
+					&.state-draft {
+						color: $color-text-light;
+					}
+
+					&.state-locked {
+						color: $color-primary;
+					}
+
+					&.state-cancelled {
+						color: $color-menu-icon;
+					}
+
+					&.state-dunned {
+						color: $color-error;
+					}
+
+					&.state-paid {
+						color: $color-success;
+					}
+				}
+			}
+		}
+	}
+}

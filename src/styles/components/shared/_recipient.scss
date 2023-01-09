@@ -1,0 +1,225 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+$recipient-border-color: #aaaaaa;
+$recipient-muted-color: #cccccc;
+
+.recipient {
+	&Container {
+		@include rem(width, 412);
+		@include rem(margin-top, 10);
+	}
+	&Empty {
+		display: inline-flex;
+		align-items: center;
+		color: $color-primary;
+		font-weight: 600;
+		border: 1px dashed transparent;
+		@include rem(padding-top, 10px);
+		&:hover {
+			cursor: pointer;
+			border-color: $recipient-border-color;
+			@include rem(border-radius, 5);
+			@include rem(margin, -5px -10px -15px -10px);
+			@include rem(padding, 15px 10px 15px 10px);
+		}
+		&_label {
+			@include rem(padding-left, 15);
+		}
+	}
+	&Select {
+		&CustomerInput {
+			.Select-placeholder,
+			.Select--single > .Select-control .Select-value {
+				color: $color-primary;
+			}
+		}
+		&ContactInput {
+			@include rem(padding, 5);
+		}
+	}
+	&Display {
+		display: inline-block;
+		position: relative;
+		border: 1px dashed transparent;
+		&_button {
+			display: none;
+			position: absolute;
+			justify-content: center;
+			align-items: center;
+			background: white;
+			border: none;
+			border-radius: 50%;
+			box-shadow: 0px 1px 1px 0px black;
+			color: black;
+			outline: none;
+			@include rem(top, -10);
+			@include rem(right, -5);
+			@include rem(width, 15);
+			@include rem(height, 15);
+			@include rem(padding, 0);
+			@include rem(font-size, 7);
+			&:hover {
+				color: $color-error;
+			}
+			&:before {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0;
+				width: 15px;
+				height: 15px;
+				font-size: 7px;
+			}
+		}
+		&:hover {
+			cursor: pointer;
+			border-color: $recipient-border-color;
+			@include rem(border-radius, 5);
+			@include rem(margin, -5);
+			@include rem(padding, 5);
+			.recipientDisplay_button {
+				display: flex;
+			}
+		}
+		.countryDisplay {
+			margin-bottom: 10px;
+		}
+		.currencyDisplay {
+			font-style: italic;
+			color: #272d30;
+		}
+	}
+	&Form {
+		width: 80%;
+
+		.restricted-content {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+
+			.access-lock {
+				height: 15px;
+				line-height: 30px;
+			}
+
+			.upgrade-text {
+				font-size: 11px;
+				line-height: 28px;
+			}
+
+			.button.button-secondary {
+				min-width: 0;
+				width: 90px;
+				height: 30px;
+				line-height: 5px;
+				padding: 0;
+				font-size: 12px;
+			}
+
+		}
+
+		@include rem(padding-bottom, 50);
+		.form_input {
+			@include rem(height, 65);
+		}
+		.Select {
+			&-control {
+				@include rem(height, 50);
+			}
+			&-input, &-placeholder, &-value, &-clear-zone, &-arrow-zone {
+				@include rem(padding, 10px 0px 0px 0px !important);
+			}
+			&-control {
+				border: 0;
+				border-bottom: 1px solid $recipient-muted-color;
+			}
+			&-placeholder, &--single > &-control &-value {
+				font-weight: 400;
+				padding-left: 0;
+			}
+		}
+		&RadioInput {
+			@include rem(height, 20px !important);
+			> label:last-child {
+				@include rem(margin-left, 15px);
+			}
+		}
+		&Person {
+			&_row {
+				display: flex;
+				flex-basis: 100%;
+				> div {
+					flex-basis: 50%;
+					&:first-child {
+						@include rem(padding-right, 20);
+					}
+				}
+			}
+			&_country {
+				padding-bottom: 8px;
+				font-size: 14px;
+				.Select.has-value.Select--single.is-focused.is-open {
+					.Select-value-label {
+						color: gray;
+					}
+				}
+			}
+			&_foreign {
+				display: flex;
+				flex-basis: 100%;
+				font-size: 14px;
+				> div {
+					flex: 1 1 20%;
+					&:not(last-child) {
+						@include rem(padding-right, 10);
+					}
+				}
+
+				.currencyEqual {
+					height: 20px;
+					margin-top: 20px;
+					padding-right: 10px;
+				}
+
+				.icon-refresh_large {
+					font-size: 45px;
+					margin-top: 10px;
+					cursor: pointer;
+				}
+			}
+			&_exrateCheckbox {
+				margin-top: -5px;
+				height: 35px!important;
+			}
+		}
+		&OpeningToggleRadio {
+			@include rem(height, 30px !important);
+			.radio_inputs {
+				margin-right: 10px !important;
+			}
+		}
+		&OpeningBalanceType {
+			&_row {
+				margin-bottom: 15px;
+				color: $color-text-muted;
+			}
+		}
+		&Address {
+			display: flex;
+			flex-basis: 100%;
+			> div {
+				&:first-child {
+					flex-basis: 30%;
+					@include rem(padding-right, 20);
+				}
+				&:last-child {
+					flex-basis: 70%;
+				}
+			}
+		}
+	}
+	& > * {
+		flex: 0 0 100%;
+	}
+}

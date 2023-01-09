@@ -1,0 +1,354 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.md_close:before {
+	font-size: 12px;
+}
+
+.modal-base-headline {
+	font-size: 22px;
+}
+
+.ampersand-delete-modal-content {
+	ul {
+		display: table;
+		width: 100%;
+		margin-top: 20px;
+
+		li {
+			display: table;
+			width: 100%;
+			margin: 5px 0;
+
+			b { float: left; clear: both; }
+			span { float: right; }
+		}
+	}
+}
+
+.dunningRecipientModal {
+	padding-bottom: 60px;
+
+	.dunningRecipientModal_description {
+		margin-bottom: 20px;
+	}
+
+	.dunningRecipientModal_input {
+		width: 100%;
+		margin: 0;
+	}
+
+	.dunning-recipient-modal-footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+		text-align: center;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary {
+			float: right;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.dunningModal {
+	padding-bottom: 60px;
+
+	.dunning-modal-headline {
+		margin: 0;
+		font-size: 22px;
+		font-weight: 600;
+		text-align: left;
+	}
+
+	.dunning-modal-content {
+		margin: 20px 0 0;
+		font-size: 14px;
+		text-align: left;
+	}
+
+	.dunning-modal-footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+		text-align: center;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary {
+			.icon {
+				color: $color-white!important;
+				margin-right: 10px;
+			}
+		}
+
+		.button-show-pdf {
+			float: right;
+		}
+	}
+}
+
+.payment_add {
+	position: static;
+
+	.paymentAdd_content {
+		height: 400px;
+	}
+
+	.paymentAdd_footer {
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+		text-align: center;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary {
+			float: right;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.email-edit-modal {
+	.md_content {
+		padding-bottom: 110px!important;
+	}
+
+	.headline {
+		font-size: 22px;
+		margin-top: -20px!important;
+	}
+
+	.modal-base-footer {
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary {
+			float: right;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.customer-contact-modal {
+	.md_content {
+		padding-bottom: 50px!important;
+	}
+
+	.headline {
+		font-size: 22px;
+		margin-top: -20px!important;
+	}
+
+	.modal-base-footer {
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary {
+			float: right;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.payment-condition-modal {
+	.md_content {
+		padding-bottom: 110px!important;
+	}
+
+	.headline {
+		font-size: 22px;
+		margin-top: -20px!important;
+	}
+
+	.modal-base-footer {
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary {
+			float: right;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.numeration-config-modal {
+	.md_content {
+		padding-bottom: 110px!important;
+	}
+
+	.headline {
+		font-size: 22px;
+	}
+
+	.modal-base-footer {
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-component-wrapper,
+		.button-primary {
+			float: right;
+			margin-top: 0!important;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.invoice-cancellation-modal {
+	.invoice_cancellation {
+		padding: 40px;
+		height: 280px;
+	}
+
+	.modal-base-footer {
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary {
+			float: right;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}
+
+.invoice-delete-container-modal {
+	.invoice_cancellation {
+		padding: 40px;
+		height: 280px;
+	}
+
+	.invoice_deletion {
+		padding: 40px;
+		height: 190px;
+	}
+
+	.info_saveInSettings  {
+		margin-left: -20px;
+		padding-bottom: 110px;
+	}
+
+	.modal-base-footer {
+		position: absolute;
+		display: block;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+
+		.button-cancel {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.button-primary, .button-danger {
+			float: right;
+
+			.icon {
+				margin-right: 10px;
+			}
+		}
+	}
+}

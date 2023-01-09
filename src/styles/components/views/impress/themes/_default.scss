@@ -1,0 +1,129 @@
+@import "../../../../abstracts/_variables";
+@import "../../../../abstracts/_mixins";
+
+// ---------------------------------------------------------------------------- //
+//       This file must be copied 1:1 from app/impress to customer-center       //
+// ---------------------------------------------------------------------------- //
+
+:root {
+	--impress-color-page-background: #ffffff;
+	--impress-color-page-font: #000000;
+	--impress-color-nav-background: #ffffff;
+	--impress-color-nav-border: #E6E6EB;
+	--impress-color-nav-font: #222530;
+	--impress-color-nav-item-active-background: #E3E7EF;
+}
+
+.cc-body {
+	color: var(--impress-color-page-font);
+	background: var(--impress-color-page-background);
+}
+
+.impress-template {
+	color: var(--impress-color-page-font);
+	background: var(--impress-color-page-background);
+
+	.impress-nav {
+		background: var(--impress-color-nav-background);
+		border-color: var(--impress-color-nav-item-active-background);
+
+		.impress-nav-container {
+			.impress-nav-logo,
+			.impress-edit--nav-btn-recipient {
+				background: var(--impress-color-nav-background);
+
+				.logo-upload-area,
+				.recipientDisplay,
+				.Select-control,
+				.Select-control input {
+					color: var(--impress-color-nav-font) !important;
+				}
+			}
+
+			.recipientForm {
+				.input,
+				.Select-control .Select-value .Select-value-label {
+					color: var(--impress-color-nav-font) !important;
+				}
+			}
+
+			.impress-nav-customer {
+				color: var(--impress-color-nav-font);
+				border-top: 1px var(--impress-color-nav-item-active-background) solid;
+				border-bottom: 1px var(--impress-color-nav-item-active-background) solid;
+			}
+
+			.impress-nav-item {
+				color: var(--impress-color-nav-font);
+
+				.form_input {
+					.input {
+						color: var(--impress-color-nav-font);
+
+						&:disabled {
+							color: var(--impress-color-nav-font);
+							-webkit-text-fill-color: var(--impress-color-nav-font);
+						}
+					}
+				}
+
+				&:hover,
+				&.active {
+					background: var(--impress-color-nav-item-active-background);
+					border-color: var(--impress-color-nav-font);
+				}
+
+				&.impress-edit--nav-btn-addpage {
+					.btn-addpage {
+						.icon-rounded {
+							background: var(--impress-color-nav-font);
+							color: var(--impress-color-nav-background);
+						}
+
+						.btn-label {
+							color: var(--impress-color-nav-font);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.impress-article-list {
+		.articles-head,
+		.articles-item {
+			border-color: var(--impress-color-nav-border) !important;
+		}
+
+		.article-list-total-component {
+			.article-list-total-content {
+				&:after {
+					border-color: var(--impress-color-nav-border) !important;
+				}
+			}
+		}
+
+		@media (max-width: 1135px) {
+			.articles-head {
+				border-color: transparent !important;
+			}
+		}
+	}
+
+	hr {
+		border-color: var(--impress-color-nav-border);
+	}
+
+	.letter-positions-head,
+	.letter-positions-item {
+		border-color: var(--impress-color-nav-border) !important;
+	}
+
+	.letter-positions-total-component {
+		.letter-positions-total-content {
+			&:after {
+				border-color: var(--impress-color-nav-border) !important;
+			}
+		}
+	}
+}

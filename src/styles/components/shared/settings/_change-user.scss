@@ -1,0 +1,88 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-change-user-component {
+    .user-email-label {
+        font-size: 14px;
+        margin-top: 18px;
+    }
+
+    .update-email-row {
+        align-items: center;
+        .update-email-link {
+            font-size: 14px;
+            margin-bottom: 10px;
+            a{
+                color: $color-primary;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .password-strength {
+        position: absolute;
+        top: 20px;
+        right: 10px;
+        width: calc(100% - 10px);
+        .input_passwordStrength {
+            padding-right: 10px;
+            position: absolute;
+            width: 86px;
+            top: 0px;
+            text-align: right;
+        }
+    }
+    
+        .new-password-input {    
+            position: relative;   
+            .input_passwordBar {
+                width: calc(100% - 20px);
+                padding-left: 13px;
+                position: absolute;
+                margin: 10px 10px 0 10px;
+                top: 12px;
+            }
+        }
+
+
+    .new-password-input-wrapper {
+        input {
+            padding-right: 90px;
+        }
+
+        &.input-with-error {
+            margin-bottom: 55px;
+        }
+
+        &.with-empty-error {
+            &.input-with-error {
+                margin-bottom: 25px;
+            }
+            .input_error {
+                bottom: -20px;
+            }
+        }
+
+        .input_error {
+            bottom: -50px;
+        }
+    }
+
+	.not-valid-password {
+		.input_error {
+			bottom: -35px
+		}
+	}
+
+	.input_hint {
+			padding: 5px 15px;
+	}
+	
+    .button-component-wrapper {
+        text-align: right;
+    }
+
+    .form_groupheader_edit {
+        overflow-wrap: break-word;
+    }
+}

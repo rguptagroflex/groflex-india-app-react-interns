@@ -1,0 +1,832 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+$accountSummaryMultiItemLeftCursor: pointer;
+$accountSummaryMultiItemLeftOpacityHover: 1 !important;
+$accountSummaryMultiItemLeftCursorTransition: opacity 0.15s ease-in-out;
+
+.banking-financecockpit-wrapper {
+	position: relative;
+	margin: #{$topbar-height + 40px} auto 80px auto;
+
+	&.loader-wrapper {
+		position: fixed;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		left: 0;
+		right: 0;
+		margin: 0 auto;
+	}
+
+	.error-occured {
+		padding: 40px !important;
+		align-items: center !important;
+		justify-content: center !important;
+	}
+
+	.box {
+		padding: 40px;
+	}
+
+	.box-headline {
+		font-size: 20px;
+		font-weight: 600;
+	}
+
+	.box-subheadline {
+		margin-top: 2px;
+		font-size: 14px;
+	}
+
+	.financecockpit-account-summary-single,
+	.financecockpit-account-summary-multi,
+	.financecockpit-new-transactions {
+		height: 512px;
+		padding: 0;
+		flex-direction: column;
+		display: flex;
+		align-items: center;
+	}
+
+	.financecockpit-account-summary-single {
+		.blue-box-top {
+			width: 100%;
+			height: 250px;
+			background: $color-primary;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			.icon-circle {
+				width: 160px;
+				height: 160px;
+				border-radius: 50%;
+				background: #2F88F3;
+				line-height: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.icon {
+				color: #ffffff;
+				font-size: 72px;
+			}
+		}
+
+		.account-summary {
+			height: calc(100% - 250px);
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			
+			.account-summary-row1 {
+				margin-bottom: 6px;
+				line-height: 20px;
+				display: flex;
+				justify-content: center;
+
+				.account-icon {
+					width: 20px;
+					height: 20px;
+					background-image: url('/assets/images/bank_icon_default.png');
+					background-repeat: no-repeat;
+					background-position: top left;
+					background-size: contain;
+					pointer-events: none;
+				}
+
+				.account-title {
+					height: 24px;
+					max-width: 370px;
+					font-size: 18px;
+					font-weight: 600;
+					margin-left: 10px;
+					@include truncate-text();
+				}
+			}
+
+			.account-summary-row2,
+			.account-summary-row4  {
+				font-size: 14px;
+				text-align: center;
+				color: $color-text-muted;
+			}
+
+			.account-summary-row3  {
+				margin: 5px 0 8px 0;
+				font-size: 42px;
+				font-weight: 600;
+				color: $color-primary;
+			}
+		}
+	}
+
+	.financecockpit-account-summary-multi {
+		&:hover {
+			.item-left {
+				opacity: $accountSummaryMultiItemLeftOpacityHover;
+			}
+		}
+
+		.blue-box-top {
+			width: 100%;
+			min-height: 264px;
+			background: $color-primary;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+
+			.icon-circle {
+				min-width: 120px;
+				min-height: 120px;
+				margin: 20px 0 16px 0;
+				border-radius: 50%;
+				background: #2F88F3;
+				line-height: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.icon {
+				color: #ffffff;
+				font-size: 50px;
+			}
+		}
+
+		.account-summary {			
+			.account-summary-row1,
+			.account-summary-row3 {
+				font-size: 14px;
+				text-align: center;
+				color: $color-white;
+			}
+
+			.account-summary-row2  {
+				margin: 2px 0 4px 0;
+				font-size: 32px;
+				font-weight: 600;
+				text-align: center;
+				color: $color-white;
+			}
+		}
+
+		.account-list-header-collapsed-state {
+			position: relative;
+			width: 100%;
+			padding: 15px 0 10px 46px;
+			font-size: 15px;
+			font-weight: 600;
+			cursor: $accountSummaryMultiItemLeftCursor;
+
+			.item-left {
+				position: absolute;
+				top: 17px;
+				left: 16px;
+				opacity: 0;
+				transition: $accountSummaryMultiItemLeftCursorTransition;
+			}
+		}
+
+		.account-list {
+			position: relative;
+			width: 100%;
+			padding: 0 10px;
+
+			&:not(.top-sticky) {
+				height: 437px;
+				overflow: hidden;
+			}
+
+			&.top-sticky {
+				.account-list-item {
+					position: relative;
+
+					&:before {
+						display: none;
+					}
+
+					.item-middle {
+						.top-row {
+							.account-title {
+								padding-left: 0;
+							}
+						}	
+					}
+
+					.item-right {
+						color: $color-primary;
+					}
+				}
+
+				.bottom-shadow {
+					position: absolute;
+					top: 0;
+					left: 0;
+					right: 0;
+					height: 98px;
+					overflow: hidden;
+					pointer-events: none;
+
+					&:before {
+						position: absolute;
+						top: 0;
+						left: 0;
+						right: 0;
+						height: 75px;
+						background: transparent;
+						border-bottom: 1px $color-modal-footer-border solid;
+						content: " ";
+						box-shadow: 0 4px 14px 0px rgba(0, 0, 0, 0.08);
+					}
+				}
+			}
+
+			&.scrollable-expanded {
+				.account-list-item {
+					&.last-item {
+						&:before {
+							display: none;
+						}
+					}
+				}
+			}
+
+			.account-list-item {
+				position: relative;
+				height: 75px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				cursor: $accountSummaryMultiItemLeftCursor;
+
+				&:not(:last-child) {
+					&:before {
+						position: absolute;
+						left: 30px;
+						right: 30px;
+						bottom: 0;
+						height: 1px;
+						background: $color-modal-footer-border;
+						content: " ";
+						pointer-events: none;
+					}
+				}
+
+				.item-left {
+					margin: 0 14px 0 5px;
+					opacity: 0;
+					transition: $accountSummaryMultiItemLeftCursorTransition;
+				}
+	
+				.item-middle {
+					width: 210px;
+					pointer-events: none;
+	
+					.top-row {
+						position: relative;
+						line-height: 22px;
+						margin-bottom: 3px;
+						display: flex;
+						justify-content: space-between;
+	
+						.account-title {
+							width: 200px;
+							padding-left: 30px;
+							font-weight: 600;
+							font-size: 15px;
+							@include truncate-text();
+	
+							.account-icon {
+								position: absolute;
+								left: 0;
+								width: 20px;
+								height: 20px;
+								background-image: url('/assets/images/bank_icon_default.png');
+								background-repeat: no-repeat;
+								background-position: top left;
+								background-size: contain;
+								pointer-events: none;
+							}
+						}
+	
+						.account-balance {
+							font-size: 16px;
+							text-align: right;
+							font-weight: 600;
+							pointer-events: none;
+						}
+					}
+	
+					.bottom-row {
+						font-size: 13px;
+					}
+				}
+
+				.item-right {
+					width: 150px;
+					margin: 0 20px 0 0;
+					padding-right: 10px;
+					font-size: 16px;
+					font-weight: 600;
+					text-align: right;
+					pointer-events: none;
+				}
+			}
+
+			.account-list-item-footer {
+				width: 100%;
+				padding: 5px 0 20px 0;
+				font-size: 15px;
+				font-weight: 600;
+				color: $color-primary;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				.icon {
+					margin-top: -3px;
+					color: $color-primary;
+	
+					&.icon-sort_up {
+						margin-top: 12px;
+						margin-left: 11px;
+					}
+				}
+			}
+		}
+
+		.account-list-footer {
+			position: absolute;
+			bottom: 20px;
+			width: 100%;
+			padding: 5px 0;
+			font-size: 15px;
+			font-weight: 600;
+			color: $color-primary;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			&.expanded {
+				bottom: 14px;
+			}
+
+			.icon {
+				margin-top: -3px;
+				margin-left: 10px;
+				color: $color-primary;
+
+				&.icon-sort_up {
+					margin-top: 13px;
+					margin-left: 11px;
+				}
+			}
+		}
+	}
+
+	.financecockpit-account-summary-multi-white-bottom-shadow {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 20px;
+		height: 40px;
+		overflow: hidden;
+		pointer-events: none;
+
+		&:before {
+			position: absolute;
+			bottom: -40px;
+			left: 0;
+			right: 0;
+			height: 40px;
+			background: transparent;
+			content: " ";
+			box-shadow: 0 0px 25px 20px #ffffff;
+		}
+	}
+
+	.financecockpit-new-transactions {
+		align-items: start;
+
+		.box-header {
+			padding: 40px 40px 20px 40px;
+		}
+
+		.new-transactions-list-header {
+			padding: 0 30px;
+			margin-bottom: 5px;
+		}
+
+		.new-transactions-list {
+			position: relative;
+			height: 330px;
+			padding: 0 30px;
+			overflow: hidden;
+
+			.list-component {
+				.list-table {
+					.list-table-head {
+						font-size: 0;
+						visibility: hidden;
+
+						.list-table-head-cell {
+							padding: 0 10px 0 10px !important;
+						}
+					}
+
+					.list-table-cell {
+						@include truncate-text();
+					}
+				}
+			}
+		}
+
+		.list-component {
+			.list-table {
+				.list-table-head {
+					.list-table-cell {
+						padding: 10px 10px 0 10px !important;
+					}
+				}
+
+				tbody {
+					.list-table-cell {
+						padding: 20px 10px !important;
+						border-color: transparent;
+	
+						&:before {
+							position: absolute;
+							left: 0;
+							right: 0;
+							bottom: 0;
+							height: 1px;
+							background: $color-line-light;
+							content: " ";
+						}
+	
+						&:first-child {
+							&:before {
+								left: 10px;
+							}
+						}
+	
+						&:last-child {
+							&:before {
+								right: 10px;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.new-transactions-footer {
+			position: absolute;
+			bottom: 19px;
+			width: 100%;
+			padding: 5px 0;
+			font-size: 15px;
+			font-weight: 600;
+			color: $color-primary;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			&.expanded {
+				bottom: 14px;
+			}
+
+			.icon {
+				margin-top: 5px;
+				margin-left: 8px;
+				color: $color-primary;
+			}
+		}
+
+		.empty-state {
+			width: 100%;
+			margin-top: 40px;
+			padding: 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+
+			.empty-state-headline {
+				margin: 30px 0 10px 0;
+				font-size: 18px;
+				font-weight: 600;
+			}
+
+			.empty-state-subheadline {
+				font-size: 16px;
+			}
+		}
+	}
+
+	.financecockpit-balance-stats {
+		min-height: 460px;
+
+		.balanceStats {
+			margin-top: 35px;
+		}
+
+		.empty-state {
+			width: 100%;
+			height: 300px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+	}
+
+	.financecockpit-cashflow-stats {
+		min-height: 423px;
+
+		.cashflowStats {
+			position: relative;
+			height: 260px;
+			margin-top: 35px;
+
+			.chartist-bar-chart {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+		}
+
+		.bar-chart-legend {
+			position: relative;
+			display: flex;
+			justify-content: flex-end;
+	
+			.legend-inflow,
+			.legend-outflow {
+				width: 152px;
+				padding-top: 5px;
+
+				.legend-header {
+					margin-bottom: 5px;
+					font-size: 11px;
+					color: $color-text-muted;
+				}
+
+				.legend-detail {
+					display: flex;
+					
+					.legend-subheader {
+						position: relative;
+						text-transform: uppercase;
+						font-size: 12px;
+						letter-spacing: 1px;
+						text-indent: 16px;
+	
+						&:before {
+							position: absolute;
+							top: 5px;
+							left: 0;
+							width: 6px;
+							height: 6px;
+							background: $color-primary;
+							border-radius: 50%;
+							display: block;
+							content: " ";
+						}
+
+						&.bar-chart-legend-inflow-fixed,
+						&.bar-chart-legend-outflow-fixed {
+							margin-right: 20px;
+
+							&:after {
+								position: absolute;
+								top: 0;
+								right: -10px;
+								width: 1px;
+								height: 100%;;
+								background: #EBEBEB;
+								display: block;
+								content: " ";
+							}
+						}
+
+						&.bar-chart-legend-inflow-variable {
+							&:before {
+								background: #AECDF6;
+							}
+						}
+
+						&.bar-chart-legend-outflow-fixed {							
+							&:before {
+								background: #A9A9A9;
+							}
+						}
+
+						&.bar-chart-legend-outflow-variable {
+							&:before {
+								background: #DCDCDC;
+							}
+						}
+					}
+				}
+			}
+
+			.legend-inflow {
+				width: 180px;
+			}
+		}
+
+		.bar-chart-wrapper {
+			position: relative;
+	
+			.ct-label.ct-horizontal {
+				cursor: default !important;
+			}
+	
+			.icon-arr_left,
+			.icon-arr_right {
+				position: absolute;
+				width: 20px;
+				height: 20px;
+				line-height: 20px;
+				text-align: center;
+				font-size: 14px;
+				color: $color-text-placeholder;
+				cursor: pointer;
+	
+				&.hidden {
+					visibility: hidden;
+				}
+			}
+	
+			.icon-arr_left {
+				bottom: 3px;
+				left: 58px;
+			}
+	
+			.icon-arr_right {
+				bottom: 3px;
+				right: 8px;
+			}
+		}
+	}
+
+	.financecockpit-revenues-expenses {
+		min-height: 460px;
+
+		.box-header {
+			.box-headline {
+				margin-bottom: 20px;
+			}
+		}
+
+		.box-table-headline {
+			font-size: 17px;
+			font-weight: 600;
+			margin: 35px 0 20px 0;
+		}
+
+		.table-wrapper {
+			overflow: hidden;
+		}
+
+		.list-component {
+			.list-table {
+				.list-table-head {
+					.list-table-cell {
+						padding: 10px 0 !important;
+					}
+				}
+
+				tbody {
+					.list-table-cell {
+						padding: 20px 0 !important;
+						border-color: transparent;
+	
+						&:before {
+							position: absolute;
+							left: 0;
+							right: 0;
+							bottom: 0;
+							height: 1px;
+							background: $color-line-light;
+							content: " ";
+						}
+	
+						&:first-child {
+							&:before {
+								left: 10px;
+							}
+						}
+	
+						&:last-child {
+							&:before {
+								right: 10px;
+							}
+						}
+					}
+
+					.list-table-row {
+						&:last-child {
+							.list-table-cell {			
+								&:before {
+									display: none;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		.table-footer {
+			position: relative;
+			width: 100%;
+			padding: 25px 0 0 0;
+			font-size: 14px;
+			font-weight: 600;
+			color: $color-primary;
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+
+			.icon {
+				margin-top: -3px;
+				margin-left: 10px;
+				color: $color-primary;
+
+				&.icon-sort_up {
+					margin-top: 13px;
+					margin-left: 11px;
+				}
+			}
+
+			.revenues-expenses-list-white-bottom-shadow {
+				position: absolute;
+				top: -50px;
+				left: 0;
+				right: 0;
+				height: 40px;
+				overflow: hidden;
+				pointer-events: none;
+		
+				&:before {
+					position: absolute;
+					bottom: -40px;
+					left: 0;
+					right: 0;
+					height: 40px;
+					background: transparent;
+					content: " ";
+					box-shadow: 0 0px 25px 20px #ffffff;
+				}
+			}
+		}
+
+		.table-expenses-header {
+			margin-top: 65px;
+		}
+
+		.table-separator {
+			position: absolute;
+			left: 0;
+			right: 0;
+			margin-top: 30px;
+			height: 1px;
+			background: #F5F5F5;
+		}
+
+		.empty-state {
+			width: 100%;
+			margin-top: 40px;
+			padding: 60px 40px 100px 40px;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+
+			.empty-state-headline {
+				margin: 10px 0 10px 0;
+				font-size: 18px;
+				font-weight: 600;
+			}
+
+			.empty-state-subheadline {
+				font-size: 16px;
+			}
+
+			&.expenses {
+				.empty-state-headline {
+					margin-top: 0;
+				}
+			}
+		}
+	}
+}

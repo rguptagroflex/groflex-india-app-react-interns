@@ -1,0 +1,59 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.list-advanced-columns-settings-modal {
+	h1 {
+		margin-bottom: 12px;
+		font-size: 22px;
+		font-weight: 600;
+	}
+	
+	.headline {
+		margin: 22px 0 20px 0;
+		font-weight: 600;
+
+		&.additional {
+			margin-top: 8px;
+		}
+	}
+
+	.checkbox_label {
+		padding-left: 8px;
+		white-space: nowrap;
+	}
+
+	.reset-controls {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+
+		.action-link {
+			font-size: 12px;
+			color: $color-secondary;
+			cursor: pointer;
+			display: inline-block;
+		}
+		
+		.form_input {
+			.checkbox_label  {
+				padding-top: 2px;
+				font-size: 12px;
+			}
+		}
+	}
+
+	.checkbox-items {
+		display: flex;
+		justify-content: space-between;
+
+		.checkbox-col {
+			display: flex;
+			flex-direction: column;
+	
+			.form_input {
+				height: 40px;
+				margin-right: 14px;
+			}
+		}
+	}
+}

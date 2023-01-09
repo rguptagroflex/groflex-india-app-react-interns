@@ -1,0 +1,51 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.project-detail-wrapper {
+
+	.detail-view-document {
+		margin: -115px auto 0;
+	}
+
+	.detail-view-head-container {
+		height: 265px;
+	}
+
+	.detail-view-project-description {
+		position: relative;
+		top: -5px;
+
+		.detail-view-project-text, .detail-view-project-text * {
+			@include truncate-text();
+		}
+
+		.popover-wrapper {
+			.detail-view-project-popover-content {
+				max-width: 400px;
+				overflow: hidden;
+				word-break: break-all;
+
+				* {
+					margin: 0;
+				}
+			}
+		}
+	}
+
+	.detail-view-project-has-offer-and-description {
+		position: relative;
+		top: 15px;
+
+		p {
+			margin: 0;
+		}
+
+		.detail-view-project-description {
+			top: 5px;
+		}
+	}
+
+}
+
+
+

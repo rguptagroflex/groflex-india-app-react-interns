@@ -1,0 +1,142 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.switchInput {
+	z-index: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	user-select: none;
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+
+	&-disabled {
+		.switchInput_label {
+			color: #cccccc;
+			cursor: default !important;
+		}
+		a {
+			background-color: $color-text-disabled !important;
+			border-color: $color-text-disabled;
+		}
+		.switchInput_options {
+			label, span {
+				border-color: $color-text-disabled;
+				color: $color-text-disabled;
+			}
+		}
+	}
+
+	&_input {
+		position: absolute;
+		z-index: -1;
+		left: -99999px;
+		&:checked ~ .switchInput_options {
+			label {
+				@include rem(padding-left, 1);
+				@include rem(padding-right, 26);
+			}
+			span {
+				&:first-child {
+					display: none;
+				}
+				&:nth-child(n+2) {
+					display: block;
+				}
+			}
+			& a {
+				left: 100%;
+				@include rem(margin-left, -25);
+			}
+		}
+	}
+
+	&_label {
+		color: $color-text-muted;
+		@include rem(font-size, 15);
+	}
+
+	&_optionLabel {
+		&-disabled {
+			border-color: $color-text-muted !important;
+		}
+	}
+
+	&_options {
+		z-index: 10;
+		&-knobDisabled {
+			background-color: $color-text-muted !important;
+		}
+		label {
+			display: block;
+			cursor: pointer;
+			position: relative;
+			border-color: $color-primary;
+			border-style: solid;
+			line-height: normal;
+			@include rem(border-width, 1);
+			@include rem(font-size, 11);
+			@include rem(padding, 1, 1, 1, 26);
+		}
+		span {
+			display: none;
+			@include rem(min-width, 48);
+			text-align: center;
+			color: $color-text-muted;
+			@include rem(line-height, 18);
+			&:first-child {
+				display: block;
+			}
+		}
+		a {
+			transition: 0.3s ease-out all;
+			position: absolute;
+			top: 50%;
+			background-color: $color-primary;
+			@include rem(margin, -9, 0, 1);
+			@include rem(left, 1);
+			@include rem(width, 24);
+			@include rem(height, 18);
+		}
+	}
+
+	&_radioToggle {
+		border: 1px solid #e6e6e6;
+		align-self: flex-start;
+		display: flex;
+		position: relative;
+		width: 100%;
+		border-radius: 30px;
+		overflow: hidden;
+		z-index: 10;
+		input, label {
+			cursor: pointer;
+		}
+		a {
+			background: $color-primary;
+			bottom: 0;
+			left: 0;
+			position: absolute;
+			top: 0;
+			transition: left 0.3s ease-out 0s;
+			width: 50%;
+			border-radius: 30px;
+			z-index: -1;
+		}
+		label {
+			text-transform: uppercase;
+			text-align: center;
+			width: 50%;
+			@include rem(line-height, 30);
+			@include rem(font-size, 13);
+		}
+		input:checked + label {
+			color: white;
+		}
+		a.onLastRadioChecked {
+			left: 50%;
+		}
+	}
+}

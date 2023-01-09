@@ -1,0 +1,89 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.box {
+	display: block;
+	position: relative;
+	background: white;
+	@include rem(margin-bottom, 20);
+	@include rem(padding, 80);
+	@include rem(width, 100%);
+	@include rem(box-shadow, 0px 0px 10px 0px #cccccc);
+
+	&-transparent {
+		background: transparent;
+		@include rem(box-shadow, 0 0 0 0 white);
+	}
+	&-noShadow {
+		@include rem(box-shadow, 0 0 0 0 white);
+	}
+	&-onlyShadow {
+		@include rem(box-shadow, 0px 0px 10px 0px #cccccc);
+	}
+	&-small-padding {
+		@include rem(padding, 40, 80);
+	}
+	&-large-bottom {
+		@include rem(margin-bottom, 40);
+	}
+	&-large-top {
+		@include rem(margin-top, 30);
+	}
+	&_header {
+		background: $color-bg-medium;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		// z-index of 1000 because the letterElements in the letter header have a z-index depending on there sortId
+		// prevents that the z-index of a letterElement could be higher
+		z-index: 1000;
+		@include rem(margin, -32, 0, 8, -10);
+		@include rem(padding, 32, 0, 24, 0);
+		@include rem(min-width, 950);
+		@include rem(box-shadow, 0 0 0 0 #cccccc);
+		
+		.text-h1 {
+			@include rem(letter-spacing, -1px);
+			@include rem(min-height, 48);
+		}
+		&.scroll-to-fixed-fixed {
+			@include rem(margin-top, 0);
+			@include rem(padding, 32, 0);
+		}
+	}
+
+	&_title {
+		font-size: 20px;
+		font-weight: 600;
+		margin-top: 0;
+	}
+
+	.layout-basic & {
+		@include rem(padding, 24, 48);
+	}
+
+	&-lightblue {
+		background: #EBF5FF;
+		border: 0.8px solid #DDDDDD;
+		box-sizing: border-box;
+		border-radius: 4px;
+		padding: 20px 20px;
+	}
+}
+
+.boxHeader {
+	&_title {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+		@include rem(min-height, 48);
+		@include rem(padding-left, 10);
+		@include rem(padding-right, 15);
+	}
+	&_actions {
+		@include rem(margin-left, 10);
+	}
+}

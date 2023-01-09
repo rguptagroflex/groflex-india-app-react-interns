@@ -1,0 +1,38 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.invoice-multi-action-component-wrapper {
+	.invoice-multi-action-list {
+		margin-top: 20px;
+
+		.invoice-multi-action-list-item {
+			position: relative;
+			height: 25px;
+
+			.list-item-first-col {
+				float: left;
+				width: 150px;
+				@include truncate-text();
+			}
+
+			.list-item-second-col {
+				float: left;
+				width: 250px;
+				@include truncate-text();
+			}
+
+			.icon {
+				position: absolute;
+				right: 0;
+				font-size: 12px;
+				top: 50%;
+				@include vendor-prefix('transform', 'translateY(-50%)');
+				color: $color-success;
+
+				&.icon-close {
+					color: $color-error;
+				}
+			}
+		}
+	}
+}

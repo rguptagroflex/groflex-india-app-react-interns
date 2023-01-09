@@ -1,0 +1,186 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.button-component-wrapper {
+
+	button {
+		//min-width: 140px;
+		cursor: pointer;
+	}
+
+	.button-rounded {
+		height: 38px;
+		line-height: 38px;
+		padding: 0 40px;
+		border-radius: 4px;
+		font-size: 14px;
+	}
+
+	.button-inverted-no-padding {
+		padding: 0;
+		border-radius: 0;
+		color: $color-primary;
+		background: transparent;
+
+		&:hover,
+		&:focus {
+			color: $color-text-muted;
+			background: transparent;
+		}
+
+		&:active  {
+			color: $color-primary;
+			background: transparent;
+		}
+	}
+
+	.icon {
+		float: left;
+		margin-right: 10px;
+
+		&.loader_spinner {
+			margin-top: 11px;
+			width: 16px;
+			height: 16px;
+
+			&:after {
+				width: 16px;
+				height: 16px;
+			}
+		}
+	}
+
+	.button-rounded {
+		height: 38px;
+		line-height: 38px;
+		padding: 0 40px;
+		border-radius: 4px;
+		font-size: 14px;
+	}
+
+	.button-cancel {
+		color: $color-text;
+		background: transparent;
+		font-weight: normal;
+		text-align: left;
+
+		&:hover {
+			color: $color-text;
+			background: transparent;
+		}
+	}
+
+	.button-text {
+		color: $color-text;
+		background: none;
+		padding: 0 10px;
+
+		&:hover {
+			opacity: 0.8;
+		}
+
+		&:hover,
+		&:link,
+		&:visited,
+		&:focus,
+		&:active,
+		&:disabled {
+			color: $color-text;
+			background: none !important;
+		}
+
+		.icon {
+			float: none;
+			display: inline-block;
+		}
+	}
+
+	.button-primary-alternative {
+		color: $color-primary;
+		background: $color-white;
+
+		&:not(:disabled):hover,
+		&:not(:disabled):focus  {
+			background: $color-primary-superlight;
+		}
+
+		&:link,
+		&:visited,
+		&:hover,
+		&:focus,
+		&:active {
+			color: $color-primary;
+		}
+	}
+
+	.button-danger {
+		color: $color-white;
+		background: $color-secondary;
+
+		&:not(:disabled):hover,
+		&:not(:disabled):focus {
+			background: darken($color-secondary, 10%);
+		}
+
+		&:link,
+		&:visited,
+		&:hover,
+		&:focus,
+		&:active {
+			color: $color-white;
+		}
+	}
+
+	.button-google {
+		color: $color-secondary;
+		background-color: $color-white;
+		border: 1px solid $color-secondary;
+		// background: #DB4C3F;
+		// background: $color-secondary;
+		padding: 0 60px !important;
+		white-space: nowrap;
+
+		.icon-google::before {
+			vertical-align: top;
+		}
+
+		.icon {
+			vertical-align: top;
+			height: 100%;
+			font-size: 34px;
+			line-height: 62px;
+			margin-right: 0 !important;
+		}
+
+		&:not(:disabled):hover,
+		&:not(:disabled):focus {
+			background: $color-secondary-hover;
+		}
+
+		&:link,
+		&:visited,
+		&:hover,
+		&:focus,
+		&:active {
+			color: $color-white;
+		}
+	}
+
+	.login-btn {
+		color: #ffffff;
+		background-color: $color-primary;
+		border: 1px solid $color-primary;
+		padding: 0 60px !important;
+		white-space: nowrap;
+	}
+
+	.button:disabled,
+	.button.disabled {
+		background: $color-button-disabled;
+		color: $color-button-text-disabled;
+	}
+
+	.button.disabled {
+		cursor: default;
+	}
+}

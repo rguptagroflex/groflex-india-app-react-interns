@@ -1,0 +1,24 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-subscription-component {
+	.account-impress-headline {
+		margin-top: 30px;
+	}
+
+	.subscription-quota-bar {
+		width: 100%;
+		height: 38px;
+		margin: 5px 0 15px 0;
+		background: $color-bg-dark;
+
+		.subscription-quota-used {
+			height: 100%;
+			background: $color-primary-light;
+		}
+	}
+
+	.button-component-wrapper {
+		text-align: right;
+	}
+}

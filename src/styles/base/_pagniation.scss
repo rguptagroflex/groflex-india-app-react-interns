@@ -1,0 +1,81 @@
+@import "../abstracts/variables";
+@import "../abstracts/mixins";
+
+@mixin page {
+	border: 1px solid #dddddd;
+	cursor: pointer;
+	color: #666666;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	@include rem(font-size, 13);
+	@include rem(margin, 0, 2);
+	@include rem(padding, 2, 6);
+	@include rem(min-width, 26);
+}
+
+.pagination {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	user-select: none;
+	@include rem(margin-top, 24);
+	&_prev {
+		@include page;
+		@include icon(before, arr_left);
+		@include rem(width, 26);
+		&-disabled {
+			cursor: default;
+			color: #dddddd;
+		}
+	}
+	&_next {
+		@include page;
+		@include icon(before, arr_right);
+		@include rem(width, 26);
+		&-disabled {
+			cursor: default;
+			color: #dddddd;
+		}
+	}
+	&_pages {
+		display: flex;
+	}
+	&_page {
+		@include page;
+	}
+	&_current {
+		@include page;
+		cursor: default;
+		border-color: $color-primary;
+		color: $color-primary;
+	}
+	&_dots {
+		&:first-child {
+			position: relative;
+			@include rem(margin-right, 26);
+			&::after {
+				content: "...";
+				pointer-events: none;
+				position: absolute;
+				cursor: default;
+				color: #666666;
+				@include rem(right, -20.75);
+				@include rem(top, 7);
+			}
+		}
+		&:last-child {
+			position: relative;
+			@include rem(margin-left, 26);
+			&::before {
+				content: "...";
+				pointer-events: none;
+				position: absolute;
+				cursor: default;
+				color: #666666;
+				@include rem(left, -20.75);
+				@include rem(top, 7);
+			}
+		}
+	}
+}

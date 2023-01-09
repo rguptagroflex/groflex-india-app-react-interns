@@ -1,0 +1,293 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.numeration-config-wrapper {
+	display: table;
+	width: 100%;
+}
+
+.numeration-config-component {
+
+	.numeration-display-wrapper {
+		display: table;
+		height: 50px;
+		margin: 35px auto;
+	}
+
+	.numeration-content-wrapper {
+		position: relative;
+
+		.numeration-error {
+			position: absolute;
+			// top: 195px;
+			// left: 40px;
+			color: $color-error;
+			font-size: 15px;
+		}
+
+		&.numeration-popover {
+			.numeration-display-wrapper {
+				margin-top: 30px;
+			}
+
+			.footer-hint {
+				margin-top: 125px;
+				padding: 0;
+				font-size: 15px;
+				color: $color-text-light;
+			}
+
+			.button-save {
+				margin: 35px 0 0;
+			}
+
+			.numeration-error {
+				top: 188px;
+				left: 10px;
+			}
+		}
+	}
+
+	.numeration-input {
+		min-width: 0;
+		width: 54px;
+		height: 36px;
+		padding: 0 5px;
+		border: 1px solid #cccccc;
+		outline: none;
+
+		&:focus {
+			border-bottom: 2px solid $color-primary;
+		}
+
+		&.error {
+			border-bottom: 2px solid $color-error;
+		}
+	}
+
+	.numeration-display {
+		font-size: 30px;
+		font-weight: 600;
+		color: $color-primary;
+		letter-spacing: 5px;
+
+		&.triggeredHover {
+			background: $color-primary;
+			color: $color-white;
+		}
+
+		&.has-margin {
+			margin-right: 5px;
+		}
+
+		&.has-margin-left {
+			margin-left: 5px;
+		}
+
+		&.placeholder {
+			padding-left: 5px;
+		}
+	}
+
+	.numeration-number-input {
+		display: inline-block;
+		outline: none;
+		border: 0 none;
+		border-bottom: 1px solid $color-input-bar;
+		min-width: 0;
+		font-size: 30px;
+		font-weight: 600;
+		color: $color-primary;
+		letter-spacing: 5px;
+		padding-left: 5px;
+
+		&:focus {
+			border-bottom: 2px solid $color-primary;
+		}
+
+		&.triggeredHover {
+			background: $color-primary;
+			color: $color-white;
+		}
+
+		&.error {
+			border-bottom: 2px solid $color-error;
+			color: $color-error;
+
+			&.triggeredHover {
+				color: $color-white;
+				background: $color-error;
+			}
+		}
+
+		&.digits-2 {
+			width: 47px;
+		}
+
+		&.digits-3 {
+			width: 67px;
+		}
+
+		&.digits-4 {
+			width: 88px;
+		}
+
+		&.digits-5 {
+			width: 108px;
+		}
+
+		&.digits-6 {
+			width: 128px;
+		}
+
+		&.digits-7 {
+			width: 149px;
+		}
+
+		&.digits-8 {
+			width: 169px;
+		}
+
+		&.digits-9 {
+			width: 190px;
+		}
+
+		&.digits-10 {
+			width: 210px;
+		}
+	}
+
+	.numeration-inputs-wrapper {
+		float: left;
+		padding-right: 0;
+		padding-left: 0;
+	}
+
+	.numeration-prefix,
+	.numeration-suffix,
+	.numeration-date-format,
+	.numeration-digit-count,
+	.numeration-placeholder1,
+	.numeration-placeholder2,
+	.numeration-placeholder3 {
+		position: relative;
+		float: left;
+		margin: 0 5px 0 0;
+
+		label {
+			position: absolute;
+			top: -18px;
+			font-size: 12px;
+			color: $color-text-light;
+		}
+	}
+
+	.numeration-suffix {
+		margin: 0;
+	}
+
+	.numeration-date-format,
+	.numeration-digit-count,
+	.numeration-placeholder1,
+	.numeration-placeholder2,
+	.numeration-placeholder3 {
+		.selectInput {
+			width: 155px;
+
+			.Select-control {
+				border: 1px solid #cccccc!important;
+			}
+
+			.Select-value-label {
+				padding-left: 5px;
+			}
+		}
+	}
+
+	.numeration-digit-count {
+		.selectInput {
+			width:109px;
+		}
+	}
+
+	.numeration-placeholder1,
+	.numeration-placeholder2,
+	.numeration-placeholder3 {
+		.selectInput {
+			width: 25px;
+			padding-right: 0;
+
+			.Select-control {
+				border: 1px dashed #cccccc !important;
+				display: block;
+
+				.Select-value {
+					padding-right: 0;
+
+					.Select-value-label {
+						padding-left: 0px;
+					}
+				}
+			}
+		}
+
+		&.empty-selected {
+			.selectInput {
+				.Select-control {
+					.Select-value {
+						color: #fff;
+
+						.Select-value-label {
+							color: #fff;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.button-component-wrapper {
+		margin: 50px 0 0;
+		float: right;
+	}
+
+	.additional-settings-wrapper {
+		margin-top: 115px;
+
+		.increment-by-setting {
+			padding-left: 0px!important;
+			padding-right: 0px!important;
+
+			.input-boxBorder {
+				width: 155px!important;
+
+				.input {	
+				border: 1px solid #ccc !important;			
+				height: 36px !important;
+				}
+				
+				.input_label {
+					font-size: 12px !important;
+					top: -53.6px !important;
+				}
+			}
+		}
+
+		.periodic-setting {
+			margin-top: 10px;
+
+			.ovalToggle.toggle-setting-periodic {
+				width: 53%;
+				label {
+					padding-bottom: 7px!important;
+				}
+			}
+		}
+
+		.periodic-setting-frequency {
+			display: flex;
+			flex-direction: row;
+			margin-top: 20px;
+		}
+	}
+}

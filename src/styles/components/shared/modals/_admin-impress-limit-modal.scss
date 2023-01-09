@@ -1,0 +1,26 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.admin-impress-limit-modal {
+
+	.admin-impress-limit-entry {
+		margin: 15px 0;
+    	font-size: 13px;
+	}
+
+	.admin-impress-limit-label {
+		display: inline-block;
+		width: 130px;
+		color: $color-text-muted;
+	}
+
+	.admin-impress-limit-value {
+		font-weight: 600;
+	}
+
+	.form_input {
+		display: inline-block;
+		font-weight: 600;
+    	font-size: 13px;
+	}
+}

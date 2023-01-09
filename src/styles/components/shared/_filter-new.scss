@@ -1,0 +1,46 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.filter-component-wrapper {
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.filter-item {
+		padding: 5px 10px;
+		margin-right: 10px;
+		font-size: 12px;
+		text-transform: uppercase;
+		color: $color-text;
+		cursor: pointer;
+		font-weight: 600;
+
+		span {
+			font-weight: normal;
+		}
+
+		&.filter-item-active {
+			color: $color-primary;
+			border-bottom: 2px solid $color-primary;
+		}
+
+		&:not(.filter-item-active):hover {
+			opacity: 0.8;
+		}
+	}
+
+	.last-item-separator {
+		position: relative;
+		padding: 0 15px 0 5px;
+		
+		&:before {
+			position: absolute;
+			top: 2px;
+			bottom: 2px;
+			width: 1px;
+			background: $color-input-bar;
+			content: " ";
+		}
+	}
+}

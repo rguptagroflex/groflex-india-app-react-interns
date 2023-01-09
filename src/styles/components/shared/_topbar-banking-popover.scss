@@ -1,0 +1,177 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+$popover-width: 390px;
+
+.topbar-banking-popover {
+	position: relative;
+	width: $popover-width;
+
+	.account-icon {
+		width: 20px;
+		height: 20px;
+		background-image: url('/assets/images/bank_icon_default.png');
+		background-repeat: no-repeat;
+		background-position: top left;
+		background-size: contain;
+		pointer-events: none;
+	}
+
+	.topbar-banking-popover-title {
+		position: relative;
+		width: $popover-width;
+		height: 65px;
+		border-right: 1px $color-modal-footer-border solid;
+		border-bottom: 1px $color-modal-footer-border solid;
+		background: #fff;
+		padding-left: 20px;
+		float: left;
+		display: flex;
+		align-items: center;
+		z-index: 1;
+		cursor: pointer;
+		user-select: none;
+
+		.account-title {
+			width: 270px;
+			margin-left: 15px;
+			display: flex;
+			align-items: baseline;
+			pointer-events: none;
+
+			.account-name {
+				margin-right: 5px;
+				max-width: 170px;
+				font-weight: 600;
+				font-size: 16px;
+				@include truncate-text();
+			}
+
+			.additional-accounts {
+				font-size: 14px;
+			}
+		}
+
+		.popover-arrow {
+			position: absolute;
+			top: 20px;
+			right: 25px;
+			color: $color-text-light;
+			pointer-events: none;
+			transition: all 0.3s ease-out;
+
+			&.active {
+				top: 22px;
+				transform: rotate(180deg);
+			}
+		}
+	}
+
+	.topbar-banking-popover-items {
+		position: absolute;
+		top: 65px;
+		left: 0;
+		width: $popover-width;
+		max-height: 0;
+		background: white;
+		box-shadow: 0px 4px 10px 0px #ccc;
+		overflow: hidden;
+		transition: all 0.3s ease-out;
+
+		&.visible {
+			max-height: 450px;
+		}
+
+		.topbar-banking-popover-item {
+			position: relative;
+			height: 90px;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+
+			&:not(:last-child) {
+				&:before {
+					position: absolute;
+					left: 20px;
+					right: 20px;
+					bottom: 0;
+					height: 1px;
+					background: $color-modal-footer-border;
+					content: " ";
+					pointer-events: none;
+				}
+			}
+
+			.item-left {
+				margin: 0 20px;
+				pointer-events: none;
+			}
+
+			.item-middle {
+				width: 310px;
+				pointer-events: none;
+
+				.top-row {
+					position: relative;
+					line-height: 22px;
+					margin-bottom: 6px;
+					display: flex;
+					justify-content: space-between;
+
+					.account-title {
+						width: 175px;
+						padding-left: 30px;
+						font-weight: 600;
+						font-size: 16px;
+						@include truncate-text();
+
+						.account-icon {
+							position: absolute;
+							left: 0;
+						}
+					}
+
+					.account-balance {
+						font-size: 16px;
+						text-align: right;
+						font-weight: 600;
+						pointer-events: none;
+					}
+				}
+
+				.bottom-row {
+					font-size: 13px;
+				}
+			}
+
+			&.add-account {
+				color: $color-primary;
+				font-weight: 600;
+				font-size: 14px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
+				span {
+					pointer-events: none;
+				}
+
+				.add-icon {
+					position: relative;
+					width: 18px;
+					height: 18px;
+					margin-top: 1px;
+					margin-right: 12px;
+					font-size: 8px;
+					background: $color-primary;
+					color: #ffffff;
+					border-radius: 50%;
+					cursor: pointer;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+			}
+		}
+	}
+}
