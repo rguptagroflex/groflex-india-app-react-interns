@@ -1,0 +1,28 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.expenseEdit {
+	&_button {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	&_fileListRow {
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include rem(padding, 0, 0, 0, 0);
+		.list_item {
+			@include rem(padding, 15, 6, 6, 0);
+		}
+	}
+	
+	&_fileIcon {
+		display: flex;
+		word-break: break-word;
+		color: $color-text-canceled;
+		@include rem(font-size, 20);
+		@include rem(padding, 10, 30, 0, 0);
+	}
+}

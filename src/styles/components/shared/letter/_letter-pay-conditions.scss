@@ -1,0 +1,59 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.letter-pay-conditions-component {
+	font-size: 14px;
+	color: $color-text-light;
+
+	.radio-custom-wrapper {
+		margin: 15px 0;
+
+		.selectInput {
+			width: 415px;
+			height: 25px;
+			margin: -5px 0 0 -10px;
+			font-size: 14px;
+		}
+	}
+
+	.pay-condition-inline-number-input {
+		display: inline-block;
+    	height: 15px;
+
+		.form_input {
+			display: inline-block;
+			width: 30px;
+
+			.input {
+				height: auto;
+				padding: 0 0 5px;
+				margin: 0;
+				text-align: center;
+			}
+
+			.input_label {
+				display: none;
+			}
+		}
+	}
+
+	.letter-pay-conditions-placeholder {
+		color: $color-text-placeholder;
+	}
+
+	.letter-pay-conditions-dunning {
+		padding: 10px 250px 10px 22px;
+	}
+
+	&:hover {
+		.edit-icon {
+			@include icon(after, edit);
+			position: absolute;
+			height: 5px;
+			z-index: 11;
+			color: $color-text-light;
+			top: -7px;
+			right: -6px;
+		}
+	}
+}

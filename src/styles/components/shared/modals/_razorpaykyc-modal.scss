@@ -1,0 +1,196 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.razorpaykyc-modal-component {
+	.modal-base-content {
+		margin: 0;
+	}
+	.modal-base-view {
+		padding: 20px 0px 110px !important;
+	}
+
+	.razorpaykyc-modal-overview {
+
+		.circle-container {
+			margin: 0;
+			height: 90px;
+			width: 90px;
+			left: 110px;
+			position: relative;
+		}
+
+		.step-boxes {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-evenly;
+			width: 100%;
+			margin-top: 40px;
+
+			.step-box {
+                display: flex;
+                border: 1px solid #DDDDDD;
+                padding-top: 10px;
+                padding-bottom: 10px;
+                margin-bottom: 30px;
+                padding-left: 10px;
+				cursor: pointer;
+				
+                .left_element {
+                    width: 95%;
+
+                    span:nth-child(2) {
+                        padding-left: 10px;
+                    }
+                }
+			}
+		}
+	}
+
+	.razorpaykyc-modal-document {
+
+		.address-proof {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+
+			.upload-box {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				margin-top: 20px;
+
+				.document-box {
+					border: 1px solid #DDDDDD;
+					//padding: 20px;
+					text-align: center;
+					height: 60px;
+					cursor: pointer;
+
+					label {
+						display: block;
+						width: 100%;
+						height: 100%;
+						cursor: pointer;
+
+						span {
+							line-height: 55px;
+						}
+					}
+
+					&.success {
+
+						label {
+							display: inline;
+							width: 100%;
+							height: 100%;
+							cursor: pointer;
+	
+							span {
+								line-height: 55px;
+							}
+						}
+						
+						border-bottom: 4px solid $color-success;
+					}
+
+					// label {
+					// 	width: 100%;
+					// 	display: block;
+					// 	height: 40px;
+					// 	cursor: pointer;
+					// }
+				}
+			}
+		}
+
+		.documents {
+			width: 100%;
+			display: flex;
+			flex-direction: column;
+
+			.upload-box {
+				display: flex;
+				width: 100%;
+				.document-box {
+					border: 1px solid #DDDDDD;
+					//padding: 20px;
+					text-align: center;
+					height: 60px;
+					width: 100%;
+
+					label {
+						display: block;
+						width: 100%;
+						height: 100%;
+						cursor: pointer;
+
+						span {
+							line-height: 55px;
+						}
+					}
+
+					&.success {
+						border-bottom: 4px solid $color-success;
+						display: flex;
+
+						label {
+							display: inline;
+							width: 100%;
+							height: 100%;
+							cursor: pointer;
+	
+							span {
+								line-height: 55px;
+							}
+						}
+
+						.check-success {
+							margin-right: 5px!important;
+						}
+	
+						.text-muted {
+							font-size: 13px!important;
+						}
+						
+					}
+				}
+			}
+		}
+		.info-text {
+			display: flex;
+			justify-content: space-between;
+			color: $color-text-muted;
+			font-size: 12px;
+		}
+
+		.complete-checkbox {
+			display: flex;
+			flex-direction: row;
+
+			.tandc {
+
+			}
+		}
+	}
+
+	.razorpaykyc-modal-contact {
+
+		.input-additional {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			padding-bottom: 15px;
+			.form_input {
+				height: 52px!important;
+			}
+
+		}
+	}
+
+	.kyc-modal-stakeholder {
+
+		.form_input:nth-child(1) {
+			height: 50px!important;
+		}
+	}
+}

@@ -1,0 +1,25 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.radio {
+	.radio-custom-wrapper {
+		display: flex;
+		align-items: flex-end;
+
+		.radio-custom-label-wrapper {
+			margin-left: 6px;
+			font-size: 14px;
+
+			&.disabled {
+				color: #ccc;
+			}
+		}
+
+		input.radio-custom {
+			&:disabled ~ .radio-custom-circle {
+				border-color: #dadada;
+				background-color: #dadada;
+			}
+		}
+	}
+}

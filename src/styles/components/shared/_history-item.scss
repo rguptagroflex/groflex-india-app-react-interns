@@ -1,0 +1,146 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.history-item-icon-and-content {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+
+    &:last-of-type {
+        border: none;
+
+    }
+
+    .history-icon-container {
+        color: $color-secondary;	
+        min-width: 20px;
+        margin-right: 20px;
+        padding-top: 32px;
+
+        &.type-email, &.type-document {
+            padding-top: 32px;
+        }
+
+        .icon {
+            font-size: 20px;
+            line-height: 18px;
+        }
+    }
+
+    .history-content {
+        display: flex;
+        flex-direction: column;
+        max-width: 750px;
+        padding: 12px 0;
+        
+        .history-header {
+            font-size: 10px;
+            letter-spacing: 0.2px;
+            line-height: 14px;
+            color: $color-text-lighter;
+
+            p {
+                margin-top: 20px;
+            }
+        }
+
+        @include todo-header;
+        @include read-more-button-with-icon;
+
+        .history-body {
+            line-height: 18px;
+            font-size: 14px;
+            letter-spacing: 0.28px;
+            margin: 5px 0;
+            word-break:break-all;
+
+            &.not-truncated {
+                max-height: 100%;
+            }
+
+            &.truncated {
+                height: auto;
+                max-height: 54px;
+                overflow-y: hidden;
+            }
+
+            .history-date {
+                font-weight: 600;
+            }
+
+            .history-text {
+                position: relative;
+                .history-link {
+                    color: $color-primary;
+                    cursor: pointer;
+                }
+                &.history-text-own-email {
+                    .own-email-item-address {
+                        display: inline-block;
+                    }
+                }
+            }
+
+        }
+
+        .history-buttons {
+            display: flex;
+            font-size: 10px;
+            line-height: 14px;
+            letter-spacing: 0.2px;
+
+            .action-text {
+                margin-right: 10px;
+                cursor: pointer;
+            }
+
+            .todo-done {
+                color: $color-primary;
+            }
+
+            .todo-delete, .todo-new-date, .secondary-action {
+                color: $color-text-lighter;
+            }
+
+            .select-dates-input-wrapper {
+                .date-custom-input {
+                    top: -22px;
+                }
+
+                .hidden-select-dates-input {
+                    top: auto;
+                    bottom: -4px;
+
+                    .Select-control {
+                        width: 70px;
+                        height: 18px;
+                        display: block;
+                        overflow: hidden;
+                    }
+                }
+
+                .custom-label {
+                    color: $color-text-lighter;
+                    font-weight: 600;
+                }
+            }
+
+            .dateInput {
+                flex-direction: row;
+                .action-text {
+                    font-size: 10px;
+                }
+                input {
+                    padding: 0;
+                    border: none;
+                    color: transparent;
+                    &:focus {
+                        outline: none;
+                    }
+                }
+                .hidden-input-component{
+                    visibility: hidden;
+                }
+            }
+        }	
+    }
+}

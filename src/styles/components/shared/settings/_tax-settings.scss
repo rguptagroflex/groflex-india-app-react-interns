@@ -1,0 +1,45 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-taxsettings-component {
+	.settings-taxsettings-row {
+		margin-bottom: 22px;
+		display: flex;
+
+		.taxsettings-col-right {
+			margin-left: 20px;
+			font-size: 14px;
+
+			label {
+				color: $color-text;
+				font-size: 16px;
+				font-weight: 600;
+			}
+
+			.info-text {
+				margin-top: 10px;
+			}
+		}
+	}
+
+	.taxsettings-frequency {
+		margin-top: 30px;
+		width: 265px;
+
+		.text-h6 {
+			margin-bottom: 5px;
+		}
+
+		.taxsettings-checkbox {
+			margin-top: 30px;
+
+			label.checkbox {
+				font-weight: 600;
+			}
+		}
+	}
+
+	.button-component-wrapper {
+		text-align: right;
+	}
+}

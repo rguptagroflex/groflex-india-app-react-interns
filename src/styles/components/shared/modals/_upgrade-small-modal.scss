@@ -1,0 +1,62 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.upgrade-small-modal-component {
+	padding-top: 310px;
+	text-align: center;
+
+	.upper-half {
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		height: 330px;
+		background: $color-primary;
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+		overflow: hidden;
+
+		.upper-half-icon {
+			position: relative;
+			width: 180px;
+			height: 180px;
+			margin: 40px auto 30px auto;
+			border-radius: 50%;
+			background: white;
+
+			.SVGInline {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin: -40px 0 0 -40px;
+			}
+		}
+	}
+
+	.title {
+		margin-top: 0;
+		color: #ffffff;
+		font-size: 26px;
+		font-weight: 500;
+	}
+
+	.claim {
+		font-weight: 600;
+		line-height: 1.7;
+		padding-bottom: 20px;
+		// text-align: justify;
+		// padding-left: 57px;
+		// padding-right: 57px;
+	}
+
+	.subclaim {
+		font-weight: 600;
+		line-height: 1.7;
+		margin-bottom: 0;
+	}
+
+	.button-wide {
+		width: 35%;
+		margin: 0 auto;
+	}
+}

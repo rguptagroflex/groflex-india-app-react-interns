@@ -1,0 +1,234 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+$newsfeed-width: 465px;
+
+.newsfeed-component {
+	position: fixed;
+	top: 0;
+	height: 100%;
+	visibility: hidden;
+	transition: visibility 0s 0.3s;
+
+	@include breakpoint-lg {
+		@include rem(left, $menu-width);
+	}
+
+	@include breakpoint-md {
+		@include rem(left, $menu-small-width);
+
+		&.first-item-unread {
+			&:after {
+				border-right-color: $color-primary-superlight;
+			}
+		}
+	}
+
+	&.visible {
+		visibility: visible;
+		transition: visibility 0s;
+
+		&:after {
+			opacity: 1;
+			left: -7px;
+		}
+
+		.newsfeed-overlay {
+			opacity: 0.15;
+			visibility: visible;
+			transition: visibility 0s, opacity 0.3s ease-out;
+		}
+
+		.newsfeed-items {
+			width: $newsfeed-width;
+			visibility: visible;
+			transition: visibility 0s, width 0.3s ease-out;
+		}
+	}
+
+	&:after {
+		position: absolute;
+		left: 0;
+		@include triangle('left', 7, #ffffff);
+		transform: scaleY(1.3);
+		content: ' ';
+		z-index: 10001;
+		opacity: 0;
+		transition: all 0.3s;
+
+		@include breakpoint-lg {
+			@include rem(top, 67px);
+		}
+
+		@include breakpoint-md {
+			@include rem(top, 121px);
+		}
+	}
+
+	.newsfeed-overlay {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background: #1a2028;
+		z-index: 10000;
+		opacity: 0;
+		visibility: hidden;
+		transition: visibility 0s 0.3s, opacity 0.3s ease-out;
+
+		@include breakpoint-lg {
+			@include rem(left, $menu-width);
+		}
+
+		@include breakpoint-md {
+			@include rem(left, $menu-small-width);
+		}
+	}
+
+	.newsfeed-items {
+		position: fixed;
+		top: 0;
+		width: 0;
+		height: 100%;
+		background: #ffffff;
+		@include rem(box-shadow, 20px 0px 40px -10px rgba(0, 0, 0, 0.1));
+		overflow: hidden;
+		z-index: 10001;
+		visibility: hidden;
+		transition: visibility 0s 0.3s, width 0.3s ease-out;
+
+		@include breakpoint-lg {
+			@include rem(left, $menu-width);
+		}
+
+		@include breakpoint-md {
+			@include rem(left, $menu-small-width);
+
+			.newsfeed-header {
+				margin-top: 41px;
+
+				div {
+					line-height: 28px !important;
+				}
+			}
+		}
+
+		.newsfeed-header {
+			&.large-top {
+				margin-top: 41px;
+			}
+
+			div {
+				height: 45px;
+				line-height: 45px;
+				padding-left: 25px;
+				@include rem(font-size, 17px);
+				font-weight: 600;
+				white-space: nowrap;
+			}
+		}
+
+		.newsfeed-item {
+			position: relative;
+			width: 100%;
+			height: 85px;
+			border-bottom: 1px $color-bg-dark solid;
+			transition: background-color 0.3s ease-out, border-color 0.3s ease-out;
+			cursor: pointer;
+
+			&.unread,
+			&:hover {
+				border-color: #cbe0fa;
+				background: $color-primary-superlight;
+
+				.newsfeed-item-left {
+					.icon:not(.icon-exclamation_mark2) {
+						color: $color-primary;
+						background: #ffffff;
+					}
+
+					.icon.icon-exclamation_mark2 {
+						background: #ffffff;
+					}
+				}
+			}
+
+			.newsfeed-item-left {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100px;
+				height: 85px;
+				@include rem(font-size, 13px);
+
+				.icon {
+					width: 45px;
+					height: 45px;
+					line-height: 45px;
+					margin: 20px 0 0 25px;
+					text-align: center;
+					border-radius: 50%;
+					color: #8c9092;
+					background: $color-bg-medium;
+					transition: all 0.3s ease-out;
+
+					&.icon-at {
+						font-size: 18px;
+						&:before {
+							vertical-align: top;
+						}
+					}
+
+					&.icon-check {
+						font-size: 16px;
+						&:before {
+							vertical-align: top;
+						}
+					}
+
+					&.icon-exclamation_mark2 {
+						color: $color-secondary;
+						font-size: 16px;
+					}
+
+					&.icon-small {
+						&:before { position: relative; left: 1px; }
+					}
+				}
+			}
+
+			.newsfeed-item-middle {
+				position: absolute;
+				top: 0;
+				left: 100px;
+				width: $newsfeed-width - 100px - 130px;
+				height: 85px;
+
+				.newsfeed-item-content {
+					width: 100%;
+					height: 68px;
+					margin-top: 13px;
+					line-height: 19px;
+					@include rem(font-size, 13px);
+					overflow: hidden;
+				}
+			}
+
+			.newsfeed-item-right {
+				position: absolute;
+				top: 0;
+				left: ($newsfeed-width - 130px);
+				width: 130px;
+				height: 85px;
+
+				span {
+					position: absolute;
+					right: 20px;
+					bottom: 15px;
+					@include rem(font-size, 12px);
+					color: $color-text-light;
+				}
+			}
+		}
+	}
+}

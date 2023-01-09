@@ -1,0 +1,30 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.menuItem-hasSubmenu {
+	&:hover {
+		color: $color-menu-text;
+	}
+}
+
+.submenuImprint {
+	position: fixed;
+	width: 180px;
+	@include rem(bottom, 28);
+	padding-left: 20px;
+
+	a,
+	span {
+		@include rem(font-size, 11);
+		color: $color-submenu-imprint;
+
+		&:not(span):hover {
+			color: $color-menu-text;
+		}
+	}
+
+	span {
+		@include rem(margin-left, 10);
+		@include rem(margin-right, 10);
+	}
+}

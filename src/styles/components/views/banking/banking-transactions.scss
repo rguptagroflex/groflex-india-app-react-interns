@@ -1,0 +1,213 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.banking-empty-state-wrapper {
+	.dashboard-banking-component-wrapper {
+		padding: 40px;
+	}
+}
+
+.banking-transactions-wrapper {
+
+	.banking-transactions-head-container {
+		position: relative;
+		width: 100%;
+		height: 525px;
+		padding-top: 60px;
+		background: $color-white;
+
+		.detail-view-head-entry-last .detail-view-head-sub-value {
+			right: 0;
+			bottom: -27px;
+			white-space: nowrap;
+		}
+
+		.banking-transactions-search-wrapper {
+			position: relative;
+			width: 925px;
+			margin: 52px auto 0;
+
+			.filter-component-wrapper {
+				float: right;
+			}
+		}
+	}
+
+	.banking-transactions-list-wrapper {
+		position: relative;
+		width: 925px;
+		height: auto;
+		@include vendor-prefix('box-shadow', $box-shadow-subscription-box);
+		margin: -325px auto 0;
+		background: $color-bg-medium;
+
+		.list-component {
+			padding: 10px 30px 0;
+		}
+
+		.box {
+			padding: 0;
+		}
+
+		.list-fallback {
+			padding: 50px 0;
+			margin: 0;
+		}
+
+		.banking-transaction-pagination {
+			padding: 40px 0;
+			text-align: center;
+		}
+
+		.loader_spinner {
+			position: relative;
+			display: inline-block;
+			top: 4px;
+			width: 20px;
+			height: 20px;
+			margin-right: 10px;
+
+			&:after {
+				width: 20px;
+				height: 20px;
+			}
+		}
+	}
+
+	.transaction-expanded-container {
+		position: relative;
+
+		.transaction-expanded-row {
+			position: relative;
+			display: flex;
+			width: 100%;
+			margin: 0 0 25px;
+
+			&.button-row {
+				flex-direction: row-reverse;
+				margin-top: 35px;
+
+				.button-component-wrapper {
+					margin: 0 10px;
+				}
+			}
+		}
+
+		.transaction-expanded-column {
+			position: relative;
+			width: 38%;
+
+			&.small {
+				width: 24%;
+			}
+
+			.transaction-expanded-headline {
+				font-weight: 600;
+				margin: 0 0 10px;
+			}
+
+			.transaction-expanded-item {
+				display: flex;
+				margin: 5px 0;
+				font-size: 13px;
+
+				.transaction-expanded-item-label {
+					display: inline-block;
+					width: 50px;
+					font-weight: 600;
+
+					&.wide {
+						width: 100px;
+					}
+				}
+
+				.transaction-expanded-item-value.no-truncate {
+					text-align: right;
+					width: 70px;
+				}
+
+				&:not(.purpose-description) .transaction-expanded-item-value:not(.no-truncate) {
+					display: inline-block;
+					width: 220px;
+					@include truncate-text();
+				}
+
+				&.purpose-description {
+					position: absolute;
+					left: 0;
+					top: 25px;
+					right: 25px;
+					bottom: -85px;
+					overflow: hidden;
+					word-break: break-all;
+				}
+			}
+		}
+	}
+
+	.transaction-row-status {
+		.status-mousezone {
+			position: absolute;
+			top: 5px;
+			width: 50px;
+			height: 50px;
+			cursor: pointer;
+
+			&:hover .status-icon.icon-check {
+				@include icon(before, close);
+				background: $color-error!important;
+
+				&:before {
+					font-size: 8px;
+				}
+			}
+		}
+
+		.status-icon {
+			position: relative;
+			top: 22px;
+			width: 18px;
+			height: 18px;
+			margin: 0 auto;
+			color: $color-white;
+			border-radius: 50%;
+			cursor: pointer;
+
+			&:before {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				@include vendor-prefix('transform', 'translate(-50%, -50%)');
+				font-size: 8px;
+			}
+
+		}
+
+		&.disabled {
+			.status-mousezone, .status-icon {
+				cursor: default;
+			}
+		}
+
+		.transaction-row-status-tooltip-content {
+			max-width: 150px;
+			height: 40px;
+			cursor: pointer;
+
+			.tooltip-text {
+				color: $color-text;
+				margin: 0 0 5px;
+			}
+
+			.tooltip-description {
+				color: $color-primary;
+				font-weight: 600;
+			}
+
+			& * {
+				@include truncate-text();
+			}
+		}
+	}
+
+}

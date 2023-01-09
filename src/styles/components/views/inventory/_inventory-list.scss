@@ -1,0 +1,51 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.invoice-view-filter .icon {
+	cursor: pointer;
+	font-size: 13px;
+	padding-top: 3px;
+
+	&:hover {
+		color: $color-primary;
+	}
+}
+
+.inventory-list-component-wrapper {
+	.inventory-list-wrapper {
+		@include ag-grid-cell-status-icon();
+
+		.ag-filter {
+			.ag-set-filter-item {
+				.ag-set-filter-item-value {
+					margin-left: 7px !important;
+				}
+
+				.icon {
+					margin: 5px 0 0 8px;
+					font-size: 15px;
+
+					&.state-draft {
+						color: $color-text-light;
+					}
+
+					&.state-locked {
+						color: $color-primary;
+					}
+
+					&.state-cancelled {
+						color: $color-menu-icon;
+					}
+
+					&.state-dunned {
+						color: $color-error;
+					}
+
+					&.state-paid {
+						color: $color-success;
+					}
+				}
+			}
+		}
+	}
+}

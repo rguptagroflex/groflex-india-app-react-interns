@@ -1,0 +1,195 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+$modal-padding: 40px;
+$footer-height: 70px;
+
+.bank-account-setup-modal-component {
+	position: relative;
+	display: block;
+	width: 100%;
+	background: $color-white;
+
+	.content-box {
+		position: relative;
+		width: 100%;
+		min-height: 520px;
+		padding: $modal-padding $modal-padding ($modal-padding + $footer-height) $modal-padding;
+		display: block;
+
+		.modal-headline {
+			position: relative;
+
+			.btn-faq {
+				position: absolute;
+				top: 4px;
+				right: 0;
+			}
+		}
+
+		.btn-tooltip {
+			font-size: 22px;
+			color: $color-primary;
+			cursor: pointer;
+		}
+
+		.bank-account-setup-pin-field {
+			margin-top: 5px;
+
+			.bank-account-setup-field-error {
+				font-size: 12px;
+			}
+		}
+
+		.bank-account-setup-field-error {
+			margin: 10px 0;
+			font-size: 12px;
+			color: $color-secondary;
+		}
+
+		.input-row {
+			position: relative;
+			margin-bottom: 15px;
+			display: flex;
+
+			&.input_hint {
+				top: 0 !important;
+			}
+
+			&.no-margin-bottom {
+				margin-bottom: 0;
+			}
+
+			.form_input {
+				width: 685px;
+			}
+
+			.input-label-wrapper {
+				width: 25px;
+				display: block;
+
+				.input-label-tooltip {
+					position: relative;
+					margin-left: 8px;
+					display: inline;
+
+					.btn-tooltip {
+						position: absolute;
+						top: 19px;
+						left: 0;
+						display: inline-block;
+					}
+				}
+			}
+		}
+
+		.button-row {
+			position: relative;
+			margin-bottom: 25px;
+
+			.button-row-col-left {
+				margin-right: 15px;
+				display: inline-block;
+			}
+
+			.button-row-col-right {
+				display: inline-block;
+			}
+		}
+
+		.account-list-row {
+			position: relative;
+			font-size: 14px;
+			margin-bottom: 20px;
+			display: flex;
+
+			.account-list-col-left {
+				width: 50%;
+
+				.form_input {
+					.checkbox {
+						& > div {
+							max-width: 90%;
+						}
+
+						.checkbox_label {
+							display: inline !important;
+							@include truncate-text();
+						}
+					}
+				}
+			}
+
+			.account-list-col-right {
+				position: absolute;
+				top: 2px;
+				right: 0;
+
+				.icon-check {
+					color: $color-primary;
+					&:before {
+						vertical-align: top;
+					}
+				}
+
+				.icon-close {
+					color: $color-secondary;
+				}
+
+				.loader {
+					margin-top: 7px;
+					margin-left: -16px;
+					transform: scale(0.5);
+				}
+			}
+		}
+
+		.finished-box {
+			text-align: center;
+
+			h4 {
+				margin-top: 80px;
+				margin-bottom: 60px;
+			}
+
+			.icon {
+				color: $color-primary;
+				font-size: 100px;
+			}
+		}
+	}
+
+	.modal-footer {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 100%;
+		height: $footer-height;
+		line-height: $footer-height;
+		padding: 0 $modal-padding;
+		border-top: 1px #E3E3E3 solid;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		.button,
+		.button-cancel {
+			display: flex;
+		}
+
+		.button-cancel {
+			cursor: pointer;
+		}
+	}
+}
+
+.bank-account-setup-modal-headline-tooltip {
+	.bank-account-setup-modal-tooltip-head1 {
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	.bank-account-setup-modal-tooltip-head2 {
+		margin: 8px 0;
+	}
+}

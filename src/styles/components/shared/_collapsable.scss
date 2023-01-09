@@ -1,0 +1,44 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.collapsable-component {
+	.collapsable-head-wrapper {
+		position: relative;
+		padding: 4px 0;
+		font-weight: 600;
+		cursor: pointer;
+
+		.icon {
+			position: absolute;
+			top: 4px;
+			right: 0;
+			font-weight: 500;
+			color: $color-text;
+			font-size: 13px;
+			pointer-events: none;
+
+			&.icon-sort_up {
+				top: 11px;
+			}
+		}
+	}
+
+	.collapsable-body-wrapper {
+		height: 0;
+		visibility: hidden;
+		overflow: hidden;
+
+		&.expanded {
+			height: auto;
+			margin: 8px 0;
+			visibility: visible;
+		}
+	}
+
+	&.auto-head-width {
+		.collapsable-head-wrapper {
+			padding-right: 20px;
+			display: inline-block;
+		}
+	}
+}

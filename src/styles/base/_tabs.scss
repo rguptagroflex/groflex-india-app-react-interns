@@ -1,0 +1,10 @@
+.tabs {
+    .tab-list {
+        display: flex;
+        justify-content: space-around;
+
+        .tab.active {
+            font-weight: 600;
+        }
+    }
+}

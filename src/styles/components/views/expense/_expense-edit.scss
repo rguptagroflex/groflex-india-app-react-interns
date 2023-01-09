@@ -1,0 +1,246 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.expense-edit-component-wrapper {
+	.expense-price-div .input-leftLabel .input {
+		width: 49%;
+		margin-left: 51%;
+	}
+
+	.textarea {
+		margin-top: 20px;
+
+		.textarea_input {
+			overflow: hidden;
+    		word-wrap: break-word;
+		}
+	}
+
+	.dateInput.dateInput_label-left {
+		margin-top: 35px;
+		width: 100%;
+
+		.dateInput {
+			width: 49%;
+
+			.dateInput_wrapper {
+				width: 100%;
+			}
+		}
+	}
+
+	.vat-percent-wrapper {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 15px;
+		margin-bottom: 20px;
+
+		label {
+			width: 51%;
+			font-size: 16px;
+			color: $color-text-muted;
+			letter-spacing: .025em;
+			line-height: 39px;
+		}
+
+		.selectInput {
+			width: 49%;
+
+			.Select-control {
+				border: 1px solid #ddd;
+				height: 39px;
+
+				.Select-value {
+					line-height: 39px;
+					padding-left: 10px !important;
+				}
+			}
+		}
+	}
+
+	.paykind-wrapper {
+		display: flex;
+		flex-direction: row;
+		margin-top: 35px;
+
+		.paykind-radio-wrapper {
+			margin-top: 13px;
+
+			.radio_label {
+				position: relative;
+				top: -2px;
+				margin: 0 20px 0 10px;
+			}
+		}
+
+		.paykind-radio-label {
+			width: 51%;
+			font-size: 16px;
+			color: $color-text-muted;
+			letter-spacing: .025em;
+			line-height: 39px;
+		}
+	}
+
+	.expenseEdit_fileListRow {
+
+		.expenseEdit_fileIcon {
+			padding: 0;
+			margin-right: 30px;
+			line-height: 39px;
+		}
+
+		.list_item {
+			padding: 0;
+			line-height: 39px;
+		}
+
+		.icon-close {
+			cursor: pointer;
+			font-size: 13px;
+			color: $color-text-muted;
+		}
+	}
+
+	.expense-edit-drop-box {
+		border: 1px dashed $color-white;
+		cursor: pointer;
+
+		label {
+			cursor: pointer;
+		}
+
+		&:hover {
+			border: 1px dashed #aaaaaa;
+			border-radius: 5px;
+		}
+	}
+}
+
+.expense1-edit-component-wrapper {
+	// .box {
+	// 	padding-top: 40px;
+	// }
+
+	.heading {
+		padding-bottom: 25px;
+	}
+
+	.expense-edit-ispaid {
+		padding-bottom: 5px;
+		padding-top: 20px;
+		float: right;
+	}
+
+	.paykind-wrapper {
+		// display: flex;
+		// flex-direction: row;
+		// margin-top: 35px;
+
+		.paykind-radio-wrapper {
+			margin-top: 13px;
+
+			.radio_label {
+				position: relative;
+				top: -2px;
+				margin: 0 20px 0 10px;
+			}
+		}
+
+		.paykind-radio-label {
+			text-align: left;
+			color: #747474;
+			font-size: 13px;
+			margin-bottom: 2px;
+		}
+	}
+
+	.textarea {
+		.textarea_input {
+			overflow: hidden;
+    		word-wrap: break-word;
+		}
+	}
+	.recipientPayeeContainer {
+		min-height: 65px;
+		font-size: 14px;
+		padding-bottom: 35px;
+		padding-top: 4px;
+	}
+
+	.recipientForm{
+		width: 100%;
+		padding-bottom: 0px;
+	}
+
+	.transaction-form-positions {
+		// margin-top: 32px;
+		min-height: 260px;
+	}
+
+	.expense-receipt-list {
+		padding-top: 10px;
+    	padding-bottom: 20px;
+	}
+
+	.expenseEdit_fileListRow {
+		border-bottom: 1px solid #aaaaaa;
+
+		.expenseEdit_fileIcon {
+			padding: 0;
+			margin-right: 10px;
+			line-height: 39px;
+		}
+
+		.list_item {
+			padding: 0;
+			line-height: 39px;
+		}
+
+		.icon-close {
+			cursor: pointer;
+			font-size: 13px;
+			color: $color-text-muted;
+		}
+	}
+
+	.expense-edit-drop-box {
+		border: 1px dashed #aaaaaa;
+		border-radius: 5px;
+
+		label {
+			cursor: pointer;
+		}
+
+		.upload-image {
+			padding-left: 44%;
+			padding-right: 38%;
+		}
+	}
+	
+	.recipientContainer {
+		margin-bottom: 20px;
+
+		.recipientEmpty {
+			font-size: 15px;
+
+			.recipientEmpty_label {
+				padding-left: 10px;
+			}
+			.icon {
+
+				&.icon-rounded  {
+					width: 22px !important;
+					height: 22px !important;
+					&:before {
+						font-size: 10px;
+					}
+				}
+			}
+		}
+	}
+}
+.font-size-small {
+	font-size: small;		
+}

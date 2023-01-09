@@ -1,0 +1,47 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.ovalToggle {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	
+	.toggleSwitch_switch {
+		height: 28px;
+		width: 45px;
+		.toggleSwitch_slider::before {
+			height: 24px;
+			width: 24px;
+			bottom: 1px;
+			left: 1px;
+		}
+		&.checked {
+			.toggleSwitch_slider::before {
+				left: -8px;
+			}
+		}
+	}
+
+	&.newStyle {
+		.toggleSwitch_switch {
+			width: 46px;
+			height: 26px;
+			.toggleSwitch_slider-round {
+				box-shadow: inset 0px 0px 3px 1px rgba(0, 0, 0, 0.08);
+				border: none !important;
+			}
+			.toggleSwitch_slider::before {
+				left: 3px;
+				bottom: 3px;
+				height: 20px;
+				width: 20px;
+				box-shadow: 0px 1px 2px 2px rgba(0, 0, 0, 0.1);
+			}
+			&.checked {
+				.toggleSwitch_slider::before {
+					left: -3px;
+				}
+			}
+		}
+	}
+}

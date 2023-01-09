@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES6"
+  },
+  "exclude": [
+    ".happypack",
+    ".idea",
+    ".vscode",
+    "coverage",
+    "dist",
+    "docs",
+    "node_modules",
+    "ui-test"
+  ]
+}

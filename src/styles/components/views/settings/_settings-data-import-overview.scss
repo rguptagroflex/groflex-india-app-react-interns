@@ -1,0 +1,25 @@
+@import "../../../abstracts/mixins";
+@import "../../../abstracts/variables";
+
+.data-import-overview-component {
+	.data-import-type {
+		float: left;
+		width: 440px;
+		padding: 140px 50px;
+		margin: 60px 0;
+		text-align: center;
+		background: $color-white;
+		@include vendor-prefix('box-shadow', $box-shadow-box);
+
+		&:last-child {
+			margin-left: 44px;
+		}
+
+		.data-import-type-icon {
+			font-size: 130px;
+			color: $color-big-icons;
+			margin-bottom: 20px;
+		}
+		
+	}
+}

@@ -1,0 +1,242 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.list-component {
+	position: relative;
+	width: 100%;
+
+	.text-h4 {
+		padding-bottom: 15px;
+	}
+
+	.list-fallback {
+		margin: 50px 0;
+		text-align: center;
+
+		h3 {
+			font-size: 17px;
+			font-weight: 500;
+			margin-bottom: 30px;
+		}
+	}
+	.italic-text {
+		font-style: italic;
+	}
+
+	.list-table {
+		position: relative;
+		width: 100%;
+
+		.list-table-head {
+			font-size: 16px;
+			font-weight: 600;
+			color: $color-text;
+
+			.column-sortable {
+				cursor: pointer;
+
+				.icon {
+					display: inline-block;
+					opacity: 0;
+					@include vendor-prefix('transition', 'opacity 0.25s');
+
+					&.icon-sort_up, &.icon-sort_down {
+						position: relative;
+						top: 7px;
+						left: 7px;
+					}
+
+					&.icon-sort_down {
+						top: 0;
+					}
+				}
+
+				&.column-sorted {
+					.icon {
+						opacity: 1;
+					}
+
+					&:hover {
+						.icon { opacity: 0.9 }
+					}
+				}
+
+				&:hover {
+					.icon {
+						opacity: 1;
+					}
+				}
+			}
+
+			.list-table-cell  {
+				border: none;
+			}
+		}
+
+		.list-table-row {
+			font-size: 14px;
+
+			&.list-table-placeholder-row {
+				color: $color-text-placeholder;
+			}
+
+			&.paid,
+			&.finished {
+				.list-table-cell {
+					color: #bbbbbb;
+				}
+			}
+
+			&:hover {
+				.cell-selectable {
+					opacity: 1;
+				}
+			}
+			.corresponding-document-link {
+				cursor: pointer;
+				color: $color-primary;
+			}
+		}
+
+		.list-table-cell {
+			position: relative;
+			padding: 25px 10px;
+			word-break: break-word;
+			border-bottom: 1px solid $color-line-light;
+			vertical-align: top;
+
+			&.no-border {
+				border-bottom: 0 none;
+			}
+
+			&.list-table-cell-empty {
+				padding: 0 !important;
+			}
+
+			.list-table-cell-subvalue {
+				margin-top: 3px;
+				font-size: 12px;
+				color: $color-text-canceled;
+			}
+
+			.recurring-invoice-list-cell-dropdown {
+				.icon,
+				.popover-entry {
+					color: $color-text;
+				}
+			}
+
+			&.list-table-head-cell {
+				position: relative;
+
+				.column-divider {
+					position: absolute;
+					height: 23px;
+					left: 0;
+					top: 18px;
+					border-left: 1px solid $color-line-light;
+				}
+			}
+
+			.icon-paint {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+		}
+
+		.list-table-row-expanded-content {
+			position: absolute;
+			top: 0;
+			right: -30px;
+			bottom: 0;
+			left: -30px;
+			padding: 25px 40px;
+			background: $color-bg-medium;
+			cursor: default;
+
+			.list-table-row-expanded-close {
+				position: absolute;
+				right: 60px;
+				top: 15px;
+				font-size: 10px;
+				color: $color-text-muted;
+				cursor: pointer;
+				user-select: none;
+			}
+		}
+
+		.cell-selectable, .column-selectable {
+			width: 40px;
+			border-bottom: 0 none;
+
+			.form_input {
+				height: 15px;
+
+				label {
+					position: absolute;
+					top: 3px;
+					left: 0;
+					background: $color-white;
+				}
+			}
+		}
+
+		.cell-selectable {
+			opacity: 0;
+
+			&.visible {
+				opacity: 1;
+				border-bottom: 1px solid $color-line-light;
+			}
+		}
+
+		&.list-table-hoverable {
+			:not(.list-table-head).list-table-row:not(.list-table-placeholder-row) {
+				cursor: pointer;
+
+				&:hover {
+					background: $color-table-hover;
+
+					.cell-selectable {
+						border-bottom: 1px solid $color-line-light;
+					}
+				}
+			}
+		}
+	}
+
+	.list-cell-error-indicator,
+	.list-cell-success-indicator {
+		&:before {
+			content: '';
+			display: block;
+			position: absolute;
+			left: -12px;
+			top: 31px;
+			width: 7px;
+			height: 7px;
+			background: $color-secondary;
+			border-radius: 50%;
+		}
+	}
+
+	.list-cell-success-indicator:before {
+		background: $color-success;
+	}
+
+	.list-table-selectable {
+		.list-table-row-expanded-content{
+			padding: 25px 80px;
+		}
+
+		.list-cell-error-indicator,
+		.list-cell-success-indicator {
+			&:before {
+				left: -51px;
+				top: 33px;
+			}
+		}
+	}
+}

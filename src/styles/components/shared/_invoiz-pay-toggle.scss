@@ -1,0 +1,48 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.invoice-pay-toggle-component {
+	position: relative;
+	display: flex;
+	justify-content: center;
+
+	.invoice-pay-toggle-content {
+		position: absolute;
+		top: -40px;
+		height: 60px;
+		border: 1px #ededed solid;
+		background: #ffffff;
+		border-radius: 30px;
+		padding: 0 34px 0 24px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1;
+
+		.text-content {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			.title {
+				font-size: 14px;
+				font-weight: 600;
+
+				.colored {
+					color: $color-primary;
+				}
+			}
+
+			.icon-info {
+				margin: 5px 20px 0 8px;
+				font-size: 20px;
+				color: #C1C1C1;
+			}
+		}
+
+		.ovalToggle {
+			padding-top: 6px;
+			padding-bottom: 0 !important;
+		}
+	}
+}

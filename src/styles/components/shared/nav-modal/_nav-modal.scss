@@ -1,0 +1,28 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.main-nav {
+    width: 100%;
+
+    .nav-steps {
+        display: flex;
+        flex-direction: row;
+        border-bottom: 1px solid $color-line-light;
+        justify-content: space-evenly;
+        //padding-bottom: 15px;
+        box-shadow: 0px 1px 1px $color-shadow;
+        
+        .nav-step {
+            padding-bottom: 20px;
+            font-size: 13px;
+            color: $menu-text-color;
+            font-weight: 600;
+            cursor: pointer;
+            &.active-step {
+                color: $color-primary;
+                font-size: 13px;
+                border-bottom: 3px solid $color-primary;
+            }
+        }
+    }
+}

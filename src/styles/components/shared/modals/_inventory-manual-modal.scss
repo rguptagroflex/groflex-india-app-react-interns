@@ -1,0 +1,384 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.inventory-manual-entry-modal {
+	.inventory-manual-body {
+		margin-top: 20px;
+		.letter-positions-head-wrapper {
+
+			left: -60px;
+			.letter-positions-head {
+				display: flex;
+				justify-content: space-between;
+				.letter-positions-head-column {
+					width: 100px;
+					padding-right: 12px !important;
+					font-size: 13px;
+	
+					&.letter-positions-head-column-title {
+						width: 140px;
+					}
+					&.letter-positions-head-column-action {
+						width: 120px;
+					}
+					&.letter-positions-head-column-quantity {
+						padding-left: 5px;
+						width: 75px;
+					}
+					// &.letter-positions-head-column-customer {
+					// 	padding-left: 5px;
+					// 	width: 130px;
+					// }
+					&.letter-positions-head-column-itemModifiedDate {
+						width: 100px;
+					}
+					&.letter-positions-head-column-purchasePrice {
+						margin-left: 5px;
+						width: 95px;
+					}
+					&.letter-positions-head-column-salesPrice {
+						margin-left: 15px;
+						width: 95px;
+					}
+				}
+			}
+
+		}
+
+
+		.letter-positions-component-wrapper {
+
+			.letter-positions-item {
+				position: relative;
+				width: 780px;
+				border-bottom: 1px solid #e3e3e3;
+				padding: 0 6px 0 6px;
+				background-color: white;
+			
+				.input:hover:not(:disabled) {
+					border-bottom: 1px dashed $color-line-light;
+				}
+
+				// .letter-positions-item:nth-child(odd) {
+				// 	background-color: #F2F4F6;
+					
+				// 	.inline .input, .Select-control {
+				// 		background-color: #F2F4F6;
+				// 	}
+				// }
+			
+				.letter-positions-item-textarea {
+					padding: 0 0 0px;
+			
+					.ql-editor {
+						font-size: 12px;
+						&.ql-blank:before { left: 0; right: 0; }
+					}
+			
+					.htmlInput {
+						margin-bottom: 0;
+					}
+			
+					.htmlInput_bar {
+						&:before, &:after { content: none };
+					}
+				}
+			
+				.letter-positions-item-draggable {
+					position: absolute;
+					width: 20px;
+					height: 20px;
+					left: -30px;
+					@include vendor-prefix('transform', 'rotate(90deg)');
+					text-align: center;
+					cursor: move;
+					color: $color-text-muted;
+				}
+			
+				.letter-positions-item-remove {
+					position: absolute;
+					right: 0px;
+					top: 12px;
+					color: $color-text;
+					cursor: pointer;
+			
+					&:hover {
+						opacity: 0.8;
+					}
+				}
+			
+				.letter-positions-item-columns {
+					position: relative;
+					display: flex;
+					font-size: 14px;
+					padding: 10px 0 !important;
+			
+					.letter-positions-item-column {
+						position: relative;
+						white-space: nowrap;
+						//padding-right: 12px;
+						&.letter-positions-item-column-title {
+							// flex-basis: 0;
+							// flex-grow: 1;
+							//margin-right: 12px;
+							padding-right: 0;
+							width: 130px;
+							top: 4px;
+							.input {
+								background-color: white !important;
+							}
+						}
+			
+						&.letter-positions-item-column-action {
+							// flex-basis: 97px;
+							// flex-grow: 0;
+							padding-right: 0;
+							width: 120px;
+							margin-left: 22px;
+							//@include truncate-text();
+							text-transform: capitalize;
+							bottom: 2px !important;
+							
+
+							.selectInput {	
+								.Select-control {
+									background-color: white;
+									border: 0 none;
+
+									.Select-clear-zone {
+										display: none !important;
+									}
+									.Select-arrow-zone {
+											display: none;
+									}
+									&:hover {
+										border-bottom: 1px solid #dddddd;
+										.Select-arrow-zone {
+											display:table-cell;
+										}
+									}
+								}
+		
+							}
+						}
+
+			
+						&.letter-positions-item-column-quantity {
+							width: 80px;
+							text-align: left;
+							top: 4px;
+							//padding-right: 7px;
+							margin-left: 26px;
+							.input {
+								text-align: right;
+								background-color: white !important;
+							}						
+							
+						}
+			
+						&.letter-positions-item-column-customer {
+							width: 130px;
+							text-align: right;
+							//font-size: 12px;
+							padding-left: 5px;
+							bottom: 5px !important;
+							// .selectInput_bar {
+							// 	&:before, &:after { content: none };
+							// }
+			
+							// .selectInput {
+							// 	position: absolute;
+							// 	top: -6px;
+							// 	right: 15px;
+							// 	width: 32px;
+							// 	// left: 0;
+							// 	// width: 39px;
+							// 	// padding-left: 2px;
+			
+							// 	.Select-menu-outer {
+							// 		min-width: 42px!important;
+							// 		max-height: 230px!important;
+							// 	}
+						
+							// 	.Select-menu {
+							// 		max-height: 230px!important;
+							// 	}
+			
+							// 	.Select-control {
+							// 		height: 28px;
+							// 		border: none;
+							// 		cursor: pointer;
+			
+							// 		.Select-input {
+							// 			height: 26px;
+							// 			padding-left: 13px;
+							// 		}
+			
+							// 		.Select-value {
+							// 			// line-height: 26px;
+							// 			width: 42px;
+							// 			padding: 0;
+							// 		}
+			
+							// 		.Select-multi-value-wrapper {
+							// 			height: 26px;
+							// 		}
+			
+							// 		.Select-clear-zone, .Select-arrow-zone {
+							// 			display: none;
+							// 		}
+							// 	}
+			
+							// 	&:hover:before {
+							// 		position: absolute;
+							// 		left: 0;
+							// 		bottom: 5px;
+							// 		width: 100%;
+							// 		height: 1px;
+							// 		border-bottom: 1px $color-line-light dashed;
+							// 		z-index: 1;
+							// 		content: " ";
+							// 	}
+							// }
+							.input {
+								background-color: white !important;
+							}
+						}
+			
+						&.letter-positions-item-column-itemModifiedDate {
+							width: 100px;
+							text-align: left;
+							//padding-left: 5px;
+							top: 2px;
+							margin-left: 33px;
+							.dateInput {
+								text-align: right;
+								.dateInput_wrapper {
+									.dateInput_input {
+										text-align: right;
+										border-bottom: none;
+										&:hover {
+											border-bottom: 1px solid #dddddd;
+										}
+									}
+								}
+							}
+							
+						}
+			
+						&.letter-positions-item-column-salesPrice {
+							width: 97px;
+							text-align: left;
+							padding-right: 0 !important;
+							top: 4px;
+							margin-left: 17px;
+							.input {
+								text-align: right;
+								background-color: white !important;
+							}
+						}
+			
+						&.letter-positions-item-column-purchasePrice {
+							width: 95px;
+							text-align: left;
+							padding-right: 0 !important;
+							margin-left: 25px;
+						top: 4px;
+							.form_input {
+								//top: -1px;
+			
+								.input {
+									text-align: right;
+									background-color: white !important;
+								}
+							}
+							
+						}
+					}
+				}
+			}
+			.letter-positions-items {
+				font-size: 12px;
+			}
+			.letter-positions-add-position {
+				position: relative;
+			
+				.letter-positions-add-position-button {
+					width: 100%;
+					height: 32px;
+					line-height: 30px;
+					padding: 0 0 0 32px;
+					margin: 25px 0 0;
+					color: $color-primary;
+					font-size: 14px;
+					font-weight: 600;
+			
+					.icon {
+						position: absolute;
+						left: 0;
+						top: 50%;
+						@include vendor-prefix('transform', 'translateY(-50%)');
+
+						&.icon-rounded  {
+							width: 22px !important;
+							height: 22px !important;
+							&:before {
+								font-size: 12px;
+							}
+						}
+					}
+			
+					&.add-position-button-invis {
+						display: none;
+					}
+					&:hover {
+						.edit-icon {
+							@include icon(after, edit);
+							position: absolute;
+							height: 5px;
+							z-index: 11;
+							color: $color-text-light;
+							top: -15px;
+							right: -5px;
+						}
+					}
+				}
+			
+				.letter-positions-add-position-select  {
+					//top: 2px !important;
+					position: absolute;	
+					bottom: 10px !important;
+					width: 110px;
+					font-size: 12px;
+
+					.selectInput {
+						margin-top: 10px !important;
+						.Select {
+							margin-top: 10px !important;
+						}
+
+						.Select-control {
+							.Select-clear-zone {
+								display: none !important;
+							}
+						}
+
+
+					}
+
+					&.Select-menu-outer {
+						width: 100px!important;
+					}
+			
+					&.add-position-select-invis {
+						display: none;
+					}
+			
+					.Select-control {
+						border-bottom: 0 none;
+					}
+				}
+			}
+		}
+	}
+}

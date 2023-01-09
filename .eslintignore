@@ -1,0 +1,6 @@
+/dist
+/deploy
+/coverage
+/docs
+/node_modules
+/generated

@@ -1,0 +1,11 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.tag-replace-modal-component {
+    padding-bottom: 40px;
+    font-size: 15px;
+
+    .tagReplaceInput {
+        margin-bottom: 40px;
+    }
+}

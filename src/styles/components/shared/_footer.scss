@@ -1,0 +1,34 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.footer-component {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	height: $footer-height;
+	line-height: $footer-height;
+	padding-left: $menu-small-width;
+	overflow: hidden;
+	background-image: linear-gradient(to right,#6F7D9B, #6F7D9B, #0079B3, #194B7C, #0F2759, #6A1370);
+	color: $color-menu-text;
+	text-align: center;
+	z-index: 10000;
+
+	@media (min-width: 1300px) {
+		& { padding-left: $menu-width; }
+	}
+
+	.footer-link {
+		cursor: pointer;
+
+		.icon {
+			@include icon(after, arrow_right);
+			&:after {
+				font-size: 13px;
+				vertical-align: middle;
+				margin-left: 3px;
+			}
+		}
+	}
+
+}

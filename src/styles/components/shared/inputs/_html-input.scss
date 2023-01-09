@@ -1,0 +1,176 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+@import 'node_modules/quill/dist/quill.core';
+
+.ql-editor.ql-blank::before {
+	color: $color-text-placeholder;
+	font-family: $font-family !important;
+	font-style: normal !important;
+	left: 0;
+}
+
+.ql-editor {
+	padding: 0;
+	& > ul > li {
+		padding-left: 0;
+		@include rem(margin-left, 6);
+		list-style-type: disc !important;
+		&::before {
+			content: none;
+		}
+	}
+}
+
+.htmlInput {
+	@include rem(margin-bottom, 16);
+
+	&-disabled {
+		color: $color-text-disabled !important;
+		p {
+			cursor: default;
+		}
+		.htmlInput_label {
+			color: $color-text-disabled;
+		}
+	}
+	&-noMargin {
+		margin-bottom: 0;
+	}
+	&_input {
+		border: 1px solid #dddddd;
+		font-family: "Segoe UI", Helvetiva, Arial, sans-serif !important;
+		line-height: 1.29 !important;
+		@include rem(padding, 20);
+		@include rem(margin-top, 0, !important);
+		.ql-container {
+			font-family: inherit;
+			@include rem(font-size, 15);
+		}
+		li {
+			list-style-type: disc;
+		}
+	}
+	&_bar {
+		display: block;
+		position: relative;
+		width: 100%;
+		&:before, &:after {
+			bottom: 0;
+			content: "";
+			position: absolute;
+			transition: 0.3s ease all;
+			width: 0;
+			@include rem(height, 2);
+		}
+		&:before {
+			left: 50%;
+		}
+		&:after {
+			right: 50%;
+		}
+	}
+	&-active .htmlInput_wrapper .htmlInput_bar {
+		&:before, &:after {
+			width: 50%;
+			background: $color-primary;
+		}
+	}
+	&-active .htmlInput_label {
+		color: #0d63cd;
+	}
+	&-invalid .htmlInput_bar {
+		&:before, &:after {
+			width: 50%;
+			background: #fa6e6e !important;
+		}
+	}
+	&-invalid ~ .htmlInput_hint {
+		display: none;
+	}
+	&_placeholder {
+		display: none;
+		position: absolute;
+		top: 0;
+		border: 1px solid transparent;
+		color: $color-text-placeholder;
+		pointer-events: none;
+		@include rem(padding, 20);
+		&-visible {
+			display: block;
+		}
+	}
+	&_label {
+		color: $color-text-muted;
+		display: block;
+		@include rem(font-size, 13);
+		@include rem(margin-bottom, 5);
+	}
+	&_wrapper {
+		position: relative;
+	}
+	&_hint, &_error {
+		top: (-0.8rem) !important;
+	}
+	&_toolbar {
+		display: none;
+		position: absolute;
+		transform: translate(-50%, 2rem);
+		@include rem(padding-right, 8);
+		z-index: 9001;
+		&-hidden {
+			display: none;
+		}
+		&-visible {
+			display: flex;
+		}
+		.toolbarItem {
+			$size: 30;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			cursor: pointer;
+			border: 1px solid #cccccc;
+			border-right: 0;
+			background: white;
+			color: $color-primary-light;
+			@include rem(height, $size);
+			@include rem(width, $size);
+			@include rem(font-size, 11);
+			&:hover, &.ql-active {
+				background: $color-primary-light;
+				color: white;
+			}
+			&:before {
+				height: auto;
+				width: auto;
+			}
+			&:last-child {
+				border-right: 1px solid #cccccc;
+			}
+		}
+		.ql-active {
+			color: $color-primary;
+		}
+	}
+	&-noBorder {
+		.htmlInput_input, .htmlInput_placeholder {
+			border: 0;
+			@include rem(padding-left, 0, !important);
+			@include rem(padding-right, 0, !important);
+		}
+	}
+	&_controls {
+		position: absolute;
+		display: flex;
+		@include rem(right, 8);
+		@include rem(bottom, -31);
+		z-index: 10;
+		.button:first-of-type {
+			@include rem(margin-right, 6);
+		}
+	}
+	&_loader {
+		@include rem(margin-right, 10);
+	}
+}

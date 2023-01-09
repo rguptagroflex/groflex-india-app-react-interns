@@ -1,0 +1,58 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+
+.letter-payment-component {
+    font-size: 14px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+
+    .payment-options {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        .form_input:nth-child(2) {
+           margin-top: 15px;
+        }
+
+        .checkbox_label {
+            font-weight: bold;
+        }
+    }
+    .payments {
+        display: flex;
+        margin-top: 15px;
+        flex-direction: row;
+      //  border: 1px solid $color-line-light;
+        border-radius: 5px;
+        //padding: 10px;
+        justify-content: space-between;
+       // width: 70%;
+
+        .payment-qr{
+            display: flex;
+            flex-direction: column;
+
+            .qr {
+                margin-top: 10px;
+            }
+        }
+
+        .payment-link {
+            display: flex;
+            flex-direction: column;
+           // margin-top: 10px;
+            .payment-link-url {
+                margin-top: 10px;
+                color: $color-primary;
+                font-weight: bold;
+                
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+}

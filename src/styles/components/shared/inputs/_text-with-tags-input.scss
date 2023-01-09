@@ -1,0 +1,144 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+$border-color: #cccccc;
+
+.text-with-tags-input-component {
+	width: 100%;
+	display: flex;
+
+	.selectInput {
+		margin-bottom: 0px;
+	}
+
+	&.active .text-with-tags-input-wrapper {
+		border-color: $color-primary;
+	}
+
+	&.disabled {
+		opacity: 0.7;
+	}
+
+	&.no-date-select {
+		.tag-input-left-overflow {
+			left: 0;
+			border-radius: 8px 0 0 8px;
+		}
+
+		.tag-btn-submit {
+			padding-top: 13px;
+		}
+	}
+
+	.text-with-tags-input-wrapper {
+		position: relative;
+		width: 100%;
+		min-height: 71px;
+		border: 1px $color-input-border solid;
+		border-radius: 8px;
+		display: flex;
+		padding-top: 3px;
+		transition: border-color 0.2s ease-in-out;
+
+		&.has-date-select {
+			flex: 1;
+		}
+
+		&.dropdown-open {
+			border-radius: 8px 8px 0 0;
+		}
+	}
+
+	.tag-input {
+		position: relative;
+		white-space: nowrap;
+		overflow: hidden;
+		flex: 1;
+		display: flex;
+		align-items: center;
+
+		.tagify-wrapper {
+			width: 100%;
+			height: 100%;
+
+			.tagify {
+				font-size: 13px;
+				border: none;
+			}
+
+			.tagify__input {
+				padding: 4px 5px 5px 15px;
+
+				&:before {
+					margin: 0;
+				}
+			}
+		}
+
+		&.disabled {
+			.tagify {
+				pointer-events: none;
+			}
+		}
+	}
+
+	.tag-btn-submit {
+		width: 38px;
+		padding-top: 9px;
+		justify-content: center;
+		display: flex;
+
+		&.has-hash {
+			width: 70px;
+			justify-content: unset;
+		}
+
+		.icon.icon-enter_arrow {
+			height: 23px;
+			margin-top: 2px;
+			font-size: 10px;
+			color: $color-text-disabled;
+		}
+
+		.btn-hash {
+			height: 28px;
+			margin: -5px 16px 0 8px;
+			font-size: 18px;
+			cursor: pointer;
+			@include disable-user-select();
+
+			&.hidden {
+				visibility: hidden;
+			}
+
+			&:hover {
+				color: $color-primary;
+			}
+		}
+
+		&.visible {
+			.icon.icon-enter_arrow {
+				color: $color-primary;
+				cursor: pointer;
+			}
+		}
+	}
+}
+
+.text-with-tags-hint {
+	opacity: 0;
+
+	&.show-hint {
+		opacity: 1;
+	}
+
+	& > div {
+		display: inline-block;
+	}
+}
+
+.text-with-tags-btn-hash-tooltip {
+	.tooltip-content {
+		padding: 10px 15px;
+	}
+}

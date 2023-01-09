@@ -1,0 +1,26 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.impress-finalize-offer-modal-component {
+	position: relative;
+	display: table;
+	width: 100%;
+	background: $color-white;
+
+	.contingent-limit-count {
+		color: $color-primary;
+		font-size: 24px;
+		padding-left: 10px;
+	}
+
+	.contingent-upgrade-link {
+		margin-top: 20px;
+		color: $color-primary;
+		text-decoration: underline;
+		cursor: pointer;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+}

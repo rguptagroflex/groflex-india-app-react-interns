@@ -1,0 +1,182 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.letter-positions-head-component-wrapper {
+	position: relative;
+	height: 30px;
+
+	.letter-positions-head-wrapper {
+		position: absolute;
+		left: -50px;
+		right: -50px;
+		padding: 0px 55px;
+
+		.letter-positions-head {
+			display: flex;
+			padding: 5px 6px 0 6px;
+			font-size: 14px;
+			font-weight: 600;
+			border-bottom: 1px solid $color-line-light;
+
+			.letter-positions-head-column {
+				position: relative;
+				white-space: nowrap;
+				padding-right: 12px;
+
+				.letter-positions-head-column-remove {
+					display: none;
+				}
+
+				.letter-positions-head-column-value {
+					display: inline-block;
+					padding-bottom: 5px;
+				}
+
+				&.letter-positions-head-column-description {
+					flex-basis: 0;
+					flex-grow: 1;
+					margin-right: 12px;
+					padding-right: 0;
+				}
+
+				&.letter-positions-head-column-hsnSacCode {
+					width: 97px;
+					flex-basis: 97px;
+					flex-grow: 0;
+				}
+
+				&.letter-positions-head-column-number {
+					width: 97px;
+					flex-basis: 97px;
+					flex-grow: 0;
+				}
+
+				&.letter-positions-head-column-amount {
+					display: flex;
+					justify-content: flex-start;
+					flex-basis: 0;
+					flex-grow: 2;
+					max-width: 132px;
+					padding-left: 10px;
+				}
+
+				&.letter-positions-head-column-vat {
+					width: 50px;
+					text-align: right;
+				}
+
+				&.letter-positions-head-column-price {
+					width: 115px;
+					   text-align: right;
+				}
+
+				&.letter-positions-head-column-discount {
+					width: 67px;
+					text-align: right;
+				}
+
+				&.letter-positions-head-column-total {
+					width: 115px;
+					text-align: right;
+					padding-right: 0;
+				}
+			}
+
+			.letter-positions-head-context-menu {
+				display: none;
+				font-weight: normal;
+
+				.icon {
+					position: absolute;
+					right: 0px;
+					top: 5px;
+					display: block;
+					width: 22px;
+					height: 22px;
+					font-size: 8px;
+					color: $color-text-light;
+					border: 1px solid $color-line-light;
+					border-radius: 50%;
+					cursor: pointer;
+
+					&:hover {
+						color: $color-primary;
+					}
+
+					&:before {
+						position: absolute;
+						top: 50%;
+						left: 50%;
+						@include vendor-prefix('transform', 'translate(-50%, -50%)');
+					}
+				}
+			}
+
+			&.letter-positions-head-editing {
+				border-bottom: 0 none;
+
+				.letter-positions-head-context-menu {
+					display: block;
+				}
+
+				.letter-positions-head-column {
+					// text-align: left!important;
+					font-weight: normal;
+
+					.letter-positions-head-column-value {
+						cursor: default;
+						border-bottom: 1px solid $color-line-light;
+					}
+
+					.letter-positions-head-column-remove {
+						position: relative;
+						display: none;
+						left: 1px;
+						top: 3px;
+						width: 15px;
+						height: 15px;
+						font-size: 6px;
+						color: $color-text-light;
+						border: 1px solid $color-line-light;
+						border-radius: 50%;
+						cursor: pointer;
+
+						&:hover {
+							color: $color-primary;
+						}
+
+						&:before {
+							position: absolute;
+							top: 50%;
+							left: 50%;
+							@include vendor-prefix('transform', 'translate(-50%, -50%)');
+						}
+					}
+
+					&:hover {
+						.letter-positions-head-column-remove {
+							display: inline-block;
+						}
+					}
+				}
+			}
+		}
+
+		&:hover {
+			.letter-positions-head-context-menu {
+				display: block;
+			}
+			.edit-icon {
+				@include icon(after, edit);
+				position: absolute;
+				height: 5px;
+				z-index: 11;
+				color: $color-text-light;
+				top: -6px;
+				right: 41px;
+			}			
+		}
+	}
+
+
+}

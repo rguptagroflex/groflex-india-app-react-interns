@@ -1,0 +1,394 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.upgrade-modal-component {
+	position: relative;
+	display: table;
+	width: 100%;
+	height: 880px;
+	background: $color-white;
+
+	.checkbox_label {
+		margin-top: auto !important;
+	}
+
+	&.has-onboarding-info {
+		height: 840px;
+
+		.content-box {
+			padding: 175px 40px 185px;
+		}
+	}
+
+	.background-box {
+		position: absolute;
+		width: 100%;
+		height: 400px;
+		top: 0;
+		left: 0;
+		background: $color-menu-background;
+		color: $color-white;
+		text-align: center;
+	}
+
+	.toggle-plan {
+		position: relative;
+		top: 170px;
+		justify-content: center;
+		display: flex;
+		z-index: 99999999;
+		text-align: center;
+	}
+
+	.cybermonday-badge {
+		position: absolute;
+		top: 16px;
+		right: 14px;
+		width: 100%;
+
+		img {
+			position: absolute;
+			top: 0;
+			right: 0;
+			z-index: 1;
+		}
+
+		.badge-shadow {
+			position: absolute;
+			top: 11px;
+			right: 6px;
+			width: 170px;
+			height: 100px;
+			border-radius: 10px;
+			transform: rotate(4.8deg);
+			content: " ";
+			box-shadow: 1px 2px 8px 3px rgba(0, 0, 0, 0.4);
+		}
+	}
+
+	.content-box {
+		position: relative;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		height: 100%;
+		padding: 175px 40px 60px;
+	}
+
+	.headline {
+		margin-top: 45px;
+		font-size: 35px;
+
+		&.compact {
+			width: 600px;
+			margin: 35px auto 8px auto;
+		}
+	}
+
+	.claim {
+		margin: 0;
+		font-size: 18px;
+	}
+
+	.toggle-claim {
+		position: relative;
+		top: 10px;
+		margin: 0;
+		font-size: 16px;
+	}
+
+	.subscription-box {
+		width: 300px;
+		height: 600px;
+		float: left;
+		margin-right: 60px;
+		padding: 10px;
+		text-align: center;
+		border: 1px solid $color-shadow;
+		background: $color-white;
+		border-radius: 10px;
+		box-shadow: $box-shadow-subscription-box;
+		position: relative;
+		
+		&:hover {
+			border: 1px solid $color-menu-background;
+		}
+
+		&.large-box {
+			width: 270px;
+			height: 530px;
+			box-shadow: 0px 0px 2px 3px rgba(0, 0, 0, 0.1);
+
+			.subscription-icon {
+				padding: 30px 0 10px 0;
+			}
+		}
+
+		&.last-box {
+			margin: 0;
+		}
+
+		.subscription-disable {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			background-color: grey;
+			opacity: 0.7;
+			z-index: 1;
+			margin-left: -10px;
+			margin-top: -10px;
+			border-radius: 10px;
+		}
+
+		.subscription-name {
+			margin: 25px 0 10px;
+			text-transform: uppercase;
+			font-size: 24px;
+			font-weight: bold;
+			line-height: 1.2;
+			color: $color-text;
+		}
+
+		.subscription-subtitle {
+			font-size: 16px;
+		}
+
+		.subscription-price-new {
+			margin-top: 24px;
+			color: #0f2759;
+			margin-bottom: 30px;
+
+			.price {
+				font-size: 20px;
+
+				.rupee {
+					font-size: 50px;
+					font-weight: 600;
+				}
+			}
+
+			.price-billed {
+				font-size: 16px;
+				font-weight: 600;
+			}
+		}
+
+		.features-list {
+			margin-top: 30px;
+			text-align: left;
+			font-size: 16px;
+			color: #0f2759;
+			margin-left: 55px;
+			font-weight: 500;
+
+			li {
+				list-style-type: inherit;
+				padding-bottom: 20px;
+			}
+		}
+
+		.subscription-icon {
+			width: 55px;
+			margin: 0 auto;
+			padding-top: 25px;
+			border-top: 1px solid $color-line-light;
+		}
+
+		.subscription-contingent {
+			margin: 10px 0 0;
+			font-size: 12px;
+
+			b {
+				font-size: 13px;
+			}
+			.text-capitalize {
+				text-transform: capitalize;
+			}
+
+			.subscription-contingent-border {
+				width: 55px;
+				margin: 35px auto 27px;
+				border-bottom: 1px solid #e3e3e3;
+			}
+			.subscription-contingent-border-small-box {
+				margin: 17px auto 12px;
+				width: 55px;
+				border-bottom: 1px solid #e3e3e3;
+			}
+		}
+
+		.subscription-price {
+			margin: 0 0 15px;
+			font-size: 54px;
+			color: $color-primary;
+
+			.free {
+				font-size: 50px;
+				color: $color-primary;
+			}
+
+			.free-price {
+				color: $color-primary;
+				font-size: 48px;
+				margin: -13px 0 0px;
+				font-weight: 600;
+			}
+
+			.original-price {
+				.decimal {
+					font-size: 25px;
+					font-weight: 200;
+					vertical-align: super;
+				}
+				.euro {
+					font-weight: 200;
+				}
+			}
+
+			.price {
+				.decimal {
+					font-size: 25px;
+					font-weight: 200;
+					vertical-align: super;
+				}
+				.euro {
+					font-weight: 200;
+				}
+				&:before {
+					position: absolute;
+					content: "";
+					left: 55px;
+					top: 65%;
+					right: 44px;
+					border-top: 7px solid;
+					border-color: inherit;
+					transform: skewY(-10deg);
+					color: red;
+				}
+			}
+
+			.monthly {
+				color: $color-primary;
+				text-transform: uppercase;
+				font-size: 14px;
+			}
+
+			.offer-price {
+				font-size: 44px;
+				color: #ff0000;
+				margin: -13px 0 0px;
+				font-weight: 600;
+				.euro {
+					font-weight: 500;
+				}
+			}
+		}
+	}
+
+	.button-rounded {
+		margin: 0 auto;
+		width: 200px;
+	}
+	.button-free-mnth {
+		margin-top: 16px;
+	}
+
+	.modal-footer {
+		position: absolute;
+		left: 0;
+		bottom: 45px;
+		width: 100%;
+		text-align: center;
+		font-size: 13px;
+		color: $badge-color;
+		height: 50px;
+
+		.price-onboarding {
+			padding: 17px 0;
+		}
+
+		.onboarding-info {
+			width: 640px;
+			height: 100px;
+			margin: 0 auto 10px auto;
+			border-radius: 5px;
+			border: 1px $color-shadow solid;
+			display: flex;
+			align-items: center;
+			cursor: pointer;
+
+			.onboarding-left-col {
+				width: 52px;
+				height: 52px;
+				margin: 0 40px;
+				background: url("/assets/images/amit.png") no-repeat top center;
+				background-size: cover;
+				border-radius: 50%;
+				overflow: hidden;
+				display: inline-block;
+			}
+
+			.onboarding-middle-col {
+				width: 420px;
+				font-size: 14px;
+				text-align: left;
+				color: $color-text-light;
+
+				.onboarding-headline {
+					margin-bottom: 4px;
+					font-size: 15px;
+					font-weight: 600;
+					color: $color-primary;
+				}
+
+				strong {
+					font-weight: 600;
+				}
+			}
+
+			.onboarding-right-col {
+				margin: 0 20px 0 30px;
+				line-height: 20px;
+
+				.icon {
+					color: $color-primary;
+					font-size: 24px;
+				}
+			}
+		}
+	}
+
+	@-moz-document url-prefix() {
+		.modal-footer {
+			bottom: 0px;
+			height: 50px;
+		}
+	}
+
+	.referral-code {
+		padding-left: 88px !important;
+		display: flex;
+		height: 33px;
+
+		.referral-code-checkbox {
+			padding-top: 5px;
+		}
+
+		.checkbox_visual {
+			margin-top: 3px;
+		}
+		.checkbox_label {
+			font-size: 15px;
+		}
+
+		.referral-code-text {
+			.input {
+				border: 1px solid #c6c6c6;
+				padding: 5px 5px;
+				height: 32px;
+				font-size: 15px;
+			}
+		}
+	}
+}

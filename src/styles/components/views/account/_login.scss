@@ -1,0 +1,103 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.landing-wrapper.login-wrapper {
+
+	.landing-content-inner {
+		&-header {
+			min-height: 100px !important;
+		}
+	}
+
+	.landing-email-input-wrapper {
+
+		.login-input-wrapper {
+			.password-field {
+				margin-bottom: 0;
+			}
+		}
+
+		.text-input-component  {
+			margin-bottom: 20px;
+		}
+
+		.button-between-label {
+			color: #ccc;
+		}
+
+		.google-error {
+			margin-bottom: 20px;
+			font-size: 13px;
+			color: $color-error;
+		}
+
+		.button-component-wrapper {
+			.button-google {
+				background-color: $color-white;
+				.icon-google {
+					&:before {
+						vertical-align: top !important;
+					}
+				}
+			}
+		}		
+	}
+
+	.landing-content {
+		.landing-content-inner {
+			.button {
+				width: 100%; // 300px
+				margin: 18px 0;
+			}
+		}
+	}
+
+	.landing-sidebar {
+		.login-fact-icon svg {
+			position: absolute;
+			top: 38px;
+			left: 50%;
+			@include vendor-prefix('transform', 'translateX(-50%)');
+			height: 100px;
+			color: #ffffff;
+		}
+	}
+
+	.landing-content-footer {
+		display: flex;
+   	 	justify-content: center;
+
+		.left-link {
+			margin-right: 40px;
+		}
+	}
+	.icon-visible {
+        @include icon(after, show_visibility);
+        &.required {
+            color: $color-text-disabled;
+            cursor: default;
+        }
+    }
+
+    .icon-invisible {
+        @include icon(after, hide_visibility);
+    }
+}
+
+.login-imprint-footer {
+    position: fixed;
+    bottom: 10px;
+	left: 20px;
+
+	a {
+		margin-right: 25px;
+		font-size: 14px;
+		color: #99a0aa!important;
+	}
+}
+
+.mobile-text-content {
+	margin: -5px 0 10px 0;
+	font-size: 13px;
+	line-height: 22px;
+}

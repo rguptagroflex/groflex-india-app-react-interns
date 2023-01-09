@@ -1,0 +1,44 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.ct-series-a .ct-line {
+	stroke: $color-primary;
+}
+
+.ct-series-a .ct-point {
+	stroke: $color-primary;
+}
+
+.row-no-gutter {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.col-no-gutter {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.col-no-gutter-left {
+	padding-left: 0 !important;
+}
+
+.col-no-gutter-right {
+	padding-right: 0 !important;
+}
+
+.col-gutter-right-40 {
+	padding-right: 40px !important;
+}
+
+.col-gutter-left-20 {
+	padding-left: 20px !important;
+}
+
+.col-gutter-right-20 {
+	padding-right: 20px !important;
+}
+
+.cropper-modal {
+	background-color: #ffffff
+}

@@ -1,0 +1,98 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.header {
+	overflow: hidden;
+	cursor: pointer;
+	position: relative;
+	border: 1px solid white;
+	@include rem(height, 200);
+
+	&:hover {
+		&::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			pointer-events: none;
+			border: 1px dashed #aaaaaa;
+			border-radius: 5px;
+			z-index: 10;
+		}
+		.edit-icon {
+			@include icon(after, edit);
+			position: absolute;
+			height: 5px;
+			z-index: 11;
+			color: $color-text-light;
+			top: 2px;
+			right: 4px;
+		}	
+	}
+	&Empty, &UploadDropbox, &Display {
+		height: 12.5rem;
+		border: 1px dashed transparent;
+		border-radius: 5px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+	}
+	
+	.letter-headerEmpty_title {
+		width: 100%;
+		height: 100%;
+		color: $color-text;
+
+		label {
+			width: 100%;
+			height: 100%;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			cursor: pointer;
+			align-items: center;
+		}
+
+		.row1,
+		.row2,
+		.row3 {
+			padding: 0;
+			display: block;
+		}
+
+		.row2 {
+			@include rem(font-size, 41);
+			margin: -9px 0 0px 0;
+			text-transform: uppercase;
+
+			span {
+				font-weight: 600;
+			}
+		}
+
+		.row3 {
+			@include rem(font-size, 11);
+			margin: 3px 0 0px 0;
+			color: $color-primary;
+		}
+	}
+
+	&UploadDropbox {
+		border-radius: 0px;
+		border: 1px solid #dddddd !important;
+		&_description {
+			@include rem(font-size, 15);
+		}
+		&_link {
+			color: $color-primary;
+			@include rem(padding-left, 5);
+		}
+	}
+	&Edit-active {
+		background-color: #f3f8fe;
+	}
+}

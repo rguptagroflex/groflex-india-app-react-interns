@@ -1,0 +1,83 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.offer-impress-detail-component {
+	.offer-detail-timeline {
+		position: absolute;
+		right: 20px;
+		bottom: 20px;
+
+		&.offer-detail-timeline-horizontal {
+			width: 925px;
+			top: 165px;
+			left: 50%;
+			right: auto;
+			bottom: auto;
+			@include vendor-prefix('transform', 'translateX(-50%);');
+		}
+	}
+	.detail-view-head-controls {
+		.detail-view-head-controls-item {
+			&.item-print,
+			&.item-copy {
+				margin-right: 2px;
+
+				.icon {
+					pointer-events: none;
+				}
+			}
+		}
+
+		.detail-view-head-controls-item {
+			&.item-print-settings,
+			&.item-copy-options {
+				line-height: 17px;
+
+				.icon {
+					color: $color-text-muted;
+				}
+			}
+		}
+	}
+	&.viewport-large {
+		.detail-view-head-container {
+			height: 510px;
+		}
+
+		.detail-view-head-controls {
+			top: 95px;
+		}
+	}
+	.detail-head-copy-link-popover {
+		display: flex;
+
+		.detail-head-copy-link-content {
+			width: 195px;
+			margin-right: 10px;
+			border: 0 none;
+			border-bottom: 1px solid $color-line-light;
+		}
+
+		.icon {
+			margin-left: 10px;
+			width: 30px;
+			height: 30px;
+			cursor: pointer;
+			background: $color-text-placeholder;
+			color: $color-white;
+
+			&:hover {
+				background: #898989;
+			}
+		}
+	}
+}
+
+.detail-view {
+	height: 100%;
+}
+
+.impress-offer-iframe {
+	zoom: 0.60;
+	border: 0px;
+}

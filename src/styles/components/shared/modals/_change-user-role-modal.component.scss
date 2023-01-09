@@ -1,0 +1,21 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.change-user-role-modal {
+    .change-user-role-modal-headline {
+        font-size: 22px;
+        line-height: 26px;
+        letter-spacing: 0.22px;
+        margin-bottom: 10px;
+    }
+
+    .change-user-role-modal-subheadline {
+        font-size: 14px;
+        line-height: 19px;
+        letter-spacing: 0.14px;
+        margin-bottom: 20px;
+        span {
+            color: $color-primary;
+        }
+    }
+}

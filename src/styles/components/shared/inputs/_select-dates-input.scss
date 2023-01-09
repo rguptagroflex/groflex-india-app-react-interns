@@ -1,0 +1,94 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+$border-color: #cccccc;
+$select-width: 175px;
+
+.select-dates-input-wrapper {
+	position: relative;
+
+	.date-select {
+		position: relative;
+		width: $select-width;
+
+		.hidden-select-dates-input {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+
+			.Select-control {
+				width: 100%;
+				cursor: pointer;
+				opacity: 0;
+			}
+
+			.Select.is-open .Select-menu-outer {
+				border: 1px $border-color solid !important;
+			}
+		}
+
+		.selectInput {
+			font-size: 13px;
+
+			.Select.is-open {
+				.Select-control {
+					border: 1px $color-primary solid;
+					border-radius: 8px 8px 0 0;
+				}
+
+				.Select-menu-outer {
+					border: 1px $color-primary solid;
+					min-width: $select-width;
+					border-radius: 0 0 8px 8px !important;
+					box-shadow: none;
+				}
+			}
+
+			.Select-control {
+				border-radius: 8px;
+				background: $color-element-background;
+
+				.Select-value {
+					line-height: 36px !important;
+				}
+			}
+
+			.Select-option {
+				height: 38px;
+				
+				&:not(:last-child) {
+					border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+				}
+
+				&:last-child {
+					border-bottom-right-radius: 8px;
+					border-bottom-left-radius: 8px;
+				}
+			}
+
+			.Select-value-label {
+				font-size: 13px !important;
+			}
+
+			.selectInput_bar {
+				display: none;
+			}
+		}
+	}
+
+	.date-custom-input {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 140px;
+		height: 39px;
+		display: flex;
+		align-items: flex-end;
+		pointer-events: none;
+
+		.dateInput {
+			visibility: hidden;
+		}
+	}
+}

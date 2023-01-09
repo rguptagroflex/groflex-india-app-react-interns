@@ -1,0 +1,51 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.edit-contact-person-modal-component {
+
+	.modal-base-content {
+		margin-top: 0!important;
+		overflow: visible!important;
+	}
+
+	.edit-contact-person-modal-content {
+		margin-top: 40px;
+
+		.edit-contact-person-names {
+			margin-top: -12px;
+		}
+	}
+
+	.edit-contact-person-subheadline {
+		margin-bottom: 18px;
+	}
+
+	.edit-contact-person-position-select {
+		margin: 12px 0 3px;
+	}
+
+	.input_error {
+		position: absolute;
+		bottom: 0;
+		height: 0;
+		top: auto;
+	}
+
+	.dateInput_label {
+		color: $color-text;
+	}
+
+	.dateInput_input {
+		border-color: $color-input-bar;
+		height: 29px;
+		margin-bottom: 42px;
+	}
+
+	.edit-contact-person-maincontact {
+		.checkbox_label  {
+			font-size: 15px;
+			color: $color-text-muted;
+		}
+	}
+
+}

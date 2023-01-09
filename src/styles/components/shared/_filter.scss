@@ -1,0 +1,33 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.filter-component-wrapper {
+
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	.filter-item {
+		padding: 5px 10px;
+		margin-right: 10px;
+		font-size: 12px;
+		text-transform: uppercase;
+		color: $color-text;
+		cursor: pointer;
+		font-weight: 600;
+
+		span {
+			font-weight: normal;
+		}
+
+		&.filter-item-active {
+			color: $color-primary;
+			border-bottom: 2px solid $color-primary;
+		}
+
+		&:not(.filter-item-active):hover {
+			opacity: 0.8;
+		}
+	}
+}

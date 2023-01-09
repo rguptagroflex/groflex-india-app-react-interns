@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Groflex</title>
+		<meta charset="utf-8" />
+		<meta http-equiv="pragma" content="no-cache" />
+		<meta http-equiv="expires" content="-1" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta name="MobileOptimized" content="320" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut ico" href="/assets/images/favicon.ico" />
+		<link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png" />
+		<link
+			href="//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,300italic,400italic,600italic,700,700italic"
+			rel="stylesheet"
+		/>
+
+		<link href="/css/app.css" rel="stylesheet" />
+
+		<style>
+			.async-hide {
+				opacity: 0 !important;
+			}
+		</style>
+
+		<script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+		<script>
+			WebFont.load({
+				google: {
+					families: [
+						'Caveat:400,700',
+						'Dancing Script:400,700',
+						'Economica:400,700',
+						'Gruppo:400',
+						'Kalam:300,700',
+						'Merriweather Sans:400,700',
+						'Open Sans Condensed:300,700',
+						'PT Sans Narrow:400,700',
+						'Shadows Into Light:400',
+						'Source Serif Pro:400,700,400italic,700italic',
+						'Tulpen One:400',
+						'Voltaire:400'
+					]
+				}
+			});
+		</script>
+
+		@@if (releaseStage === 'local') {
+		<script>
+			window.settings = {
+				releaseStage: 'local'
+			};
+		</script>
+		}
+
+		<!-- Intercom -->
+		<!-- @@if (releaseStage === 'production') {
+			<script>const INTECOM_APP_ID = 'y1zi63l6';</script>
+		}
+		@@if (releaseStage === 'staging' || releaseStage === 'qa' || releaseStage === 'local') {
+			<script>const INTECOM_APP_ID = 'qrsrkmrh';</script>
+		}
+		<script>
+			window.intercomSettings = {
+				app_id: INTECOM_APP_ID
+			};
+			(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + INTECOM_APP_ID;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+		</script> -->
+		<!-- End of Intercom -->
+
+		<!-- Production -->
+
+		@@if (releaseStage === 'production' || releaseStage === 'qa' ) {
+		<!-- Google Tag Manager -->
+		<script>
+			dataLayer = [];
+			(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});
+			var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src= 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f); 
+			})(window,document,'script','dataLayer','GTM-TGXTGXD');
+		</script>
+		<!-- End Google Tag Manager -->
+		<!-- Taboola Pixel Code -->
+		<script src="https://cdn.taboola.com/libtrc/unip/1291642/tfa.js"></script>
+		<noscript>
+			<img src="https://trc.taboola.com/1291642/log/3/unip?en=complete_registration" width="0" height="0" style="display:none"/>
+		</noscript>
+		<!-- End of Taboola Pixel Code -->
+		}
+		@@if (releaseStage === 'local') {
+		<!-- Freshdesk Chat-->
+		<!-- <script type='text/javascript'>
+			var fc_JS=document.createElement('script');
+			fc_JS.type='text/javascript';
+			fc_JS.src='https://wchat.freshchat.com/js/widget.js?t='+Date.now();
+			(document.body?document.body:document.getElementsByTagName('head')[0]).appendChild(fc_JS);
+			window.fcSettings = { token:'82a09d04-737d-46c5-a881-84d5b3240d4b', host : 'https://wchat.freshchat.com'};
+		</script> -->
+		<!-- End of Freshdesk Chat-->
+
+		<!-- Freshdesk -->
+		<!-- <script type="text/javascript" src="https://s3.amazonaws.com/assets.freshdesk.com/widget/freshwidget.js"></script>
+		<script type="text/javascript">
+			FreshWidget.init("", {"queryString": "&widgetType=popup&formTitle=Imprezz+Support&captcha=yes&searchArea=no", "utf8": "✓", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#0079B3", "alignment": "2", "offset": "88%", "formHeight": "500px", "captcha": "yes", "url": "https://imprezz.freshdesk.com"} );
+		</script> -->
+		<!-- End of Freshdesk -->
+		<!-- Intercom Chat  Now it now into the app.componet-->
+		<!-- <script>
+			window.intercomSettings = {
+			  app_id: "y1zi63l6",
+			  name: "Test", // Full name
+			  email: "Test@gmail.com"
+			};
+		  </script>
+		  <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/y1zi63l6';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script> -->
+		}
+		
+		
+		<!-- Iconfont -->
+
+		<!-- Amplitude -->
+		<!-- <script type="text/javascript">
+			(function (e, t) {
+				var n = e.amplitude || { _q: [], _iq: {} };
+				var r = t.createElement("script");
+				r.type = "text/javascript";
+				r.integrity = "sha384-tzcaaCH5+KXD4sGaDozev6oElQhsVfbJvdi3//c2YvbY02LrNlbpGdt3Wq4rWonS";
+				r.crossOrigin = "anonymous";
+				r.async = true;
+				r.src = "https://cdn.amplitude.com/libs/amplitude-8.5.0-min.gz.js";
+				r.onload = function () {
+					if (!e.amplitude.runQueuedFunctions) {
+						console.log("[Amplitude] Error: could not load SDK");
+					}
+				};
+				var i = t.getElementsByTagName("script")[0];
+				i.parentNode.insertBefore(r, i);
+				function s(e, t) {
+					e.prototype[t] = function () {
+						this._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+						return this;
+					};
+				}
+				var o = function () {
+					this._q = [];
+					return this;
+				};
+				var a = ["add", "append", "clearAll", "prepend", "set", "setOnce", "unset", "preInsert", "postInsert", "remove"];
+				for (var c = 0; c < a.length; c++) {
+					s(o, a[c]);
+				}
+				n.Identify = o;
+				var u = function () {
+					this._q = [];
+					return this;
+				};
+				var l = ["setProductId", "setQuantity", "setPrice", "setRevenueType", "setEventProperties"];
+				for (var p = 0; p < l.length; p++) {
+					s(u, l[p]);
+				}
+				n.Revenue = u;
+				var d = [
+					"init",
+					"logEvent",
+					"logRevenue",
+					"setUserId",
+					"setUserProperties",
+					"setOptOut",
+					"setVersionName",
+					"setDomain",
+					"setDeviceId",
+					"enableTracking",
+					"setGlobalUserProperties",
+					"identify",
+					"clearUserProperties",
+					"setGroup",
+					"logRevenueV2",
+					"regenerateDeviceId",
+					"groupIdentify",
+					"onInit",
+					"logEventWithTimestamp",
+					"logEventWithGroups",
+					"setSessionId",
+					"resetSessionId",
+				];
+				function v(e) {
+					function t(t) {
+						e[t] = function () {
+							e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+						};
+					}
+					for (var n = 0; n < d.length; n++) {
+						t(d[n]);
+					}
+				}
+				v(n);
+				n.getInstance = function (e) {
+					e = (!e || e.length === 0 ? "$default_instance" : e).toLowerCase();
+					if (!Object.prototype.hasOwnProperty.call(n._iq, e)) {
+						n._iq[e] = { _q: [] };
+						v(n._iq[e]);
+					}
+					return n._iq[e];
+				};
+				e.amplitude = n;
+			})(window, document);
+		
+			amplitude.getInstance().init("c8dc1e980ea6f4be042531c590577369");
+		</script> -->
+		<script type="text/javascript">
+			(function(e,t){var n=e.amplitude||{_q:[],_iq:{}};var r=t.createElement("script")
+			;r.type="text/javascript"
+			;r.integrity="sha384-+EO59vL/X7v6VE2s6/F4HxfHlK0nDUVWKVg8K9oUlvffAeeaShVBmbORTC2D3UF+"
+			;r.crossOrigin="anonymous";r.async=true
+			;r.src="https://cdn.amplitude.com/libs/amplitude-8.17.0-min.gz.js"
+			;r.onload=function(){if(!e.amplitude.runQueuedFunctions){
+			console.log("[Amplitude] Error: could not load SDK")}}
+			;var i=t.getElementsByTagName("script")[0];i.parentNode.insertBefore(r,i)
+			;function s(e,t){e.prototype[t]=function(){
+			this._q.push([t].concat(Array.prototype.slice.call(arguments,0)));return this}}
+			var o=function(){this._q=[];return this}
+			;var a=["add","append","clearAll","prepend","set","setOnce","unset","preInsert","postInsert","remove"]
+			;for(var c=0;c<a.length;c++){s(o,a[c])}n.Identify=o;var u=function(){this._q=[]
+			;return this}
+			;var l=["setProductId","setQuantity","setPrice","setRevenueType","setEventProperties"]
+			;for(var p=0;p<l.length;p++){s(u,l[p])}n.Revenue=u
+			;var d=["init","logEvent","logRevenue","setUserId","setUserProperties","setOptOut","setVersionName","setDomain","setDeviceId","enableTracking","setGlobalUserProperties","identify","clearUserProperties","setGroup","logRevenueV2","regenerateDeviceId","groupIdentify","onInit","logEventWithTimestamp","logEventWithGroups","setSessionId","resetSessionId"]
+			;function v(e){function t(t){e[t]=function(){
+			e._q.push([t].concat(Array.prototype.slice.call(arguments,0)))}}
+			for(var n=0;n<d.length;n++){t(d[n])}}v(n);n.getInstance=function(e){
+			e=(!e||e.length===0?"$default_instance":e).toLowerCase()
+			;if(!Object.prototype.hasOwnProperty.call(n._iq,e)){n._iq[e]={_q:[]};v(n._iq[e])
+			}return n._iq[e]};e.amplitude=n})(window,document);
+		  
+			amplitude.getInstance().init("eb8228344cf780e7c357b9dcd154d879");
+		  </script>
+		<!-- Amplitude -->
+		
+		@@if (releaseStage !== 'local') {
+		<link href="/css/iconfont.css" rel="stylesheet" />
+		}		
+		
+		<!-- <script type="text/javascript">
+			(function() {
+				document.tidioIdentify = {
+					distinct_id: "xyz@gmail.com", // Unique visitor ID in your system
+					email: "xyz@gmail.com", // visitor email
+					name: "sandy singh", // Visitor name
+					phone: "+44 2032897807" //Visitor phone
+				};
+			function onTidioChatApiReady() {
+				window.tidioChatApi.hide();
+			}
+
+			if (window.tidioChatApi) {
+				window.tidioChatApi.on("ready", onTidioChatApiReady);
+			}
+
+			document.querySelector(".chat-button").addEventListener("click", function() {
+				window.tidioChatApi.show();
+				window.tidioChatApi.open();
+			});
+			})();
+		</script> -->
+		<!-- Sendinblue Conversations {literal} -->
+		<!-- @@if (releaseStage === 'production') {
+			<script>const SENDINBLUE_PUBLIC_KEY = '634a6540af587e45c9546ad7';</script>
+		}
+		@@if (releaseStage === 'staging' || releaseStage === 'qa' || releaseStage === 'local') {
+			<script>const SENDINBLUE_PUBLIC_KEY = '634a6540af587e45c9546ad7';</script>
+		}
+		<script>
+			(function(d, w, c) {
+				w.SibConversationsID = SENDINBLUE_PUBLIC_KEY;
+				w[c] = w[c] || function() {
+					(w[c].q = w[c].q || []).push(arguments);
+				};
+				var s = d.createElement('script');
+				s.async = true;
+				s.src = 'https://conversations-widget.sendinblue.com/sib-conversations.js';
+				if (d.head) d.head.appendChild(s);
+			})(document, window, 'SibConversations');
+		</script> -->
+		<!-- /Sendinblue Conversations {/literal} -->
+
+		<!--sendpulse-->
+		<!-- @@if (releaseStage === 'production') {
+			<script src="//fbstore.sendpulse.com/loader.js" data-sp-widget-id="05005e5f-7bd9-4f44-8383-84dc3eec201c" async></script>
+		}
+		@@if (releaseStage === 'staging' || releaseStage === 'qa' || releaseStage === 'local') {
+			<script src="//fbstore.sendpulse.com/loader.js" data-sp-widget-id="05005e5f-7bd9-4f44-8383-84dc3eec201c" async></script>
+		} -->
+		<!--sendpulse-->
+	</head>
+
+	<body spellcheck="false">
+		@@if (releaseStage === 'production') {
+			<!-- Google Tag Manager (noscript) -->
+			<noscript>
+				<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TGXTGXD" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+			</noscript>
+			<!-- End Google Tag Manager (noscript) -->
+		}
+		<div id="root" class="app"></div>
+		<div id="app-loader" class="loader loader-opaque">
+			<div class="loader_content">
+				<div class="critical_logo">
+					<img src="/assets/images/svg/groflex.svg" width="138" />
+				</div>
+				<div class="loader_spinner"></div>
+			</div>
+		</div>
+		<script src="/js/app.js"></script>
+		<div class="app-version" id="app-version" data-qs-id="app-version">1.0.6</div>		
+	</body>
+</html>

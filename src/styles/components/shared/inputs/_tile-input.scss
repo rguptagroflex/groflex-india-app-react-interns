@@ -1,0 +1,31 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.tile-selector-wrapper {
+    position: relative;
+    display:flex;
+
+    flex-wrap: wrap;
+
+    .tileContainer {
+        cursor: pointer;
+        position: relative;
+        padding: 20px;
+        width: 100%;
+        background: white;
+        margin-bottom: 10px;
+        box-shadow: 0 0 10px 0 #ccc;
+        border-radius: 10px;
+        border: 1px solid  #cccccc;
+        margin-left: 10px;
+        margin-right: 10px;
+
+        &:hover{
+            border: 1px solid $color-secondary-hover;
+        }
+
+        &.selected {
+            border: 1px solid $color-primary;
+            } 
+    }
+}

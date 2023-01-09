@@ -1,0 +1,244 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.customerHistory {
+	&_list {
+		width: 100%;
+
+		.list_row {
+			padding-left: 5px;
+			padding-right: 5px;
+
+			&-canceled {
+				.list_item:nth-child(4) {
+					padding-right: 0px;
+				}
+			}
+		}
+
+		.list_info {
+			padding-left: 5px;
+			padding-right: 6px;
+		}
+	}
+}
+
+.selectize-full-width {
+	.selectize-dropdown {
+		width: 480px !important;
+	}
+}
+
+.selectInput_label {
+	width: 100%;
+}
+
+.customer-history-list-head-content {
+	position: relative;
+	width: 100%;
+	padding: 10px 0;
+}
+
+.customer-history-list-pagination {
+	text-align: center;
+	padding: 50px 0 0 0;
+}
+
+.customerHistory_container {
+	min-height: 400px;
+	height: calc(100% - 62px);
+	position: relative;
+	margin-left: 30px;
+}
+
+.fade-out {
+	display: block;
+	height: 60px;
+	width: calc(100% - 35px);
+	position: absolute;
+	bottom: 0;
+	margin-left: 10px;
+	background: linear-gradient( to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50% , rgba(255, 255, 255, 1) 100%);
+}
+
+.customer-history-error {
+	text-align: center;
+	height: 100%;
+	width: 100%;
+
+	.error-headline {
+		margin-bottom: 20px;
+
+		h1 {
+			font-weight: 500;
+			font-size: 20px;
+		}
+	}
+	}
+
+.customerHistory_list {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: calc(100% - 30px);
+	height: 100%;
+	box-shadow: inset 0px 50px 3px 1px white;
+
+	@include empty-list-box-customer(none);
+
+	.tooltip-component, .tooltip-content {
+		padding: 5px;
+	}
+
+	&.ps--active-y {
+		padding-right: 21px;
+		width: calc(100% - 10px);
+	}
+
+	.history-list-wrapper {
+		padding-bottom: 50px;
+		.email-status-row {
+			border-bottom: 1px solid $color-big-icons;
+			padding: 16px;
+			margin-top: 10px;
+			&-spinner-wrapper {
+				margin-right: 10px;
+				position: relative;
+				width: 28px;
+				height: 28px;
+				.email-status-row-spinner {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 28px;
+					height: 28px;
+					border-radius: 50%;
+					border: 3px solid $color-bg-dark;
+					border-top: 3px solid $color-text-placeholder;
+					border-right: 3px solid $color-text-placeholder;
+					animation: spin 2s linear infinite;
+					&-image-container {
+						.email-status-icon {
+							position: relative;
+							top: 5px;
+						}
+					}
+				}
+				
+				@keyframes spin {
+					0% {transform: rotate(0deg);}
+					100% {transform: rotate(360deg);}
+				}
+				.email-status-row-image-container {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+				}
+				svg {
+					fill: $color-primary;
+				}
+			}
+			&-text {
+				font-size: 14px;
+				line-height: 19px;
+				letter-spacing: 0.28px;
+				&-link {
+					color: $color-primary;
+					cursor: pointer;
+				}
+			}
+			.email-status-finished-icon-container {
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background: $color-blue-light;
+				margin-right: 10px;
+				.email-status-row-text {
+					.email-status-row-text-link {
+						cursor: pointer;
+						color: $color-primary;
+					}
+				}
+				.icon {
+					color: white;
+					position: relative;
+					top: 2px;
+					font-size: 14px;
+				}
+			}
+		}
+	}
+
+	.history-loader-wrapper {
+		.history-loader-rectangle{
+			height: 30px;
+			margin-top: 20px;
+			border-radius: 8px;
+		}
+		.first {
+			width: 440px;
+			background-color: $color-bg-dark;			
+		}
+		.second {
+			width: 355px;
+			background-color: $color-bg-dark;			
+		}
+		.third {
+			width: 539px;
+			background-color: $color-bg-dark;
+			opacity: 0.7;			
+		}
+		.fourth {
+			width: 440px;
+			background-color: $color-bg-dark;
+			opacity: 0.7;			
+		}
+		.fifth {
+			width: 270px;
+			background-color: $color-bg-dark;
+			opacity: 0.5;			
+		}
+		.sixth {
+			width: 514px;
+			background-color: $color-bg-dark;
+			opacity: 0.5;			
+		}
+		.seventh {
+			width: 484px;
+			background-color: $color-bg-dark;
+			opacity: 0.5;			
+		}
+	}
+
+	.todo-icon-and-content {
+		&:last-of-type {
+			border-bottom: 1px dashed $color-big-icons;
+			padding-bottom: 8px;
+		}
+		&.last-and-no-history-on-page {
+			border: none;
+		}
+	}
+}
+
+.box.box-rounded.history-list {
+	padding: 0;
+}
+
+.history-list-header {
+	display: flex;
+	justify-content: space-between;
+	padding: 30px 30px 0 30px;
+}
+
+.history-empty-list-box {
+	width: 100%;
+	height: 100%;
+	padding: 30px;
+	@include empty-list-box-customer(block);
+}
+
+
+
+

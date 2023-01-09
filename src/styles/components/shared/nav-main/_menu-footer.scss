@@ -1,0 +1,119 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.menuFooter {
+	position: absolute;
+	border: 0;
+
+	&:hover {
+		background-color: $color-menu-background;
+	}
+
+	// .menuItem {
+	// 	// border: 0px;
+
+	// 	// &::before {
+	// 	// 	// @include rem(margin-right, 28);
+	// 	// 	// @include rem(margin-left, 32);
+	// 	// 	// color: $color-menu-icon;
+
+	// 	// 	// @include breakpoint-menu-sm {
+	// 	// 	// 	margin-right: 30px;
+	// 	// 	// 	margin-left: 36px;
+	// 	// 	// }
+	// 	// }
+	// }
+
+	@include breakpoint-lg {
+		left: 0;
+		right: 0;
+		@include rem(bottom, 10);
+	}
+
+	@include breakpoint-md {
+		width: auto;
+		left: 0;
+		right: 0;
+		@include rem(bottom, 10);
+	}
+	
+	.icon {
+		&:before {
+			padding-top: 6px !important;
+		}		
+	}
+
+	.menuHeader_badge{
+		padding-left: 5px;
+		height: 26px;
+		line-height: 26px;
+		font-size: 14px;
+		font-weight: 600;
+	}
+
+	.profile_logo {
+		color: $color-primary;
+
+		&:hover {
+			color: $color-primary;
+		}	
+
+		.icon.icon-user_outlined {
+			background: $color-primary;
+			color: #ffff;
+			margin-left: 14px;
+			border-radius: 14px;
+			margin-right: 13px;
+			width: 27px;
+			height: 27px;
+			padding-left: 5.5px;
+			padding-top: 1.5px;
+		}
+	}
+
+	.menu-profile-popup {
+		display: none;
+		position: fixed;
+		bottom: 30px;
+		left: 230px;
+		width: 245px;
+		padding: 0px 0px 10px 1px;
+		background-color: white;
+		box-shadow: 0px 2px 8px 1px #e3e3e3;
+		border-radius: 4px;
+		flex-direction: column;
+
+		.menuItem.small {
+			height: 35px;
+			min-height: 35px;
+		}
+	}
+
+	.profile_logo:hover {
+		.menu-profile-popup {
+			display: flex;
+		}
+	}
+
+	.menu-profile-popup-head {
+		display: flex;
+		flex-direction: row;
+		padding-bottom: 15px;
+		padding-top: 20px;
+		padding-left: 7px;
+		border-bottom: 1px solid #cccc;
+
+		.icon-user_outlined {
+			background-color: #000;
+		}
+	}
+	.menu-profile-popup-middle1 {
+		border-bottom: 1px solid #cccc;
+	}
+	.menu-profile-popup-middle2 {
+		border-bottom: 1px solid #cccc;
+	}
+	.menu-profile-popup-footer {
+		border-bottom: 1px solid #cccc;
+	}
+}

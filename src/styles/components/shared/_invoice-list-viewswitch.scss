@@ -1,0 +1,65 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.invoice-list-viewswitch-component {
+	height: 25px;
+	line-height: 22px;
+	display: flex;
+
+	.invoice-list-viewswitch-text {
+		position: relative;
+		top: 2px;
+	}
+
+	.switch-icons {
+		position: relative;
+		width: 50px;
+		height: 26px;
+		background: #ffffff;
+		border: 1px $color-primary solid;
+		border-radius: 25px;
+		cursor: pointer;
+		
+		.icon {
+			position: absolute;
+			top: -1px;
+			width: 26px;
+			height: 26px;
+			color: $color-primary;
+
+			&.icon-kanban {
+				left: -1px;
+				padding-top: 1px;
+				padding-left: 7px;
+				font-size: 11px;
+				display: flex;
+				align-items: center;
+
+				&.active {
+					padding-top: 2px;
+					padding-left: 6px;
+				}
+			}
+
+			&.icon-list {
+				right: -1px;
+				padding-left: 6px;
+				font-size: 8px;
+				display: flex;
+				justify-content: flex-start;
+				align-items: center;
+
+				&.active {
+					padding-left: 0;
+					justify-content: center;
+				}
+			}
+
+			&.active {
+				color: #ffffff;
+				background: $color-primary;
+				border-radius: 50%;
+			}
+		}
+	}
+}

@@ -1,0 +1,86 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.document-export-send-modal {
+	min-height: 400px;
+    margin-top: 20px;
+    padding-bottom: 40px;
+
+    .recipients-error {
+        top: 5px;
+    }
+    
+    .email-view-select-label {
+        font-size: 13px;
+        color: $color-text-muted;
+    }
+
+	.email-view-select {
+		margin-top: 20px;
+
+		.Select-control {
+			background: #ffffff;
+
+			.Select-value {
+				margin: 3px;
+				background: $color-dot-disabled;
+				font-size: 15px;
+				border: 0 none;
+				border-radius: 5px;
+
+				.Select-value-icon {
+					border: 0 none;
+				}
+
+				.Select-value-label {
+					padding: 4px 5px;
+				}
+			}
+
+			.Select-input {
+				margin-left: 0!important;
+			}
+		}
+
+		.email-view-select-option {
+			padding: 10px;
+			border-bottom: 1px solid $color-line-light;
+			cursor: pointer;
+
+			&:hover {
+				background: $color-primary-superlight;
+			}
+		}
+
+		.email-view-select-option-value {
+			font-size: 16px;
+			padding: 0 10px;
+			color: $color-text;
+			font-weight: 600;
+		}
+
+		.email-view-select-option-subvalue {
+			font-size: 11px;
+			padding: 0 10px;
+			color: $color-text-muted;
+		}
+    }
+    
+    .document-export-textarea {
+        width: 100%;
+        margin-top: 10px;
+        margin-bottom: 30px;
+
+        textarea {
+            width: 100%;
+            min-height: 170px;
+            margin-top: 8px;
+            padding: 5px;
+            border-color: #DDDDDD;
+            color: $color-text;
+            font-size: 15px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+	}
+}

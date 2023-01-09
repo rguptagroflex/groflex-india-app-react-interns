@@ -1,0 +1,164 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.list {
+	$color-text: #666666;
+	$color-head: #999999;
+	$color-canceled-row: #bbbbbb;
+	display: flex;
+	flex-flow: column nowrap;
+	justify-content: space-between;
+	@include rem(font-size, 14);
+	color: $color-text;
+	&-sortable {
+		.list_headitem:not(.list_control) {
+			cursor: pointer;
+		}
+	}
+	&-clickable {
+		cursor: pointer;
+	}
+	&_headitem {
+		font-weight: 600;
+		color: $color-head;
+		@include rem(font-size, 15);
+		&-up, &-down {
+			color: $color-text;
+		}
+		&-down span {
+			@include icon(after, sort_down) {
+				color: $color-text !important;
+			}
+		}
+		&-up span {
+			@include icon(before, sort_up) {
+				color: $color-text !important;
+			}
+		}
+		&:not(.list_control) {
+			&:hover span {
+				@include icon(before, sort_up) {
+					color: #dddddd;
+				}
+
+				@include icon(after, sort_down) {
+					color: #dddddd;
+				}
+			}
+			span {
+				position: relative;
+				@include rem(margin-left, 8);
+				&:before, &:after {
+					position: absolute;
+				}
+			}
+		}
+	}
+	&_row {
+		position: relative;
+		border-bottom: 1px solid #dddddd;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include rem(padding, 0, 0, 0, 12);
+		&:not(.list_head):hover {
+			background: #e6f0fc;
+		}
+		&-canceled {
+			@include rem(padding-bottom, 24);
+		}
+		&-blinking {
+			animation: blinker 1s;
+		}
+	}
+	&_control {
+		height: 100%;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		@include rem(padding, 0, !important);
+		@include rem(max-width, 40);
+	}
+	&_dropdown {
+		$size: 40px;
+		border: none;
+		cursor: pointer;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include rem(border-radius, 3);
+		@include rem(height, $size);
+		@include rem(width, $size);
+		@include icon(before, arr_down) {
+			text-align: center;
+		}
+	}
+	&_item, &_headitem {
+		display: flex;
+		flex-grow: 1;
+		flex-basis: 0;
+		word-break: break-word;
+		@include rem(padding, 30, 6);
+		&:first-child {
+			@include rem(padding-left, 0);
+		}
+		&:last-child {
+			@include rem(padding-right, 0);
+		}
+		&-right {
+			justify-content: flex-end;
+		}
+	}
+	&_info {
+		position: absolute;
+		display: flex;
+		flex-direction: row;
+		color: #999999;
+		width: 100%;
+		@include rem(bottom, 16);
+		@include rem(left, 0);
+		@include rem(padding, 12, 46, 12, 12);
+		@include rem(font-size, 12);
+		&Item {
+			flex-basis: 0;
+			flex-grow: 1;
+			@include rem(padding, 0, 6);
+			@include rem(height, 20);
+			&:first-child {
+				@include rem(padding-left, 0);
+			}
+			&:last-child {
+				@include rem(padding-right, 0);
+			}
+			> a {
+				@include rem(padding, 12, 12);
+				@include rem(padding-left, 0);
+			}
+			> a:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+	&Icon {
+		flex-grow: 0;
+		padding-right: 0;
+		&_circle {
+			&-red {
+				border-radius: 50%;
+				background: $color-secondary;
+				padding: 0;
+				@include rem(margin-left, -10);
+				@include rem(height, 5);
+				@include rem(width, 5);
+			}
+			&-orange {
+				border-radius: 50%;
+				background: orange;
+				padding: 0;
+				@include rem(margin-left, -10);
+				@include rem(height, 5);
+				@include rem(width, 5);
+			}
+		}
+	}
+}

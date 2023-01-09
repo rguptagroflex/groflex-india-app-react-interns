@@ -1,0 +1,21 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-deleteaccount-component {
+    .deleteaccount-info {
+        margin-bottom: 20px;
+    }
+
+    .button-component-wrapper {
+        text-align: right;
+    }
+
+    .deleteaccount-reason {
+        margin-top: 10px;
+        font-size: 13px;
+        color: $color-text-muted;
+    }
+}
+.settings-accountmigration-component {
+    display: none;
+}

@@ -1,0 +1,173 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.full-width-wrapper {
+	height: 100%;
+	width: 100%;
+
+.settings-document-export-component {
+	width: 924px;
+	margin-right: auto;
+	margin-left: auto;
+	position: relative;
+	top: 100px;
+	.document-export-configuration {
+		display: flex;
+		align-items: center;
+
+		.document-export-date {
+			width: 27%;
+			padding-top: 15px;
+			padding-right: 20px;
+		}
+
+		.document-export-type {
+			width: 30%;
+			padding-top: 15px;
+			padding-right: 20px;
+		}
+
+		.Select-menu-outer {
+			min-width: 0;
+			width: 186px;
+			max-height: 270px;
+		}
+
+		.Select-menu {
+			max-height: 270px;
+		}
+
+		.document-export-datePicker {
+			display: flex;
+			width: 42%;
+			padding: 0 4px 0 10px;
+			margin-top: 6px;
+
+			.dateInput {
+				&_input {
+					width: 75%;
+				}
+
+				&_wrapper {
+					&:after {
+						margin-right: 40px;
+					}
+					.dateInput_input {
+						border-bottom: 1px solid #dddddd;
+					}
+				}
+			}
+		}
+
+		.button-component-wrapper {
+			//margin-top: 8px;
+			height: 38px;
+			.button {	
+				padding-left: 30px;
+			}
+		}
+		.export-type {
+			display: flex;
+			margin: 0px 40px;
+			.form_input {
+				display: flex;
+				.radio-custom-wrapper {
+					margin: 0px 10px;
+				}
+			}
+		}
+	}
+
+	.export-head {
+		font-weight: 600;
+		margin-bottom: 10px;
+	}
+
+	.list-component {
+		.list-table {
+				border: 1px solid #c4c4c4;
+			thead {
+				background: #EBF5FF;
+			}
+			.list-table-cell {
+				padding: 25px 15px !important;
+				border-bottom: 1px solid #c4c4c4;
+				text-align: center!important;
+				vertical-align: middle;
+				.status-failed {
+					color: red;
+				}
+
+				.actions {
+					display: flex;
+					margin-left: 24px;
+					a {
+						font-weight: 600;
+						font-size: 12px;
+					}
+					div:nth-child(1) {
+						padding-right: 20px;
+						border-right: 1px solid #c4c4c4;
+						display: flex;
+						flex-direction: column;
+						.SVGInline {
+						margin-right: 5px;
+						}
+					}
+					div:nth-child(2) {
+						padding-left: 20px;
+						display: flex;
+						flex-direction: column;
+						.SVGInline {
+							margin-right: 5px;
+							}
+					}
+
+
+				}
+			}
+
+			&.list-table-hoverable {
+				:not(.list-table-head).list-table-row:not(.list-table-placeholder-row) {
+					cursor: pointer;
+	
+					&:hover {
+						background: #EBF5FF;
+	
+						.cell-selectable {
+							border-bottom: 1px solid $color-line-light;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.document-export-list-pagination {
+		text-align: center;
+		padding: 50px 0 0 0;
+	}
+
+	.document-export-error {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+
+		.error-headline {
+			margin-bottom: 20px;
+
+			h1 {
+				font-weight: 500;
+				font-size: 20px;
+			}
+		}
+	}
+	
+}
+.tally-export-warning {
+	color: coral;
+	text-align: justify;
+	padding-top: 20px;
+}
+}

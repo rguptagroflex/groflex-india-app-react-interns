@@ -1,0 +1,55 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.filter {
+	display: flex;
+	justify-content: space-between;
+	user-select: none;
+	.button {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+	&_new {
+		background: #2b6dcb;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include rem(margin-left, 60);
+		@include rem(min-height, 50);
+		@include rem(min-width, 50);
+		&, &:link, &:visited, &:focus, &:hover, &:active {
+			color: white;
+		}
+	}
+	&_list {
+		margin: 0;
+		display: flex;
+		flex-wrap: wrap;
+		@include rem(font-size, 15);
+		@include rem(padding, 14, 0, 24, 12);
+		@include rem(margin-bottom, 12);
+	}
+	&_item {
+		color: #aaaaaa;
+		position: relative;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		cursor: pointer;
+		font-weight: 600;
+		@include rem(margin-right, 25);
+		&:hover {
+			color: darken(#aaaaaa, 20);
+		}
+		&-active {
+			color: $color-primary;
+			&:hover {
+				color: $color-primary;
+			}
+		}
+		.badge {
+			@include rem(margin-left, 12);
+		}
+	}
+}

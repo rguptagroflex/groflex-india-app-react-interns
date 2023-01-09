@@ -1,0 +1,35 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.edit-column-modal {
+	padding-bottom: 40px;
+    .column-row {
+        display: flex;
+        flex-direction: row;
+        width: 100%;  
+
+        &.disabled {
+            .form_input.col-xs-11 .input {
+                cursor: url(../assets/images/edit2.png), auto;
+            }
+        }      
+    }
+
+    .icon-visible {
+        @include icon(after, show_visibility);
+        cursor: pointer;
+        margin-top: 22px;
+        margin-left: 10px;
+        &.required {
+            color: $color-text-disabled;
+            cursor: default;
+        }
+    }
+
+    .icon-invisible {
+        @include icon(after, hide_visibility);
+        cursor: pointer;
+        margin-top: 22px;
+        margin-left: 10px;
+    }
+}

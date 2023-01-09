@@ -1,0 +1,73 @@
+.taxEstimationConfigurationWrapper {
+	padding-bottom: 30px;
+
+
+	.headline {
+		font-size: 22px;
+		margin-top: 0;
+		@include rem(margin-bottom, 15);
+	}
+
+	.company-location,
+	.company-type {
+		@include rem(margin-top, 30);
+		margin-bottom: 0;
+	}
+
+	.company-type {
+		@include rem(margin-bottom, 12);
+	}
+
+	.company-location-inputs {
+		.input::-webkit-input-placeholder {
+			color: $color-text-placeholder !important;
+		}
+		.selectInput {
+			@include rem(margin-top, 12);
+		}
+	}
+
+	.tax-rate {
+		@include rem(margin-bottom, 30);
+	}
+
+	.estimated-profit {
+		.label {
+			margin-bottom: 0;
+		}
+		.subheadline {
+			@include rem(margin-top, 5);
+			@include rem(font-size, 12);
+		}
+		.estimated-profit-input-container {
+			@include rem(padding-top, 15);
+		}
+	}
+
+	.align-right {
+		display: block !important;
+		margin: 0;
+		text-align: right;
+	}
+
+	.modal-base-footer {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 40px 0;
+		border-top: 1px solid $color-modal-footer-border;
+		text-align: center;
+
+		.cancel-wrapper {
+			float: left;
+			margin-left: -40px;
+		}
+
+		.save-wrapper {
+			float: right;
+		}
+	}
+
+}

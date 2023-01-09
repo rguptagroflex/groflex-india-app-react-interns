@@ -1,0 +1,144 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.tagInput {
+    position: relative;
+
+    input {
+		outline: none;
+		box-shadow: none;
+		color: $color-text;
+	}
+
+    &_content {
+        position: relative;
+        @include rem(border,1,solid,#dddddd);
+    }
+
+    &_label {
+        position: absolute;
+        color: $color-text-muted;
+        @include rem(font-size,13);
+        @include rem(top,-20);
+    }
+
+    &_input {
+        min-width: 100%;
+        @include rem(min-height,60);
+        border: 0;
+    }
+    
+    &_hint {
+        color: $color-text-muted;
+        @include rem(margin-top,5);
+	}
+	
+	&_content {
+		position: relative;
+		@include rem(border, 1, solid, #dddddd);
+	}
+
+	&Loader {
+		z-index: 10;
+		color: #5f6262;
+		background: rgba(255, 255, 255, 0.9);
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: absolute;
+		z-index: 10;
+		top: 0;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		&_content {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+		&_spinner {
+			$size: 20;
+			$width: 4;
+			$background: #cccccc;
+			$foreground: $color-primary;
+			$duration: 1000;
+			position: absolute;
+			@include rem(right, 5);
+			@include rem(bottom, 5);
+			@include rem(border, 4px, solid, #cccccc);
+			&, &:after {
+				box-sizing: inherit;
+				border-radius: 50% !important;
+				@include rem(width, $size);
+				@include rem(height, $size);
+			}
+			&:after {
+				content: "";
+				animation: spin #{$duration}ms linear infinite;
+				position: absolute;
+				@include rem(top, -$width);
+				@include rem(left, -$width);
+				@include rem(border, 3px, solid, desaturate(lighten($foreground, 10%), 30%));
+				border-right-color: transparent;
+				border-top-color: transparent;
+			}
+		}
+	}
+
+    .tag-editor {
+        color: $color-text;
+        font: normal 15px "Segoe UI",Helvetica,Arial,sans-serif;
+        border: 0;
+        @include rem(margin-top,6);
+        @include rem(padding,8,3);
+
+        &-required {
+			cursor: pointer;
+			
+            .tag-editor-delete {
+                display: none;
+            }
+        }
+
+        &-hidden {
+            display: none;
+        }
+
+        &-tag, &-delete {
+            background: #eeeeee;
+            color: $color-text;
+
+            &-required {
+                pointer-events: none;
+            }
+        }
+
+        &-tag.active ~ .tag-editor-delete i:before {
+            content: none;
+            background: #bada55;
+        }
+
+        &-delete i {
+            @include icon(before, close) {
+                color: #cccccc;
+                position: absolute;
+                top: -4px;
+                right: -6px;
+                @include rem(font-size,9);
+			}
+			
+            &:hover:before {
+                color: #aaaaaa;
+            }
+        }
+
+        &.loading {
+            display: block;
+        }
+    }
+
+    .ui-sortable {
+        overflow-y: auto;
+    }
+}

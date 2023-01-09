@@ -1,0 +1,53 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.expense-delete-modal {
+	ul {
+		display: table;
+		width: 100%;
+		margin-top: 20px;
+
+		li {
+			display: table;
+			width: 100%;
+			margin: 5px 0;
+
+			b { float: left; clear: both; }
+			span { float: right; }
+		}
+	}
+
+	.expense-delete-list {
+		margin-top: 20px;
+
+		.expense-delete-list-item {
+			position: relative;
+			height: 45px;
+
+			.list-item-first-col {
+				float: left;
+				width: 150px;
+				@include truncate-text();
+			}
+
+			.list-item-second-col {
+				float: left;
+				width: 250px;
+				@include truncate-text();
+			}
+
+			.icon {
+				position: absolute;
+				right: 0;
+				font-size: 12px;
+				top: 50%;
+				@include vendor-prefix('transform', 'translateY(-50%)');
+				color: $color-success;
+
+				&.icon-close {
+					color: $color-error;
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,48 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+@import 'menu-bar';
+@import 'menu-footer';
+@import 'menu-header';
+@import 'menu-item';
+@import 'menu-item-with-submenu';
+
+.menu {
+	background: $color-menu-background;
+	position: fixed;
+	z-index: 10010;
+
+	@include breakpoint-lg {
+		min-height: 100%;
+		@include rem(width, $menu-width);
+		@include rem(padding, 0, 0, 60, 0);
+		left: 0;
+	}
+
+	@include breakpoint-md {
+		min-height: 100%;
+		@include rem(width, $menu-small-width);
+		@include rem(padding, 0, 0, 60, 0);
+		left: 0;
+	}
+
+	.logo {
+		height: 100%;
+
+		@include breakpoint-md {
+			// @include rem(margin-left, 54);
+			width: auto;
+			fill: #ffffff;
+		}
+
+		@include breakpoint-lg {
+			@include rem(margin-left, 20);
+			fill: #ffffff;
+		}
+	}
+}
+
+.trial-locked {
+	pointer-events: none;
+	opacity: 0.5;
+}

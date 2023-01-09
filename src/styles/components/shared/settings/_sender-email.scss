@@ -1,0 +1,17 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-senderemail-component {
+    .sender-email-info {
+        margin-bottom: 30px;
+    }
+
+    .sender-email-name-input,
+    .sender-email-input {
+        margin-bottom: 10px;
+    }
+
+    .button-component-wrapper {
+        text-align: right;
+    }
+}

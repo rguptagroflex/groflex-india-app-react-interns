@@ -1,0 +1,26 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.timetracking-edit-component-wrapper {
+
+	.row {
+		margin-bottom: 40px;
+
+		&.no-margin-bottom {
+			margin-bottom: 0;
+		}
+	}
+
+	.timetracking-edit-type {
+		margin-top: 12px;
+	}
+
+	.dateInput_label {
+		margin-bottom: 4px;
+	}
+
+	.dateInput_input {
+		border-color: $color-input-bar;
+	}
+
+}

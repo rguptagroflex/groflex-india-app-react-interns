@@ -1,0 +1,1287 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.select-input-label {
+	font-size: 13px;
+	color: $color-text-muted;
+}
+
+.Select-menu-outer {
+	min-width: 200px;
+
+	.dummy span {
+		font-weight: 600;
+		color: $color-primary;
+	}
+}
+
+.selectInput.has-title {
+	.Select {
+		padding-top: 10px;
+	}
+}
+
+// -----------------------------
+// date input
+// -----------------------------
+.dateInput {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    &_wrapper {
+        position: relative;
+    }
+    &_input {
+        border: 0;
+        border-bottom: 1px solid #dddddd;
+        outline: none;
+        @include rem(width,100%);
+        @include rem(padding,3,0);
+    }
+    &_label {
+        text-align: left;
+        color: $color-text-muted;
+        @include rem(font-size,13);
+        @include rem(margin-bottom,2);
+        &-left {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            .dateInput {
+                &_label {
+                    color: $color-text-muted;
+                    width: 51%;
+                    @include rem(font-size,16);
+                    @include rem(margin-top,9);
+                }
+                &_wrapper {
+                    width: 49%;
+                }
+                &_input {
+                    @include rem(border,1,solid,#dddddd);
+                    @include rem(height,39);
+                    @include rem(padding-left,15);
+                }
+            }
+        }
+    }
+    &-noBorder {
+        .dateInput_input {
+            border: 0;
+        }
+    }
+}
+
+// -----------------------------
+// form
+// -----------------------------
+.form {
+    @include rem(margin,0);
+    &_input {
+        position: relative;
+        outline: none;
+    }
+    &_row {
+        @include rem(margin-bottom,16);
+        @include rem(margin-top,16);
+        @extend .row;
+    }
+    &_groupheader {
+        color: #333333;
+        font-weight: 600;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-right: 1px solid $color-line-light;
+        @include rem(padding-left,24);
+        @include rem(font-size,21);
+        &Subtext {
+            color: $color-text-muted;
+            font-weight: 400;
+            @include rem(font-size,11);
+            @include rem(line-height,18);
+            @include rem(margin-top,12);
+        }
+        &_edit {
+            color: #333333;
+            font-weight: 700;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-right: 2px solid $color-line-light;
+            @include rem(padding-right,32);
+            & + div {
+                @include rem(padding-left,32);
+            }
+        }
+        h2 {
+            @include rem(font-size,19);
+            @include rem(padding-bottom,6);
+            @include rem(margin,0);
+            @include breakpoint-lg {
+                border-bottom: 0 none;
+                @include rem(padding-bottom,0);
+            }
+        }
+    }
+}
+
+// -----------------------------
+// text input
+// -----------------------------
+.input {
+    border: none;
+    border-bottom: 1px solid $color-input-bar;
+    border-radius: 0 !important;
+    box-shadow: none;
+    display: block;
+    color: $color-text;
+    padding: 0;
+    width: 100%;
+    letter-spacing: inherit;
+    @include rem(padding-top,10);
+    @include rem(height,48);
+    &:disabled {
+        color: $color-text-disabled;
+        -webkit-text-fill-color: $color-text-disabled;
+        background-color: transparent;
+    }
+    &-leftLabel {
+        .input {
+            width: 46%;
+            margin-left: 54%;
+            &_label {
+                width: 54%;
+                @include rem(font-size,16,!important);
+                @include rem(top,-30,!important);
+                @include rem(margin-top,0,!important);
+            }
+            &:focus, &-valid, &-invalid, &:not(.input-empty) {
+                & ~ .input_label {
+                    @include rem(font-size,16);
+                    @include rem(top,-30);
+                }
+            }
+            &_bar {
+                left: 54%;
+                position: relative;
+                width: 46%;
+            }
+            &_hint, &_error {
+                width: 46%;
+                margin-left: 54%;
+                @include rem(margin-top,0,!important);
+            }
+            &_error {
+                color: $color-error;
+            }
+        }
+    }
+	&-currencyTotal {
+		display: flex;
+		flex-direction: column;
+		height: 22px;
+		width: 90px;
+
+		.input {
+			height: 22px;
+			padding-top: 0;
+			text-align: right;
+			position: relative;
+			border-bottom: none;
+			&:hover {
+				border-bottom: 1px dashed $color-input-bar;
+			}
+		}
+	}
+    &-boxBorder {
+        .input {
+            border: 1px solid #dddddd;
+            @include rem(height,39);
+            @include rem(padding-left,15);
+            @include rem(padding-top,0);
+            &:focus, &:not(.input-empty), &-valid:not(.input-empty), &-invalid:not(.input-empty) {
+                & ~ .input_label {
+                    @include rem(top,-59.6);
+                }
+            }
+            &_label {
+                @include rem(top,-62);
+                @include rem(font-size,13);
+            }
+            &_controls {
+                @include rem(margin-top,-15);
+            }
+        }
+    }
+    &-noBorder {
+        .input {
+            border: none;
+        }
+        .input_bar {
+            display: none;
+        }
+    }
+    &:focus {
+        box-shadow: none;
+        outline: none;
+    }
+	
+	&_label {
+        color: $color-text-muted;
+        left: 0;
+        display: block;
+        pointer-events: none;
+        position: relative;
+        transition: 0.2s ease all;
+        text-align: left;
+        @include rem(top,-30);
+        @include rem(height,20);
+        @include rem(font-size,16);
+    }
+    &_controls {
+        position: absolute;
+        display: flex !important;
+        flex-direction: column;
+        @include rem(top,20);
+        @include rem(right,6);
+    }
+    &:focus, &:not(.input-empty), &-valid:not(.input-empty), &-invalid:not(.input-empty) {
+        & ~ .input_label {
+            @include rem(font-size,13);
+            @include rem(top,-50);
+        }
+    }
+    &:focus ~ .input_label {
+        color: darken($color-primary,10);
+	}
+	
+    &_bar {
+        display: block;
+        position: relative;
+        width: 100%;
+        &:before, &:after {
+            bottom: 0;
+            content: "";
+            position: absolute;
+            transition: 0.3s ease all;
+            width: 0;
+            @include rem(height,2);
+        }
+        &:before {
+            left: 50%;
+        }
+        &:after {
+            right: 50%;
+        }
+	}
+	
+    &:focus ~ .input_bar:before, &:focus ~ .input_bar:after {
+        width: 50%;
+        background: $color-primary;
+	}
+	
+    &-invalid {
+        color: $color-error !important;
+        & ~ .input_bar:before, & ~ .input_bar:after {
+            background: $color-error !important;
+            width: 50%;
+        }
+    }
+   
+	&_hint, &_error {
+        color: $color-text-muted;
+        display: block;
+        position: relative;
+        text-align: left;
+        white-space: normal;
+        word-wrap: break-word;
+        @include rem(font-size,12);
+        @include rem(min-height,18);
+        @include rem(top,-16);
+	}
+	
+    &_error {
+        color: $color-error !important;
+	}
+	
+    &-invalid ~ .input_hint {
+        display: none;
+	}
+	
+    &-noHint {
+        @include rem(margin-bottom,-20);
+        .input_hint {
+            display: none;
+        }
+    }
+	
+	&_remove_btn {
+        position: absolute;
+        right: 0;
+        z-index: 10;
+        @include rem(margin-left,-30);
+        @include rem(top,15);
+    }
+	
+	&[type=password] {
+        letter-spacing: 0.2em;
+    }
+}
+
+// -----------------------------
+// new password input
+// -----------------------------
+.input {
+	// password input
+	&-password {
+		&:focus, &-valid, &-invalid, &:not(.input-empty) {
+		transition: 0.3s ease all;
+		border-color: transparent;
+		}
+	}
+
+	// password strength
+	&_passwordStrength {
+		position: absolute;
+		@include rem(right, 0);
+		color: $color-text-muted;
+		transition: 0.3s ease all;
+		@include rem(top, -80);
+		@include rem(font-size, 13);
+	}
+
+	// password bar
+	&_passwordBar {
+		top: -20px;
+		display: flex;
+		position: relative;
+	}
+
+	&_passwordStep {
+		$colors: #e96648 #eed965 #d1f58b #9ae331;
+		width: 25%;
+		height: 0;
+		transition: 0.3s ease all;
+		border: solid transparent;
+		position: relative;
+		@include rem(border-width, 0);
+		@include rem(border-bottom-width, 3);
+		@include rem(margin, -2, 3, 0, 3);
+		span {
+		position: absolute;
+		left: 0;
+		width: 0%;
+		transition: 0.3s ease all;
+		@include rem(height, 3);
+		}
+		@each $color in $colors {
+		$i: index($colors, $color);
+		&:nth-child(#{$i}) span {
+			background: $color;
+		}
+		}
+		&:first-child {
+		@include rem(margin-left, 0);
+		}
+		&:last-child {
+		@include rem(margin-right, 0);
+		}
+	}
+	
+	&:focus, &-valid, &-invalid,
+	&_passwordBar &_passwordStep {
+		border-bottom-color: #dddddd;
+		&.active span {
+		width: 100%;
+		}
+	}
+}
+
+// -----------------------------
+// radio input
+// -----------------------------
+span.radio-custom-circle {
+	display: none;
+}
+  
+input[type="radio"].radio-custom {
+	width: 16px;
+	height: 16px;
+	margin: 0;
+	cursor: default;
+	opacity: 0;
+}
+
+input[type="radio"].radio-custom + span.radio-custom-circle {
+	width: 13px;
+    height: 13px;
+    background-color: white;
+    border: 1px #ccc solid;
+    margin: 0 0 0 -13px;
+    border-radius: 50%;
+    pointer-events: none;
+    display: inline-block;
+    box-sizing: border-box;
+}
+
+input[type="radio"].radio-custom + span.radio-custom-circle::after {
+	position: absolute;
+	width: 2px;
+	height: 2px;
+	margin: 6px 0 0 6px;
+	color: transparent;
+	border-radius: 50%;
+	display: block;
+	transition: 0.2s;
+	content: " ";
+}
+
+input[type="radio"].radio-custom:checked + span.radio-custom-circle {
+	background-color: $color-primary;
+	border: 1px $color-primary solid;
+}
+
+input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
+	width: 5px;
+	height: 5px;
+	margin: 3px 0 0 3px;
+	background-color: white;
+}
+
+.radio {
+	color: $color-text-muted;
+	@include rem(font-size, 13);
+
+	&_hint, &_error {
+		width: 100%;
+		color: $color-text-muted;
+		display: block;
+		position: relative;
+		text-align: left;
+		white-space: normal;
+		word-wrap: break-word;
+		margin-left: 0.625rem;
+		@include rem(font-size, 12);
+		@include rem(min-height, 18);
+	}
+
+	&_error {
+		color: $color-error !important;
+	}
+
+	&_label {
+		display: inline-block;
+
+		&-left {
+			.radio {
+				display: flex;
+				justify-content: space-between;
+			}
+			.radio_label {
+				width: 51%;
+				color: $color-text-muted;
+				@include rem(font-size, 16);
+			}
+		}
+
+		&-register {
+			display: flex;
+			flex-wrap: wrap;
+			margin: 0.5rem 0 2rem;
+
+			.radio_optionlabel {
+				font-size: 13px;
+				color: #222222;
+			}
+
+			.radio_label {
+				width: 100%;
+				text-align: left;
+				margin-bottom: 0.625rem;
+				@include rem(font-size, 16);
+				font-size: 14px;
+				font-weight: 800;
+				color: #222222;
+			}
+
+			&.verticalOptions {
+				justify-content: space-between;
+				.radio_option {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				padding: 0 0.5rem;
+					.radio_optionlabel {
+						padding-left: 0;
+						padding-top: 0.375rem;
+					}
+				}
+			}
+		}
+	}
+
+	&_option {
+		@include rem(padding-left, 16);
+		&:first-child {
+		@include rem(padding-left, 0);
+		}
+	}
+
+	&_optionlabel {
+		@include rem(padding-left, 6);
+	}
+
+	&_inputs {
+		@include rem(margin-right, 5);
+	}
+	
+	&_label {
+		@include rem(margin-left, 10);
+		@include rem(margin-top, -2);
+	}
+}
+
+// -----------------------------
+// checkbox input
+// -----------------------------
+.checkbox {
+	color: $color-primary;
+	cursor: pointer;
+	user-select: none;
+	display: flex;
+	justify-content: flex-start;
+	align-content: center;
+	align-items: flex-start;
+	position: relative;
+
+	label {
+		cursor: pointer;
+	}
+	&-focused .checkbox_visual {
+		border: 1px solid #cccccc;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+	}
+	&-disabled {
+		cursor: default;
+		color: $color-text-muted;
+		&:checked {
+		& ~ .checkbox_visual {
+			background: #f0f0f0 !important;
+			border-color: #f0f0f0 !important;
+		}
+		}
+	}
+	&_input {
+		display: none;
+		&:checked {
+		& ~ .checkbox_visual {
+			@include rem(padding-left, 1);
+			background: $color-primary;
+			border-color: $color-primary;
+			&:before {
+			content: "";
+			transform: rotate(-45deg) scaleY(0.5);
+			border-right: 1px solid rgba(0, 0, 0, 0);
+			border-top: 1px solid rgba(0, 0, 0, 0);
+			@include rem(border-bottom, 4, solid, white);
+			@include rem(border-left, 2, solid, white);
+			@include rem(height, 4);
+			@include rem(width, 6);
+			@include rem(top, -1);
+			}
+		}
+		}
+		&:disabled {
+		& ~ .checkbox_label {
+			cursor: default;
+		}
+		& ~ .checkbox_visual:before {
+			border-bottom-color: #dddddd;
+			border-left-color: #dddddd;
+			cursor: default;
+		}
+		}
+	}
+	&_label {
+		display: flex;
+		justify-content: center;
+		align-content: center;
+		align-items: flex-start;
+		@include rem(padding-left, 6);
+		@include rem(margin-top, -2);
+		&-error {
+		color: #fa6e6e !important;
+		}
+	}
+	&_visual {
+		border: 1px solid #dddddd;
+		border-radius: 3px;
+		display: flex;
+		justify-content: center;
+		align-self: flex-start;
+		align-items: center;
+		overflow: hidden;
+		@include rem(height, 16);
+		@include rem(width, 16);
+		@include rem(min-width, 16);
+		&:before {
+		border: 1px solid transparent;
+		background: transparent;
+		content: "";
+		position: relative;
+		transform: rotate(135deg) scale(0);
+		@include rem(height, 0);
+		@include rem(width, 0);
+		}
+	}
+	&_labelLink {
+		position: relative;
+		bottom: 2px;
+		left: 4px;
+		&-error {
+		color: #fa6e6e !important;
+		}
+	}
+}
+
+// -----------------------------
+// textarea input
+// -----------------------------
+.textarea {
+	// input
+	&_input {
+		display: block;
+		color: #333333;
+		width: 100%;
+		border: 1px solid #dddddd;
+		outline: none;
+		@include rem(margin-bottom, 0);
+		@include rem(padding, 4);
+		@include rem(max-height, 250);
+		@include rem(min-height, 70);
+	}
+	// label
+	&_label {
+		color: $color-text-muted;
+		display: block;
+		position: relative;
+		pointer-events: none;
+		transition: 0.2s ease all;
+		text-align: left;
+		@include rem(margin-bottom, 10);
+		@include rem(font-size, 13);
+	}
+	&_input:focus ~ .textarea_label {
+		color: darken($color-primary, 10);
+	}
+	// bar
+	&_bar {
+		display: block;
+		position: relative;
+		width: 100%;
+		@include rem(margin-top, 0);
+		@include rem(height, 2);
+		&:before, &:after {
+			content: "";
+			position: absolute;
+			transition: 0.3s ease all;
+			width: 0;
+			@include rem(height, 2);
+		}
+		&:before {
+			left: 50%;
+		}
+		&:after {
+			right: 50%;
+		}
+	}
+	&_input:focus ~ .textarea_bar:before, &_input:focus ~ .textarea_bar:after {
+		width: 50%;
+		background: $color-primary;
+	}
+	// limit
+	&_limit {
+		position: absolute;
+		right: 0;
+		text-align: right;
+		color: $color-text-muted;
+		opacity: 0;
+		transition: opacity 0.2s ease-in-out;
+		will-change: opacity;
+		@include rem(font-size, 12);
+		@include rem(width, 140);
+		& ~ .textarea_error {
+			width: calc(100% - 140px);
+		}
+	}
+	&_hints {
+		position: relative;
+		display: flex;
+		justify-content: space-between;
+		@include rem(padding, 6, 0);
+		@include rem(min-height, 30);
+	}
+	&_error {
+		width: 100%;
+		color: $color-error;
+		display: block !important;
+		text-align: left;
+		white-space: normal;
+		word-wrap: break-word;
+		@include rem(font-size, 12);
+		@include rem(min-height, 18);
+	}
+	&_input:focus ~ .textarea_hints > .textarea_limit {
+		opacity: 1;
+		display: block;
+	}
+}
+
+// -----------------------------
+// select input
+// -----------------------------
+.selectInput {
+	&Text-matched {
+		color: $color-primary;
+		font-weight: 600;
+		background: transparent !important;
+	}
+	&_error {
+		position: relative;
+	}
+	&.email_input {
+		.selectInput_bar {
+			@include rem(top, -4);
+		}
+	}
+	&_label {
+		@include rem(font-size, 13);
+		@include rem(top, -55);
+		display: block;
+		position: relative;
+	}
+	&-active ~ .selectInput_label {
+		color: $color-primary;
+	}
+	.selectize-control {
+		border-radius: 0;
+		@include rem(padding-top, 10);
+		&.plugin-remove_button {
+			> div {
+				height: auto;
+			}
+		}
+	}
+	.optgroup:not(:first-child) .optgroup_separator {
+		border-bottom: 1px solid #cccccc;
+	}
+	.selectize-input {
+		box-shadow: 0 0 0 transparent;
+		border-radius: 0;
+		@include rem(font-size, 15);
+		@include rem(height, 38);
+		.emailTag {
+			background-color: #eeeeee;
+			padding: 3px 22px 3px 5px !important;
+			border-radius: 2px !important;
+			a {
+				@include rem(padding-left, 3px !important);
+				border: none !important;
+				color: #cccccc !important;
+				@include rem(margin-right, 5);
+				font-size: 21px !important;
+				&:hover {
+					background-color: transparent !important;
+				}
+			}
+		}
+		input {
+			@include rem(font-size, 15);
+			color: black;
+		}
+		.item {
+			display: inline-block;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+	}
+	&_bar {
+		display: block;
+		position: relative;
+		width: 100%;
+		z-index: 10;
+		&:before, &:after {
+			content: "";
+			position: absolute;
+			transition: 0.3s ease all;
+			width: 0;
+			@include rem(bottom, 1);
+			@include rem(height, 2);
+		}
+		&:before {
+			left: 50%;
+		}
+		&:after {
+			right: 50%;
+		}
+	}
+	&-active .selectInput_bar:before, &-active .selectInput_bar:after {
+		width: 50%;
+		background: $color-primary;
+	}
+	&-invalid .selectInput_bar:before, &-invalid .selectInput_bar:after {
+		width: 50%;
+		background: red;
+	}
+	&-invalid .input_error {
+		top: 2px;
+	}
+	&-noBorder {
+		.selectize-input {
+			border: 0;
+			padding: 0;
+			@include rem(padding, 0);
+			&::after {
+				content: none !important;
+			}
+		}
+		.selectize-control {
+			height: auto !important;
+			@include rem(margin-bottom, 2);
+		}
+	}
+	&-disabled {
+		color: red;
+		.selectInput_label {
+			color: #dddddd !important;
+		}
+	}
+	&-borderBottom {
+		.selectize-input {
+			border: none;
+			border-bottom: 1px solid #cccccc;
+			@include rem(padding, 0);
+			@include rem(padding-right, 15);
+			&:after {
+				position: absolute !important;
+				top: 11px !important;
+				right: 0 !important;
+			}
+		}
+		.selectize-control.single {
+			&.loading {
+				&:before, &:after {
+					right: 0;
+				}
+				&:after {
+					@include rem(right, -1);
+				}
+			}
+		}
+	}
+	&-smallDropdown {
+		.selectize-dropdown-content {
+			@include rem(max-height, 130);
+		}
+	}
+	&-leftLabel {
+		.selectInput {
+			&_label {
+				color: $color-text-muted;
+				position: relative;
+				@include rem(top, -30);
+				@include rem(font-size, 16);
+			}
+			&-active ~ .selectInput_label {
+				color: $color-primary;
+			}
+			&_hint, &_error {
+				margin-left: 51%;
+				position: relative;
+				@include rem(top, -16);
+			}
+			&_bar {
+				left: 51%;
+				width: 49%;
+			}
+		}
+		.selectize-control,
+		.Select {
+			margin-left: 51%;
+			width: 49%;
+			@include rem(height, 38);
+			@include rem(padding-top, 0);
+		}
+	}
+	// hint
+	&_hint, &_error {
+		color: $color-text-muted;
+		display: block;
+		position: relative;
+		text-align: left;
+		white-space: normal;
+		word-wrap: break-word;
+		@include rem(font-size, 12);
+		@include rem(min-height, 18);
+		@include rem(top, -16);
+	}
+	&-invalid {
+		.selectize-input {
+			border: 1px solid $color-error;
+		}
+	}
+	&-noHint {
+		@include rem(margin-bottom, -20);
+		.selectInput_hint {
+			display: none;
+		}
+	}
+	// error
+	&_error {
+		color: $color-error;
+	}
+}
+
+.selectize-control.single {
+	&.loading {
+		&:before, &:after {
+			@include rem(top, 20);
+			@include rem(right, 15);
+		}
+		&:after {
+			@include rem(top, 19);
+			@include rem(right, 14);
+		}
+		.selectize-input::after {
+			display: none;
+		}
+	}
+	.selectize-input, .selectize-input.focus {
+		@include icon(after, arr_down);
+		border-radius: 0;
+		box-shadow: none;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		@include rem(font-size, 15);
+		&::before {
+			display: none;
+		}
+		&::after {
+			border: none;
+			animation-play-state: paused;
+			animation-delay: 0s;
+			animation-iteration-count: 0;
+			margin: 0;
+			top: 10px;
+			color: #aaaaaa;
+			@include rem(height, 16);
+			@include rem(width, 16);
+		}
+		input {
+			@include rem(font-size, 15);
+		}
+	}
+	.selectize-dropdown-header {
+		background: transparent;
+		@include rem(margin, 0, 18, 0, 18);
+		@include rem(padding, 4, 0);
+		&-title {
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			font-weight: 600;
+		}
+	}
+	.selectize-dropdown-content {
+		@include rem(max-height, 204);
+	}
+}
+
+.selectize-dropdown {
+	z-index: 11;
+	border: 1px solid #cccccc;
+	box-shadow: none;
+	border-radius: 0;
+	@include rem(min-width, 160);
+	& [data-selectable] {
+		display: flex;
+		@include rem(margin, 0);
+		@include rem(padding, 8, 15);
+		@include rem(font-size, 14);
+		& .highlight {
+			background: transparent;
+			font-weight: bold;
+		}
+		&.create {
+			@include rem(padding, 10, 18);
+			color: $color-primary;
+		}
+	}
+	&-row {
+		width: 100%;
+		height: auto;
+		&-head {
+			font-size: 15px;
+			font-weight: 600;
+		}
+		&-head, &-foot {
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+	}
+	&-column-article {
+		justify-content: flex-start;
+		align-items: center;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		@include breakpoint-lg {
+			&:first-child {
+				@include rem(width, 400);
+				@include rem(padding-right, 8);
+			}
+			&:nth-child(2) {
+				@include rem(width, 180);
+			}
+		}
+
+		@include breakpoint-md {
+			&:first-child {
+				@include rem(width, 370);
+				@include rem(padding-right, 8);
+			}
+			&:nth-child(2) {
+				@include rem(width, 180);
+			}
+		}
+	}
+}
+
+// -----------------------------
+// toggle switch
+// -----------------------------
+.toggleSwitch {
+	display: flex;
+	justify-content: space-between;
+	@include rem(padding-bottom, 15);
+	&_switch {
+		position: relative;
+		display: inline-block;
+		width: 60px;
+		height: 34px;
+		@include rem(margin-top, -6);
+	}
+	&_slider {
+		position: absolute;
+		cursor: pointer;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: #ededed;
+		-webkit-transition: 0.4s;
+		transition: 0.4s;
+		&-round {
+			border-radius: 34px;
+			border: 1px solid #dddddd;
+		}
+		&-round:before {
+			border-radius: 50%;
+		}
+		&:before {
+			position: absolute;
+			content: "";
+			height: 27px;
+			width: 27px;
+			left: 3px;
+			bottom: 3px;
+			background-color: white;
+			-webkit-transition: 0.4s;
+			transition: 0.4s;
+		}
+	}
+	input {
+		display: none;
+		&:checked + .toggleSwitch_slider {
+			background-color: $color-big-icons;
+		}
+		&:checked + .toggleSwitch_slider::before {
+			background-color: white;
+			transform: translateX(26px);
+		}
+		&:focus + .toggleSwitch_slider {
+			box-shadow: 0 0 1px #2196f3;
+		}
+	}
+}
+
+// -----------------------------
+// loading for inputs
+// -----------------------------
+.loading {
+	$size: 16px;
+	$width: 4px;
+	display: flex;
+	position: relative;
+	align-items: flex-start;
+	&::before, &::after {
+		position: absolute;
+		display: flex;
+		content: "";
+		box-sizing: inherit;
+		border-radius: 50% !important;
+		@include rem(border, $width / 2, solid, #cccccc);
+		@include rem(width, $size);
+		@include rem(height, $size);
+		@include rem(right, 1);
+		@include rem(top, 10);
+		z-index: 2;
+	}
+	&::after {
+		animation: spin 1s linear infinite;
+		@include rem(border, 3px, solid, desaturate(lighten($color-primary, 10%), 30%));
+		@include rem(width, $size + $width / 2);
+		@include rem(height, $size + $width / 2);
+		@include rem(right, 0);
+		@include rem(top, 9);
+		border-right-color: transparent;
+		border-top-color: transparent;
+	}
+}
+
+.inline {
+	border: none;
+	padding: 0;
+	margin: 0;
+	label {
+		display: none;
+	}
+	.input {
+		border: none;
+		padding: 0;
+		margin: 0;
+		@include rem(height, 20);
+		&_bar, &_error, &_hint, &_label {
+			display: none !important;
+		}
+	}
+	.selectize-control {
+		margin: 0;
+		padding: 0;
+		height: auto;
+		& ~ .selectInput_bar {
+			display: none;
+		}
+	}
+	.selectize-input {
+		border: none;
+		margin: 0;
+		padding: 0;
+		height: auto;
+		&:after {
+			display: none !important;
+		}
+	}
+	.textarea_input {
+		border: none;
+		padding: 0;
+		max-height: none;
+		@include rem(min-height, 16);
+	}
+	.textarea_limit {
+		display: none;
+	}
+	.textarea_hints {
+		display: none;
+	}
+	.htmlInput_input, .htmlInput_placeholder {
+		border: 0;
+		padding: 0 !important;
+	}
+}
+
+.hint-fullWidth {
+	.selectInput_hint {
+		margin-left: 0;
+	}
+}
+
+// -----------------------------
+// number input
+// -----------------------------
+.numberInput {
+	&_button {
+		background: none;
+		outline: none;
+		border: 0;
+		color: #888888;
+		@include rem(padding, 0);
+		@include rem(font-size, 10);
+		@include icon(before, arr_down);
+		&::before {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+		&:disabled {
+			color: $color-line-light;
+			&:hover {
+				color: $color-line-light;
+			}
+		}
+		&:hover {
+			color: $color-primary;
+		}
+		&:first-child {
+			@include icon(before, sort_up);
+		}
+	}
+}
+
+// -----------------------------
+// email select
+// -----------------------------
+.Select {
+	&.emailSelect {
+		.Select-arrow-zone {
+			display: none;
+		}
+		.Select-multi-value-wrapper {
+			display: block;
+			.Select-value {
+				display: inline-block;
+				direction: rtl;
+				justify-content: space-between;
+				align-items: center;
+				cursor: pointer;
+				margin: 0 3px 3px 0;
+				padding: 2px 6px;
+				color: #303030;
+				border: 0 solid #d0d0d0;
+				background-color: #eeeeee;
+				border-radius: 2px !important;
+				font-size: 14px;
+				.Select-value-icon {
+					color: #cccccc;
+					order: 1;
+					line-height: 0;
+					cursor: pointer;
+					font-size: 2em;
+					font-weight: 800;
+					padding: 2px 0 0 0;
+					border-right: none;
+				}
+			}
+		}
+	}
+}

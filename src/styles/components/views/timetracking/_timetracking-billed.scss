@@ -1,0 +1,44 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.timetracking-billed-component {
+	.timetracking-watch-wrapper {
+		position: relative;
+		text-align: center;
+
+		.timetracking-watch-svg {
+			width: 175px;
+		}
+
+		.timetracking-watch-text {
+			position: absolute;
+			top: 75px;
+			left: 50%;
+			@include vendor-prefix('transform', translateX(-50%));
+		}
+	}
+}
+
+.timetracking-watch__wrapper {
+	position: relative;
+}
+
+.timetracking-watch {
+	height: 75%;
+	width: 75%;
+}
+
+.timetracking-watch__text-content {
+	position: absolute;
+	top: 45%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.timetracking-watch__watch-hand--hidden {
+	display: none;
+}
+
+.timetracking-watch__watch-casing--light {
+	opacity: 0.1;
+}

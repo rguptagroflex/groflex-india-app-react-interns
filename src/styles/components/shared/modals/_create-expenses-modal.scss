@@ -1,0 +1,92 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.create-expenses-modal-component {
+
+	.modal-base-content {
+		margin-top: 0;
+	}
+
+	.create-expenses-modal-content.edit-expense {
+		max-height: 525px;
+		margin: 40px -40px 0 0;
+		overflow-y: scroll;
+		overflow-x: hidden;
+	}
+
+	.expense-edit-component-wrapper {
+		padding-right: 40px;
+		margin-top: -60px;
+	}
+
+	.modal-base-headline span {
+		color: $color-primary;
+	}
+
+	ul {
+		margin: 50px 0;
+		border-bottom: 1px solid $color-line-light;
+	}
+
+	.expense-item {
+		position: relative;
+		width: 100%;
+		height: 70px;
+		border-top: 1px solid $color-line-light;
+
+		.expense-headline {
+			position: absolute;
+			top: 15px;
+			left: 0;
+			font-size: 14px;
+			font-weight: 600;
+			color: $color-text;
+		}
+
+		.expense-subheadline {
+			position: absolute;
+			width: 475px;
+			bottom: 15px;
+			left: 0;
+			font-size: 13px;
+			color: $color-text-light;
+			@include truncate-text();
+
+			span {
+				font-weight: 600;
+
+				&.expense-purpose {
+					margin-left: 10px;
+				}
+			}
+		}
+
+		&.no-headline {
+			.expense-subheadline {
+				bottom: 0;
+				line-height: 70px;
+			}
+		}
+
+		.expense-amount {
+			position: absolute;
+			right: 30px;
+			line-height: 70px;
+			font-size: 16px;
+			font-weight: 600;
+			color: $color-text;
+		}
+
+		.expense-edit {
+			position: absolute;
+			right: -10px;
+			width: 30px;
+			line-height: 70px;
+			font-size: 10px;
+			color: $color-text-light;
+			cursor: pointer;
+			text-align: center;
+		}
+	}
+
+}

@@ -1,0 +1,136 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.dashboard-achievement-center-component-wrapper {
+	position: relative;
+	min-height: 320px !important;
+
+	&:not(.loading):before {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 42%;
+		height: 100%;
+		background: $color-primary;
+		content: ' ';
+		pointer-events: none;
+	}
+
+	&.loading {
+		justify-content: center;
+	}
+
+	.dashboard-achievement-center-left,
+	.dashboard-achievement-center-right {
+		z-index: 1;
+	}
+
+	.button-wrapper {
+		position: relative;
+	}
+
+	.achievement-activation-hint {
+		position: absolute;
+		top: 70px;
+		width: 240px;
+		text-align: center;
+		font-size: 12px;
+		color: #fa6e6e;
+	}
+
+	.dashboard-achievement-center-left {
+		.widget-subheadline {
+			margin-bottom: 35px;
+		}
+
+		.button-primary {
+			margin-top: 26px;
+			min-width: 240px;
+		}
+
+		ul {
+			li {
+				position: relative;
+				margin: 14px 0;
+				text-indent: 24px;
+
+				&:before {
+					position: absolute;
+					top: 6px;
+					left: 0;
+					width: 8px;
+					height: 8px;
+					border-radius: 50%;
+					background: $color-primary;
+					content: ' ';
+				}
+			}
+		}
+
+		.remaining-time {
+			margin-top: 20px;
+
+			strong {
+				color: $color-primary;
+			}
+		}
+	}
+
+	.dashboard-achievement-center-right {
+		position: relative;
+		padding-top: 190px;
+		padding-left: 44px;
+		text-align: center;
+		color: #ffffff;
+
+		.text-h4 {
+			margin-top: 0;
+			font-weight: 600;
+			font-size: 20px;
+		}
+
+		.dashboard-achievement-center-subheadline {
+			position: absolute;
+			top: 220px;
+			left: 18px;
+			width: 100%;
+
+			.text-content {
+				position: relative;
+				width: 55%;
+				margin: 0 auto;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.text {
+				height: 26px;
+				line-height: 30px;
+				display: inline-block;
+			}
+
+			.right-arrow {
+				margin-left: 6px;
+				font-size: 28px;
+				line-height: 1;
+			}
+		}
+
+		.big-icon {
+			position: absolute;
+			top: -20px;
+			left: 96px;
+			width: 200px;
+			height: 200px;
+			text-align: center;
+
+			img {
+				position: absolute;
+				top: 60px;
+				left: 60px;
+			}
+		}
+	}
+}

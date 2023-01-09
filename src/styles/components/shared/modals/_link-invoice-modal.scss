@@ -1,0 +1,101 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.link-invoice-modal-component {
+
+	.modal-base-headline {
+		.link-invoice-search {
+			float: right;
+			line-height: 35px;
+			font-size: 16px;
+			font-weight: normal;
+
+			.icon {
+				display: inline-block;
+				line-height: 32px;
+				color: $color-text-light;
+			}
+
+			input {
+				min-width: auto;
+				width: 330px;
+				margin-left: 15px;
+				border: 0 none;
+				outline: none;
+			}
+		}
+	}
+
+	.modal-base-content {
+		margin: 0!important;
+	}
+
+	.link-invoice-list {
+		margin: 40px 0 20px;
+		padding-bottom: 70px;
+		border-top: 1px solid $color-line-light;
+	}
+
+	.link-invoice-no-matches {
+		margin: 0 auto;
+		text-align: center;
+		padding: 50px 0;
+
+		.icon {
+			color: #ddd;
+			font-size: 340px;
+			line-height: 340px;
+		}
+
+		.link-invoice-no-matches-text {
+			font-size: 18px;
+			font-weight: 600;
+		}
+	}
+
+	.link-invoice-row {
+		position: relative;
+		width: 100%;
+		height: 80px;
+		color: $color-text;
+		font-size: 14px;
+		border-bottom: 1px solid $color-line-light;
+		cursor: pointer;
+
+		&:hover, &.active {
+			background: $color-bg-medium;
+		}
+
+		&.active:before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 3px;
+			background: $color-primary;
+		}
+
+		.link-invoice-name {
+			position: absolute;
+			left: 20px;
+			top: 20px;
+			font-weight: 600;
+		}
+
+		.link-invoice-number {
+			position: absolute;
+			left: 20px;
+			bottom: 20px;
+			color: $color-text-light;
+		}
+
+		.link-invoice-amount {
+			position: absolute;
+			right: 20px;
+			font-weight: 600;
+			line-height: 80px;
+			font-size: 16px;
+		}
+	}
+}

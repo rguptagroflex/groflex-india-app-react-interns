@@ -1,0 +1,163 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.menuBar {
+	height: 100%;
+
+	@include breakpoint-lg {
+		@include rem(width, $menu-width);
+	}
+
+	@include breakpoint-md {
+		width: $menu-small-width;
+	}
+}
+
+.menuBar_container {
+	display: flex;
+	position: absolute;
+	align-items: center;
+	@include rem(top, 0); // 15
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+@mixin collapsed-menu-item {
+	&::before {
+		font-size: 19px;
+		margin-top: -14px;
+	}
+
+	.collapsed-title {
+		opacity: 1;
+		color: $menu-text-color;
+	}
+
+	&.menuItem-active {
+		.collapsed-title {
+			color: $color-white;
+		} &::before {
+			color: $color-white !important;
+		}	
+	}
+}
+
+.menuBar_content {
+	width: 100%;
+
+	.icon {
+		&:before {
+			padding-top: 6px !important;
+		}		
+	}
+
+	.icon-arr_down {
+		&:after {
+			content: "\E007";
+			font-family: 'invoizicons' !important;
+			font-style: normal;
+			font-weight: normal !important;
+			vertical-align: middle;
+			padding-top: 6px !important;
+			font-size: 14px;
+			text-align: right;
+			width: 100%;
+		}		
+	}
+
+	.icon-arr_right {
+		&:after {
+			content: "\E00A";
+			font-family: 'invoizicons' !important;
+			font-style: normal;
+			font-weight: normal !important;
+			vertical-align: middle;
+			padding-top: 6px !important;
+			font-size: 14px;
+			text-align: right;
+			width: 100%;
+		}		
+	}
+
+	@include breakpoint-menu-sm {
+		margin-top: 0px; //50px;
+		overflow-y: auto;
+		overflow-x: hidden;
+		height: calc(100% - 195px); //230px
+		margin-bottom: 25px;
+		scrollbar-width: thin;
+		-webkit-scrollbar-width: thin;
+		-ms-scrollbar-width: thin;
+	}
+
+	&.submenu-visible {
+		.menuItem:not(.menuItem-active) {
+			@include breakpoint-lg() {
+				&::before {
+					color: $menu-text-color !important;
+				}	
+			}
+
+			&:hover {
+				color: $color-menu-hover !important; //$color-white
+
+				&::before {
+					color: $color-menu-hover !important; //$color-white
+				}
+			}
+		}
+
+		@include breakpoint-menu-lg() {
+			.menuItem {
+				@include collapsed-menu-item();
+			}		
+		}
+	}
+
+	@include breakpoint-md-menu-sm {
+		.menuItem {
+			@include collapsed-menu-item();
+
+			.collapsed-title {
+				color: $color-menu-icon;
+			}
+		}
+	}
+}
+.menuBar_content::-webkit-scrollbar {
+    width: 5px;
+}
+.menuBar_content::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 6px;
+}
+
+// .icon-arr_down:after {
+//     content: "\E007";
+//     font-family: 'invoizicons' !important;
+//     font-style: normal;
+//     font-weight: normal !important;
+//     vertical-align: middle;
+//     padding-top: 6px !important;
+//     font-size: 14px;
+//     text-align: right;
+//     width: 100%;
+// }
+// .menuItem.menuItem-hasSubmenu.icon.icon-rechnung.icon-arr_down.menuItem-active {
+//     display: inline-block;
+// }
+// .submenu {
+//     /* top: 0; */
+//     width: 200px;
+//     /* height: 100vh; */
+//     z-index: 10011;
+//     position: relative;
+//     cursor: default;
+//     background-color: #e96060c9;
+//     /* display: inline-block; */
+//     flex-direction: unset;
+//     justify-content: center;
+//     /* padding-right: 67px; */
+//     left: 60px;
+// }

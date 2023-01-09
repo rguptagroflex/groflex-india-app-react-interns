@@ -1,0 +1,20 @@
+# Webstorm
+.idea/
+# VSCode
+.vscode/*
+# Visual Studio
+.vs/
+
+/generated/*
+/dist/*
+/deploy/*
+/coverage/*
+/node_modules/*
+/npm-debug.log
+/.sass-cache/*
+*.sublime-workspace
+.DS_Store
+/ui-test/_output/*
+.happypack/*
+webpack.profile.json
+modules_backup

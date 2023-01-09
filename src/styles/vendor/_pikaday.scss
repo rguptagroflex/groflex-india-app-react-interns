@@ -1,0 +1,6 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.pika-single {
+	z-index: $z-index-modal + 1;
+}

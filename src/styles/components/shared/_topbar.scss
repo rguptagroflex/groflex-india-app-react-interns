@@ -1,0 +1,149 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.topbar-wrapper {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: $menu-small-width;
+	height: $topbar-height;
+	z-index: $z-index-topbar;
+	background: $topbar-color;
+	// border-bottom: 1px solid #DDDDDD;
+	// @include vendor-prefix('box-shadow', $box-shadow-subscription-box);
+
+	@media (min-width: $menu-breakpoint) {
+		left: $menu-width;
+	}
+
+	&.full-page-width {
+		left: 0;
+	}
+
+	.topbar-back-button,
+	.topbar-view-icon {
+		position: absolute;
+		left: 30px;
+		top: 0;
+		width: $topbar-left-icon-width;
+		height: $topbar-height;
+		padding-top: 25px;
+		//text-align: center;
+		// border-right: 1px solid $color-line-light;
+		cursor: pointer;
+
+		// .icon-credit_card {
+		// 	font-size: 24px;
+		// 	line-height: 16px;
+		// }
+
+		.icon {
+			&:before {
+				vertical-align: top;
+			}		
+		}
+	}
+
+	.topbar-view-icon {
+		cursor: default;
+
+		.icon-settings,
+		.icon-timetracking {
+			font-size: 20px;
+			line-height: 19px;
+		}
+
+		.icon-expense,
+		.icon-offer,
+		.icon-customer,
+		.icon-article,
+		.icon-chart,
+		.icon-start {
+			font-size: 18px;
+			line-height: 20px;
+		}
+
+		.icon-credit_card {
+			font-size: 24px;
+			line-height: 22px;
+		}
+		
+		.icon {
+			&:before {
+				vertical-align: top;
+				color: $color-black;
+			}		
+		}
+	}
+
+	.topbar-content {
+		position: absolute;
+		left: $topbar-left-icon-width; // $topbar-height
+		top: 0;
+		right: $topbar-height + 10px;
+		height: $topbar-height;
+
+		&.no-back-button {
+			left: $topbar-left-icon-width; //$topbar-height
+		}
+
+		&.no-dropdown-menu-button {
+			right: $topbar-height - 47px;
+		}
+
+		.topbar-title {
+			float: left;
+			//margin-left: 1px; //25px;
+			line-height: 65px;
+			font-weight: 600;
+			font-size: 24px;
+
+			.topbar-subtitle {
+				display: inline-block;
+				margin-left: 10px;
+				font-size: 14px;
+				font-weight: normal;
+				color: $color-text-light;
+			}
+
+			sup {
+				top: -4px;
+			}
+		}
+
+		.topbar-buttons {
+			float: right;
+			//margin-right: 25px;
+			line-height: 65px;
+
+			.button {
+				@include vendor-prefix('transition', 'none');
+
+				&:hover {
+					@include vendor-prefix('transition', 'all .1s ease-in-out');
+				}
+			}
+
+			> div {
+				float: left;
+				margin-left: 10px;
+			}
+		}
+	}
+
+	.topbar-dropdown-menu-button {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: $topbar-height;
+		height: $topbar-height;
+		padding-top: 22px;
+		text-align: center;
+		border-left: 1px solid $color-line-light;
+		cursor: pointer;
+
+		.icon-menu {
+			font-size: 22px;
+		}
+	}
+}

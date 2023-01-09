@@ -1,0 +1,27 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.admin-expand-trial-modal {
+
+	.admin-expand-trial-entry {
+		margin: 15px 0;
+    	font-size: 13px;
+	}
+
+	.admin-expand-trial-label {
+		display: inline-block;
+		width: 130px;
+		color: $color-text-muted;
+	}
+
+	.admin-expand-trial-value {
+		font-weight: 600;
+	}
+
+	.dateInput {
+		display: inline-block;
+		width: 90px;
+		font-weight: 600;
+    	font-size: 13px;
+	}
+}

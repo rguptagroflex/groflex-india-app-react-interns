@@ -1,0 +1,218 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+// .invoice-detail-wrapper {
+
+// 	.invoice-detail-autodunning-wrapper {
+// 		position: relative;
+// 		width: 925px;
+// 		margin: 0 auto;
+// 		top: 177px;
+
+// 		.invoice-detail-autodunning {
+// 			position: absolute;
+// 			top: -10px;
+// 			right: 0;
+// 			width: 340px;
+
+// 			.invoice-autodunning-component {
+// 				float: right;
+// 			}
+
+// 			.invoice-detail-dunning-recipients {
+// 				position: absolute;
+// 				right: 0;
+// 				bottom: 0;
+// 				font-size: 13px;
+// 				line-height: 13px;
+
+// 				.icon {
+// 					margin-right: 5px;
+// 					font-size: 11px;
+// 					cursor: pointer;
+// 				}
+
+// 				.invoice-detail-dunning-label {
+// 					margin-right: 5px;
+// 					font-weight: 600;
+// 				}
+
+// 				.invoice-detail-dunning-value {
+// 					color: $color-text-light;
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	.invoice-detail-timeline {
+// 		position: absolute;
+// 		right: 20px;
+// 		bottom: 20px;
+
+// 		&.invoice-detail-timeline-horizontal {
+// 			width: 925px;
+// 			top: 165px;
+// 			left: 50%;
+// 			right: auto;
+// 			bottom: auto;
+// 			@include vendor-prefix('transform', 'translateX(-50%);');
+// 		}
+// 	}
+
+// 	.detail-view-document {
+// 		.detail-view-badge {
+// 			background: $badge-color-light;
+// 			color: $color-blue-light;
+// 		}
+// 	}
+
+// 	.detail-view-head-controls {
+// 		.detail-view-head-controls-item {
+// 			&.item-print,
+// 			&.item-copy {
+// 				margin-right: 2px;
+
+// 				.icon {
+// 					pointer-events: none;
+// 				}
+// 			}
+// 		}
+
+// 		.detail-view-head-controls-item {
+// 			&.item-print-settings,
+// 			&.item-copy-options {
+// 				line-height: 17px;
+
+// 				.icon {
+// 					color: $color-text-muted;
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	&.viewport-large {
+// 		.detail-view-head-container {
+// 			height: 510px;
+// 		}
+
+// 		.detail-view-head-controls {
+// 			top: 95px;
+// 		}
+
+// 		.invoice-detail-autodunning-wrapper {
+// 			top: 57px;
+// 		}
+// 	}
+// }
+
+
+
+// @import "../../../abstracts/variables";
+// @import "../../../abstracts/mixins";
+
+.invoice-detail-wrapper {
+	padding-bottom: 60px;
+
+	.invoice-detail-autodunning-wrapper {
+		margin: 20px auto 0;
+		max-width: 1285px;
+		min-width: 920px;
+		display: flex;
+		justify-content: flex-end;
+
+		.invoice-detail-autodunning {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-end;
+
+			.invoice-detail-dunning-recipients {
+				font-size: 13px;
+				line-height: 13px;
+				margin-top: -12px;
+
+				.icon {
+					margin-right: 5px;
+					font-size: 11px;
+					cursor: pointer;
+					&-pfeil {
+						position: relative;
+						top: -1px;
+					}
+				}
+
+				.invoice-detail-dunning-label {
+					margin-right: 5px;
+					font-weight: 600;
+				}
+
+				.invoice-detail-dunning-value {
+					color: $color-text-light;
+				}
+			}
+		}
+	}
+
+	.detail-view-badge {
+		background: $badge-color-light;
+		color: $color-blue-light;
+	}
+
+	.detail-view-box-new {
+		.list-component {
+			.text-h4 {
+				padding-bottom: 5px;
+			}
+
+			.list-table .list-table-cell {
+				line-height: 25px;
+				padding: 15px 0;
+			}
+		}
+	}
+
+	.todo-activity-tabs-component .text-with-tags-input-wrapper {
+		max-width: 298px;
+	}
+
+	.box-history {
+		padding: 30px 22px 30px 40px;
+		max-height: 829px;
+		overflow: hidden;
+
+		.todo-icon-and-content:last-child {
+			border-bottom: none;
+		}
+
+		.invoice-history-scroll-container {
+			padding-right: 20px;
+			position: relative;
+			max-height: 769px;
+
+			.ps__rail-y:hover {
+				background-color: transparent;
+			}
+		}
+	}
+
+	.payment-cancel-button {
+		display: flex;
+		justify-content: flex-end;
+
+		.icon-button {
+			margin: 0;
+		}
+	}
+
+	.icon-button {
+		&:focus {
+			outline: none;
+		}
+		.icon-close {
+			font-size: 9px;
+		}
+
+		.icon-sent {
+			font-size: 10px;
+		}
+	}
+}

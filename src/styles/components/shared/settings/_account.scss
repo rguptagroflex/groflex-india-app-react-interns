@@ -1,0 +1,40 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.settings-account-component {
+	.update-email-link {
+		text-align: right;
+		margin-top: -12px;
+		margin-bottom: 10px;
+	}
+
+	.button-save {
+		margin-top: 20px;
+	}
+
+	.accountSettingsCompanyAddressInfo {
+		margin: 10px 0 15px 0
+	}
+
+	.button-component-wrapper {
+		text-align: right;
+	}
+
+	.settings-account-address-street {
+		padding: 20px;
+	}
+
+	.settings-account-country-select {
+		margin-top: 30px;
+		padding-right: 6px;
+	}
+	.settings-mobile{
+		padding-left: 0px;
+
+	}
+}
+.settings-autofilled-Field-hidden {
+	position: absolute;
+	opacity: 0;
+	z-index: -5;
+}

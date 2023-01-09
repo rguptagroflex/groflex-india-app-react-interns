@@ -1,0 +1,43 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.icon {
+	&-large {
+		&:before {
+			@include rem(font-size, 36);
+		}
+	}
+
+	&-rounded {
+		background: $color-primary;
+		border-radius: 50%;
+		color: white;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include rem(width, $button-rounded-size);
+		@include rem(height, $button-rounded-size);
+		&:before {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			@include rem(font-size, $button-rounded-fontsize);
+		}
+	}
+
+	&-image {
+		color: $color-primary;
+	}
+	
+	&-pdf {
+		color: red;
+	}
+
+	&-rotate-180 {
+		transform: rotate(180deg);
+	}
+
+	&-rotate-90 {
+		transform: rotate(90deg);
+	}
+}

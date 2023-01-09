@@ -1,0 +1,121 @@
+@import "../abstracts/_variables";
+@import "../abstracts/_mixins";
+
+.pointer {
+	cursor: pointer;
+}
+
+.wrapper-has-topbar {
+	margin-top: $topbar-height;
+}
+
+.wrapper-has-topbar-with-margin {
+	margin-top: $topbar-height-with-margin;
+}
+
+.page.no-side-margin {
+	margin-left: 0!important;
+	margin-right: 0!important;
+	width: 100%!important;
+}
+
+.page.no-top-margin {
+	margin-top: 0!important;
+	margin-bottom: 0!important;
+	width: auto!important;
+}
+
+.page.only-side-margin {
+	width: auto!important;
+}
+
+.page.fullsize-view {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: $menu-small-width;
+	right: 0;
+
+	@media (min-width: $menu-breakpoint) {
+		left: $menu-width;
+	}
+}
+
+.page.fullsize-blank-view {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+}
+
+.scrollbar-measure {
+	width: 100px;
+	height: 100px;
+	overflow: scroll;
+	position: absolute;
+	top: -9999px;
+}
+
+.Select-control {
+	border: 0 none;
+	border-bottom: 1px solid #cccccc;
+	box-shadow: none !important;
+	border-radius: 0;
+	// .Select-value,
+	// .Select-placeholder,
+	// .Select-input {
+	// 	padding-left: 0 !important;
+	// }
+}
+
+.notes-display-wrapper {
+	position: relative;
+	cursor: pointer;
+
+	&:before {
+		content: "";
+		position: absolute;
+		visibility: hidden;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		border-radius: 5px;
+		border: 1px dashed $color-text-placeholder;
+	}
+
+	&:hover:before {
+		visibility: visible;
+	}
+}
+
+.boxHeader_actions-pulled-up {
+	margin-bottom: -15px;
+
+	.transactionEdit_textSwitch {
+		color: $color-text-muted;
+	}
+}
+
+.hover-underline:hover {
+	text-decoration: underline;
+}
+
+.zIndex-10001 {
+	z-index: 10001;
+}
+
+.ql-editor.ql-blank {
+	&::before {
+		left: 0!important;
+	}
+	
+}
+.Select-input {
+	padding-left: 1 !important;
+}
+// .Select-input,
+.Select-placeholder {
+	padding-left: 26px !important;
+}

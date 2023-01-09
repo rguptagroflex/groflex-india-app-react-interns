@@ -1,0 +1,17 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.invoice-autodunning-component {
+	.invoice-autodunning-label {
+		float: left;
+		font-size: 13px;
+		font-weight: 600;
+		margin-right: 10px;
+	}
+
+	.invoice-autodunning-toggle {
+		margin-right: -8px;
+		float: left;
+		transform: scale(0.65);
+	}
+}

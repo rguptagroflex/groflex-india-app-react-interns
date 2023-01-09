@@ -1,0 +1,249 @@
+@import "../../abstracts/variables";
+@import "../../abstracts/mixins";
+
+.email-view-wrapper {
+	.topbar-wrapper {
+		.topbar-content {
+			display: flex;
+			justify-content: flex-end;
+
+			.topbar-buttons {
+				margin-left: 25px;
+				margin-right: 0;
+			}
+
+			.topbar-title {
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+		}
+	}
+
+	.email-view-headline {
+		margin-bottom: 20px;
+		// text-align: center;
+
+		h1 {
+			font-size: 42px;
+			font-weight: 600;
+		}
+
+		h2 {
+			font-size: 20px;
+			font-weight: normal;
+			color: $color-text-muted;
+		}
+	}
+
+	.email-view-preview {
+		width: 400px;
+		height: 570px;
+		@include vendor-prefix('box-shadow', '0px 4px 20px 0px #ccc');
+	}
+
+	.input {
+		background-color: $color-bg-medium;
+	}
+
+	.email-view-select {
+		margin-top: -5px; //20px
+
+		.email-view-select-label {
+			font-size: 13px;
+			color: $color-text-muted;
+		}
+
+		.Select-control {
+			background: $color-bg-medium;
+
+			.Select-value {
+				margin: 3px;
+				background: $color-dot-disabled;
+				font-size: 15px;
+				border: 0 none;
+				border-radius: 5px;
+
+				.Select-value-icon {
+					border: 0 none;
+				}
+
+				.Select-value-label {
+					padding: 4px 5px;
+				}
+			}
+
+			.Select-input {
+				margin-left: 0!important;
+			}
+		}
+
+		.email-view-select-option {
+			padding: 10px;
+			border-bottom: 1px solid $color-line-light;
+			cursor: pointer;
+
+			&:hover {
+				background: $color-primary-superlight;
+			}
+		}
+
+		.email-view-select-option-value {
+			font-size: 16px;
+			padding: 0 10px;
+			color: $color-text;
+			font-weight: 600;
+		}
+
+		.email-view-select-option-subvalue {
+			font-size: 11px;
+			padding: 0 10px;
+			color: $color-text-muted;
+		}
+	}
+
+	.email-view-textarea-label {
+		// font-size: 13px;
+		margin-top: 30px;
+		margin-bottom: 14px;
+		// color: $color-text-muted;
+		font-weight: 600;
+		font-size: 20px;
+		line-height: 27px;
+		color: #272D30;
+	}
+
+	.email-view-textarea {
+		padding: 40px 60px;
+		background: #ffffff;
+		border-radius: 10px;
+		border: 1px $border-color solid;  // 1px #dfdfdf solid; 
+	}
+
+	.email-view-textarea-inner {
+		border: 1px $border-color solid; // 1px #eeeeee solid;
+
+		.ql-blank {
+			&:before {
+				left: 0;
+				right: 0;
+			}
+		}
+	}
+
+	.email-body-link {
+		margin-left: 20px;
+		color: $color-primary;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+	.email-view-textarea-footer {
+		margin-top: 7px;
+		font-size: 12px;
+		color: #888888;
+		display: flex;
+		justify-content: flex-end;
+		align-items: baseline;
+
+		.SVGInline {
+			margin-left: 6px;
+
+			svg {
+				height: 14px !important;
+			}
+		}
+	}
+
+	.htmlInput {
+		margin-bottom: 0 !important;
+	}
+
+	.htmlInput_input {
+		border: none;
+	}
+
+	.email-view-checkbox {
+		margin-top: 25px;
+
+		.checkbox_label {
+			color: $color-primary;
+    		font-size: 13px;
+			font-weight: 600;
+		}
+		.checkbox_input:checked ~ .checkbox_visual {
+			background-color: $color-primary;
+			color: $color-primary;
+		}
+		.checkbox {
+			border: 1px solid $color-primary;
+			padding: 10px 20px;
+			margin: -12px;
+		}
+	}
+
+	.email-view-dunning {
+		margin-top: 30px;
+
+		span {
+			color: $color-text;
+			font-size: 13px;
+			font-weight: 600;
+		}
+
+		.toggleSwitch {
+			float: right;
+			transform: scale(0.65);
+		}
+	}
+
+	.email-error {
+		margin-top: 12px;
+		font-size: 13px;
+		color: $color-error;
+	}
+
+	.email-view-attachments {
+		margin-bottom: 80px;
+
+		.icon-trashcan {
+			cursor: pointer;
+		}
+
+		.drop-box {
+			position: relative;
+			width: 500px;
+			height: 85px;
+			margin-top: 10px;
+			border: 1px dashed $border-color; //1px dashed $color-text-canceled;
+		}
+
+		.drop-box .text-muted {
+			position: absolute;
+			left: 0;
+			right: 0;
+			top: 0;
+			bottom: 0;
+			color: $color-primary;
+		}
+
+		.drop-box,
+		.drop-box .text-muted,
+		.drop-box p {
+			cursor: pointer;
+		}
+
+		.expense-receipt-list .list_item,
+		.drop-box p {
+			font-size: 14px;
+		}
+
+		.drop-box p {
+			margin: 20px 3px;
+		}
+
+		.expense-receipt-list .icon-attachment {
+			font-size: 14px;
+		}
+	}
+}

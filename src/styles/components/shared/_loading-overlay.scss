@@ -1,0 +1,46 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+#loading-overlay-wrapper {
+	display: none;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: $menu-small-width;
+	background: $color-bg-medium;
+	z-index: $z-index-loading-overlay;
+	@include vendor-prefix('user-select', 'none');
+
+	.loading-overlay-component {
+		width: 925px;
+		margin: 60px auto;
+		background: $color-white;
+		text-align: center;
+		padding: 52px 0;
+
+		.loading-overlay-content {
+			margin-top: 6px;
+			font-size: 15px;
+			color: #5f6262;
+		}
+
+		.loader_spinner {
+			margin: 0 auto;
+		}
+	}
+}
+
+body.is-loading {
+	overflow: hidden;
+
+	#loading-overlay-wrapper {
+		display: block;
+	}
+}
+
+@media (min-width: $menu-breakpoint) {
+	#loading-overlay-wrapper {
+		left: $menu-width;
+	}
+}

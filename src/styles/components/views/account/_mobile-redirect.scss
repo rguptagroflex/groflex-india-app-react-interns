@@ -1,0 +1,25 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.landing-wrapper.mobile-redirect-wrapper {
+	display: block;
+	padding: 20px;
+
+	.invoiz-logo {
+		width: 115px;
+		margin: 20px auto 40px;
+	}
+
+	.ios-badge {
+		width: 100%;
+		padding: 20px;
+	}
+
+	h2, p {
+		text-align: center;
+	}
+
+	p {
+		color: $color-text-muted;
+	}
+}

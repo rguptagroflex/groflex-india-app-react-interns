@@ -1,0 +1,296 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.invoice-pay-setup-modal {
+	.modal-base-view {
+		.modal-base-content {
+			margin: 0 !important;
+		}
+	}
+
+	.invoice-pay-setup-modal-loading {
+		min-height: 260px;
+	}
+
+	.invoice-pay-setup-modal-component {
+		&.content-banking {
+			min-height: 350px;
+		}
+
+		.invoice-pay-setup-modal-headline {
+			min-height: 37px;
+			font-size: 22px;
+			font-weight: 600;
+			margin-bottom: 5px;
+			display: flex;
+			align-items: center;
+
+			.colored {
+				color: $color-primary;
+			}
+
+			.icon-info {
+				margin: 10px 0 0 8px;
+				font-size: 20px;
+				color: #C1C1C1;
+			}
+		}
+
+		.invoice-pay-setup-modal-subheadline {
+			margin-bottom: 30px;
+
+			.setup-error {
+				margin-top: 5px;
+				color: $color-error;
+			}
+		}
+
+		.step-start-blocks {
+			display: flex;
+			justify-content: space-between;
+
+			.step-start-block {
+				position: relative;
+				width: 296px;
+				height: 260px;
+				padding-top: 28px;
+				border-radius: 6px;
+				border: 1px #EDEDED solid;
+				text-align: center;
+
+				.ovalToggle {
+					position: absolute;
+					top: 16px;
+					right: 10px;
+					padding: 0;
+					display: block;
+					transform: scale(0.8);
+				}
+
+				.step-start-icon {
+					width: 88px;
+					height: 88px;
+					margin: 0 auto 24px auto;
+					border-radius: 50%;
+					background: $color-primary;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+
+				.step-start-texts {
+					height: 40px;
+					margin-bottom: 18px;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					flex-direction: column;
+
+					.text-row1 {
+						margin-bottom: 2px;
+						font-weight: 600;
+					}
+
+					.text-row2 {
+						padding: 0 10px;
+						word-break: break-all;
+					}
+				}
+
+				.step-start-button {
+					margin-top: 20px;
+				}
+			}
+		}
+
+		.step-paypal {
+			.step-paypal-input-row {
+				display: flex;
+				justify-content: space-between;
+	
+				.paypal-input-left {
+					width: 400px;
+					border-bottom: 1px #CCCCCC solid;
+					display: flex;
+					justify-content: space-between;
+
+					&.paypal-error {
+						border-bottom: 2px $color-error solid;
+					}
+					
+					.paypal-pre-input {
+						height: 42px;
+						line-height: 42px;
+					}
+		
+					input {
+						width: 100%;
+						height: 42px;
+						line-height: 42px;
+						border: none;
+						outline: none;
+					}
+				}
+	
+				.paypal-link {
+					height: 42px;
+					line-height: 42px;
+					font-weight: 600;
+					color: $color-primary;
+					text-decoration: none;
+				}
+			}
+
+			.input_error {
+				margin-top: 20px;
+   				margin-bottom: -20px;
+			}
+	
+			.collapsable-component {
+				margin-top: 50px;
+				color: $color-text-muted;
+
+				.icon {
+					color: $color-text-muted;
+				}
+			}
+		}
+
+		.step-banking {
+			.step-banking-accounts {
+				overflow: hidden;
+
+				&.reduced {
+					height: 72px;
+				}
+			}
+
+			.step-banking-account-row {
+				position: relative;
+				height: 72px;
+				padding: 0 25px;
+				border-top: 1px #EDEDED solid;
+				display: flex;
+				justify-content: space-between;
+				cursor: pointer;
+				transition: background-color 0.2s ease-in-out;
+
+				&.custom-bank-account {
+					height: 72px;
+					border-bottom: 1px #EDEDED solid;
+					display: block;
+					overflow: hidden;
+					cursor: default;
+
+					.row-header {
+						position: relative;
+						height: 72px;
+						line-height: 72px;
+						font-size: 15px;
+						font-weight: 600;
+
+						&:not(.visible) {
+							cursor: pointer;
+						}
+
+						.icon {
+							position: absolute;
+							top: 0;
+							right: 0;
+							color: #454545;
+							font-size: 18px;
+							line-height: 64px;
+
+							&.icon-sort_up {
+								line-height: 84px;
+							}
+						}
+					}
+
+					&.open {
+						height: auto;
+					}
+
+					.form_input {
+						.input_label,
+						input {
+							font-size: 14px !important;
+							background: transparent !important;
+						}
+					}
+
+					.custom-bank-account-iban-bic {
+						margin-top: 5px;
+						display: flex;
+						justify-content: space-between;
+
+						.form_input {
+							width: 264px;
+						}
+					}
+				}
+
+				&.selected {
+					background: #FBFBFB;
+
+					&:before {
+						position: absolute;
+						top: 0;
+						left: 0;
+						height: 100%;
+						width: 3px;
+						background: $color-primary;
+						content: ' ';
+					}
+				}
+
+				.col-left {
+					display: flex;
+					justify-content: center;
+					flex-direction: column;
+	
+					.row1 {
+						display: flex;
+	
+						.account-icon {
+							width: 20px;
+							height: 20px;
+							margin-right: 10px;
+							background-image: url('/assets/images/bank_icon_default.png');
+							background-repeat: no-repeat;
+							background-position: top left;
+							background-size: contain;
+						}
+	
+						.account-name {
+							font-size: 15px;
+							font-weight: 600;
+						}
+					}
+	
+					.row2 {
+						margin-top: 3px;
+						font-size: 13px;
+					}
+				}
+	
+				.col-right {
+					font-size: 15px;
+					font-weight: 600;
+					display: flex;
+					align-items: center;
+				}
+			}
+
+			.step-banking-account-add-bankaccount {
+				padding: 30px 0 0 0;
+
+				span {
+					font-weight: 600;
+					color: $color-primary;
+					cursor: pointer;
+				}
+			}
+		}
+	}
+}

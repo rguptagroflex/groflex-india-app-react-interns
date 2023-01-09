@@ -1,0 +1,204 @@
+@import "../../../abstracts/_variables";
+@import "../../../abstracts/_mixins";
+
+.dashboard-top-sales-stats-wrapper {
+	min-height: 356px;
+	padding: 22px 0 18px 0 !important;
+
+	.box-header {
+		@include rem(padding-left, 40);
+		@include rem(padding-right, 20);
+		min-height: 35px;
+	}
+
+	.top-sales-select-row {
+		@include rem(padding-left, 40);
+		@include rem(padding-right, 30);
+		@include rem(margin-bottom, 20);
+
+		.col-xs-6 {
+			@include rem(padding-right, 20);
+		}
+	}
+
+	.top-sales-summary-table {
+		padding-left: 10px;
+
+		.table-row{
+			margin-bottom: 10px;
+
+			.table-subrow1 {
+				position: relative;
+
+				.row-value {
+					margin-left: 18px;
+					padding-right: 20px;
+					font-size: 14px;
+					@include truncate-text();
+					
+					&:before {
+						position: absolute;
+						top: 6px;
+						left: 0;
+						width: 8px;
+						height: 8px;
+						border-radius: 50%;
+						content: " ";
+					}
+
+					&.sales-top1 {
+						&:before {
+							background: $color-sales-top1;
+						}
+					}
+
+					&.sales-top2 {
+						&:before {
+							background: $color-sales-top2;
+						}
+					}
+
+					&.sales-top3 {
+						&:before {
+							background: $color-sales-top3;
+						}
+					}
+
+					&.sales-top4 {
+						&:before {
+							background: $color-sales-top4;
+						}
+					}
+
+					&.sales-top5 {
+						&:before {
+							background: $color-sales-top5;
+						}
+					}
+				}
+			}
+
+			.table-subrow2 {
+				margin-left: 18px;
+				font-size: 12px;
+			}
+		}
+	}
+
+	.donut-chart-wrapper {
+		position: relative;
+		width: 100%;
+		@include rem(height, 218);
+
+		.chartist-tooltip {
+			z-index: 11;
+		}
+
+		.chartist-donut-chart {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+
+			&.chartState_init {
+				visibility: hidden;
+			}
+		}
+
+		.chartLabel {
+			position: absolute;
+			width: 100%;
+			text-align: center;
+			pointer-events: none;
+
+			&_totalSalesSum {
+				@include rem(top, 87);
+				@include rem(font-size, 14);
+				color: $color-text-muted;
+			}
+
+			&_totalSalesSum_value {
+				@include rem(top, 108);
+				@include rem(font-size, 18);
+				font-weight: 600;
+				color: $color-text;
+			}
+
+			span {
+				@include rem(padding, 2, 4);
+			}
+		}
+
+		.ct-inner-circle .ct-slice-pie {
+			fill: white;
+		}
+
+		.ct-label {
+			@include rem(font-size, 18);
+			color: white;
+			fill: white;
+			font-weight: 600;
+		}
+
+		.ct-series {
+			.ct-slice-donut {
+				stroke-width: 16px !important;
+			}
+
+			&.ct-series-sales-top1 {
+				.ct-slice-donut {
+					stroke: $color-sales-top1;
+				}
+			}
+
+			&.ct-series-sales-top2 {
+				.ct-slice-donut {
+					stroke: $color-sales-top2;
+				}
+			}
+
+			&.ct-series-sales-top3 {
+				.ct-slice-donut {
+					stroke: $color-sales-top3;
+				}
+			}
+
+			&.ct-series-sales-top4 {
+				.ct-slice-donut {
+					stroke: $color-sales-top4;
+				}
+			}
+			
+			&.ct-series-sales-top5 {
+				.ct-slice-donut {
+					stroke: $color-sales-top5;
+				}
+			}
+		}
+	}
+
+	.top-sales-placeholder-box {
+		position: relative;
+		text-align: center;
+
+		&:before {
+			position: absolute;
+			top: 4px;
+			left: 40px;
+			width: 404px;
+			height: 206px;
+			background: url(../assets/images/top_sales_placeholder.png) no-repeat;
+			content: " ";
+			opacity: 0.12;
+		}
+
+		.top-sales-placeholder-info {
+			@include rem(padding-top, 50);
+			@include rem(padding-left, 80);
+			@include rem(padding-right, 80);
+			@include rem(font-size, 17);
+			margin-bottom: 26px;
+			font-weight: 500;
+			text-align: center;
+		}
+	}
+}

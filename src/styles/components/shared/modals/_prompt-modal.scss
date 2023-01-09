@@ -1,0 +1,20 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.prompt-modal-component {
+	.headline {
+		&.hidden {
+			display: none;
+		}
+	}
+
+	.claim {
+		&.no-top-margin {
+			margin-top: 0;
+		}
+	}
+
+	.subclaim {
+		padding-bottom: 20px;
+	}
+}

@@ -1,0 +1,23 @@
+@font-face {
+	font-family: "{{fontName}}";
+	src: {{{src}}};
+}
+
+{{baseSelector}}:before {
+	font-family: '{{fontName}}' !important;
+	font-style: normal;
+	font-weight: normal !important;
+	vertical-align: middle;
+}
+
+{{#each codepoints}}
+.{{../classPrefix}}{{@key}}:before {
+	content: "\\{{this}}";
+}
+{{/each}}
+
+$iconfont-icons: (
+	{{#each codepoints}}
+	'{{@key}}': '\\{{this}}',
+	{{/each}}
+)

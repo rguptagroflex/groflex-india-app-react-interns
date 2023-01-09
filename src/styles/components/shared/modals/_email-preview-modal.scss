@@ -1,0 +1,39 @@
+@import "../../../abstracts/_mixins";
+@import "../../../abstracts/_variables";
+
+.email-preview-modal {
+    @include vendor-prefix('user-select', 'text');
+
+    .email-preview-modal-scroll-container {
+        padding: 0 30px;
+        position: relative;
+        max-height: 425px;
+
+        &.ps--active-y .ps__rail-y {
+            margin-right: 10px;
+        }
+    }
+
+    .email-text {
+        border-radius: $border-radius-small;
+        border: 1px solid $color-modal-footer-border;
+        padding: 14px 14px 0;
+
+        p {
+            margin: 0;
+        }
+
+        .email-link {
+            display: inline-block;
+            margin-bottom: 14px
+        }
+    }
+
+    .email-attachment-row {
+        cursor: pointer;
+        .icon::before {
+            position: relative;
+            top: 3px;
+        }
+    }
+}

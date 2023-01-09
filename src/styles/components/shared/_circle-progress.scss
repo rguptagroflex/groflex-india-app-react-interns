@@ -1,0 +1,22 @@
+@import "../../abstracts/_variables";
+@import "../../abstracts/_mixins";
+
+.circle-label {
+    transform: translate(0.05em, 0.25em);
+  }
+  
+  .circle-percentage {
+    font-size: 0.6em;
+    line-height: 1;
+    text-anchor: middle;
+    transform: translateY(-0.25em);
+    fill: $color-primary;
+  }
+  
+  .circle-text {
+    font-size: 0.28em;
+    //text-transform: uppercase;
+    text-anchor: middle;
+    transform: translateY(0.9em);
+    fill: $color-primary;
+  }

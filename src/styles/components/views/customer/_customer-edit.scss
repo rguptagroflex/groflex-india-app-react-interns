@@ -1,0 +1,162 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.customer-edit-component-wrapper {
+
+	.customer-edit-type-toggle {
+		padding: 0px 7.5px 8px;
+
+		.radio_label{
+			position: relative;
+			top: -2px;
+			margin: 0 20px 0 10px;
+			font-size: 15px;
+		}
+	}
+
+	.restricted-content {
+		margin-top: -30px;
+		.SVGInline {
+			line-height: 40px;
+		}
+
+		.upgrade-text {
+			line-height: 35px;
+			margin-right: 15px;
+		}
+	}
+
+	.customer-edit-kind-toggle {
+		width: 230px;
+		padding: 4px 7.5px 0;
+	}
+
+	.customer-edit-person-details {
+		margin-top: 30px;
+	}
+
+	.customer-edit-city-select {
+		margin-top: 12px;
+	}
+
+	.customer-edit-country-select {
+		margin-top: 30px;
+		padding-right: 6px;
+		.Select.has-value.Select--single.is-focused.is-open {
+			.Select-value-label {
+				color: gray;
+			}
+		}
+	}
+
+	.icon-refresh_large {
+		font-size: 50px;
+		margin-top: -5px;
+		cursor: pointer;
+	}
+
+	.customer-edit-exchange-rate {
+		margin-top: -12px;
+
+		.input_label {
+			top: -54px;
+			color: #272d30;
+		}
+	}
+
+	.customer-edit-address-street {
+		padding: 20px;
+	}
+
+	.customer-edit-paycondition {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		margin-top: 15px;
+		margin-bottom: 20px;
+
+		label {
+			width: 51%;
+			font-size: 16px;
+			color: $color-text-muted;
+			letter-spacing: .025em;
+			line-height: 39px;
+		}
+
+		.selectInput {
+			width: 46%;
+
+			.Select-control {
+				border: 1px solid #ddd;
+				height: 39px;
+
+				.Select-value {
+					line-height: 39px;
+					padding-left: 10px !important;
+				}
+			}
+		}
+	}
+
+	.ql-blank:before { left: 0!important; right: 0!important; }
+
+	.customer-edit-notes-alert {
+		position: relative;
+		padding: 5px 0 10px;
+
+		.notes-alert-label {
+			font-size: 14px;
+			color: $color-text-muted;
+		}
+
+		.customer-edit-notes-alert-toggle {
+			position: absolute;
+			width: 90px;
+			top: 0;
+			right: 0;
+		}
+	}
+
+	.customer-edit-contactpersons {
+		margin-bottom: 25px;
+		word-break: break-all;
+	}
+
+	.customer-edit-contactperson-row {
+		position: relative;
+		padding: 20px 0;
+		border-bottom: 1px solid $color-line-light;
+
+		.label {
+			font-weight: 600;
+		}
+
+		.customer-edit-contactperson-controls {
+			display: none;
+			position: absolute;
+			right: 0;
+			top: 50%;
+			@include vendor-prefix('transform', 'translateY(-50%)');
+
+			.icon {
+				margin: 5px 0;
+				cursor: pointer;
+				@include vendor-prefix('user-select', 'none');
+
+				&:hover {
+					opacity: 0.8;
+				}
+			}
+		}
+
+		&.customer-edit-contactperson-row-first {
+			border-top: 1px solid $color-line-light;
+		}
+
+		&:hover {
+			.customer-edit-contactperson-controls {
+				display: block;
+			}
+		}
+	}
+}
