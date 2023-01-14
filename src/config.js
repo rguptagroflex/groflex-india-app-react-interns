@@ -284,73 +284,73 @@ const config = {
 		// 	resourceKey: "teamMembers",
 		// },
 
-		{
-			name: "settings",
-			icon: "settings",
-			title: "Einstellungen",
-			url: "",
-			hasImprintAndPrivacy: true,
-			resourceKey: "settings",
-			submenuItems: [
-				{
-					name: "account",
-					title: "Account",
-					url: "/settings/account",
-					mainSubmenuItem: "settings",
-					resourceKey: "account",
-				},
-				// {
-				// 	name: 'user',
-				// 	title: 'Users',
-				// 	url: '/settings/user',
-				// 	mainSubmenuItem: 'settings',
-				// 	resourceKey: 'user'
-				// },
-				// {
-				// 	name: 'documentExport',
-				// 	title: 'Steuerberater Export',
-				// 	url: '/settings/document-export',
-				// 	mainSubmenuItem: 'settings',
-				// 	resourceKey: 'accountantExport'
-				// },
-				{
-					name: "dataImport",
-					title: "Import",
-					url: "/settings/data-import",
-					mainSubmenuItem: "settings",
-					resourceKey: "import",
-				},
-				{
-					name: "paymentConditions",
-					title: "Zahlungsbedingungen",
-					url: "/settings/payment-conditions",
-					mainSubmenuItem: "settings",
-					resourceKey: "termsOfPayment",
-				},
+		// {
+		// 	name: "settings",
+		// 	icon: "settings",
+		// 	title: "Einstellungen",
+		// 	url: "",
+		// 	hasImprintAndPrivacy: true,
+		// 	resourceKey: "settings",
+		// 	submenuItems: [
+		// 		{
+		// 			name: "account",
+		// 			title: "Account",
+		// 			url: "/settings/account",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "account",
+		// 		},
+		// 		// {
+		// 		// 	name: 'user',
+		// 		// 	title: 'Users',
+		// 		// 	url: '/settings/user',
+		// 		// 	mainSubmenuItem: 'settings',
+		// 		// 	resourceKey: 'user'
+		// 		// },
+		// 		// {
+		// 		// 	name: 'documentExport',
+		// 		// 	title: 'Steuerberater Export',
+		// 		// 	url: '/settings/document-export',
+		// 		// 	mainSubmenuItem: 'settings',
+		// 		// 	resourceKey: 'accountantExport'
+		// 		// },
+		// 		{
+		// 			name: "dataImport",
+		// 			title: "Import",
+		// 			url: "/settings/data-import",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "import",
+		// 		},
+		// 		{
+		// 			name: "paymentConditions",
+		// 			title: "Zahlungsbedingungen",
+		// 			url: "/settings/payment-conditions",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "termsOfPayment",
+		// 		},
 
-				{
-					name: "textModules",
-					title: "Textbausteine",
-					url: "/settings/text-modules",
-					mainSubmenuItem: "settings",
-					resourceKey: "textModule",
-				},
-				{
-					name: "dunning",
-					title: "Mahnwesen",
-					url: "/settings/dunning",
-					mainSubmenuItem: "settings",
-					resourceKey: "dunning",
-				},
-				{
-					name: "moreSettings",
-					title: "Weitere Einstellungen",
-					url: "/settings/more-settings",
-					mainSubmenuItem: "settings",
-					resourceKey: "moreSettings",
-				},
-			],
-		},
+		// 		{
+		// 			name: "textModules",
+		// 			title: "Textbausteine",
+		// 			url: "/settings/text-modules",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "textModule",
+		// 		},
+		// 		{
+		// 			name: "dunning",
+		// 			title: "Mahnwesen",
+		// 			url: "/settings/dunning",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "dunning",
+		// 		},
+		// 		{
+		// 			name: "moreSettings",
+		// 			title: "Weitere Einstellungen",
+		// 			url: "/settings/more-settings",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "moreSettings",
+		// 		},
+		// 	],
+		// },
 		// {
 		// 	name: "marketplace",
 		// 	icon: "marketplace",

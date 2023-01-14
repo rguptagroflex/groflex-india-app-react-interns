@@ -49,7 +49,7 @@ const createTopbarButtons = (recInvoice, resources) => {
 
 		case RecurringInvoiceState.STARTED:
 			buttons.push({
-				type: 'secondary',
+				type: 'primary',
 				label: resources.str_endSubscription,
 				buttonIcon: 'icon-close',
 				action: RecurringInvoiceAction.END_SUBSCRIPTION,
@@ -280,14 +280,15 @@ class RecurringInvoiceDetailComponent extends React.Component {
 
 					<div className="recurring-invoice-detail-recipient-wrapper">
 						<div className="recurring-invoice-detail-recipient">
-							<span>{resources.str_willBeSentOn}:</span> {this.state.recInvoice.recipient}
+						<span class="icon icon-mail"></span><span>{resources.str_willBeSentOn}:</span> {this.state.recInvoice.recipient}
 						</div>
 					</div>
 				</div>
 
 				<div className="detail-view-document" style={{ visibility: 'hidden' }} />
-
-				<div className="detail-view-box">
+				<div className="detail-view-content-wrapper">
+					<div className="detail-view-content-left">
+					<div className="detail-view-box-new u_mt_20">
 					<ListComponent
 						title={resources.str_createdBills}
 						clickable={true}
@@ -306,9 +307,10 @@ class RecurringInvoiceDetailComponent extends React.Component {
 						tableId={`invoices`}
 						resources={resources}
 					/>
-				</div>
-
-				<div className="detail-view-box">
+					</div>
+					</div>
+					<div className="detail-view-content-right">
+					<div className="detail-view-box-new u_mt_20">
 					<NotesComponent
 						heading={resources.str_remarks}
 						data={{ notes: this.state.recInvoice.notes }}
@@ -318,6 +320,11 @@ class RecurringInvoiceDetailComponent extends React.Component {
 						defaultFocus={true}
 					/>
 				</div>
+					</div>
+				</div>
+				
+
+				
 			</div>
 		);
 	}

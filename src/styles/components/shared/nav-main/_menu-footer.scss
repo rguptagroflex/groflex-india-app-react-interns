@@ -112,6 +112,13 @@
 	}
 	.menu-profile-popup-middle2 {
 		border-bottom: 1px solid #cccc;
+		
+		.menuItem:link {
+			color: #000000!important;
+		}
+		.menuItem:hover {
+			color: $color-menu-hover !important;
+		}
 	}
 	.menu-profile-popup-footer {
 		border-bottom: 1px solid #cccc;

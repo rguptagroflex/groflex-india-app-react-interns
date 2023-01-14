@@ -40,9 +40,9 @@ class NumerationConfigComponent extends React.Component {
 		this.isOnlyOffer = this.props.isOnlyOffer;
 		this.isOnlyPurchaseOrder = this.props.isOnlyPurchaseOrder;
 		this.onSave = this.props.onSave;
-		const { resources } = this.props;
+		const { resources, pathName } = this.props;
 		this.state = {
-			currentView: this.isOnlyInvoice ? INVOICE_VIEW : this.isOnlyPurchaseOrder ? PURCHASE_ORDER_VIEW : OFFER_VIEW,
+			currentView: this.props.pathName == "/settings/more-settings/offer" ? OFFER_VIEW : this.props.pathName == "/settings/more-settings/invoice" ? INVOICE_VIEW : this.isOnlyInvoice ? INVOICE_VIEW : this.isOnlyPurchaseOrder ? PURCHASE_ORDER_VIEW : OFFER_VIEW,
 			invoicePrefix: invoiceOptions.prefix || '',
 			invoiceDate: invoiceOptions.datePart || '',
 			invoiceDateText: '',
@@ -176,7 +176,7 @@ class NumerationConfigComponent extends React.Component {
 			invoiceOfferOptions: [],
 			invoicePurchaseOrderOptions: [],
 			isOfferActive: true,
-			isInvoiceActive: false,
+			isInvoiceActive: this.props.pathName == "/settings/more-settings/invoice" ? true : false,
 			isPurchaseOrderActive: false,
 			canEditNumericRanges: invoiz.user && invoiz.user.hasPermission(userPermissions.EDIT_NUMERIC_RANGES),
 			incrementByError: '',
@@ -1239,7 +1239,7 @@ class NumerationConfigComponent extends React.Component {
 
 	render() {
 		let content;
-		const { resources } = this.props;
+		const { resources, pathName } = this.props;
 		const { canEditNumericRanges } = this.state;
 		if (this.state.currentView === INVOICE_VIEW) {
 			content = (
@@ -2120,18 +2120,29 @@ class NumerationConfigComponent extends React.Component {
 			} else {
 				error = this.state.offerPrefixError || this.state.offerSuffixError || this.state.offerNumberError || this.state.incrementByError || this.state.startNumberError;
 			}
-
-			const filterItems = [
-				{ resouceKey: OFFER_VIEW, key: OFFER_VIEW, active: this.state.isOfferActive },
-				{ resouceKey: INVOICE_VIEW, key: INVOICE_VIEW, active: this.state.isInvoiceActive },
-				{ resouceKey: PURCHASE_ORDER_VIEW, key: PURCHASE_ORDER_VIEW, active: this.state.isPurchaseOrderActive }
-			];
+			let filterItems = []
+			if (pathName == "/settings/more-settings/offer") {
+				filterItems = [
+					{ resouceKey: OFFER_VIEW, key: OFFER_VIEW, active: this.state.isOfferActive },
+					// { resouceKey: INVOICE_VIEW, key: INVOICE_VIEW, active: this.state.isInvoiceActive },
+					// { resouceKey: PURCHASE_ORDER_VIEW, key: PURCHASE_ORDER_VIEW, active: this.state.isPurchaseOrderActive }
+				];
+			} else {
+				filterItems = [
+					// { resouceKey: OFFER_VIEW, key: OFFER_VIEW, active: this.state.isOfferActive },
+					{ resouceKey: INVOICE_VIEW, key: INVOICE_VIEW, active: this.state.isInvoiceActive },
+					{ resouceKey: PURCHASE_ORDER_VIEW, key: PURCHASE_ORDER_VIEW, active: this.state.isPurchaseOrderActive }
+				];
+			}
+			
+			
 
 			contentWrapper = (
-				<div className="row u_pt_60 u_pb_40">
-					<div className="col-xs-4 form_groupheader_edit">
+				<div className="row u_pb_40">
+					<div className="col-xs-12  u_pb_20">
 						<div className="text-h4">{resources.str_numberRange}</div>
 					</div>
+					<div className="col-xs-2"></div>
 					<div className="col-xs-8 numeration-content-wrapper">
 						<div className='article-history-list-head-content'>
 							{/* <TabInputComponent
@@ -2188,7 +2199,7 @@ class NumerationConfigComponent extends React.Component {
 
 			contentWrapper = (
 				<div className="numeration-content-wrapper numeration-popover">
-					<div className="text-h5 headline">{headline}</div>
+					{/* <div className="text-h5 headline">{headline}</div> */}
 
 					{content}
 

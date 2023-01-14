@@ -55,31 +55,111 @@ class SettingsMoreSettingsComponent extends React.Component {
 
 	render() {
 		const { numerationOptionsData, miscellaneousData, canEditNumericRange, canEditSalutations } = this.state;
-		const { resources } = this.props;
+		const { resources, pathName } = this.props;
 		return (
 			<div className="settings-more-settings-component wrapper-has-topbar-with-margin">
 				<TopbarComponent title={resources.str_moreSettings} viewIcon={`icon-settings`} />
 
 				<div className="box">
-					<div className="row u_pb_40">
+					<div className="row">
+						{pathName == "/settings/more-settings/offer"  ||  pathName == "/settings/more-settings/invoice" ? 
 						<div className="col-xs-12">
-							<h2 className="u_pb_16">{resources.str_moreSettings}</h2>
+						{/* <h2 className="u_pb_16">{resources.str_moreSettings}</h2> */}
 
-							<NumerationConfigComponent
-								numerationOptions={numerationOptionsData}
-								onSave={() => false}
-								isWrapped={true}
-								resources={resources}
-								disabled={!canEditNumericRange}
-							/>
+						<NumerationConfigComponent
+							numerationOptions={numerationOptionsData}
+							onSave={() => false}
+							isWrapped={true}
+							resources={resources}
+							disabled={!canEditNumericRange}
+							pathName= {pathName}
+						/>
 						</div>
+						: null}
+						
+						{pathName == "/settings/more-settings/customer-categories" ? 
+							<div className="row">
+								<div className="col-xs-12">
+									<div className="text-h4">{resources.str_customerCategories}</div>
+								</div>
+					
+								<div className="col-xs-12 u_pbt_20">
+									<div className="col-xs-12 u_mb_16 text-muted">
+										{resources.moreSettingsCustomerCategoryInfo}
+									</div>
+									<div className="col-xs-12">
+										<TagInputComponent
+											hintText={format(resources.tagDefaultHintMessage, resources.str_customerCategories)}
+											tagType={resources.str_customerCategory}
+											tags={miscellaneousData.customerCategories}
+											hiddenTags={[`${resources.str_noInformation}`]}
+											resources={resources}
+											disabled={!canEditSalutations}
+											onSaveTags={categories => {
+												return invoiz.request(config.settings.endpoints.customer, {
+													auth: true,
+													method: 'POST',
+													data: { categories }
+												});
+											}}
+											checkTagBeforeDelete={(tags, tag, callback) => {
+												const tagsForDelete = tags.filter(existingTag => {
+													return existingTag !== tag;
+												});
 
-						<div className="row u_pt_60 u_pb_40">
-							<div className="col-xs-4 form_groupheader_edit">
+												invoiz
+													.request(`${config.settings.endpoints.getCustomerCategory}/${tag}`, {
+														auth: true
+													})
+													.then(response => {
+														const inUse = response.body.meta.count > 0;
+
+														if (!inUse) {
+															return callback(true);
+														}
+
+														ModalService.open(
+															<TagReplaceModal
+																subject={resources.str_customers}
+																dataProp={'category'}
+																type={resources.str_customerCategory}
+																tags={tagsForDelete}
+																tagToDelete={tag}
+																replaceUrl={
+																	config.settings.endpoints.replaceCustomerCategory
+																}
+																onSaveClick={setting => {
+																	callback(setting);
+																	ModalService.close();
+																}}
+																onCancelClick={() => {
+																	callback(false);
+																	ModalService.close();
+																}}
+																resources={resources}
+															/>,
+															{
+																headline: resources.str_replaceCustomerCategory,
+																isCloseable: false,
+																width: 425,
+																padding: 40,
+																noTransform: true
+															}
+														);
+													});
+											}}
+										/>
+									</div>
+								</div>
+							</div>
+						: null}
+						{pathName == "/settings/more-settings/customer" ? 
+							<div className="row u_pb_40">
+							<div className="col-xs-12">
 								<div className="text-h4">{resources.str_salutations}</div>
 							</div>
 
-							<div className="col-xs-8">
+							<div className="col-xs-12 u_pbt_20">
 								<div className="col-xs-12 u_mb_16 text-muted">
 									{resources.moreSettingsUpdateSalutationMessage}
 								</div>
@@ -100,14 +180,15 @@ class SettingsMoreSettingsComponent extends React.Component {
 									/>
 								</div>
 							</div>
-						</div>
-
-						<div className="row u_pt_60 u_pb_40">
-							<div className="col-xs-4 form_groupheader_edit">
+							</div>
+						: null}
+						{pathName == "/settings/more-settings/customer" ? 
+							<div className="row u_pb_40">
+							<div className="col-xs-12">
 								<div className="text-h4">{resources.str_title}</div>
 							</div>
 
-							<div className="col-xs-8">
+							<div className="col-xs-12 u_pbt_20">
 								<div className="col-xs-12 u_mb_16 text-muted">
 									{resources.moreSettingsUpdateTitleMessage}
 								</div>
@@ -128,14 +209,15 @@ class SettingsMoreSettingsComponent extends React.Component {
 									/>
 								</div>
 							</div>
-						</div>
-
-						<div className="row u_pt_60 u_pb_40">
-							<div className="col-xs-4 form_groupheader_edit">
+							</div>
+						: null}
+						{pathName == "/settings/more-settings/customer" ? 
+							<div className="row">
+							<div className="col-xs-12">
 								<div className="text-h4">{resources.str_positions}</div>
 							</div>
 
-							<div className="col-xs-8">
+							<div className="col-xs-12 u_pbt_20">
 								<div className="col-xs-12 u_mb_16 text-muted">
 									{resources.moreSettingsPositionsInfo}
 								</div>
@@ -156,89 +238,15 @@ class SettingsMoreSettingsComponent extends React.Component {
 									/>
 								</div>
 							</div>
-						</div>
-
-						<div className="row u_pt_60 u_pb_40">
-							<div className="col-xs-4 form_groupheader_edit">
-								<div className="text-h4">{resources.str_customerCategories}</div>
 							</div>
-
-							<div className="col-xs-8">
-								<div className="col-xs-12 u_mb_16 text-muted">
-									{resources.moreSettingsCustomerCategoryInfo}
-								</div>
-								<div className="col-xs-12">
-									<TagInputComponent
-										hintText={format(resources.tagDefaultHintMessage, resources.str_customerCategories)}
-										tagType={resources.str_customerCategory}
-										tags={miscellaneousData.customerCategories}
-										hiddenTags={[`${resources.str_noInformation}`]}
-										resources={resources}
-										disabled={!canEditSalutations}
-										onSaveTags={categories => {
-											return invoiz.request(config.settings.endpoints.customer, {
-												auth: true,
-												method: 'POST',
-												data: { categories }
-											});
-										}}
-										checkTagBeforeDelete={(tags, tag, callback) => {
-											const tagsForDelete = tags.filter(existingTag => {
-												return existingTag !== tag;
-											});
-
-											invoiz
-												.request(`${config.settings.endpoints.getCustomerCategory}/${tag}`, {
-													auth: true
-												})
-												.then(response => {
-													const inUse = response.body.meta.count > 0;
-
-													if (!inUse) {
-														return callback(true);
-													}
-
-													ModalService.open(
-														<TagReplaceModal
-															subject={resources.str_customers}
-															dataProp={'category'}
-															type={resources.str_customerCategory}
-															tags={tagsForDelete}
-															tagToDelete={tag}
-															replaceUrl={
-																config.settings.endpoints.replaceCustomerCategory
-															}
-															onSaveClick={setting => {
-																callback(setting);
-																ModalService.close();
-															}}
-															onCancelClick={() => {
-																callback(false);
-																ModalService.close();
-															}}
-															resources={resources}
-														/>,
-														{
-															headline: resources.str_replaceCustomerCategory,
-															isCloseable: false,
-															width: 425,
-															padding: 40,
-															noTransform: true
-														}
-													);
-												});
-										}}
-									/>
-								</div>
-							</div>
-						</div>
-
-						<div className="row u_pt_60 u_pb_40">
-							<div className="col-xs-4 form_groupheader_edit">
+						: null}
+						{pathName == "/settings/more-settings/article" ? 
+							<div className="row">
+							<div className="col-xs-12">
 								<div className="text-h4">{resources.str_units}</div>
 							</div>
 
-							<div className="col-xs-8">
+							<div className="col-xs-12 u_pbt_20">
 								<div className="col-xs-12 u_mb_16 text-muted">
 									{resources.moreSettingsUnitsInfo}
 								</div>
@@ -304,14 +312,15 @@ class SettingsMoreSettingsComponent extends React.Component {
 									/>
 								</div>
 							</div>
-						</div>
-
-						<div className="row u_pt_60">
-							<div className="col-xs-4 form_groupheader_edit">
+							</div>
+						: null}
+						{pathName == "/settings/more-settings/article-categories" ? 
+							<div className="row">
+							<div className="col-xs-12">
 								<div className="text-h4">{resources.str_articleCategories}</div>
 							</div>
 
-							<div className="col-xs-8">
+							<div className="col-xs-12 u_pbt_20">
 								<div className="col-xs-12 u_mb_16 text-muted">
 									{resources.moreSettingsArticleCategoryInfo}
 								</div>
@@ -379,7 +388,8 @@ class SettingsMoreSettingsComponent extends React.Component {
 									/>
 								</div>
 							</div>
-						</div>
+							</div>
+						: null}
 					</div>
 				</div>
 			</div>

@@ -1279,7 +1279,8 @@ class ListAdvancedComponent extends React.Component {
 			searchFieldPlaceholder,
 			showDisabledOverlay,
 			resources,
-			hasFirstHeadBar
+			hasFirstHeadBar,
+			settingPopup
 		} = this.props;
 
 		const hasNoFilterResults = rowCount === 0;
@@ -1298,6 +1299,36 @@ class ListAdvancedComponent extends React.Component {
 
 		const headBarControls = (
 			<div className="right-col">
+				{settingPopup &&
+				(settingPopup.settingPopupEntries || settingPopup.settingPopupEntriesFunc) &&
+				settingPopup.onSettingPopupItemClicked ? (
+					<div id="list-advanced-setting-btn" className="icon-btn">
+						<div className="icon icon-settings_outlined"></div>
+						<div>Settings</div>
+						<div className="icon icon-arr_down"></div>
+					</div>
+				) : null }
+				{settingPopup &&
+				(settingPopup.settingPopupEntries || settingPopup.settingPopupEntriesFunc) &&
+				settingPopup.onSettingPopupItemClicked ? (
+					
+					<PopoverComponent
+						showOnClick={true}
+						contentClass={`list-advanced-setting-dropdown-content`}
+						elementId={'list-advanced-setting-btn'}
+						entries={
+							settingPopup.settingPopupEntries ||
+							settingPopup.settingPopupEntriesFunc()
+						}
+						onClick={(entry) => {
+							settingPopup.onSettingPopupItemClicked(entry);
+						}}
+						offsetLeft={7}
+						offsetTop={7}
+						useOverlay={true}
+					/> 
+				) : null}
+
 				<div className={`icon-btn ${hasFilter ? '' : 'disabled'}`} onClick={() => this.onFilterClearClick()}>
 					<div className="icon icon-filter_reset"></div>
 					<div className="icon-label">Clear</div>
@@ -1318,6 +1349,27 @@ class ListAdvancedComponent extends React.Component {
 					<div className="icon icon-download2"></div>
 					<div className="icon-label">Export columns</div>
 				</div>
+				
+				{/* <PopoverComponent
+					showOnClick={true}
+					contentClass={`list-advanced-setting-dropdown-content`}
+					elementId={'list-advanced-setting-btn'}
+					entries={[
+						[
+							{
+								label: 'Excel',
+								name: ListExportTypes.EXCEL,
+								icon: 'icon icon-excel',
+							},
+						],
+					]}
+					onClick={(entry) => {
+						this.exportList(entry.name);
+					}}
+					offsetLeft={7}
+					offsetTop={7}
+					useOverlay={true}
+				/> */}
 
 				{/* TODO: coming soon */}
 				{/* <div id="list-advanced-export-btn" className="icon-btn">

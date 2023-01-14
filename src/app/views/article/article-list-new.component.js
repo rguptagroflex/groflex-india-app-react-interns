@@ -300,6 +300,18 @@ class ArticleListNewComponent extends React.Component {
 		}
 	}
 
+	onActionSettingPopupItemClick(entry) {
+		const { resources } = this.props;
+		switch (entry.action) {
+			case "articlecategory":
+				invoiz.router.navigate("/settings/more-settings/article-categories");
+				break;
+			case "moresettings":
+				invoiz.router.navigate("/settings/more-settings/article");
+				break;
+		}
+	}
+
 	render() {
 		const { resources } = this.props;
 		const { canUpdateArticle, canDeleteArticle, canCreateArticle } = this.state;
@@ -764,6 +776,26 @@ class ArticleListNewComponent extends React.Component {
 							},
 							onPopupItemClicked: (itemData, popupEntry) => {
 								this.onActionCellPopupItemClick(itemData, popupEntry);
+							},
+						}}
+						settingPopup={{
+							settingPopupEntriesFunc: (item) => {
+								const entries = [];
+								entries.push({
+									label: "Article category",
+									action: "articlecategory",
+									dataQsId: "setting-list-item-dropdown-articlecategory",
+								});
+								entries.push({
+									label: "More settings",
+									action: "moresettings",
+									dataQsId: "setting-list-item-dropdown-moresettings",
+								});
+
+								return [entries];
+							},
+							onSettingPopupItemClicked: (popupEntry) => {
+								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
 						onRowDataLoaded={(articleData) => {

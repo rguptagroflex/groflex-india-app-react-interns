@@ -45,7 +45,7 @@
 }
 
 .customerHistory_container {
-	min-height: 400px;
+	min-height: 500px;
 	height: calc(100% - 62px);
 	position: relative;
 	margin-left: 30px;
@@ -227,9 +227,13 @@
 }
 
 .history-list-header {
-	display: flex;
+	// display: flex;
 	justify-content: space-between;
 	padding: 30px 30px 0 30px;
+	
+	.history-list-head-content{
+		margin-left: -18px;
+	}
 }
 
 .history-empty-list-box {

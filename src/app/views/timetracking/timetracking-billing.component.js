@@ -4,7 +4,7 @@ import accounting from 'accounting';
 import invoiz from 'services/invoiz.service';
 import config from 'config';
 import { convertMinutesToTimeString } from 'helpers/timetracking';
-import timetrackingWatchIcon from 'assets/images/svg/timetracking-watch-2.svg';
+import timetrackingWatchIcon from 'assets/images/svg/timetracking-watch-1.svg';
 import SVGInline from 'react-svg-inline';
 import ListComponent from 'shared/list/list.component';
 import PopoverComponent from 'shared/popover/popover.component';
@@ -109,7 +109,7 @@ class TimetrackingBillingComponent extends React.Component {
 
 		const topbarButtons = [
 			{
-				type: 'primary',
+				type: 'default',
 				label: resources.str_makeBillText,
 				buttonIcon: 'icon-check',
 				action: 'createInvoice',
@@ -128,42 +128,48 @@ class TimetrackingBillingComponent extends React.Component {
 			<div className="timetracking-billing-component wrapper-has-topbar-with-margin">
 				<TopbarComponent
 					backButtonRoute="/invoices/timetracking"
-					title={resources.str_settleRecordedTimes}
+					title={customer.displayName}
 					buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
 					buttons={topbarButtons}
 				/>
 
-				<div className="box">
-					<div className="row">
-						<div className="col-xs-8">
-							<div className="text-h2">{resources.str_settleRecordedTimes}</div>
-							<div className="u_pt_40">
-								<div className="text-bold">{customer.displayName}</div>
-								<div>{customer.address.street}</div>
-								<div>{customer.address.zipCode + ' ' + customer.address.city}</div>
-							</div>
+				<div className="detail-view-content-wrapper">
+					<div className="detail-view-content-left">
+						<div className="detail-view-box-new u_mt_20">
+							<ListComponent
+								title={"Time records"}
+								tableId="timetracking-billing-component-table"
+								allSelected={allSelected}
+								selectable={true}
+								selectedCallback={(id, isChecked) => this.onSelected(id, isChecked)}
+								selectedAllCallback={isChecked => this.onAllSelected(isChecked)}
+								columns={tableColumns}
+								rows={tableRows}
+								resources={resources}
+							/>
 						</div>
-						<div className="col-xs-4 timetracking-watch-wrapper">
-							<SVGInline svg={timetrackingWatchIcon} className="timetracking-watch" />
-							<div className="timetracking-watch-text">
-								<div className="text-h1">{totalTime}</div>
-								<div className="text-bold text-light">{totalMoney}</div>
+					</div>
+					<div className="detail-view-content-right">
+						<div className="detail-view-box-new u_mt_20">
+							<div className="row">
+								<div className="col-xs-8">
+									<div className="text-h2">{"Customer details"}</div>
+									<div className="u_pt_40">
+										<div className="text-bold">{customer.displayName}</div>
+										<div>{customer.address.street}</div>
+										<div>{customer.address.zipCode + ' ' + customer.address.city}</div>
+									</div>
+								</div>
+								<div className="col-xs-4 timetracking-watch-wrapper">
+									<SVGInline svg={timetrackingWatchIcon} className="timetracking-watch" />
+									<div className="timetracking-watch-text">
+										<div className="text-h1">{totalTime}</div>
+										<div className="text-bold text-light">{totalMoney}</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-
-				<div className="box">
-					<ListComponent
-						tableId="timetracking-billing-component-table"
-						allSelected={allSelected}
-						selectable={true}
-						selectedCallback={(id, isChecked) => this.onSelected(id, isChecked)}
-						selectedAllCallback={isChecked => this.onAllSelected(isChecked)}
-						columns={tableColumns}
-						rows={tableRows}
-						resources={resources}
-					/>
 				</div>
 			</div>
 		);

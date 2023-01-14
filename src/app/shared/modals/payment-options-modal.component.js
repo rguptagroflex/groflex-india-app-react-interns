@@ -28,28 +28,30 @@ class PaymentOptionsModalComponent extends React.Component {
 		const content = (
 			<div className="payment-options-modal-content">
 				<div className="modal-base-headline">{resources.str_termsOfPayment} {editing ? resources.str_toEditSmall : resources.str_add}</div>
-
-				<TextInputExtendedComponent
-					name="name"
-					value={paymentOption.name}
-					label={resources.str_nameOfTermsOfPayment}
-					onChange={val => {
-						this.setState({ paymentOptionNameErrorMessage: '' }, () => {
-							this.onChange(val, 'name');
-						});
-					}}
-					onBlur={({ value }) => {
-						this.setState(
-							{ paymentOptionNameErrorMessage: value.trim().length === 0 ? resources.mandatoryFieldValidation : '' },
-							() => {
-								this.onChange(value, 'name');
-							}
-						);
-					}}
-					errorMessage={paymentOptionNameErrorMessage}
-				/>
-
-				<div className="payment-options-duedays">
+				<div className="row">
+					<div className="col-xs-8">
+						<TextInputExtendedComponent
+							name="name"
+							value={paymentOption.name}
+							label={resources.str_nameOfTermsOfPayment}
+							onChange={val => {
+								this.setState({ paymentOptionNameErrorMessage: '' }, () => {
+									this.onChange(val, 'name');
+								});
+							}}
+							onBlur={({ value }) => {
+								this.setState(
+									{ paymentOptionNameErrorMessage: value.trim().length === 0 ? resources.mandatoryFieldValidation : '' },
+									() => {
+										this.onChange(value, 'name');
+									}
+								);
+							}}
+							errorMessage={paymentOptionNameErrorMessage}
+						/>
+					</div>
+					<div className="col-xs-4">
+					<div className="payment-options-duedays">
 					<NumberInputComponent
 						name="dueDays"
 						value={paymentOption.dueDays}
@@ -61,6 +63,8 @@ class PaymentOptionsModalComponent extends React.Component {
 					/>
 					<div className="payment-options-duedays-label">{resources.str_days}</div>
 				</div>
+					</div>
+				</div>	
 
 				<div className="textarea">
 					<label className="textarea_label">{resources.str_textOnOffers}</label>
@@ -86,7 +90,9 @@ class PaymentOptionsModalComponent extends React.Component {
 					<span className="textarea_bar" />
 				</div>
 
-				<div className="payment-options-checkbox">
+				<div className="row">
+					<div className="col-xs-6">
+					<div className="payment-options-checkbox">
 					<CheckboxInputComponent
 						dataQsId="payment-options-modal-isInstant"
 						name={'isInstant'}
@@ -95,8 +101,9 @@ class PaymentOptionsModalComponent extends React.Component {
 						onChange={() => this.onToggle('isInstant')}
 					/>
 				</div>
-
-				<div className="payment-options-checkbox">
+					</div>
+					<div className="col-xs-6">
+					<div className="payment-options-checkbox">
 					<CheckboxInputComponent
 						dataQsId="payment-options-modal-isDefault"
 						name={'isDefault'}
@@ -106,6 +113,11 @@ class PaymentOptionsModalComponent extends React.Component {
 						disabled={editing && isInitialDefault}
 					/>
 				</div>
+					</div>
+				</div>
+				
+
+				
 
 				<div className="modal-base-footer">
 					<div className="modal-base-cancel">

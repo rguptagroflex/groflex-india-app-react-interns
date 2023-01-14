@@ -532,8 +532,8 @@ class ArticleDetailComponent extends React.Component {
 					backButtonRoute={`/articles`}
 					buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
 					buttons={[
-						{ type: 'primary', label: `Create purchase order`, buttonIcon: 'icon-plus', action: TopbarActions.CREATE_PURCHASE_ORDER },
-						{ type: 'secondary', label: resources.str_toEdit, buttonIcon: 'icon-edit2', action: TopbarActions.EDIT }
+						// { type: 'primary', label: `Create purchase order`, buttonIcon: 'icon-plus', action: TopbarActions.CREATE_PURCHASE_ORDER },
+						{ type: 'primary', label: resources.str_toEdit, buttonIcon: 'icon-edit2', action: TopbarActions.EDIT }
 					]}
 				/> : <TopbarComponent
 					title={article.title}

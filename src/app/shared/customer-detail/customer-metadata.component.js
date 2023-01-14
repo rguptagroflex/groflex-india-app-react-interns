@@ -56,18 +56,18 @@ const CustomerMetadataComponent = (props) => {
 			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
 			url: `/timetracking/new/${customer.id}`,
 		},
-		{
-			label: "Expenditure",
-			icon: "icon-expense",
-			isAvailable: customer.type == contactTypes.PAYEE ? true : false,
-			url: `/expense/new/customer/${customer.id}`,
-		},
-		{
-			label: "Purchase order",
-			icon: "icon-order",
-			isAvailable: customer.type == contactTypes.PAYEE ? true : false,
-			url: `/purchase-order/new/customer/${customer.id}`,
-		},
+		// {
+		// 	label: "Expenditure",
+		// 	icon: "icon-expense",
+		// 	isAvailable: customer.type == contactTypes.PAYEE ? true : false,
+		// 	url: `/expense/new/customer/${customer.id}`,
+		// },
+		// {
+		// 	label: "Purchase order",
+		// 	icon: "icon-order",
+		// 	isAvailable: customer.type == contactTypes.PAYEE ? true : false,
+		// 	url: `/purchase-order/new/customer/${customer.id}`,
+		// },
 	];
 	const buttonData = [];
 
@@ -98,6 +98,7 @@ const CustomerMetadataComponent = (props) => {
 						onCreateButtonClick(button.url, button.action);
 					}}
 					label={button.label}
+					type="default"
 					buttonIcon={button.buttonIcon}
 					dataQsId={`customerDetail-btn-${button.label}`}
 					wrapperClass={wrapperClass}
@@ -126,49 +127,52 @@ const CustomerMetadataComponent = (props) => {
 		$("#customer-detail-metadata-name").dotdotdot({ height: 68, truncate: "letter" });
 	}, 0);
 	return (
-		<div className="box box-rounded customer-metadata">
-			<div className="customer-avatar">
+		<div className="box box-rounded customer-metadata row">
+			<div className="customer-avatar col-xs-6 ">
 				{customer.kind === "person" &&
 					customer.salutation === "Familie" &&
 					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="150px" svg={CustomerPrivatFamily} />
+						<SVGInline height="120px" svg={CustomerPrivatFamily} />
 					) : (
-						<SVGInline height="150px" svg={ForeignCustomer} />
+						<SVGInline height="120px" svg={ForeignCustomer} />
 					))}
 				{customer.kind === "person" &&
 					(customer.salutation === "Mr" || !customer.salutation) &&
 					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="150px" svg={CustomerPrivatMan} />
+						<SVGInline height="120px" svg={CustomerPrivatMan} />
 					) : (
-						<SVGInline height="150px" svg={ForeignCustomer} />
+						<SVGInline height="120px" svg={ForeignCustomer} />
 					))}
 				{customer.kind === "person" &&
 					customer.salutation === "Mrs" &&
 					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="150px" svg={CustomerPrivatWoman} />
+						<SVGInline height="120px" svg={CustomerPrivatWoman} />
 					) : (
-						<SVGInline height="150px" svg={ForeignCustomer} />
+						<SVGInline height="120px" svg={ForeignCustomer} />
 					))}
 				{customer.kind === "company" &&
 					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="150px" svg={CustomerCompany} />
+						<SVGInline height="120px" svg={CustomerCompany} />
 					) : (
-						<SVGInline height="150px" svg={ForeignCustomer} />
+						<SVGInline height="120px" svg={ForeignCustomer} />
 					))}
 			</div>
-			<div
-				id="customer-detail-metadata-name"
-				className={`u_mb_10 ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
-			>
-				{customer.name}
+			<div className="customer-detail-metadata-name col-xs-6 ">
+				<div
+					id="customer-detail-metadata-name"
+					className={`u_mb_10 ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
+				>
+					{customer.name}
+				</div>
+				<div className="text-muted ">
+					{`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
+						customer.address.countryIso !== `IN`
+							? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
+							: ``
+					}`}
+				</div>
 			</div>
-			<div className="text-muted ">
-				{`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
-					customer.address.countryIso !== `IN`
-						? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
-						: ``
-				}`}
-			</div>
+			
 			{symmetricButtons(buttons)}
 			{/* <div className="buttons">{ symmetricButtons(buttons)}</div> */}
 			{/* <div className="buttons">{buttons}</div> */}
@@ -177,7 +181,7 @@ const CustomerMetadataComponent = (props) => {
 				<React.Fragment>
 					<ButtonComponent
 						id="customer-detail-other-button"
-						type="secondary"
+						type="primary"
 						isWide="true"
 						label={
 							<div>

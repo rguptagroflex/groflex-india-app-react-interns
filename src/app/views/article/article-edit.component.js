@@ -151,9 +151,9 @@ class ArticleEditComponent extends React.Component {
 				{topbar}
 
 				<div className={`box wrapper-has-topbar-with-margin`}>
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_designation}</div>
-						<div className="col-xs-8">
+					 <div className="row"> {/*u_pb_40 u_pt_60 */}
+						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_designation}</div>
+						<div className="col-xs-12">
 							<div className="row">
 								<div className="article-edit-article-number col-xs-6">
 									<TextInputExtendedComponent
@@ -237,9 +237,9 @@ class ArticleEditComponent extends React.Component {
 						</div>
 					</div>
 
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_price}</div>
-						<div className="col-xs-8">
+					<div className="row u_pt_20">
+						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_price}</div>
+						<div className="col-xs-12">
 							<div className="row">
 								<div className="col-xs-12">
 									<div className="article-edit-vatpercent">
@@ -415,9 +415,9 @@ class ArticleEditComponent extends React.Component {
 						</div>
 					</div>
 
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_information}</div>
-						<div className="col-xs-8">
+					<div className="row u_pt_20">
+						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_information}</div>
+						<div className="col-xs-12">
 							<div className="row">
 								<div className="col-xs-12">
 									<div className="article-edit-unit">
@@ -467,9 +467,9 @@ class ArticleEditComponent extends React.Component {
 					</div>
 
 					{!noInventory && 
-						<div className="row u_pb_40 u_pt_60">
-							<div className="col-xs-4 form_groupheader_edit text-h4">{resources.articleInventory}</div>
-							<div className="col-xs-8">
+						<div className="row u_pt_20">
+							<div className="col-xs-12 text-h4 u_pb_20">{resources.articleInventory}</div>
+							<div className="col-xs-12">
 								<div className="article-edit-track-inventory">
 									<label className="notes-alert-label">{resources.trackArticleInventory}</label>
 									<TabInputComponent
@@ -526,9 +526,9 @@ class ArticleEditComponent extends React.Component {
 							</div>
 						</div>
 					}
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_remarks}</div>
-						<div className="col-xs-8">
+					<div className="row u_pt_20">
+						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_remarks}</div>
+						<div className="col-xs-12">
 							<HtmlInputComponent
 								ref={"article-edit-notes-ref"}
 								dataQsId={"article-edit-notes"}

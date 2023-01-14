@@ -458,9 +458,9 @@ class CustomerEditComponent extends React.Component {
 				{topbar}
 
 				<div className={`box wrapper-has-topbar-with-margin`}>
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_details}</div>
-						<div className="col-xs-8">
+					<div className="row "> {/*u_pt_60 u_pb_40 */}
+						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_details}</div>
+						<div className="col-xs-12">
 							<div className="row">
 								<RadioInputComponent
 									wrapperClass={`customer-edit-type-toggle col-xs-6`}
@@ -664,45 +664,47 @@ class CustomerEditComponent extends React.Component {
 						</div>
 					</div>
 					{customer.type === `customer` || customer.type === undefined ? (
-						<div className="row u_pb_30 u_pt_30">
-							<div className="col-xs-4 form_groupheader_edit text-h4">{`Opening balance`}</div>
-							<div className="row" style={{ width: `65%` }}>
-								<div className="recipientFormOpeningToggleRadio">
-									<RadioInputComponent
-										wrapperClass=""
-										// disabled={(customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0)) 
-										// 	|| (this.state.isOpeningDisabled) ? true : false}
-										key="toggleOpeningBalanceType"
-										options={[
-											{ label: `Previous dues`, value: DUES },
-											{ label: `Excess payments`, value: EXCESS },
-										]}
-										value={toggledOpeningBalance}
-										onChange={this.handleOpeningBalanceChange.bind(this)}
-									/>
-								</div>
-								<div className="col-xs-8">
-									<CurrencyInputComponent
-										value={
-											toggledOpeningBalance === DUES ? customer.openingBalance : customer.balance
-										}
-										//name="openingBalance"
-										onBlur={this.onBalanceChange.bind(this)}
-										dataQsId="dashboard-taxEstimation-configuration-profit"
-										label={customer.type === `payee` ? PAYEE_DUES_LABEL : openingBalanceLabel}
-										willReceiveNewValueProps={true}
-										//errorMessage={balanceErrorMessage}
-										// disabled={customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0 )
-										// 	|| (this.state.isOpeningDisabled) ? true : false}
-										openingBalanceTypeCurrency={toggledOpeningBalance}
-									/>
+						<div className="row "> {/*u_pb_30 u_pt_30 */}
+							<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{`Opening balance`}</div>
+							<div className="col-xs-12">
+								<div className="row">
+									<div className="col-xs-6 recipientFormOpeningToggleRadio">
+										<RadioInputComponent
+											wrapperClass=""
+											// disabled={(customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0)) 
+											// 	|| (this.state.isOpeningDisabled) ? true : false}
+											key="toggleOpeningBalanceType"
+											options={[
+												{ label: `Previous dues`, value: DUES },
+												{ label: `Excess payments`, value: EXCESS },
+											]}
+											value={toggledOpeningBalance}
+											onChange={this.handleOpeningBalanceChange.bind(this)}
+										/>
+									</div>
+									<div className="col-xs-6">
+										<CurrencyInputComponent
+											value={
+												toggledOpeningBalance === DUES ? customer.openingBalance : customer.balance
+											}
+											//name="openingBalance"
+											onBlur={this.onBalanceChange.bind(this)}
+											dataQsId="dashboard-taxEstimation-configuration-profit"
+											label={customer.type === `payee` ? PAYEE_DUES_LABEL : openingBalanceLabel}
+											willReceiveNewValueProps={true}
+											//errorMessage={balanceErrorMessage}
+											// disabled={customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0 )
+											// 	|| (this.state.isOpeningDisabled) ? true : false}
+											openingBalanceTypeCurrency={toggledOpeningBalance}
+										/>
+									</div>
 								</div>
 							</div>
 						</div>
 					) : null}
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_communication}</div>
-						<div className="col-xs-8">
+					<div className="row">
+						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_communication}</div>
+						<div className="col-xs-12">
 							<div className="row">
 								<div className="col-xs-6">
 									<TextInputExtendedComponent
@@ -803,10 +805,11 @@ class CustomerEditComponent extends React.Component {
 							</div>
 						</div>
 					</div>
-
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_contactCategory}</div>
-						<div className="col-xs-8">
+					<div className="row">
+						<div className="col-xs-6 text-h4 u_pb_20">
+						<div className="row">
+						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactCategory}</div>
+						<div className="col-xs-12">
 							<div className="row">
 								<div className="col-xs-12">
 									<SelectInputComponent
@@ -830,10 +833,11 @@ class CustomerEditComponent extends React.Component {
 							</div>
 						</div>
 					</div>
-
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_contactPerson}</div>
-						<div className="col-xs-8">
+						</div>
+						<div className="col-xs-6 text-h4 u_pb_20">
+						<div className="row">
+						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactPerson}</div>
+						<div className="col-xs-12">
 							{contactPersonRows.length > 0 ? (
 								<div className="customer-edit-contactpersons">{contactPersonRows}</div>
 							) : null}
@@ -842,13 +846,19 @@ class CustomerEditComponent extends React.Component {
 								buttonIcon="icon-plus"
 								label={resources.str_contactPerson}
 								callback={() => this.onAddContactPerson()}
+								type="default"
 							/>
 						</div>
 					</div>
+						</div>
+					</div>				
+					
 
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_conditions}</div>
-						<div className="col-xs-8">
+				
+
+					<div className="row">
+						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_conditions}</div>
+						<div className="col-xs-12">
 							<div className="row">
 								<div className="col-xs-12">
 									<div className="customer-edit-paycondition">
@@ -888,9 +898,9 @@ class CustomerEditComponent extends React.Component {
 						</div>
 					</div>
 
-					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_remarks}</div>
-						<div className="col-xs-8">
+					<div className="row">
+						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_remarks}</div>
+						<div className="col-xs-12">
 							<HtmlInputComponent
 								ref={"customer-edit-notes-ref"}
 								dataQsId={"customer-edit-notes"}

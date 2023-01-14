@@ -697,9 +697,10 @@ class CustomerDetailNewComponent extends React.Component {
 						{customer.contactPersons && !!customer.contactPersons.length && (
 							<CustomerContactPersonsComponent contactPersons={customer.contactPersons} />
 						)}
-						<CustomerContactInformationComponent customer={customer} />
+						{/* <CustomerContactInformationComponent customer={customer} /> */}
 					</div>
 					<div className="col-xs-8 col-no-gutter-left flexible-height">
+						<CustomerContactInformationComponent customer={customer} />
 						{/* {!forceReloadChild && (
 							<div className="box box-rounded customer-todos-activities u_p_0">
 								<div className="customer-tabs u_vc">
@@ -779,19 +780,11 @@ class CustomerDetailNewComponent extends React.Component {
 								</div>
 							</div>
 						)} */}
-						<CustomerHistoryListWrapper
-							customer={customer}
-							forceReload={this.state.forceReloadChild}
-							emailStatus={this.state.emailStatus}
-							fetchingEmails={this.state.fetchingEmails}
-							//checkEmailStatus={this.checkEmailStatus}
-							isImapActivated={this.props.isImapActivated}
-						/>
+						
 					</div>
 				</div>
-
 				<div className="row">
-					<div className="col-xs-8 col-no-gutter-left">
+					<div className="col-xs-7 col-no-gutter-left">
 						<div className="box box-rounded customer-sales-chart">
 							<div className="text-h4">{customer.type === 'customer' ? `Sales overview` : `Expenditure overview`}</div>
 							<div className="text-muted u_mt_10 u_mb_40">{customer.type === 'customer' ? `Sales over the last 12 months` : `Expenditure over the last 12 months`}</div>
@@ -804,11 +797,35 @@ class CustomerDetailNewComponent extends React.Component {
 								// onMouseMove={this.onMouseMove}
 							/>
 						</div>
-						<CustomerDocumentListWrapper customer={customer} />
+						
 					</div>
-					<div className="col-xs-4 col-no-gutter-left customer-statements-adjustment-1">
+					<div className="col-xs-5 col-no-gutter-left customer-statements-adjustment-1">
 						<div className="box box-rounded customer-sales">{this.getSalesOrExpenses()}</div>
-						<div className="box box-rounded customer-conditions">{this.getConditions()}</div>
+						{/* <div className="box box-rounded customer-conditions">{this.getConditions()}</div>
+						<div className="box box-rounded customer-notes">
+							<NotesComponent
+							data={customer}
+							heading={resources.str_remarks}
+							placeholder={resources.customerDetailCommentsAboutCustomer}
+							notesAlertLabel={resources.str_seeNoteConfirmationMessage}
+							showToggleInput={true}
+							onSave={({ notes, notesAlert }) => this.onSaveNotesClick({ notes, notesAlert })}
+							resources={resources}
+							defaultFocus={true}
+							/>
+						</div> */}
+						
+						{/* { 
+							customer.type === 'customer' && 
+							<div className="box box-rounded col-no-gutter-bottom customer-statements">
+								{ false && <div className='customer-statements-container-blank'></div>}
+								<LedgerComponent customerId={customer.id} resources={resources} />
+							</div>
+						} */}
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-xs-7 col-no-gutter-left">
 						<div className="box box-rounded customer-notes">
 							<NotesComponent
 							data={customer}
@@ -821,14 +838,24 @@ class CustomerDetailNewComponent extends React.Component {
 							defaultFocus={true}
 							/>
 						</div>
-						
-						{ 
-							customer.type === 'customer' && 
-							<div className="box box-rounded col-no-gutter-bottom customer-statements">
-								{ false && <div className='customer-statements-container-blank'></div>}
-								<LedgerComponent customerId={customer.id} resources={resources} />
-							</div>
-						}
+					</div>
+					<div className="col-xs-5 col-no-gutter-left">
+						<div className="box box-rounded customer-conditions">{this.getConditions()}</div>
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-xs-6 col-no-gutter-left">
+						<CustomerHistoryListWrapper
+							customer={customer}
+							forceReload={this.state.forceReloadChild}
+							emailStatus={this.state.emailStatus}
+							fetchingEmails={this.state.fetchingEmails}
+							//checkEmailStatus={this.checkEmailStatus}
+							isImapActivated={this.props.isImapActivated}
+						/>
+					</div>
+					<div className="col-xs-6 col-no-gutter-left">
+						<CustomerDocumentListWrapper customer={customer} />
 					</div>
 				</div>
 			</div>

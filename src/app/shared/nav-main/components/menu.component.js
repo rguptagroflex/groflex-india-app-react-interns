@@ -147,6 +147,8 @@ class MenuComponent extends React.Component {
 				/>
 				<MenuFooterComponent 
 					onNewsfeedIconClick={this.onNewsfeedIconClick.bind(this)} 
+					activeItem={activeItem}
+					activeSubmenuItem={activeSubmenuItem}
 					submenuVisible={submenuVisible} 
 					onLogout={this.onLogout.bind(this)} 
 				/>

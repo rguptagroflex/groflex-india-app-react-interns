@@ -104,7 +104,7 @@ class RecurringInvoiceSettingsComponent extends React.Component {
 						</div>
 
 						<div className="row recurring-invoice-settings-email-row">
-							<div className="col-xs-12">
+							<div className="col-xs-6">
 								<TextInputExtendedComponent
 									ref="recInvoiceEmailInput"
 									required={true}

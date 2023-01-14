@@ -178,10 +178,36 @@ class TimetrackingEditComponent extends React.Component {
 								dataQsId="timetracking-edit-customer"
 							/>
 						</div>
+						<div className="col-xs-6">
+							<div className="row">
+								<div className="col-xs-6">
+									<DateInputComponent
+										label={resources.str_chooseDate}
+										placeholder="TT.MM.JJJJ"
+										name="date"
+										dataQsId="timetracking-edit-date"
+										value={timeTracking.date}
+										onChange={(name, value) => {
+											this.onDateChange(value);
+										}}
+									/>
+								</div>
+								<div className="col-xs-6">
+									<CurrencyInputComponent
+										name="pricePerHour"
+										dataQsId="timetracking-edit-pricePerHour"
+										value={timeTracking.pricePerHour}
+										selectOnFocus={true}
+										onBlur={value => this.onPriceChange(value)}
+										label={resources.str_hourlyRateNet}
+										willReceiveNewValueProps={true}
+									/>
+								</div>
+							</div>
+						</div>
 					</div>
 
 					<div className="row">
-						<div className="col-xs-6">{timeInputs}</div>
 						<div className="timetracking-edit-type col-xs-6">
 							<SelectInputComponent
 								name="timeType"
@@ -199,32 +225,7 @@ class TimetrackingEditComponent extends React.Component {
 								dataQsId="timetracking-edit-timeType"
 							/>
 						</div>
-					</div>
-
-					<div className="row">
-						<div className="col-xs-6">
-							<DateInputComponent
-								label={resources.str_chooseDate}
-								placeholder="TT.MM.JJJJ"
-								name="date"
-								dataQsId="timetracking-edit-date"
-								value={timeTracking.date}
-								onChange={(name, value) => {
-									this.onDateChange(value);
-								}}
-							/>
-						</div>
-						<div className="col-xs-6">
-							<CurrencyInputComponent
-								name="pricePerHour"
-								dataQsId="timetracking-edit-pricePerHour"
-								value={timeTracking.pricePerHour}
-								selectOnFocus={true}
-								onBlur={value => this.onPriceChange(value)}
-								label={resources.str_hourlyRateNet}
-								willReceiveNewValueProps={true}
-							/>
-						</div>
+						<div className="col-xs-6">{timeInputs}</div>
 					</div>
 
 					<div className="row no-margin-bottom">

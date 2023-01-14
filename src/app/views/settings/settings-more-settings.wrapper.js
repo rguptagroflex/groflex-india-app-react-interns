@@ -109,13 +109,13 @@ class SettingsMoreSettingsWrapper extends React.Component {
 
     render() {
 		const { preFetchData } = this.state;
-		const { resources } = this.props;
+		const { resources, location } = this.props;
 
 		return preFetchData ? (
 			<SettingsMoreSettingsComponent
 				numerationOptionsData={preFetchData.numerationOptionsData}
 				miscellaneousData={preFetchData.miscellaneousData}
-				resources={resources}
+				resources={resources} pathName={location.pathname}
 			/>
 		) : (
 			<div className="box main">

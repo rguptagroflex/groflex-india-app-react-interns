@@ -37,6 +37,22 @@ class MenuFooterComponent extends React.Component {
 		}, 0);
 	}
 
+	// componentWillReceiveProps(newProps) {
+	// 	const { activeItem, activeSubmenuItem, submenuVisible } = newProps;
+	// 	const { activeItem: currentActiveItem, activeSubmenuItem: currentActiveSubmenuItem } = this.state;
+	// 	const newState = Object.assign({}, this.state, { submenuVisible });
+
+	// 	if (activeItem !== currentActiveItem) {
+	// 		Object.assign(newState, { activeItem });
+	// 	}
+
+	// 	if (activeSubmenuItem !== currentActiveSubmenuItem) {
+	// 		Object.assign(newState, { activeSubmenuItem }); 
+	// 	}
+
+	// 	this.setState(newState);
+	// }
+
 	componentWillUnmount() {
 		invoiz.off('updateNewsfeedCount');
 	}
@@ -69,7 +85,7 @@ class MenuFooterComponent extends React.Component {
 	};
 
 	render() {
-		const { submenuVisible, resources } = this.props;
+		const { submenuVisible, resources, activeItem, activeSubmenuItem  } = this.props;
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
 
@@ -95,14 +111,14 @@ class MenuFooterComponent extends React.Component {
 							<div>{this.state.tenant.companyAddress.companyName || 'Business Name'}</div>
 						</div>
 						<div className="menu-profile-popup-middle1">
-							<a 	className = "menuItem small icon icon-user_outlined_black"
+							<a 	className={`menuItem small icon icon-user_outlined_black ${activeSubmenuItem == 'account' ? 'menuItem-active' : ''}`}
 								onClick={() => this.navigateToPage('/settings/account')} 
 								data-href = "/settings/account"
 								data-qs-id = {`global-menu-item-Account-details`}
 							>
 								{'Account details'}
 							</a>
-							<a 	className = "menuItem small icon icon-settings_outlined"
+							<a  className={`menuItem small icon icon-settings_outlined ${activeSubmenuItem == 'account-setting' ? 'menuItem-active' : ''}`}
 								onClick={() => this.navigateToPage('/settings/account-setting')} 
 								data-href = "/settings/account-setting"
 								data-qs-id = {`global-menu-item-Setting`}
@@ -110,14 +126,14 @@ class MenuFooterComponent extends React.Component {
 								{'Setting'}
 							</a>
 							
-							<a 	className = "menuItem small icon icon-credit_card"
+							<a  className={`menuItem small icon icon-credit_card ${activeSubmenuItem == 'billing' ? 'menuItem-active' : ''}`}
 								onClick={() => this.navigateToPage('/settings/billing')} 
 								data-href = "/settings/billing"
 								data-qs-id = {`global-menu-item-Your-billing`}
 							>
 								{'Your billing'}
 							</a>
-							<a 	className = "menuItem small icon icon-credit_card"
+							<a 	className={`menuItem small icon icon-credit_card ${activeSubmenuItem == 'user' ? 'menuItem-active' : ''}`}
 								onClick={() => this.navigateToPage('/settings/user')} 
 								data-href = "/settings/user"
 								data-qs-id = {`global-menu-item-Your-Teams`}
@@ -126,9 +142,16 @@ class MenuFooterComponent extends React.Component {
 							</a>
 						</div>
 						<div className="menu-profile-popup-middle2">
-							<div className="menuItem small icon icon-help_outlined">Groflex Help Center</div>
-							<div className="menuItem small icon icon-vpn_policy">Terms and policies</div>
-							
+							<a 	className="menuItem small icon icon-help_outlined"
+								href="https://groflex.in" target="_blank"
+							>
+								{'Groflex Help Center'}
+							</a>
+							<a 	className="menuItem small icon icon-vpn_policy"
+								href="https://www.groflex.in/privacy-policy/" target="_blank"
+							>
+								{'Terms and policies'}
+							</a>
 						</div>
 						<div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>
 							{resources.str_logout}

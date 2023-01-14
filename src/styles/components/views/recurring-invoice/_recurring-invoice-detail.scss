@@ -7,19 +7,45 @@
 		margin: -100px auto 0;
 	}
 
-	.detail-view-head-controls {
-		top: 95px;
-	}
+	// .detail-view-head-controls {
+	// 	top: 95px;
+	// }
 
 	.detail-view-head-container {
-		height: 285px;
+		height: 250px;
+	}
+
+	.detail-view-head-wrapper {
+		position: relative;
+		max-width: 1325px;
+		min-width: 960px;
+		margin: 10px auto 0;
+		padding: 0 20px;
+		width: unset;
+
+		.detail-view-head-infos {
+			display: inline-table;
+			width: 70%;
+		}
+		.detail-view-head-controls {
+			width: 29%;
+			float: right;
+			position: unset;
+			.detail-view-head-controls-item {
+				float: right;
+			}
+		}
 	}
 
 	.recurring-invoice-detail-recipient-wrapper {
+		// position: relative;
+		// width: 925px;
+		// margin: 0 auto;
+		// top: 57px;
 		position: relative;
-		width: 925px;
 		margin: 0 auto;
-		top: 57px;
+		top: 30px;
+		margin-right: 22px;
 
 		.recurring-invoice-detail-recipient {
 			position: absolute;
@@ -29,6 +55,10 @@
 
 			span {
 				font-weight: 600;
+			}
+			.icon-mail {
+				margin-right: 5px;
+				color: $color-primary;
 			}
 		}
 	}

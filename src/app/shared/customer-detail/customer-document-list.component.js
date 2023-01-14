@@ -110,7 +110,7 @@ class CustomerDocumentListComponent extends React.Component {
 					) : (
 						<div>
 							<div className="customer-document-list-head-content">
-								<div className="text-h4">Documents</div>
+								<div className=" pagebox_heading text-h4">Documents</div>
 								{isLoading ? null : (
 									<FilterComponent
 										items={filterItems}
