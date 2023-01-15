@@ -622,7 +622,7 @@ class OfferListNewComponent extends React.Component {
 							sort: "desc",
 						}}
 						emptyState={{
-							iconClass: "icon-offer",
+							iconClass: "icon-credit_card",
 							headline: resources.offerListHeadingText,
 							subHeadline: resources.offerCreateNow,
 							buttons: (

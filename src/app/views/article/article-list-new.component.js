@@ -100,7 +100,7 @@ class ArticleListNewComponent extends React.Component {
 		const topbar = (
 			<TopbarComponent
             title={resources.str_article}
-            viewIcon={`icon-article`}
+            viewIcon={`icon-article_outlined`}
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action, selectedRows)}
 				buttons={topbarButtons}
 			/>
@@ -645,7 +645,7 @@ class ArticleListNewComponent extends React.Component {
 							sort: 'desc',
 						}}
 						emptyState={{
-							iconClass: 'icon-rechnung',
+							iconClass: 'icon-article_outlined',
 							headline: 'No articles created yet',
 							subHeadline: resources.createOrImportArticalText,
 							buttons: (

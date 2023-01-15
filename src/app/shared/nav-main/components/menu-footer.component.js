@@ -133,7 +133,7 @@ class MenuFooterComponent extends React.Component {
 							>
 								{'Your billing'}
 							</a>
-							<a 	className={`menuItem small icon icon-credit_card ${activeSubmenuItem == 'user' ? 'menuItem-active' : ''}`}
+							<a 	className={`menuItem small icon icon-teams ${activeSubmenuItem == 'user' ? 'menuItem-active' : ''}`}
 								onClick={() => this.navigateToPage('/settings/user')} 
 								data-href = "/settings/user"
 								data-qs-id = {`global-menu-item-Your-Teams`}

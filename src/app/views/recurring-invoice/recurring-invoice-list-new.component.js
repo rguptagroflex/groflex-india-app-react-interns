@@ -92,7 +92,7 @@ class RecurringInvoiceListNewComponent extends React.Component {
 		const topbar = (
 			<TopbarComponent
 				title="Recurring invoices"
-				viewIcon="icon-rechnung"
+				viewIcon="icon-lieferschein"
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
 				buttons={topbarButtons}
 			/>

@@ -4,7 +4,7 @@ metadata:
   name: {{ template "webapp.fullname" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    app: imprezz-webapp-{{ .Values.releaseEnvironment }}
+    app: groflex-webapp-{{ .Values.releaseEnvironment }}
     chart: {{ template "webapp.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
