@@ -194,7 +194,8 @@ $recipient-muted-color: #cccccc;
 			}
 		}
 		&OpeningToggleRadio {
-			@include rem(height, 30px !important);
+			// @include rem(height, 30px !important);
+			margin-top: 12px;
 			.radio_inputs {
 				margin-right: 10px !important;
 			}

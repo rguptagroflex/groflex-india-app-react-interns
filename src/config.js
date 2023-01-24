@@ -8,10 +8,10 @@ const apiServers = {
 	// local: 'https://qa.imprezz.in',
 	//local: 'https://dev.imprezz.in',
 	// local: 'https://app.imprezz.in',
-	development: "https://dev.imprezz.in",
-	qa: "https://qa.imprezz.in",
-	staging: "https://staging.imprezz.in",
-	production: "https://app.imprezz.in",
+	development: "https://dev.groflex.io",
+	qa: "https://qa.groflex.io",
+	staging: "https://staging.groflex.io",
+	production: "https://app.groflex.io",
 	integration: "https://web-integration-invoiz.buhl.de",
 	admin: "https://invoiz-admin.buhl.de",
 };
@@ -22,7 +22,7 @@ delete window.settings;
 let apiRoot = WebStorageService.getItem(WebStorageKey.API_ROOT) || apiServers[releaseStage];
 
 if (!apiRoot) {
-	apiRoot = "https://app.imprezz.in";
+	apiRoot = "https://app.groflex.io";
 }
 
 const path = window.location.pathname;
@@ -81,7 +81,7 @@ const config = {
 
 	menuItemsData: [
 		{ name: "start", icon: "home_blank", title: "Start", url: "/", resourceKey: "start" },
-		{ name: "dashboard", icon: "chart", title: "Dashboard", url: "/dashboard", resourceKey: "dashboard" },
+		{ name: "dashboard", icon: "dashboard", title: "Dashboard", url: "/dashboard", resourceKey: "dashboard" },
 		//	{
 		// name: 'offers',
 		// icon: 'offer',
@@ -115,7 +115,7 @@ const config = {
 		//},
 		{
 			name: "invoices",
-			icon: "sales_outlined",
+			icon: "sales",
 			title: "Rechnungen",
 			url: "",
 			resourceKey: "invoice",
@@ -195,7 +195,7 @@ const config = {
 		// 		}
 		// 	]
 		// },
-		{ name: "customers", icon: "users", title: "Kunden", url: "/customers", resourceKey: "contacts" },
+		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
 		{ name: 'articles', icon: 'article_outlined', title: 'Artikel', url: '/articles', resourceKey: 'article' },
 		// {
 		// 	name: "articles",
@@ -284,73 +284,73 @@ const config = {
 		// 	resourceKey: "teamMembers",
 		// },
 
-		{
-			name: "settings",
-			icon: "settings",
-			title: "Einstellungen",
-			url: "",
-			hasImprintAndPrivacy: true,
-			resourceKey: "settings",
-			submenuItems: [
-				{
-					name: "account",
-					title: "Account",
-					url: "/settings/account",
-					mainSubmenuItem: "settings",
-					resourceKey: "account",
-				},
-				// {
-				// 	name: 'user',
-				// 	title: 'Users',
-				// 	url: '/settings/user',
-				// 	mainSubmenuItem: 'settings',
-				// 	resourceKey: 'user'
-				// },
-				// {
-				// 	name: 'documentExport',
-				// 	title: 'Steuerberater Export',
-				// 	url: '/settings/document-export',
-				// 	mainSubmenuItem: 'settings',
-				// 	resourceKey: 'accountantExport'
-				// },
-				{
-					name: "dataImport",
-					title: "Import",
-					url: "/settings/data-import",
-					mainSubmenuItem: "settings",
-					resourceKey: "import",
-				},
-				{
-					name: "paymentConditions",
-					title: "Zahlungsbedingungen",
-					url: "/settings/payment-conditions",
-					mainSubmenuItem: "settings",
-					resourceKey: "termsOfPayment",
-				},
+		// {
+		// 	name: "settings",
+		// 	icon: "settings",
+		// 	title: "Einstellungen",
+		// 	url: "",
+		// 	hasImprintAndPrivacy: true,
+		// 	resourceKey: "settings",
+		// 	submenuItems: [
+		// 		{
+		// 			name: "account",
+		// 			title: "Account",
+		// 			url: "/settings/account",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "account",
+		// 		},
+		// 		// {
+		// 		// 	name: 'user',
+		// 		// 	title: 'Users',
+		// 		// 	url: '/settings/user',
+		// 		// 	mainSubmenuItem: 'settings',
+		// 		// 	resourceKey: 'user'
+		// 		// },
+		// 		// {
+		// 		// 	name: 'documentExport',
+		// 		// 	title: 'Steuerberater Export',
+		// 		// 	url: '/settings/document-export',
+		// 		// 	mainSubmenuItem: 'settings',
+		// 		// 	resourceKey: 'accountantExport'
+		// 		// },
+		// 		{
+		// 			name: "dataImport",
+		// 			title: "Import",
+		// 			url: "/settings/data-import",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "import",
+		// 		},
+		// 		{
+		// 			name: "paymentConditions",
+		// 			title: "Zahlungsbedingungen",
+		// 			url: "/settings/payment-conditions",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "termsOfPayment",
+		// 		},
 
-				{
-					name: "textModules",
-					title: "Textbausteine",
-					url: "/settings/text-modules",
-					mainSubmenuItem: "settings",
-					resourceKey: "textModule",
-				},
-				{
-					name: "dunning",
-					title: "Mahnwesen",
-					url: "/settings/dunning",
-					mainSubmenuItem: "settings",
-					resourceKey: "dunning",
-				},
-				{
-					name: "moreSettings",
-					title: "Weitere Einstellungen",
-					url: "/settings/more-settings",
-					mainSubmenuItem: "settings",
-					resourceKey: "moreSettings",
-				},
-			],
-		},
+		// 		{
+		// 			name: "textModules",
+		// 			title: "Textbausteine",
+		// 			url: "/settings/text-modules",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "textModule",
+		// 		},
+		// 		{
+		// 			name: "dunning",
+		// 			title: "Mahnwesen",
+		// 			url: "/settings/dunning",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "dunning",
+		// 		},
+		// 		{
+		// 			name: "moreSettings",
+		// 			title: "Weitere Einstellungen",
+		// 			url: "/settings/more-settings",
+		// 			mainSubmenuItem: "settings",
+		// 			resourceKey: "moreSettings",
+		// 		},
+		// 	],
+		// },
 		// {
 		// 	name: "marketplace",
 		// 	icon: "marketplace",

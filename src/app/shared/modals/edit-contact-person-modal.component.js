@@ -61,7 +61,7 @@ class EditContactPersonModalComponent extends React.Component {
 				<div className="edit-contact-person-modal-content">
 					<div className="edit-contact-person-details">
 						<div className="row">
-							<div className="col-xs-2">
+							<div className="col-xs-4">
 								<SelectInputComponent
 									title={resources.str_salutation}
 									name="salutation"
@@ -82,7 +82,7 @@ class EditContactPersonModalComponent extends React.Component {
 									loadedOptions={salutationOptions}
 								/>
 							</div>
-							<div className="col-xs-2">
+							<div className="col-xs-4">
 								<SelectInputComponent
 									title={resources.str_title}
 									name="title"
@@ -103,7 +103,28 @@ class EditContactPersonModalComponent extends React.Component {
 									loadedOptions={titleOptions}
 								/>
 							</div>
-							<div className="col-xs-4 edit-contact-person-names">
+							<div className="col-xs-4 edit-contact-person-position-select">
+										<SelectInputComponent
+											title={resources.str_position}
+											name="job"
+											dataQsId={'contact-person-edit-job'}
+											value={contactPerson.job}
+											allowCreate={false}
+											notAsync={true}
+											options={{
+												placeholder: resources.str_choose,
+												labelKey: 'name',
+												valueKey: 'name',
+												handleChange: value =>
+													this.onContactPersonFieldChange('job', value.name)
+											}}
+											loadedOptions={jobOptions}
+										/>
+							</div>
+							
+						</div>
+						<div className="row">
+						<div className="col-xs-6 edit-contact-person-names">
 								<TextInputExtendedComponent
 									name="firstName"
 									dataQsId="contact-person-edit-firstName"
@@ -113,7 +134,7 @@ class EditContactPersonModalComponent extends React.Component {
 									onChange={value => this.onContactPersonFieldChange('firstName', value)}
 								/>
 							</div>
-							<div className="col-xs-4 edit-contact-person-names edit-contact-person-lastname-input">
+							<div className="col-xs-6 edit-contact-person-names edit-contact-person-lastname-input">
 								<TextInputExtendedComponent
 									ref="contactPersonLastName"
 									name="lastName"
@@ -126,29 +147,21 @@ class EditContactPersonModalComponent extends React.Component {
 								/>
 							</div>
 						</div>
-
 						<div className="row">
-							<div className="col-xs-8">
-								<h5 className="edit-contact-person-subheadline">{resources.str_communication}</h5>
-
-								<div className="row">
-									<div className="col-xs-12 edit-contact-person-email-input">
-										<TextInputExtendedComponent
-											name="email"
-											ref="contactPersonEditEmailInput"
-											dataQsId="contact-person-edit-email"
-											value={contactPerson.email}
-											label={resources.str_email}
-											onBlur={(target, value) => this.onEmailBlur(value)}
-											// onChange={value => this.onContactPersonFieldChange('email', value)}
-											onChange={(value, name) => this.onInputChange(value, name)}
-											errorMessage={errorMessageEmail}
-										/>
-									</div>
-								</div>
-
-								<div className="row">
-									<div className="col-xs-6">
+							<div className="col-xs-6 edit-contact-person-email-input">
+											<TextInputExtendedComponent
+												name="email"
+												ref="contactPersonEditEmailInput"
+												dataQsId="contact-person-edit-email"
+												value={contactPerson.email}
+												label={resources.str_email}
+												onBlur={(target, value) => this.onEmailBlur(value)}
+												// onChange={value => this.onContactPersonFieldChange('email', value)}
+												onChange={(value, name) => this.onInputChange(value, name)}
+												errorMessage={errorMessageEmail}
+											/>
+							</div>
+							<div className="col-xs-6">
 										<NumberInputComponent
 											dataQsId="contact-person-edit-phone1"
 											label={resources.str_phone}
@@ -165,8 +178,8 @@ class EditContactPersonModalComponent extends React.Component {
 											label={resources.str_phone + ' 1'}
 											onChange={value => this.onContactPersonFieldChange('phone1', value)}
 										/> */}
-									</div>
-									<div className="col-xs-6">
+							</div>
+							<div className="col-xs-6">
 										<NumberInputComponent
 											dataQsId="contact-person-edit-phone2"
 											label={resources.str_phone + ' 2'}
@@ -183,11 +196,8 @@ class EditContactPersonModalComponent extends React.Component {
 											label={resources.str_phone + ' 2'}
 											onChange={value => this.onContactPersonFieldChange('phone2', value)}
 										/> */}
-									</div>
-								</div>
-
-								<div className="row">
-									<div className="col-xs-6 edit-contact-person-mobile-input">
+							</div>
+							<div className="col-xs-6 edit-contact-person-mobile-input">
 										<NumberInputComponent
 											dataQsId="contact-person-edit-mobile"
 											ref="contactPersonEditMobileInput"
@@ -208,8 +218,8 @@ class EditContactPersonModalComponent extends React.Component {
 											label={resources.str_mobilePhone}
 											onChange={value => this.onContactPersonFieldChange('mobile', value)}
 										/> */}
-									</div>
-									<div className="col-xs-6">
+							</div>
+							<div className="col-xs-6">
 										<TextInputExtendedComponent
 											name="fax"
 											dataQsId="contact-person-edit-fax"
@@ -217,36 +227,8 @@ class EditContactPersonModalComponent extends React.Component {
 											label={resources.str_fax}
 											onChange={value => this.onContactPersonFieldChange('fax', value)}
 										/>
-									</div>
-								</div>
 							</div>
-
-							<div className="col-xs-4">
-								<h5 className="edit-contact-person-subheadline">{resources.customerContactFurtherData}</h5>
-
-								<div className="row">
-									<div className="col-xs-12 edit-contact-person-position-select">
-										<SelectInputComponent
-											title={resources.str_position}
-											name="job"
-											dataQsId={'contact-person-edit-job'}
-											value={contactPerson.job}
-											allowCreate={false}
-											notAsync={true}
-											options={{
-												placeholder: resources.str_choose,
-												labelKey: 'name',
-												valueKey: 'name',
-												handleChange: value =>
-													this.onContactPersonFieldChange('job', value.name)
-											}}
-											loadedOptions={jobOptions}
-										/>
-									</div>
-								</div>
-
-								<div className="row">
-									<div className="col-xs-12">
+							<div className="col-xs-6">
 										<DateInputComponent
 											label={resources.str_birthday}
 											placeholder={resources.str_dateFormat}
@@ -259,11 +241,8 @@ class EditContactPersonModalComponent extends React.Component {
 												this.onContactPersonFieldChange('birthday', value);
 											}}
 										/>
-									</div>
-								</div>
-
-								<div className="row">
-									<div className="col-xs-12 edit-contact-person-maincontact">
+							</div>
+							<div className="col-xs-6 edit-contact-person-maincontact">
 										<CheckboxInputComponent
 											dataQsId="contact-person-edit-maincontact"
 											name={'mainContact'}
@@ -271,10 +250,8 @@ class EditContactPersonModalComponent extends React.Component {
 											checked={contactPerson.isMainContact}
 											onChange={() => this.onCheckboxToggle()}
 										/>
-									</div>
-								</div>
-							</div>
-						</div>
+							</div>							
+						</div>						
 					</div>
 				</div>
 
@@ -292,7 +269,7 @@ class EditContactPersonModalComponent extends React.Component {
 						<ButtonComponent
 							dataQsId="edit-contact-person-save"
 							callback={() => this.onSave()}
-							label={resources.str_finished}
+							label={resources.str_save}
 							buttonIcon="icon-check"
 						/>
 					</div>

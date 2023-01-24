@@ -3,6 +3,7 @@ import React from 'react';
 import config from 'config';
 import q from 'q';
 import Account from 'models/settings/account.model';
+import PaymentOption from 'models/payment-option.model';
 import SettingsAccountComponent from './settings-account.component';
 import LoaderComponent from 'shared/loader/loader.component';
 import { connect } from 'react-redux';
@@ -42,6 +43,9 @@ class SettingsAccountWrapper extends React.Component {
 				}),
 				invoiz.request(`${config.resourceHost}tenant/payment/setting`, {
 					auth: true
+				}),
+				invoiz.request(`${config.settings.endpoints.payConditions}`, {
+					auth: true
 				})
 			];
 
@@ -53,7 +57,8 @@ class SettingsAccountWrapper extends React.Component {
 			userResponse,
 			notificationResponse,
 			subscriptionDetailResponse,
-			paymentSettingResponse
+			paymentSettingResponse,
+			payConditionsResponse
 		]) => {
 			const {
 				body: { data: accountModelData }
@@ -78,6 +83,17 @@ class SettingsAccountWrapper extends React.Component {
 				} = paymentSettingResponse;
 				accountModelData.invoizPayState = invoizPayState;
 			}
+			if (payConditionsResponse) {
+				const {
+					body: { data: payConditionsData }
+				} = payConditionsResponse;
+	
+				accountModelData.payConditions = payConditionsData.map(payCondition => {
+					return new PaymentOption(payCondition);
+				});
+			}
+			
+
 			accountModelData.user = userData;
 			accountModelData.notificatePush = notificatePush;
 			accountModelData.notificateEmail = notificateEmail;
@@ -87,7 +103,8 @@ class SettingsAccountWrapper extends React.Component {
 					this.setState({
 						preFetchData: {
 							account: new Account(accountModelData),
-							subscriptionDetail: subDetailData
+							subscriptionDetail: subDetailData,
+							payConditions: accountModelData.payConditions
 						}
 					});
 					if (accountModelData) {
@@ -117,6 +134,7 @@ class SettingsAccountWrapper extends React.Component {
 			<SettingsAccountComponent
 				account={preFetchData.account}
 				subscriptionDetail={preFetchData.subscriptionDetail}
+				payConditions={preFetchData.payConditions}
 				resources={resources}
 				pathName={location.pathname}
 			/>

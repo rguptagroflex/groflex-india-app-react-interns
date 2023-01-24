@@ -14,7 +14,7 @@ import DeleteAccountComponent from 'shared/settings/delete-account.component';
 import AccountMigrationComponent from 'shared/settings/account-migration.component';
 import ChangeUserComponent from 'shared/settings/change-user.component';
 import AccountKycProgressComponent from 'shared/settings/account-kyc.component';
-
+import PaymentConditionsComponent from 'shared/settings/payment-conditions.component';
 import userPermissions from 'enums/user-permissions.enum';
 import invoiz from 'services/invoiz.service';
  
@@ -40,7 +40,7 @@ class SettingsAccountComponent extends React.Component {
 	}
 
 	render() {
-		const { account, subscriptionDetail, resources, pathName } = this.props;
+		const { account, subscriptionDetail, resources, pathName, payConditions } = this.props;
 		const { canDeleteAccount, canEditSubscription, canSeeSubscription, canModifyNotifications } = this.state;
 		
 		return (
@@ -62,6 +62,7 @@ class SettingsAccountComponent extends React.Component {
 								<ChangePasswordComponent resources={resources} />
 								<SenderEmailComponent account={account} resources={resources} />
 								{canModifyNotifications ? <NotificationsComponent account={account} resources={resources} /> : null }
+								<PaymentConditionsComponent payConditions={payConditions} resources={resources} />
 								{ canDeleteAccount ? <DeleteAccountComponent resources={resources} /> : null }
 								<AccountMigrationComponent resources={resources} />
 							</div>

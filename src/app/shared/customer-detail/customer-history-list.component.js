@@ -459,7 +459,7 @@ class CustomerHistoryListComponent extends React.Component {
 				) : (
 					<React.Fragment>
 						<div className="history-list-header">
-							<div className="pagebox_heading text-semibold">
+							<div className="pagebox_heading text-h4">
 								{!isLoading &&
 									(isCurrentFilterEmpty
 										? null

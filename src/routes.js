@@ -55,9 +55,9 @@ import PurchaseOrderEditWrapper from "views/purchase-order/purchase-order-edit.w
 import PurchaseOrderDetailWrapper from "views/purchase-order/purchase-order-detail.wrapper";
 import PurchaseOrderSendMailWrapper from "views/purchase-order/purchase-order-send-mail.wrapper";
 
-import BankingFinanceCockpitWrapper from "views/banking/banking-financecockpit.wrapper";
-import BankingEmptyStateWrapper from "views/banking/banking-empty-state.wrapper";
-import BankingTransactionsWrapper from "views/banking/banking-transactions.wrapper";
+// import BankingFinanceCockpitWrapper from "views/banking/banking-financecockpit.wrapper";
+// import BankingEmptyStateWrapper from "views/banking/banking-empty-state.wrapper";
+// import BankingTransactionsWrapper from "views/banking/banking-transactions.wrapper";
 import CustomerListWrapper from "views/customer/customer-list.wrapper";
 import CustomerDetailWrapper from "views/customer/customer-detail.wrapper";
 import CustomerEditWrapper from "views/customer/customer-edit.wrapper";
@@ -86,11 +86,11 @@ import CancellationListWrapper from "views/cancellation/cancellation-list.wrappe
 
 import RedirectComponent from "views/redirect/redirect.component";
 import MarketplaceWrapper from "./app/views/marketplace/marketplace.wrapper";
-import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
-import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
-import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
-import DeliveryChallanDetailsWrapper from "./app/views/delivrey-challan/delivery-challan-details.wrapper";
-import DeliveryChallanSendMailWrapper from "./app/views/delivrey-challan/delivery-challan-send-mail.wrapper";
+// import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
+// import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
+// import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
+// import DeliveryChallanDetailsWrapper from "./app/views/delivrey-challan/delivery-challan-details.wrapper";
+// import DeliveryChallanSendMailWrapper from "./app/views/delivrey-challan/delivery-challan-send-mail.wrapper";
 
 const PageClassNames = {
 	NO_SIDE_MARGIN: "no-side-margin",
@@ -479,7 +479,7 @@ const routes = [
 		component: TimetrackingBilledWrapper,
 		exact: true,
 		title: "Abgerechnete Zeiten",
-		menuItem: "invoices",
+		menuItem: "invoices",		
 		submenuItem: "timetracking",
 		resourceKey: "billedTimes",
 	},
@@ -488,6 +488,7 @@ const routes = [
 		type: RouteTypes.PRIVATE,
 		component: TimetrackingBillingWrapper,
 		exact: true,
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
 		title: "Zeiten abrechnen",
 		menuItem: "invoices",
 		submenuItem: "timetracking",
@@ -999,8 +1000,8 @@ const routes = [
 		component: SettingsAccountWrapper,
 		exact: true,
 		title: "Einstellungen - Account",
-		menuItem: "settings",
-		submenuItem: "account",
+		menuItem: "account-setting",
+		submenuItem: "account-setting",
 		resourceKey: "accountSetting",
 	},
 	{
@@ -1009,7 +1010,7 @@ const routes = [
 		component: SettingsAccountWrapper,
 		exact: true,
 		title: "Einstellungen - Billing",
-		menuItem: "settings",
+		menuItem: "billing",
 		submenuItem: "billing",
 		resourceKey: "billing",
 	},
@@ -1020,7 +1021,7 @@ const routes = [
 		exact: true,
 		title: "Einstellungen - Benutzer",
 		menuItem: "teamMembers",
-		// submenuItem: 'user',
+		submenuItem: "user",
 		// pageClass: PageClassNames.WIDTH_AUTO
 	},
 	// {
@@ -1086,13 +1087,33 @@ const routes = [
 		resourceKey: "settingsTextModules",
 	},
 	{
+		path: "/settings/text-modules/offer",
+		type: RouteTypes.PRIVATE,
+		component: SettingsTextModulesWrapper,
+		exact: true,
+		title: "Einstellungen - Textbausteine",
+		menuItem: "invoices",
+		submenuItem: "offer",
+		resourceKey: "settingsTextModules",
+	},
+	{
+		path: "/settings/text-modules/invoice",
+		type: RouteTypes.PRIVATE,
+		component: SettingsTextModulesWrapper,
+		exact: true,
+		title: "Einstellungen - Textbausteine",
+		menuItem: "invoices",
+		submenuItem: "invoice",
+		resourceKey: "settingsTextModules",
+	},
+	{
 		path: "/settings/dunning",
 		type: RouteTypes.PRIVATE,
 		component: SettingsDunningsWrapper,
 		exact: true,
 		title: "Einstellungen - Mahnwesen",
-		menuItem: "settings",
-		submenuItem: "dunning",
+		menuItem: "invoices",
+		submenuItem: "invoice",
 		resourceKey: "settingsDunnig",
 	},
 	{
@@ -1105,7 +1126,66 @@ const routes = [
 		submenuItem: "moreSettings",
 		resourceKey: "settingsMore",
 	},
-
+	{
+		path: "/settings/more-settings/offer",
+		type: RouteTypes.PRIVATE,
+		component: SettingsMoreSettingsWrapper,
+		exact: true,
+		title: "Einstellungen - Weitere Einstellungen",
+		menuItem: "invoices",
+		submenuItem: "offer",
+		resourceKey: "settingsMore",
+	},
+	{
+		path: "/settings/more-settings/invoice",
+		type: RouteTypes.PRIVATE,
+		component: SettingsMoreSettingsWrapper,
+		exact: true,
+		title: "Einstellungen - Weitere Einstellungen",
+		menuItem: "invoices",
+		submenuItem: "invoice",
+		resourceKey: "settingsMore",
+	},
+	{
+		path: "/settings/more-settings/customer-categories",
+		type: RouteTypes.PRIVATE,
+		component: SettingsMoreSettingsWrapper,
+		exact: true,
+		title: "Einstellungen - Weitere Einstellungen",
+		menuItem: "customers",
+		submenuItem: "moreSettings",
+		resourceKey: "settingsMore",
+	},
+	{
+		path: "/settings/more-settings/customer",
+		type: RouteTypes.PRIVATE,
+		component: SettingsMoreSettingsWrapper,
+		exact: true,
+		title: "Einstellungen - Weitere Einstellungen",
+		menuItem: "customers",
+		submenuItem: "moreSettings",
+		resourceKey: "settingsMore",
+	},
+	{
+		path: "/settings/more-settings/article-categories",
+		type: RouteTypes.PRIVATE,
+		component: SettingsMoreSettingsWrapper,
+		exact: true,
+		title: "Einstellungen - Weitere Einstellungen",
+		menuItem: "articles",
+		submenuItem: "moreSettings",
+		resourceKey: "settingsMore",
+	},
+	{
+		path: "/settings/more-settings/article",
+		type: RouteTypes.PRIVATE,
+		component: SettingsMoreSettingsWrapper,
+		exact: true,
+		title: "Einstellungen - Weitere Einstellungen",
+		menuItem: "articles",
+		submenuItem: "moreSettings",
+		resourceKey: "settingsMore",
+	},
 	// Short Urls / Redirect
 	{
 		path: "/redirect/:shortUrl",

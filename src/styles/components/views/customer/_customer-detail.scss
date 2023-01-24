@@ -4,7 +4,7 @@
 .customer-detail-wrapper {
 	width: 1258px;
 	margin: 0 auto;
-	padding-top: 30px;
+	padding: 30px;
 
 	.box {
 		margin-bottom: 8px;
@@ -50,9 +50,23 @@
 	.customer-metadata {
 		text-align: center;
 		margin-bottom: 8px;
+		padding-top: 0;
 		
 		.customer-avatar {
 			margin: 12px auto 20px;
+			float: left;
+		}
+
+		.customer-detail-metadata-name {
+			font-size: 20px;
+			font-weight: 600;
+			display: initial;
+
+			.text-muted {
+				font-size: 14px;
+    			line-height: 20px;
+				font-weight: 400;
+			}
 		}
 
 		.popover-wrapper {
@@ -111,6 +125,7 @@
 
 				.button-circle {
 					margin-left: 18px;
+					margin-top: -15px;
 				}
 			}
 
@@ -258,7 +273,7 @@
 	// Customer Document
 	// -----------------------------
 	.customer-document-wrapper {
-		height: 525px;
+		height: 596px;
 	}
 	
 	.customerDocument {
@@ -298,11 +313,15 @@
 	}
 
 	.customer-document-list-head-content {
-		display: flex;
+		// display: flex;
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
 		margin-bottom: 20px;
+
+		.filter-component-wrapper {
+			margin-left: -18px;
+		}
 	}
 
 	.filter-component-wrapper .filter-item {

@@ -47,10 +47,10 @@ class SettingsTextModulesWrapper extends React.Component {
 
     render() {
 		const { preFetchData } = this.state;
-		const { resources } = this.props;
+		const { resources , location } = this.props;
 
 		return preFetchData ? (
-			<SettingsTextModulesComponent textModules={preFetchData.textModules} resources={resources} />
+			<SettingsTextModulesComponent textModules={preFetchData.textModules} resources={resources} pathName={location.pathname}/>
 		) : (
 			<div className="box main">
 				<LoaderComponent text={resources.settingsLoadTextModules} visible={true} />

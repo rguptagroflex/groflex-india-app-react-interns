@@ -440,6 +440,18 @@ class OfferListNewComponent extends React.Component {
 		}
 	}
 
+	onActionSettingPopupItemClick(entry) {
+		const { resources } = this.props;
+		switch (entry.action) {
+			case "textModules":
+				invoiz.router.navigate("/settings/text-modules/offer");
+				break;
+			case "numberRange":
+				invoiz.router.navigate("/settings/more-settings/offer");
+				break;
+		}
+	}
+
 	render() {
 		const { resources } = this.props;
 		const {
@@ -610,7 +622,7 @@ class OfferListNewComponent extends React.Component {
 							sort: "desc",
 						}}
 						emptyState={{
-							iconClass: "icon-offer",
+							iconClass: "icon-credit_card",
 							headline: resources.offerListHeadingText,
 							subHeadline: resources.offerCreateNow,
 							buttons: (
@@ -776,6 +788,26 @@ class OfferListNewComponent extends React.Component {
 							},
 							onPopupItemClicked: (itemData, popupEntry) => {
 								this.onActionCellPopupItemClick(itemData, popupEntry);
+							},
+						}}
+						settingPopup={{
+							settingPopupEntriesFunc: (item) => {
+								const entries = [];
+								entries.push({
+									label: "Text modules",
+									action: "textModules",
+									dataQsId: "setting-list-item-dropdown-textmodules",
+								});
+								entries.push({
+									label: "Number range",
+									action: "numberRange",
+									dataQsId: "setting-list-item-dropdown-numberrange",
+								});
+
+								return [entries];
+							},
+							onSettingPopupItemClicked: (popupEntry) => {
+								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
 						onRowDataLoaded={(offerData) => {

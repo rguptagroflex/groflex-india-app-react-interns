@@ -1,7 +1,13 @@
 {
 	"name": "groflex",
 	"version": "1.2.7",
-	"author": "Groflex dev team",
+	"author": "Satish Verma",
+	"contributors": [
+		{
+		"name": "Sandy Singh",
+		"email": "sandy@groflex.io"
+		}
+	],
 	"scripts": {
 		"start:windows": "npm run build:iconfont:windows && gulp iconfont:preview && gulp clean && mkdir dist\\js && gulp build && parallelshell \"gulp watch\" \"webpack-dev-server\"",
 		"start:windows:local": "npm run build:iconfont:windows && gulp iconfont:preview && gulp clean && mkdir dist\\js && gulp build --env=local && parallelshell \"gulp watch --env=local\" \"webpack-dev-server\"",

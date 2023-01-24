@@ -224,7 +224,7 @@ class SettingsTextModulesComponent extends React.Component {
 
 	render() {
 		const { textModules, isSubmitting, canUpdateTextBlocks } = this.state;
-		const { resources } = this.props;
+		const { resources, pathName } = this.props;
 		return (
 			<div className="settings-text-modules-component wrapper-has-topbar-with-margin">
 				<TopbarComponent
@@ -244,7 +244,7 @@ class SettingsTextModulesComponent extends React.Component {
 				/>
 
 				<div className="box">
-					<div className="row">
+					{/* <div className="row">
 						<div className="col-xs-12">
 							<h2 className="u_pb_16">{resources.str_textModules}</h2>
 							<div className="text-muted">
@@ -256,152 +256,216 @@ class SettingsTextModulesComponent extends React.Component {
 								</p>
 							</div>
 						</div>
-					</div>
-
-					<div className="row u_pt_20">
-						<div className="col-xs-4 form_groupheader_edit text-h4">
-							{resources.str_offerUpperCase}
-							<div className="form_groupheaderSubtext">
-								{resources.textModuleDefaultOfferText}
+					</div> */}
+					{pathName === "/settings/text-modules/offer" ? 
+						<div className="row">
+							<div className="col-xs-12 text-h4">
+								{resources.str_offerUpperCase}
+								<div className="form_groupheaderSubtext">
+									{resources.textModuleDefaultOfferText}
+								</div>
+							</div>
+							<div className="col-xs-12 u_pbt_20">
+								<div className="row">
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.str_introductionText}</label>
+									</div>
+									<div className="col-xs-8">
+										<HtmlInputComponent
+										// label={resources.str_introductionText}
+										placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_deals)}
+										value={textModules.offer.introduction}
+										onTextChange={val => this.updateValue('offer', 'introduction', val)}
+										disabled={!canUpdateTextBlocks}
+										/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.str_finalText}</label>
+									</div>
+									<div className="col-xs-8">
+										<HtmlInputComponent
+										// label={resources.str_finalText}
+										placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_deals)}
+										value={textModules.offer.conclusion}
+										onTextChange={val => this.updateValue('offer', 'conclusion', val)}
+										disabled={!canUpdateTextBlocks}
+										/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.str_emails}</label>
+									</div>
+									<div className="col-xs-8">
+										<HtmlInputComponent
+										// label={resources.str_emails}
+										placeholder={resources.textModulesPlaceholderEmailText}
+										value={textModules.offer.email}
+										onTextChange={val => this.updateValue('offer', 'email', val)}
+										disabled={!canUpdateTextBlocks}
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div className="col-xs-8">
-							<HtmlInputComponent
-								label={resources.str_introductionText}
-								placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_deals)}
-								value={textModules.offer.introduction}
-								onTextChange={val => this.updateValue('offer', 'introduction', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
+					: null}
+				
+					{pathName === "/settings/text-modules/invoice" ? 
+						<div>
+							<div className="row">
+								<div className="col-xs-12 text-h4">
+									{resources.str_invoice}
+									<div className="form_groupheaderSubtext">
+										{resources.textModulesInvoiceSubHeader}
+									</div>
+								</div>
+								<div className="col-xs-12 u_pbt_20">
+								<div className="row">
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.str_introductionText}</label>
+									</div>
+									<div className="col-xs-8">
+									<HtmlInputComponent
+										// label={resources.str_introductionText}
+										placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_bills)}
+										value={textModules.invoice.introduction}
+										onTextChange={val => this.updateValue('invoice', 'introduction', val)}
+										disabled={!canUpdateTextBlocks}
+									/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.str_finalText}</label>
+									</div>
+									<div className="col-xs-8">
+									<HtmlInputComponent
+										// label={resources.str_finalText}
+										placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_bills)}
+										value={textModules.invoice.conclusion}
+										onTextChange={val => this.updateValue('invoice', 'conclusion', val)}
+										disabled={!canUpdateTextBlocks}
+									/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.str_emails}</label>
+									</div>
+									<div className="col-xs-8">
+									<HtmlInputComponent
+										// label={resources.str_emails}
+										placeholder={resources.textModulesPlaceholderEmailText}
+										value={textModules.invoice.email}
+										onTextChange={val => this.updateValue('invoice', 'email', val)}
+										disabled={!canUpdateTextBlocks}
+									/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.textModulesRecurringInvoiceEmailSubject}</label>
+									</div>
+									<div className="col-xs-8">
+									<TextInputComponent
+										name={'recurringInvoiceEmailSubject'}
+										value={textModules.recurringInvoice.emailSubject}
+										onChange={evt => this.updateValue('recurringInvoice', 'emailSubject', evt.target.value)}
+										// label={resources.textModulesRecurringInvoiceEmailSubject}
+										placeholder={resources.textModulesPlaceholderEmailText}
+										autoComplete="off"
+										spellCheck="false"
+										wrapperClass="box-border"
+										disabled={!canUpdateTextBlocks}
+									/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.textModulesRecurringInvoiceEmailText}</label>
+									</div>
+									<div className="col-xs-8">
+									<HtmlInputComponent
+										// label={resources.textModulesRecurringInvoiceEmailText}
+										placeholder={resources.textModulesPlaceholderEmailText}
+										value={textModules.recurringInvoice.email}
+										onTextChange={val => this.updateValue('recurringInvoice', 'email', val)}
+										disabled={!canUpdateTextBlocks}
+									/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.textModulesCancellationEmailSubject}</label>
+									</div>
+									<div className="col-xs-8">
+									<TextInputComponent
+										name={'cancellationEmailSubject'}
+										value={textModules.cancellation.emailSubject}
+										onChange={evt => this.updateValue('cancellation', 'emailSubject', evt.target.value)}
+										// label={resources.textModulesCancellationEmailSubject}
+										placeholder={resources.textModulesPlaceholderEmailText}
+										autoComplete="off"
+										spellCheck="false"
+										wrapperClass="box-border"
+										disabled={!canUpdateTextBlocks}
+									/>
+									</div>
+									<div className="col-xs-4 left-center-heading">
+										<label>{resources.textModulesCancellationEmailShippment}</label>
+									</div>
+									<div className="col-xs-8">
+									<HtmlInputComponent
+										// label={resources.textModulesCancellationEmailShippment}
+										placeholder={resources.textModulesPlaceholderEmailText}
+										value={textModules.cancellation.email}
+										onTextChange={val => this.updateValue('cancellation', 'email', val)}
+										disabled={!canUpdateTextBlocks}
+									/>
+									</div>
+								</div>
+								</div>
+							</div>
 
-							<HtmlInputComponent
-								label={resources.str_finalText}
-								placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_deals)}
-								value={textModules.offer.conclusion}
-								onTextChange={val => this.updateValue('offer', 'conclusion', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<HtmlInputComponent
-								label={resources.str_emails}
-								placeholder={resources.textModulesPlaceholderEmailText}
-								value={textModules.offer.email}
-								onTextChange={val => this.updateValue('offer', 'email', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-						</div>
-					</div>
-
-					<div className="row u_pbt_40">
-						<div className="col-xs-4 form_groupheader_edit text-h4">
-							{resources.str_invoice}
-							<div className="form_groupheaderSubtext">
-								{resources.textModulesInvoiceSubHeader}
+							<div className="row u_pt_20">
+								<div className="col-xs-12 text-h4">
+									{resources.str_posReceiptUpperCase}
+									<div className="form_groupheaderSubtext">
+										{resources.textModuleDefaultPosReceiptText}
+									</div>
+								</div>
+								<div className="col-xs-12 u_pbt_20">
+									<div className="row">
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.str_posTermsAndConditions}</label>
+										</div>
+										<div className="col-xs-8">
+										<HtmlInputComponent
+										// label={resources.str_posTermsAndConditions}
+										placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_posReceiptSmall)}
+										value={textModules.posReceipt.introduction}
+										onTextChange={val => this.updateValue('posReceipt', 'introduction', val)}
+										disabled={!canUpdateTextBlocks}
+										/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.str_finalText}</label>
+										</div>
+										<div className="col-xs-8">
+										<HtmlInputComponent
+										// label={resources.str_finalText}
+										placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_posReceiptSmall)}
+										value={textModules.posReceipt.conclusion}
+										onTextChange={val => this.updateValue('posReceipt', 'conclusion', val)}
+										disabled={!canUpdateTextBlocks}
+										/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.str_emails}</label>
+										</div>
+										<div className="col-xs-8">
+										<HtmlInputComponent
+										// label={resources.str_emails}
+										placeholder={resources.textModulesPlaceholderEmailText}
+										value={textModules.posReceipt.email}
+										onTextChange={val => this.updateValue('posReceipt', 'email', val)}
+										disabled={!canUpdateTextBlocks}
+									/>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div className="col-xs-8">
-							<HtmlInputComponent
-								label={resources.str_introductionText}
-								placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_bills)}
-								value={textModules.invoice.introduction}
-								onTextChange={val => this.updateValue('invoice', 'introduction', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<HtmlInputComponent
-								label={resources.str_finalText}
-								placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_bills)}
-								value={textModules.invoice.conclusion}
-								onTextChange={val => this.updateValue('invoice', 'conclusion', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<HtmlInputComponent
-								label={resources.str_emails}
-								placeholder={resources.textModulesPlaceholderEmailText}
-								value={textModules.invoice.email}
-								onTextChange={val => this.updateValue('invoice', 'email', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<TextInputComponent
-								name={'recurringInvoiceEmailSubject'}
-								value={textModules.recurringInvoice.emailSubject}
-								onChange={evt => this.updateValue('recurringInvoice', 'emailSubject', evt.target.value)}
-								label={resources.textModulesRecurringInvoiceEmailSubject}
-								placeholder={resources.textModulesPlaceholderEmailText}
-								autoComplete="off"
-								spellCheck="false"
-								wrapperClass="box-border"
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<HtmlInputComponent
-								label={resources.textModulesRecurringInvoiceEmailText}
-								placeholder={resources.textModulesPlaceholderEmailText}
-								value={textModules.recurringInvoice.email}
-								onTextChange={val => this.updateValue('recurringInvoice', 'email', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<TextInputComponent
-								name={'cancellationEmailSubject'}
-								value={textModules.cancellation.emailSubject}
-								onChange={evt => this.updateValue('cancellation', 'emailSubject', evt.target.value)}
-								label={resources.textModulesCancellationEmailSubject}
-								placeholder={resources.textModulesPlaceholderEmailText}
-								autoComplete="off"
-								spellCheck="false"
-								wrapperClass="box-border"
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<HtmlInputComponent
-								label={resources.textModulesCancellationEmailShippment}
-								placeholder={resources.textModulesPlaceholderEmailText}
-								value={textModules.cancellation.email}
-								onTextChange={val => this.updateValue('cancellation', 'email', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-						</div>
-					</div>
-
-					<div className="row u_pt_20">
-						<div className="col-xs-4 form_groupheader_edit text-h4">
-							{resources.str_posReceiptUpperCase}
-							<div className="form_groupheaderSubtext">
-								{resources.textModuleDefaultPosReceiptText}
-							</div>
-						</div>
-						<div className="col-xs-8">
-							<HtmlInputComponent
-								label={resources.str_posTermsAndConditions}
-								placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_posReceiptSmall)}
-								value={textModules.posReceipt.introduction}
-								onTextChange={val => this.updateValue('posReceipt', 'introduction', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<HtmlInputComponent
-								label={resources.str_finalText}
-								placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_posReceiptSmall)}
-								value={textModules.posReceipt.conclusion}
-								onTextChange={val => this.updateValue('posReceipt', 'conclusion', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-
-							<HtmlInputComponent
-								label={resources.str_emails}
-								placeholder={resources.textModulesPlaceholderEmailText}
-								value={textModules.posReceipt.email}
-								onTextChange={val => this.updateValue('posReceipt', 'email', val)}
-								disabled={!canUpdateTextBlocks}
-							/>
-						</div>
-					</div>
-
-
-					<div className="row u_pt_20">
+					: null}
+					{/* <div className="row u_pt_20">
 						<div className="col-xs-4 form_groupheader_edit text-h4">
 							{resources.str_purchaseOrderUpperCase}
 							<div className="form_groupheaderSubtext">
@@ -433,7 +497,7 @@ class SettingsTextModulesComponent extends React.Component {
 								disabled={!canUpdateTextBlocks}
 							/>
 						</div>
-					</div>
+					</div> */}
 
 				</div>
 			</div>

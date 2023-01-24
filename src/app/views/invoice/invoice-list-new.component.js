@@ -432,6 +432,20 @@ class InvoiceListNewComponent extends React.Component {
 		}
 	}
 
+	onActionSettingPopupItemClick(entry) {
+		const { resources } = this.props;
+		switch (entry.action) {
+			case "textModules":
+				invoiz.router.navigate("/settings/text-modules/invoice");
+				break;
+			case "numberRange":
+				invoiz.router.navigate("/settings/more-settings/invoice");
+				break;
+			case "dunning":
+				invoiz.router.navigate("/settings/dunning");
+				break;
+		}
+	}
 	render() {
 		const { resources } = this.props;
 		const { canCreateInvoice, canDeleteInvoice, canUpdateInvoice, canCreateReminder, canRegisterPayment } =
@@ -1015,6 +1029,31 @@ class InvoiceListNewComponent extends React.Component {
 							},
 							onPopupItemClicked: (itemData, popupEntry) => {
 								this.onActionCellPopupItemClick(itemData, popupEntry);
+							},
+						}}
+						settingPopup={{
+							settingPopupEntriesFunc: (item) => {
+								const entries = [];
+								entries.push({
+									label: "Text modules",
+									action: "textModules",
+									dataQsId: "setting-list-item-dropdown-textmodules",
+								});
+								entries.push({
+									label: "Number range",
+									action: "numberRange",
+									dataQsId: "setting-list-item-dropdown-numberrange",
+								});
+								entries.push({
+									label: "Dunning",
+									action: "dunning",
+									dataQsId: "setting-list-item-dropdown-dunning",
+								});
+
+								return [entries];
+							},
+							onSettingPopupItemClicked: (popupEntry) => {
+								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
 						onRowDataLoaded={(invoiceData) => {

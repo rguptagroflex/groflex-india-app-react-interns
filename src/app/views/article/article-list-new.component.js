@@ -100,7 +100,7 @@ class ArticleListNewComponent extends React.Component {
 		const topbar = (
 			<TopbarComponent
             title={resources.str_article}
-            viewIcon={`icon-article`}
+            viewIcon={`icon-article_outlined`}
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action, selectedRows)}
 				buttons={topbarButtons}
 			/>
@@ -297,6 +297,18 @@ class ArticleListNewComponent extends React.Component {
 				noTransform: true,
 				isCloseableViaOverlay: false
 			});
+		}
+	}
+
+	onActionSettingPopupItemClick(entry) {
+		const { resources } = this.props;
+		switch (entry.action) {
+			case "articlecategory":
+				invoiz.router.navigate("/settings/more-settings/article-categories");
+				break;
+			case "moresettings":
+				invoiz.router.navigate("/settings/more-settings/article");
+				break;
 		}
 	}
 
@@ -633,7 +645,7 @@ class ArticleListNewComponent extends React.Component {
 							sort: 'desc',
 						}}
 						emptyState={{
-							iconClass: 'icon-rechnung',
+							iconClass: 'icon-article_outlined',
 							headline: 'No articles created yet',
 							subHeadline: resources.createOrImportArticalText,
 							buttons: (
@@ -764,6 +776,26 @@ class ArticleListNewComponent extends React.Component {
 							},
 							onPopupItemClicked: (itemData, popupEntry) => {
 								this.onActionCellPopupItemClick(itemData, popupEntry);
+							},
+						}}
+						settingPopup={{
+							settingPopupEntriesFunc: (item) => {
+								const entries = [];
+								entries.push({
+									label: "Article category",
+									action: "articlecategory",
+									dataQsId: "setting-list-item-dropdown-articlecategory",
+								});
+								entries.push({
+									label: "More settings",
+									action: "moresettings",
+									dataQsId: "setting-list-item-dropdown-moresettings",
+								});
+
+								return [entries];
+							},
+							onSettingPopupItemClicked: (popupEntry) => {
+								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
 						onRowDataLoaded={(articleData) => {

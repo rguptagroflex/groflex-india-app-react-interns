@@ -9,8 +9,8 @@ import { getResource } from '../resource';
 export const createDetailViewInvoiceListObjects = (invoices) => {
 	const invoicesTable = {
 		columns: [
-			{ title: 'Nr.', width: '25%', resourceKey: 'serialNumber' },
-			{ title: 'Datum', width: '15%', resourceKey: 'date' },
+			{ title: 'Nr.', width: '10%', resourceKey: 'serialNumber' },
+			{ title: 'Datum', width: '20%', resourceKey: 'date' },
 			{ title: 'Zahlungsstatus', resourceKey: 'paymentStatus' },
 			{ title: 'Betrag', width: '15%', align: 'right', resourceKey: 'amountTitle' }
 		],

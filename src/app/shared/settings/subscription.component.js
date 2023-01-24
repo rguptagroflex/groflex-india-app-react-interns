@@ -460,11 +460,33 @@ class AccountSubscriptionComponent extends React.Component {
 		
 		return (
 			<div className="settings-subscription-component">
-				{subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021
+				{
+					subscriptionDetail.planId || true ? // only initial plan for groflex
+					<div className="row">
+						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
+						<div className="col-xs-12">
+							<div className="text-h5 u_mb_8">{'Free Plan'}</div>
+							{/* <div className="text-h6 u_mb_8">{title}</div>
+							<div>{content}</div> */}
+							{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
+								<div>
+									<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
+									<div>{impressContent}</div>
+								</div>
+							)} */}
+							{/* <div className="row" style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}>
+								<div className="">{buttonElement1}</div>
+								<div className="" style={{ marginLeft: 15 }}>
+									{buttonElement2}
+								</div>
+							</div> */}
+						</div>
+					</div>
+					: subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021
 					? <div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
 						<div className="col-xs-12 text-h4 u_pb_20">Add-On</div>
 						<div className="col-xs-12">
-							<div className="text-h5 u_mb_8">Buy Add-On for your Imprezzive business</div>
+							<div className="text-h5 u_mb_8">Buy Add-On for your Groflex business</div>
 							<div className="row">
 								<div className="col-xs-12">
 									<span style={{lineHeight: '35px'}} className="text-normal text-large">Unlimited Quotations at ₹999/year</span>

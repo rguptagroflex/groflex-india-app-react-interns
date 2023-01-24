@@ -264,6 +264,17 @@ class CustomerListNewComponent extends React.Component {
 		}
 	}
 
+	onActionSettingPopupItemClick(entry) {
+		const { resources } = this.props;
+		switch (entry.action) {
+			case "customercategory":
+				invoiz.router.navigate("/settings/more-settings/customer-categories");
+				break;
+			case "moresettings":
+				invoiz.router.navigate("/settings/more-settings/customer");
+				break;
+		}
+	}
 	render() {
 		const { resources } = this.props;
 		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, customerData } = this.state;
@@ -778,6 +789,26 @@ class CustomerListNewComponent extends React.Component {
 							// ],
 							onPopupItemClicked: (itemData, popupEntry) => {
 								this.onActionCellPopupItemClick(itemData, popupEntry);
+							},
+						}}
+						settingPopup={{
+							settingPopupEntriesFunc: (item) => {
+								const entries = [];
+								entries.push({
+									label: "Customer category",
+									action: "customercategory",
+									dataQsId: "setting-list-item-dropdown-customercategory",
+								});
+								entries.push({
+									label: "More settings",
+									action: "moresettings",
+									dataQsId: "setting-list-item-dropdown-moresettings",
+								});
+
+								return [entries];
+							},
+							onSettingPopupItemClicked: (popupEntry) => {
+								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
 						onRowDataLoaded={(customerData) => {
