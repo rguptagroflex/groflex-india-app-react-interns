@@ -596,7 +596,9 @@ class StartImpressTemplatesComponent extends React.Component {
 							</div>
 						</div>
 					) : null} */}
-
+					<div className="col-xs-12">
+						<StartQuickLinksComponent />
+					</div>
 					{/* {kycStatus == ACTIVE ? ( */}
 						<div className="col-xs-12"> 
 							<div className="widgetContainer box box-large-bottom box-large-top dashboard-quick-buttons">
@@ -636,9 +638,7 @@ class StartImpressTemplatesComponent extends React.Component {
 						<StartExploreComponent />
 					</div>
 					
-					<div className="col-xs-12">
-						<StartQuickLinksComponent />
-					</div>
+					
 
 					<div className="dashboard-last-used-documents-component-wrapper">
 						<div className="col-xs-12">
