@@ -7,7 +7,7 @@ const apiServers = {
 	local: "http://localhost:3000",
 	// local: 'https://qa.imprezz.in',
 	//local: 'https://dev.imprezz.in',
-	// local: 'https://app.imprezz.in',
+	// local: 'https://dev.groflex.in',
 	development: "https://dev.groflex.io",
 	qa: "https://qa.groflex.io",
 	staging: "https://staging.groflex.io",

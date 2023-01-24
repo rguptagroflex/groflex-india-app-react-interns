@@ -64,7 +64,7 @@ class DashboardComponent extends React.Component {
 				<div className="dashboard-component-wrapper">
 					<TopbarComponent
 						title={'Dashboard'}
-						viewIcon={`icon-chart`}
+						viewIcon={`icon-dashboard`}
 					/>
 					{/* <DashboardOnboardingComponent /> */}
 					{/* <DashboardQuickButtonsComponent /> */}
