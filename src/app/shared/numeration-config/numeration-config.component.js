@@ -12,6 +12,7 @@ import NumberInputComponent from 'shared/inputs/number-input/number-input.compon
 import invoice from '../../redux/ducks/invoice/index';
 import OvalToggleComponent from 'shared/oval-toggle/oval-toggle.component';
 import { getMonthName, formateClientDateMonth } from 'helpers/formatDate';
+import history from '../../helpers/history';
 
 const INVOICE_VIEW = 'invoice';
 const OFFER_VIEW = 'offer';
@@ -2164,9 +2165,14 @@ class NumerationConfigComponent extends React.Component {
 							/>
 							{content}
 
-							<div className="numeration-error" style={{marginBottom: 40}}>{error}</div>
-
-							<ButtonComponent
+							<div className="numeration-error" style={{marginBottom: 40}}>{error}</div> 
+							<div className='buttonRow'>
+								<ButtonComponent 
+									type="cancel"
+									callback={() => history.push('/offers')}
+									label="Cancel"
+								/>
+								<ButtonComponent
 								buttonIcon={'icon-check'}
 								type="primary"
 								callback={() => this.onSaveClick()}
@@ -2174,6 +2180,7 @@ class NumerationConfigComponent extends React.Component {
 								dataQsId="settings-more-btn-saveNumeration"
 								disabled={!canEditNumericRanges}
 							/>
+							</div>
 						</div>
 					</div>
 				</div>

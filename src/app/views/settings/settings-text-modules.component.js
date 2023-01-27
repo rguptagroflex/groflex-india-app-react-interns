@@ -315,12 +315,12 @@ class SettingsTextModulesComponent extends React.Component {
 									</div>
 								</div>
 								<ButtonComponent
+								  type="cancel"
 									callback={() => {
 										history.push("/offers");
 									}}
-									type="cancel"
-									float="float-right"
 									label="Cancel"
+									float="float-right"
 								/>
 							</div>
 						</div>

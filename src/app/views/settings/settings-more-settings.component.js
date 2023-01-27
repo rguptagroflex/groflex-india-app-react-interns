@@ -58,7 +58,7 @@ class SettingsMoreSettingsComponent extends React.Component {
 		const { resources, pathName } = this.props;
 		return (
 			<div className="settings-more-settings-component wrapper-has-topbar-with-margin">
-				<TopbarComponent title={resources.str_moreSettings} viewIcon={`icon-settings`} />
+				<TopbarComponent title={"Number range"} viewIcon={`icon-settings`} />
 
 				<div className="box">
 					<div className="row">
