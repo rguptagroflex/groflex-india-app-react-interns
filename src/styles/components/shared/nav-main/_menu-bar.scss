@@ -37,9 +37,10 @@
 	&.menuItem-active {
 		.collapsed-title {
 			color: $color-white;
-		} &::before {
+		}
+		&::before {
 			color: $color-white !important;
-		}	
+		}
 	}
 }
 
@@ -49,13 +50,13 @@
 	.icon {
 		&:before {
 			padding-top: 6px !important;
-		}		
+		}
 	}
 
 	.icon-arr_down {
 		&:after {
 			content: "\E007";
-			font-family: 'invoizicons' !important;
+			font-family: "invoizicons" !important;
 			font-style: normal;
 			font-weight: normal !important;
 			vertical-align: middle;
@@ -63,13 +64,13 @@
 			font-size: 14px;
 			text-align: right;
 			width: 100%;
-		}		
+		}
 	}
 
 	.icon-arr_right {
 		&:after {
 			content: "\E00A";
-			font-family: 'invoizicons' !important;
+			font-family: "invoizicons" !important;
 			font-style: normal;
 			font-weight: normal !important;
 			vertical-align: middle;
@@ -77,7 +78,7 @@
 			font-size: 14px;
 			text-align: right;
 			width: 100%;
-		}		
+		}
 	}
 
 	@include breakpoint-menu-sm {
@@ -96,7 +97,7 @@
 			@include breakpoint-lg() {
 				&::before {
 					color: $menu-text-color !important;
-				}	
+				}
 			}
 
 			&:hover {
@@ -111,7 +112,7 @@
 		@include breakpoint-menu-lg() {
 			.menuItem {
 				@include collapsed-menu-item();
-			}		
+			}
 		}
 	}
 
@@ -126,7 +127,7 @@
 	}
 }
 .menuBar_content::-webkit-scrollbar {
-    width: 5px;
+	width: 5px;
 }
 .menuBar_content::-webkit-scrollbar-thumb {
 	background: #888;
