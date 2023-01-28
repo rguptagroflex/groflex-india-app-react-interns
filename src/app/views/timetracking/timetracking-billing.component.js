@@ -225,7 +225,7 @@ class TimetrackingBillingComponent extends React.Component {
 						cancelLabel: resources.str_abortStop,
 						confirmIcon: 'icon-trashcan',
 						confirmLabel: resources.str_clear,
-						confirmButtonType: 'secondary',
+						confirmButtonType: 'primary',
 						onConfirm: () => {
 							ModalService.close();
 							invoiz
