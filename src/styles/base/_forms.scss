@@ -31,158 +31,162 @@ input::-webkit-inner-spin-button {
 // date input
 // -----------------------------
 .dateInput {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    &_wrapper {
-        position: relative;
-    }
-    &_input {
-        border: 0;
-        border-bottom: 1px solid #dddddd;
-        outline: none;
-        @include rem(width,100%);
-        @include rem(padding,3,0);
-    }
-    &_label {
-        text-align: left;
-        color: $color-text-muted;
-        @include rem(font-size,13);
-        @include rem(margin-bottom,2);
-        &-left {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            .dateInput {
-                &_label {
-                    color: $color-text-muted;
-                    width: 51%;
-                    @include rem(font-size,16);
-                    @include rem(margin-top,9);
-                }
-                &_wrapper {
-                    width: 49%;
-                }
-                &_input {
-                    @include rem(border,1,solid,#dddddd);
-                    @include rem(height,39);
-                    @include rem(padding-left,15);
-                }
-            }
-        }
-    }
-    &-noBorder {
-        .dateInput_input {
-            border: 0;
-        }
-    }
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	&_wrapper {
+		position: relative;
+	}
+	&_input {
+		border: 0;
+		border-bottom: 1px solid #dddddd;
+		outline: none;
+		@include rem(width, 100%);
+		@include rem(padding, 3, 0);
+	}
+	&_label {
+		text-align: left;
+		color: $color-text-muted;
+		@include rem(font-size, 13);
+		@include rem(margin-bottom, 2);
+		&-left {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			.dateInput {
+				&_label {
+					color: $color-text-muted;
+					width: 51%;
+					@include rem(font-size, 16);
+					@include rem(margin-top, 9);
+				}
+				&_wrapper {
+					width: 49%;
+				}
+				&_input {
+					@include rem(border, 1, solid, #dddddd);
+					@include rem(height, 39);
+					@include rem(padding-left, 15);
+				}
+			}
+		}
+	}
+	&-noBorder {
+		.dateInput_input {
+			border: 0;
+		}
+	}
 }
 
 // -----------------------------
 // form
 // -----------------------------
 .form {
-    @include rem(margin,0);
-    &_input {
-        position: relative;
-        outline: none;
-    }
-    &_row {
-        @include rem(margin-bottom,16);
-        @include rem(margin-top,16);
-        @extend .row;
-    }
-    &_groupheader {
-        color: #333333;
-        font-weight: 600;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        border-right: 1px solid $color-line-light;
-        @include rem(padding-left,24);
-        @include rem(font-size,21);
-        &Subtext {
-            color: $color-text-muted;
-            font-weight: 400;
-            @include rem(font-size,14);
-            @include rem(line-height,18);
-            @include rem(margin-top,12);
-        }
-        &_edit {
-            color: #333333;
-            font-weight: 700;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            border-right: 2px solid $color-line-light;
-            @include rem(padding-right,32);
-            & + div {
-                @include rem(padding-left,32);
-            }
-        }
-        h2 {
-            @include rem(font-size,19);
-            @include rem(padding-bottom,6);
-            @include rem(margin,0);
-            @include breakpoint-lg {
-                border-bottom: 0 none;
-                @include rem(padding-bottom,0);
-            }
-        }
-    }
+	@include rem(margin, 0);
+	&_input {
+		position: relative;
+		outline: none;
+	}
+	&_row {
+		@include rem(margin-bottom, 16);
+		@include rem(margin-top, 16);
+		@extend .row;
+	}
+	&_groupheader {
+		color: #333333;
+		font-weight: 600;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		border-right: 1px solid $color-line-light;
+		@include rem(padding-left, 24);
+		@include rem(font-size, 21);
+		&Subtext {
+			color: $color-text-muted;
+			font-weight: 400;
+			@include rem(font-size, 14);
+			@include rem(line-height, 18);
+			@include rem(margin-top, 12);
+		}
+		&_edit {
+			color: #333333;
+			font-weight: 700;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			border-right: 2px solid $color-line-light;
+			@include rem(padding-right, 32);
+			& + div {
+				@include rem(padding-left, 32);
+			}
+		}
+		h2 {
+			@include rem(font-size, 19);
+			@include rem(padding-bottom, 6);
+			@include rem(margin, 0);
+			@include breakpoint-lg {
+				border-bottom: 0 none;
+				@include rem(padding-bottom, 0);
+			}
+		}
+	}
 }
 
 // -----------------------------
 // text input
 // -----------------------------
 .input {
-    border: none;
-    border-bottom: 1px solid $color-input-bar;
-    border-radius: 0 !important;
-    box-shadow: none;
-    display: block;
-    color: $color-text;
-    padding: 0;
-    width: 100%;
-    letter-spacing: inherit;
-    @include rem(padding-top,10);
-    @include rem(height,48);
-    &:disabled {
-        color: $color-text-disabled;
-        -webkit-text-fill-color: $color-text-disabled;
-        background-color: transparent;
-    }
-    &-leftLabel {
-        .input {
-            width: 46%;
-            margin-left: 54%;
-            &_label {
-                width: 54%;
-                @include rem(font-size,16,!important);
-                @include rem(top,-30,!important);
-                @include rem(margin-top,0,!important);
-            }
-            &:focus, &-valid, &-invalid, &:not(.input-empty) {
-                & ~ .input_label {
-                    @include rem(font-size,16);
-                    @include rem(top,-30);
-                }
-            }
-            &_bar {
-                left: 54%;
-                position: relative;
-                width: 46%;
-            }
-            &_hint, &_error {
-                width: 46%;
-                margin-left: 54%;
-                @include rem(margin-top,0,!important);
-            }
-            &_error {
-                color: $color-error;
-            }
-        }
-    }
+	border: none;
+	border-bottom: 1px solid $color-input-bar;
+	border-radius: 0 !important;
+	box-shadow: none;
+	display: block;
+	color: $color-text;
+	padding: 0;
+	width: 100%;
+	letter-spacing: inherit;
+	@include rem(padding-top, 10);
+	@include rem(height, 48);
+	&:disabled {
+		color: $color-text-disabled;
+		-webkit-text-fill-color: $color-text-disabled;
+		background-color: transparent;
+	}
+	&-leftLabel {
+		.input {
+			width: 46%;
+			margin-left: 54%;
+			&_label {
+				width: 54%;
+				@include rem(font-size, 16, !important);
+				@include rem(top, -30, !important);
+				@include rem(margin-top, 0, !important);
+			}
+			&:focus,
+			&-valid,
+			&-invalid,
+			&:not(.input-empty) {
+				& ~ .input_label {
+					@include rem(font-size, 16);
+					@include rem(top, -30);
+				}
+			}
+			&_bar {
+				left: 54%;
+				position: relative;
+				width: 46%;
+			}
+			&_hint,
+			&_error {
+				width: 46%;
+				margin-left: 54%;
+				@include rem(margin-top, 0, !important);
+			}
+			&_error {
+				color: $color-error;
+			}
+		}
+	}
 	&-currencyTotal {
 		display: flex;
 		flex-direction: column;
@@ -200,139 +204,149 @@ input::-webkit-inner-spin-button {
 			}
 		}
 	}
-    &-boxBorder {
-        .input {
-            border: 1px solid #dddddd;
-            @include rem(height,39);
-            @include rem(padding-left,15);
-            @include rem(padding-top,0);
-            &:focus, &:not(.input-empty), &-valid:not(.input-empty), &-invalid:not(.input-empty) {
-                & ~ .input_label {
-                    @include rem(top,-59.6);
-                }
-            }
-            &_label {
-                @include rem(top,-62);
-                @include rem(font-size,13);
-            }
-            &_controls {
-                @include rem(margin-top,-15);
-            }
-        }
-    }
-    &-noBorder {
-        .input {
-            border: none;
-        }
-        .input_bar {
-            display: none;
-        }
-    }
-    &:focus {
-        box-shadow: none;
-        outline: none;
-    }
-	
+	&-boxBorder {
+		.input {
+			border: 1px solid #dddddd;
+			@include rem(height, 39);
+			@include rem(padding-left, 15);
+			@include rem(padding-top, 0);
+			&:focus,
+			&:not(.input-empty),
+			&-valid:not(.input-empty),
+			&-invalid:not(.input-empty) {
+				& ~ .input_label {
+					@include rem(top, -59.6);
+				}
+			}
+			&_label {
+				@include rem(top, -62);
+				@include rem(font-size, 13);
+			}
+			&_controls {
+				@include rem(margin-top, -15);
+			}
+		}
+	}
+	&-noBorder {
+		.input {
+			border: none;
+		}
+		.input_bar {
+			display: none;
+		}
+	}
+	&:focus {
+		box-shadow: none;
+		outline: none;
+	}
+
 	&_label {
-        color: $color-text-muted;
-        left: 0;
-        display: block;
-        pointer-events: none;
-        position: relative;
-        transition: 0.2s ease all;
-        text-align: left;
-        @include rem(top,-30);
-        @include rem(height,20);
-        @include rem(font-size,16);
-    }
-    &_controls {
-        position: absolute;
-        display: flex !important;
-        flex-direction: column;
-        @include rem(top,20);
-        @include rem(right,6);
-    }
-    &:focus, &:not(.input-empty), &-valid:not(.input-empty), &-invalid:not(.input-empty) {
-        & ~ .input_label {
-            @include rem(font-size,13);
-            @include rem(top,-50);
-        }
-    }
-    &:focus ~ .input_label {
-        color: darken($color-primary,10);
+		color: $color-text-muted;
+		left: 0;
+		display: block;
+		pointer-events: none;
+		position: relative;
+		transition: 0.2s ease all;
+		text-align: left;
+		@include rem(top, -30);
+		@include rem(height, 20);
+		@include rem(font-size, 16);
 	}
-	
-    &_bar {
-        display: block;
-        position: relative;
-        width: 100%;
-        &:before, &:after {
-            bottom: 0;
-            content: "";
-            position: absolute;
-            transition: 0.3s ease all;
-            width: 0;
-            @include rem(height,2);
-        }
-        &:before {
-            left: 50%;
-        }
-        &:after {
-            right: 50%;
-        }
+	&_controls {
+		position: absolute;
+		display: flex !important;
+		flex-direction: column;
+		@include rem(top, 20);
+		@include rem(right, 6);
 	}
-	
-    &:focus ~ .input_bar:before, &:focus ~ .input_bar:after {
-        width: 50%;
-        background: $color-primary;
+	&:focus,
+	&:not(.input-empty),
+	&-valid:not(.input-empty),
+	&-invalid:not(.input-empty) {
+		& ~ .input_label {
+			@include rem(font-size, 13);
+			@include rem(top, -50);
+		}
 	}
-	
-    &-invalid {
-        color: $color-error !important;
-        & ~ .input_bar:before, & ~ .input_bar:after {
-            background: $color-error !important;
-            width: 50%;
-        }
-    }
-   
-	&_hint, &_error {
-        color: $color-text-muted;
-        display: block;
-        position: relative;
-        text-align: left;
-        white-space: normal;
-        word-wrap: break-word;
-        @include rem(font-size,12);
-        @include rem(min-height,18);
-        @include rem(top,-16);
+	&:focus ~ .input_label {
+		color: darken($color-primary, 10);
 	}
-	
-    &_error {
-        color: $color-error !important;
+
+	&_bar {
+		display: block;
+		position: relative;
+		width: 100%;
+		&:before,
+		&:after {
+			bottom: 0;
+			content: "";
+			position: absolute;
+			transition: 0.3s ease all;
+			width: 0;
+			@include rem(height, 2);
+		}
+		&:before {
+			left: 50%;
+		}
+		&:after {
+			right: 50%;
+		}
 	}
-	
-    &-invalid ~ .input_hint {
-        display: none;
+
+	&:focus ~ .input_bar:before,
+	&:focus ~ .input_bar:after {
+		width: 50%;
+		background: $color-primary;
 	}
-	
-    &-noHint {
-        @include rem(margin-bottom,-20);
-        .input_hint {
-            display: none;
-        }
-    }
-	
+
+	&-invalid {
+		color: $color-error !important;
+		& ~ .input_bar:before,
+		& ~ .input_bar:after {
+			background: $color-error !important;
+			width: 50%;
+		}
+	}
+
+	&_hint,
+	&_error {
+		color: $color-text-muted;
+		display: block;
+		position: relative;
+		text-align: left;
+		white-space: normal;
+		word-wrap: break-word;
+		@include rem(font-size, 12);
+		@include rem(min-height, 18);
+		@include rem(top, -16);
+	}
+
+	&_error {
+		color: $color-error !important;
+	}
+
+	&-invalid ~ .input_hint {
+		display: none;
+	}
+
+	&-noHint {
+		@include rem(margin-bottom, -20);
+		.input_hint {
+			display: none;
+		}
+	}
+
 	&_remove_btn {
-        position: absolute;
-        right: 0;
-        z-index: 10;
-        @include rem(margin-left,-30);
-        @include rem(top,15);
-    }
-	
-	&[type=password] {
-        letter-spacing: 0.2em;
-    }
+		position: absolute;
+		right: 0;
+		z-index: 10;
+		@include rem(margin-left, -30);
+		@include rem(top, 15);
+	}
+
+	&[type="password"] {
+		letter-spacing: 0.2em;
+	}
 }
 
 // -----------------------------
@@ -341,9 +355,12 @@ input::-webkit-inner-spin-button {
 .input {
 	// password input
 	&-password {
-		&:focus, &-valid, &-invalid, &:not(.input-empty) {
-		transition: 0.3s ease all;
-		border-color: transparent;
+		&:focus,
+		&-valid,
+		&-invalid,
+		&:not(.input-empty) {
+			transition: 0.3s ease all;
+			border-color: transparent;
 		}
 	}
 
@@ -375,31 +392,33 @@ input::-webkit-inner-spin-button {
 		@include rem(border-bottom-width, 3);
 		@include rem(margin, -2, 3, 0, 3);
 		span {
-		position: absolute;
-		left: 0;
-		width: 0%;
-		transition: 0.3s ease all;
-		@include rem(height, 3);
+			position: absolute;
+			left: 0;
+			width: 0%;
+			transition: 0.3s ease all;
+			@include rem(height, 3);
 		}
 		@each $color in $colors {
-		$i: index($colors, $color);
-		&:nth-child(#{$i}) span {
-			background: $color;
-		}
+			$i: index($colors, $color);
+			&:nth-child(#{$i}) span {
+				background: $color;
+			}
 		}
 		&:first-child {
-		@include rem(margin-left, 0);
+			@include rem(margin-left, 0);
 		}
 		&:last-child {
-		@include rem(margin-right, 0);
+			@include rem(margin-right, 0);
 		}
 	}
-	
-	&:focus, &-valid, &-invalid,
+
+	&:focus,
+	&-valid,
+	&-invalid,
 	&_passwordBar &_passwordStep {
 		border-bottom-color: #dddddd;
 		&.active span {
-		width: 100%;
+			width: 100%;
 		}
 	}
 }
@@ -410,7 +429,7 @@ input::-webkit-inner-spin-button {
 span.radio-custom-circle {
 	display: none;
 }
-  
+
 input[type="radio"].radio-custom {
 	width: 16px;
 	height: 16px;
@@ -421,14 +440,14 @@ input[type="radio"].radio-custom {
 
 input[type="radio"].radio-custom + span.radio-custom-circle {
 	width: 13px;
-    height: 13px;
-    background-color: white;
-    border: 1px #ccc solid;
-    margin: 0 0 0 -13px;
-    border-radius: 50%;
-    pointer-events: none;
-    display: inline-block;
-    box-sizing: border-box;
+	height: 13px;
+	background-color: white;
+	border: 1px #ccc solid;
+	margin: 0 0 0 -13px;
+	border-radius: 50%;
+	pointer-events: none;
+	display: inline-block;
+	box-sizing: border-box;
 }
 
 input[type="radio"].radio-custom + span.radio-custom-circle::after {
@@ -459,7 +478,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 	color: $color-text-muted;
 	@include rem(font-size, 13);
 
-	&_hint, &_error {
+	&_hint,
+	&_error {
 		width: 100%;
 		color: $color-text-muted;
 		display: block;
@@ -514,10 +534,10 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 			&.verticalOptions {
 				justify-content: space-between;
 				.radio_option {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				padding: 0 0.5rem;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					padding: 0 0.5rem;
 					.radio_optionlabel {
 						padding-left: 0;
 						padding-top: 0.375rem;
@@ -530,7 +550,7 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 	&_option {
 		@include rem(padding-left, 16);
 		&:first-child {
-		@include rem(padding-left, 0);
+			@include rem(padding-left, 0);
 		}
 	}
 
@@ -541,7 +561,7 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 	&_inputs {
 		@include rem(margin-right, 5);
 	}
-	
+
 	&_label {
 		@include rem(margin-left, 10);
 		@include rem(margin-top, -2);
@@ -572,41 +592,41 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		cursor: default;
 		color: $color-text-muted;
 		&:checked {
-		& ~ .checkbox_visual {
-			background: #f0f0f0 !important;
-			border-color: #f0f0f0 !important;
-		}
+			& ~ .checkbox_visual {
+				background: #f0f0f0 !important;
+				border-color: #f0f0f0 !important;
+			}
 		}
 	}
 	&_input {
 		display: none;
 		&:checked {
-		& ~ .checkbox_visual {
-			@include rem(padding-left, 1);
-			background: $color-primary;
-			border-color: $color-primary;
-			&:before {
-			content: "";
-			transform: rotate(-45deg) scaleY(0.5);
-			border-right: 1px solid rgba(0, 0, 0, 0);
-			border-top: 1px solid rgba(0, 0, 0, 0);
-			@include rem(border-bottom, 4, solid, white);
-			@include rem(border-left, 2, solid, white);
-			@include rem(height, 4);
-			@include rem(width, 6);
-			@include rem(top, -1);
+			& ~ .checkbox_visual {
+				@include rem(padding-left, 1);
+				background: $color-primary;
+				border-color: $color-primary;
+				&:before {
+					content: "";
+					transform: rotate(-45deg) scaleY(0.5);
+					border-right: 1px solid rgba(0, 0, 0, 0);
+					border-top: 1px solid rgba(0, 0, 0, 0);
+					@include rem(border-bottom, 4, solid, white);
+					@include rem(border-left, 2, solid, white);
+					@include rem(height, 4);
+					@include rem(width, 6);
+					@include rem(top, -1);
+				}
 			}
 		}
-		}
 		&:disabled {
-		& ~ .checkbox_label {
-			cursor: default;
-		}
-		& ~ .checkbox_visual:before {
-			border-bottom-color: #dddddd;
-			border-left-color: #dddddd;
-			cursor: default;
-		}
+			& ~ .checkbox_label {
+				cursor: default;
+			}
+			& ~ .checkbox_visual:before {
+				border-bottom-color: #dddddd;
+				border-left-color: #dddddd;
+				cursor: default;
+			}
 		}
 	}
 	&_label {
@@ -617,7 +637,7 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		@include rem(padding-left, 6);
 		@include rem(margin-top, -2);
 		&-error {
-		color: #fa6e6e !important;
+			color: #fa6e6e !important;
 		}
 	}
 	&_visual {
@@ -632,13 +652,13 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		@include rem(width, 16);
 		@include rem(min-width, 16);
 		&:before {
-		border: 1px solid transparent;
-		background: transparent;
-		content: "";
-		position: relative;
-		transform: rotate(135deg) scale(0);
-		@include rem(height, 0);
-		@include rem(width, 0);
+			border: 1px solid transparent;
+			background: transparent;
+			content: "";
+			position: relative;
+			transform: rotate(135deg) scale(0);
+			@include rem(height, 0);
+			@include rem(width, 0);
 		}
 	}
 	&_labelLink {
@@ -646,7 +666,7 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		bottom: 2px;
 		left: 4px;
 		&-error {
-		color: #fa6e6e !important;
+			color: #fa6e6e !important;
 		}
 	}
 }
@@ -688,7 +708,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		width: 100%;
 		@include rem(margin-top, 0);
 		@include rem(height, 2);
-		&:before, &:after {
+		&:before,
+		&:after {
 			content: "";
 			position: absolute;
 			transition: 0.3s ease all;
@@ -702,7 +723,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 			right: 50%;
 		}
 	}
-	&_input:focus ~ .textarea_bar:before, &_input:focus ~ .textarea_bar:after {
+	&_input:focus ~ .textarea_bar:before,
+	&_input:focus ~ .textarea_bar:after {
 		width: 50%;
 		background: $color-primary;
 	}
@@ -818,7 +840,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		position: relative;
 		width: 100%;
 		z-index: 10;
-		&:before, &:after {
+		&:before,
+		&:after {
 			content: "";
 			position: absolute;
 			transition: 0.3s ease all;
@@ -833,11 +856,13 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 			right: 50%;
 		}
 	}
-	&-active .selectInput_bar:before, &-active .selectInput_bar:after {
+	&-active .selectInput_bar:before,
+	&-active .selectInput_bar:after {
 		width: 50%;
 		background: $color-primary;
 	}
-	&-invalid .selectInput_bar:before, &-invalid .selectInput_bar:after {
+	&-invalid .selectInput_bar:before,
+	&-invalid .selectInput_bar:after {
 		width: 50%;
 		background: red;
 	}
@@ -878,7 +903,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		}
 		.selectize-control.single {
 			&.loading {
-				&:before, &:after {
+				&:before,
+				&:after {
 					right: 0;
 				}
 				&:after {
@@ -903,7 +929,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 			&-active ~ .selectInput_label {
 				color: $color-primary;
 			}
-			&_hint, &_error {
+			&_hint,
+			&_error {
 				margin-left: 51%;
 				position: relative;
 				@include rem(top, -16);
@@ -922,7 +949,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		}
 	}
 	// hint
-	&_hint, &_error {
+	&_hint,
+	&_error {
 		color: $color-text-muted;
 		display: block;
 		position: relative;
@@ -952,7 +980,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 
 .selectize-control.single {
 	&.loading {
-		&:before, &:after {
+		&:before,
+		&:after {
 			@include rem(top, 20);
 			@include rem(right, 15);
 		}
@@ -964,7 +993,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 			display: none;
 		}
 	}
-	.selectize-input, .selectize-input.focus {
+	.selectize-input,
+	.selectize-input.focus {
 		@include icon(after, arr_down);
 		border-radius: 0;
 		box-shadow: none;
@@ -1033,7 +1063,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 			font-size: 15px;
 			font-weight: 600;
 		}
-		&-head, &-foot {
+		&-head,
+		&-foot {
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -1113,7 +1144,7 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 	input {
 		display: none;
 		&:checked + .toggleSwitch_slider {
-			background-color: $color-big-icons;
+			background-color: $color-primary;
 		}
 		&:checked + .toggleSwitch_slider::before {
 			background-color: white;
@@ -1134,7 +1165,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 	display: flex;
 	position: relative;
 	align-items: flex-start;
-	&::before, &::after {
+	&::before,
+	&::after {
 		position: absolute;
 		display: flex;
 		content: "";
@@ -1171,7 +1203,10 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 		padding: 0;
 		margin: 0;
 		@include rem(height, 20);
-		&_bar, &_error, &_hint, &_label {
+		&_bar,
+		&_error,
+		&_hint,
+		&_label {
 			display: none !important;
 		}
 	}
@@ -1204,7 +1239,8 @@ input[type="radio"].radio-custom:checked + span.radio-custom-circle::after {
 	.textarea_hints {
 		display: none;
 	}
-	.htmlInput_input, .htmlInput_placeholder {
+	.htmlInput_input,
+	.htmlInput_placeholder {
 		border: 0;
 		padding: 0 !important;
 	}

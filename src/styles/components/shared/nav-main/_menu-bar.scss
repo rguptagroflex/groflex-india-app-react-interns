@@ -16,33 +16,33 @@
 .menuBar_container {
 	display: flex;
 	position: absolute;
-	align-items: center;
-	@include rem(top, 0); // 15
+	// align-items: center;
+	@include rem(top, 80); // 15
 	bottom: 0;
 	left: 0;
 	right: 0;
 }
 
-@mixin collapsed-menu-item {
-	&::before {
-		font-size: 19px;
-		margin-top: -14px;
-	}
+// @mixin collapsed-menu-item {
+// 	&::before {
+// 		font-size: 19px;
+// 		margin-top: -14px;
+// 	}
 
-	.collapsed-title {
-		opacity: 1;
-		color: $menu-text-color;
-	}
+// 	.collapsed-title {
+// 		opacity: 1;
+// 		color: $menu-text-color;
+// 	}
 
-	&.menuItem-active {
-		.collapsed-title {
-			color: $color-white;
-		}
-		&::before {
-			color: $color-white !important;
-		}
-	}
-}
+// 	&.menuItem-active {
+// 		.collapsed-title {
+// 			color: $color-white;
+// 		}
+// 		&::before {
+// 			color: $color-white !important;
+// 		}
+// 	}
+// }
 
 .menuBar_content {
 	width: 100%;
@@ -94,11 +94,11 @@
 
 	&.submenu-visible {
 		.menuItem:not(.menuItem-active) {
-			@include breakpoint-lg() {
-				&::before {
-					color: $menu-text-color !important;
-				}
-			}
+			// @include breakpoint-lg() {
+			// 	&::before {
+			// 		color: $menu-text-color !important;
+			// 	}
+			// }
 
 			&:hover {
 				color: $color-menu-hover !important; //$color-white
@@ -109,21 +109,21 @@
 			}
 		}
 
-		@include breakpoint-menu-lg() {
-			.menuItem {
-				@include collapsed-menu-item();
-			}
-		}
+		// @include breakpoint-menu-lg() {
+		// 	.menuItem {
+		// 		@include collapsed-menu-item();
+		// 	}
+		// }
 	}
 
 	@include breakpoint-md-menu-sm {
-		.menuItem {
-			@include collapsed-menu-item();
+		// .menuItem {
+		// 	@include collapsed-menu-item();
 
-			.collapsed-title {
-				color: $color-menu-icon;
-			}
-		}
+		// 	.collapsed-title {
+		// 		color: $color-menu-icon;
+		// 	}
+		// }
 	}
 }
 .menuBar_content::-webkit-scrollbar {

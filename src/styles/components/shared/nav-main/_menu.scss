@@ -1,16 +1,17 @@
 @import "../../../abstracts/_variables";
 @import "../../../abstracts/_mixins";
 
-@import 'menu-bar';
-@import 'menu-footer';
-@import 'menu-header';
-@import 'menu-item';
-@import 'menu-item-with-submenu';
+@import "menu-bar";
+@import "menu-footer";
+@import "menu-header";
+@import "menu-item";
+@import "menu-item-with-submenu";
 
 .menu {
 	background: $color-menu-background;
 	position: fixed;
 	z-index: 10010;
+	border-right: 5px solid $color-bg-medium;
 
 	@include breakpoint-lg {
 		min-height: 100%;

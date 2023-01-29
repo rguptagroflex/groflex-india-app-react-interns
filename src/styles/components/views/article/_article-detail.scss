@@ -1,5 +1,5 @@
 @import "../../../abstracts/variables";
-@import "../../../abstracts/mixins";
+@import "../../../abstracts/mixins"; 
 
 .article-detail-wrapper {
 	.low_stock_alert {
@@ -86,6 +86,7 @@
 			font-weight: 600;
 			&:hover {
 				background: #194B7C;
+				background: lightgrey;
 			}
 		}
 	}

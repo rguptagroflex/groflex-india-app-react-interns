@@ -55,165 +55,175 @@ class SettingsTextModulesComponent extends React.Component {
 		changeDetection.unbindEventListeners();
 	}
 
-	onTopbarButtonClick() {
+	onTopbarButtonClick(action) {
 		const { resources } = this.props;
 		const { textModules } = this.state;
 
-		this.setState({ isSubmitting: true }, () => {
-			const requests = [
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.offer.id}`, {
-					auth: true,
-					method: "PUT",
-					data: {
-						introduction: textModules.offer.introduction,
-						conclusion: textModules.offer.conclusion,
-						email: textModules.offer.email,
-					},
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.purchaseOrder.id}`, {
-					auth: true,
-					method: "PUT",
-					data: {
-						introduction: textModules.purchaseOrder.introduction,
-						conclusion: textModules.purchaseOrder.conclusion,
-						email: textModules.purchaseOrder.email,
-					},
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.invoice.id}`, {
-					auth: true,
-					method: "PUT",
-					data: {
-						introduction: textModules.invoice.introduction,
-						conclusion: textModules.invoice.conclusion,
-						email: textModules.invoice.email,
-					},
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.posReceipt.id}`, {
-					auth: true,
-					method: "PUT",
-					data: {
-						introduction: textModules.posReceipt.introduction,
-						conclusion: textModules.posReceipt.conclusion,
-						email: textModules.posReceipt.email,
-					},
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.recurringInvoice.id}`, {
-					auth: true,
-					method: "PUT",
-					data: {
-						email: textModules.recurringInvoice.email,
-						emailSubject: textModules.recurringInvoice.emailSubject,
-					},
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.cancellation.id}`, {
-					auth: true,
-					method: "PUT",
-					data: {
-						email: textModules.cancellation.email,
-						emailSubject: textModules.cancellation.emailSubject,
-					},
-				}),
-			];
+		if (action === "save") {
+			this.setState({ isSubmitting: true }, () => {
+				const requests = [
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.offer.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.offer.introduction,
+							conclusion: textModules.offer.conclusion,
+							email: textModules.offer.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.purchaseOrder.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.purchaseOrder.introduction,
+							conclusion: textModules.purchaseOrder.conclusion,
+							email: textModules.purchaseOrder.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.invoice.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.invoice.introduction,
+							conclusion: textModules.invoice.conclusion,
+							email: textModules.invoice.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.posReceipt.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.posReceipt.introduction,
+							conclusion: textModules.posReceipt.conclusion,
+							email: textModules.posReceipt.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.recurringInvoice.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							email: textModules.recurringInvoice.email,
+							emailSubject: textModules.recurringInvoice.emailSubject,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.cancellation.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							email: textModules.cancellation.email,
+							emailSubject: textModules.cancellation.emailSubject,
+						},
+					}),
+				];
 
-			q.allSettled(requests)
-				.then((results) => {
-					let error = false;
-					let errorOffers = false;
-					let errorInvoices = false;
-					let errorPosReceipts = false;
-					let errorRecurringInvoices = false;
-					let errorCancellations = false;
+				q.allSettled(requests)
+					.then((results) => {
+						let error = false;
+						let errorOffers = false;
+						let errorInvoices = false;
+						let errorPosReceipts = false;
+						let errorRecurringInvoices = false;
+						let errorCancellations = false;
 
-					if (results[0].state === "rejected") {
-						error = errorOffers = true;
+						if (results[0].state === "rejected") {
+							error = errorOffers = true;
 
-						invoiz.page.showToast({
-							type: "error",
-							message: format(resources.textModuleSaveErrorMessage, resources.str_deals),
-						});
-					}
-
-					if (results[1].state === "rejected") {
-						error = errorInvoices = true;
-
-						invoiz.page.showToast({
-							type: "error",
-							message: format(resources.textModuleSaveErrorMessage, resources.str_bills),
-						});
-					}
-
-					if (results[2].state === "rejected") {
-						error = errorRecurringInvoices = true;
-
-						invoiz.page.showToast({
-							type: "error",
-							message: format(resources.textModuleSaveErrorMessage, resources.str_recurringBills),
-						});
-					}
-
-					if (results[3].state === "rejected") {
-						error = errorCancellations = true;
-
-						invoiz.page.showToast({
-							type: "error",
-							message: format(resources.textModuleSaveErrorMessage, resources.str_cancellationInvoice),
-						});
-					}
-
-					if (!error) {
-						invoiz.page.showToast({
-							message: resources.textModuleUpdateSuccessMessage,
-						});
-					} else {
-						if (!errorOffers) {
 							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_deals),
+								type: "error",
+								message: format(resources.textModuleSaveErrorMessage, resources.str_deals),
 							});
 						}
 
-						if (!errorInvoices) {
+						if (results[1].state === "rejected") {
+							error = errorInvoices = true;
+
 							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_bills),
-							});
-						}
-						if (!errorPosReceipts) {
-							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_bills),
+								type: "error",
+								message: format(resources.textModuleSaveErrorMessage, resources.str_bills),
 							});
 						}
 
-						if (!errorRecurringInvoices) {
+						if (results[2].state === "rejected") {
+							error = errorRecurringInvoices = true;
+
 							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_recurringBills),
+								type: "error",
+								message: format(resources.textModuleSaveErrorMessage, resources.str_recurringBills),
 							});
 						}
 
-						if (!errorCancellations) {
+						if (results[3].state === "rejected") {
+							error = errorCancellations = true;
+
 							invoiz.page.showToast({
+								type: "error",
 								message: format(
-									resources.textModuleSaveSuccessMessage,
+									resources.textModuleSaveErrorMessage,
 									resources.str_cancellationInvoice
 								),
 							});
 						}
-					}
-				})
-				.done(() => {
-					const dataOriginal = JSON.stringify(this.state.textModules);
 
-					changeDetection.setModelGetter(() => {
-						const currentData = JSON.stringify(this.state.textModules);
+						if (!error) {
+							invoiz.page.showToast({
+								message: resources.textModuleUpdateSuccessMessage,
+							});
+						} else {
+							if (!errorOffers) {
+								invoiz.page.showToast({
+									message: format(resources.textModuleSaveSuccessMessage, resources.str_deals),
+								});
+							}
 
-						return {
-							original: dataOriginal,
-							current: currentData,
-						};
+							if (!errorInvoices) {
+								invoiz.page.showToast({
+									message: format(resources.textModuleSaveSuccessMessage, resources.str_bills),
+								});
+							}
+							if (!errorPosReceipts) {
+								invoiz.page.showToast({
+									message: format(resources.textModuleSaveSuccessMessage, resources.str_bills),
+								});
+							}
+
+							if (!errorRecurringInvoices) {
+								invoiz.page.showToast({
+									message: format(
+										resources.textModuleSaveSuccessMessage,
+										resources.str_recurringBills
+									),
+								});
+							}
+
+							if (!errorCancellations) {
+								invoiz.page.showToast({
+									message: format(
+										resources.textModuleSaveSuccessMessage,
+										resources.str_cancellationInvoice
+									),
+								});
+							}
+						}
+					})
+					.done(() => {
+						const dataOriginal = JSON.stringify(this.state.textModules);
+
+						changeDetection.setModelGetter(() => {
+							const currentData = JSON.stringify(this.state.textModules);
+
+							return {
+								original: dataOriginal,
+								current: currentData,
+							};
+						});
+
+						this.setState({ isSubmitting: false });
+						window.history.back();
 					});
-
-					this.setState({ isSubmitting: false });
-					history.push("/offers");
-				});
-		});
+			});
+		} else {
+			window.history.back();
+		}
 	}
 
 	updateValue(type, key, value) {
@@ -236,8 +246,16 @@ class SettingsTextModulesComponent extends React.Component {
 				<TopbarComponent
 					title={resources.str_textModules}
 					viewIcon={`icon-settings`}
-					buttonCallback={(ev, button) => this.onTopbarButtonClick()}
+					buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
 					buttons={[
+						{
+							type: "default",
+							label: resources.str_cancel,
+							// buttonIcon: "icon-check",
+							action: "cancel",
+							// disabled: isSubmitting || !canUpdateTextBlocks,
+							dataQsId: "settings-textModules-btn-cancel",
+						},
 						{
 							type: "primary",
 							label: resources.str_toSave,
@@ -315,9 +333,9 @@ class SettingsTextModulesComponent extends React.Component {
 									</div>
 								</div>
 								<ButtonComponent
-								  type="cancel"
+									type="cancel"
 									callback={() => {
-										history.push("/offers");
+										window.history.back();
 									}}
 									label="Cancel"
 									float="float-right"

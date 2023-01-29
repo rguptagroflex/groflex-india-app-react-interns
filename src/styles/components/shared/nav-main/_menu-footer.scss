@@ -36,14 +36,14 @@
 		right: 0;
 		@include rem(bottom, 10);
 	}
-	
+
 	.icon {
 		&:before {
 			padding-top: 6px !important;
-		}		
+		}
 	}
 
-	.menuHeader_badge{
+	.menuHeader_badge {
 		padding-left: 5px;
 		height: 26px;
 		line-height: 26px;
@@ -56,7 +56,7 @@
 
 		&:hover {
 			color: $color-primary;
-		}	
+		}
 
 		.icon.icon-user_outlined {
 			background: $color-primary;
@@ -112,9 +112,10 @@
 	}
 	.menu-profile-popup-middle2 {
 		border-bottom: 1px solid #cccc;
-		
-		.menuItem:link {
-			color: #000000!important;
+
+		.menuItem:link,
+		.menuItem:visited {
+			color: #000000 !important;
 		}
 		.menuItem:hover {
 			color: $color-menu-hover !important;

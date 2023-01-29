@@ -25,7 +25,7 @@
 		left: 0;
 		width: $menu-small-width - 5px - 2 * 3px;
 		text-align: center;
-		color: #66696D;
+		color: #66696d;
 		font-size: 10px;
 		opacity: 0;
 		transition: opacity 0.2s ease-in-out;
@@ -36,7 +36,7 @@
 	&:focus,
 	&:hover,
 	&:active {
-		color: $color-white !important;
+		color: $color-black !important;
 	}
 
 	&::before {
@@ -53,9 +53,8 @@
 		}
 
 		.collapsed-title {
-			color: $color-menu-active-item  !important; // $color-white
+			color: $color-menu-active-item !important; // $color-white
 		}
-		
 	}
 
 	&:before {
@@ -77,8 +76,13 @@
 	}
 
 	@include breakpoint-lg {
-		@include rem(height, 82);
-		@include rem(padding, 0, 20, 0, 0);
+		@include rem(height, 50);
+		@include rem(min-height, 50);
+
+		&::before {
+			// margin-left: 32px;
+			font-size: 14px;
+		}
 	}
 
 	@include breakpoint-md {
@@ -87,7 +91,7 @@
 		@include rem(height, 82);
 		@include rem(padding, 0, 0, 0, 0);
 
-		>span {
+		> span {
 			overflow: hidden;
 		}
 
@@ -103,7 +107,7 @@
 	@include breakpoint-menu-sm {
 		@include rem(height, 50);
 		@include rem(min-height, 50);
-		
+
 		&::before {
 			// margin-left: 32px;
 			font-size: 14px;
