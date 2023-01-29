@@ -1,14 +1,16 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import q from 'q';
-import config from 'config';
-import { format } from 'util';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import HtmlInputComponent from 'shared/inputs/html-input/html-input.component';
-import TextInputComponent from 'shared/inputs/text-input/text-input.component';
-import { scrollToTop } from 'helpers/scrollToTop';
-import ChangeDetection from 'helpers/changeDetection';
-import userPermissions from 'enums/user-permissions.enum';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import q from "q";
+import config from "config";
+import { format } from "util";
+import TopbarComponent from "shared/topbar/topbar.component";
+import ButtonComponent from "shared/button/button.component";
+import HtmlInputComponent from "shared/inputs/html-input/html-input.component";
+import TextInputComponent from "shared/inputs/text-input/text-input.component";
+import { scrollToTop } from "helpers/scrollToTop";
+import ChangeDetection from "helpers/changeDetection";
+import userPermissions from "enums/user-permissions.enum";
+import history from "../../helpers/history";
 
 const changeDetection = new ChangeDetection();
 
@@ -19,7 +21,7 @@ class SettingsTextModulesComponent extends React.Component {
 		this.state = {
 			textModules: props.textModules,
 			isSubmitting: false,
-			canUpdateTextBlocks: null
+			canUpdateTextBlocks: null,
 		};
 
 		setTimeout(() => {
@@ -29,7 +31,7 @@ class SettingsTextModulesComponent extends React.Component {
 
 	componentDidMount() {
 		this.setState({
-			canUpdateTextBlocks: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_TEXT_MODULES)
+			canUpdateTextBlocks: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_TEXT_MODULES),
 		});
 		setTimeout(() => {
 			setTimeout(() => {
@@ -42,7 +44,7 @@ class SettingsTextModulesComponent extends React.Component {
 
 					return {
 						original: dataOriginal,
-						current: currentData
+						current: currentData,
 					};
 				});
 			}, 0);
@@ -53,161 +55,175 @@ class SettingsTextModulesComponent extends React.Component {
 		changeDetection.unbindEventListeners();
 	}
 
-	onTopbarButtonClick() {
+	onTopbarButtonClick(action) {
 		const { resources } = this.props;
 		const { textModules } = this.state;
 
-		this.setState({ isSubmitting: true }, () => {
-			const requests = [
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.offer.id}`, {
-					auth: true,
-					method: 'PUT',
-					data: {
-						introduction: textModules.offer.introduction,
-						conclusion: textModules.offer.conclusion,
-						email: textModules.offer.email
-					}
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.purchaseOrder.id}`, {
-					auth: true,
-					method: 'PUT',
-					data: {
-						introduction: textModules.purchaseOrder.introduction,
-						conclusion: textModules.purchaseOrder.conclusion,
-						email: textModules.purchaseOrder.email
-					}
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.invoice.id}`, {
-					auth: true,
-					method: 'PUT',
-					data: {
-						introduction: textModules.invoice.introduction,
-						conclusion: textModules.invoice.conclusion,
-						email: textModules.invoice.email
-					}
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.posReceipt.id}`, {
-					auth: true,
-					method: 'PUT',
-					data: {
-						introduction: textModules.posReceipt.introduction,
-						conclusion: textModules.posReceipt.conclusion,
-						email: textModules.posReceipt.email
-					}
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.recurringInvoice.id}`, {
-					auth: true,
-					method: 'PUT',
-					data: {
-						email: textModules.recurringInvoice.email,
-						emailSubject: textModules.recurringInvoice.emailSubject
-					}
-				}),
-				invoiz.request(`${config.settings.endpoints.textModule}/${textModules.cancellation.id}`, {
-					auth: true,
-					method: 'PUT',
-					data: {
-						email: textModules.cancellation.email,
-						emailSubject: textModules.cancellation.emailSubject
-					}
-				})
-			];
+		if (action === "save") {
+			this.setState({ isSubmitting: true }, () => {
+				const requests = [
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.offer.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.offer.introduction,
+							conclusion: textModules.offer.conclusion,
+							email: textModules.offer.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.purchaseOrder.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.purchaseOrder.introduction,
+							conclusion: textModules.purchaseOrder.conclusion,
+							email: textModules.purchaseOrder.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.invoice.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.invoice.introduction,
+							conclusion: textModules.invoice.conclusion,
+							email: textModules.invoice.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.posReceipt.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							introduction: textModules.posReceipt.introduction,
+							conclusion: textModules.posReceipt.conclusion,
+							email: textModules.posReceipt.email,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.recurringInvoice.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							email: textModules.recurringInvoice.email,
+							emailSubject: textModules.recurringInvoice.emailSubject,
+						},
+					}),
+					invoiz.request(`${config.settings.endpoints.textModule}/${textModules.cancellation.id}`, {
+						auth: true,
+						method: "PUT",
+						data: {
+							email: textModules.cancellation.email,
+							emailSubject: textModules.cancellation.emailSubject,
+						},
+					}),
+				];
 
-			q.allSettled(requests)
-				.then(results => {
-					let error = false;
-					let errorOffers = false;
-					let errorInvoices = false;
-					let errorPosReceipts = false;
-					let errorRecurringInvoices = false;
-					let errorCancellations = false;
+				q.allSettled(requests)
+					.then((results) => {
+						let error = false;
+						let errorOffers = false;
+						let errorInvoices = false;
+						let errorPosReceipts = false;
+						let errorRecurringInvoices = false;
+						let errorCancellations = false;
 
-					if (results[0].state === 'rejected') {
-						error = errorOffers = true;
+						if (results[0].state === "rejected") {
+							error = errorOffers = true;
 
-						invoiz.page.showToast({
-							type: 'error',
-							message: format(resources.textModuleSaveErrorMessage, resources.str_deals)
-						});
-					}
-
-					if (results[1].state === 'rejected') {
-						error = errorInvoices = true;
-
-						invoiz.page.showToast({
-							type: 'error',
-							message: format(resources.textModuleSaveErrorMessage, resources.str_bills)
-						});
-					}
-
-					if (results[2].state === 'rejected') {
-						error = errorRecurringInvoices = true;
-
-						invoiz.page.showToast({
-							type: 'error',
-							message: format(resources.textModuleSaveErrorMessage, resources.str_recurringBills)
-						});
-					}
-
-					if (results[3].state === 'rejected') {
-						error = errorCancellations = true;
-
-						invoiz.page.showToast({
-							type: 'error',
-							message: format(resources.textModuleSaveErrorMessage, resources.str_cancellationInvoice)
-						});
-					}
-
-					if (!error) {
-						invoiz.page.showToast({
-							message: resources.textModuleUpdateSuccessMessage
-						});
-					} else {
-						if (!errorOffers) {
 							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_deals)
+								type: "error",
+								message: format(resources.textModuleSaveErrorMessage, resources.str_deals),
 							});
 						}
 
-						if (!errorInvoices) {
-							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_bills)
-							});
-						}
-						if(!errorPosReceipts){
-							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_bills)
-							});
-						}
+						if (results[1].state === "rejected") {
+							error = errorInvoices = true;
 
-						if (!errorRecurringInvoices) {
 							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_recurringBills)
+								type: "error",
+								message: format(resources.textModuleSaveErrorMessage, resources.str_bills),
 							});
 						}
 
-						if (!errorCancellations) {
+						if (results[2].state === "rejected") {
+							error = errorRecurringInvoices = true;
+
 							invoiz.page.showToast({
-								message: format(resources.textModuleSaveSuccessMessage, resources.str_cancellationInvoice)
+								type: "error",
+								message: format(resources.textModuleSaveErrorMessage, resources.str_recurringBills),
 							});
 						}
-					}
-				})
-				.done(() => {
-					const dataOriginal = JSON.stringify(this.state.textModules);
 
-					changeDetection.setModelGetter(() => {
-						const currentData = JSON.stringify(this.state.textModules);
+						if (results[3].state === "rejected") {
+							error = errorCancellations = true;
 
-						return {
-							original: dataOriginal,
-							current: currentData
-						};
+							invoiz.page.showToast({
+								type: "error",
+								message: format(
+									resources.textModuleSaveErrorMessage,
+									resources.str_cancellationInvoice
+								),
+							});
+						}
+
+						if (!error) {
+							invoiz.page.showToast({
+								message: resources.textModuleUpdateSuccessMessage,
+							});
+						} else {
+							if (!errorOffers) {
+								invoiz.page.showToast({
+									message: format(resources.textModuleSaveSuccessMessage, resources.str_deals),
+								});
+							}
+
+							if (!errorInvoices) {
+								invoiz.page.showToast({
+									message: format(resources.textModuleSaveSuccessMessage, resources.str_bills),
+								});
+							}
+							if (!errorPosReceipts) {
+								invoiz.page.showToast({
+									message: format(resources.textModuleSaveSuccessMessage, resources.str_bills),
+								});
+							}
+
+							if (!errorRecurringInvoices) {
+								invoiz.page.showToast({
+									message: format(
+										resources.textModuleSaveSuccessMessage,
+										resources.str_recurringBills
+									),
+								});
+							}
+
+							if (!errorCancellations) {
+								invoiz.page.showToast({
+									message: format(
+										resources.textModuleSaveSuccessMessage,
+										resources.str_cancellationInvoice
+									),
+								});
+							}
+						}
+					})
+					.done(() => {
+						const dataOriginal = JSON.stringify(this.state.textModules);
+
+						changeDetection.setModelGetter(() => {
+							const currentData = JSON.stringify(this.state.textModules);
+
+							return {
+								original: dataOriginal,
+								current: currentData,
+							};
+						});
+
+						this.setState({ isSubmitting: false });
+						window.history.back();
 					});
-
-					this.setState({ isSubmitting: false });
-				});
-		});
+			});
+		} else {
+			window.history.back();
+		}
 	}
 
 	updateValue(type, key, value) {
@@ -230,16 +246,24 @@ class SettingsTextModulesComponent extends React.Component {
 				<TopbarComponent
 					title={resources.str_textModules}
 					viewIcon={`icon-settings`}
-					buttonCallback={(ev, button) => this.onTopbarButtonClick()}
+					buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
 					buttons={[
 						{
-							type: 'primary',
+							type: "default",
+							label: resources.str_cancel,
+							// buttonIcon: "icon-check",
+							action: "cancel",
+							// disabled: isSubmitting || !canUpdateTextBlocks,
+							dataQsId: "settings-textModules-btn-cancel",
+						},
+						{
+							type: "primary",
 							label: resources.str_toSave,
-							buttonIcon: 'icon-check',
-							action: 'save',
+							buttonIcon: "icon-check",
+							action: "save",
 							disabled: isSubmitting || !canUpdateTextBlocks,
-							dataQsId: 'settings-textModules-btn-save'
-						}
+							dataQsId: "settings-textModules-btn-save",
+						},
 					]}
 				/>
 
@@ -257,13 +281,11 @@ class SettingsTextModulesComponent extends React.Component {
 							</div>
 						</div>
 					</div> */}
-					{pathName === "/settings/text-modules/offer" ? 
+					{pathName === "/settings/text-modules/offer" ? (
 						<div className="row">
 							<div className="col-xs-12 text-h4">
 								{resources.str_offerUpperCase}
-								<div className="form_groupheaderSubtext">
-									{resources.textModuleDefaultOfferText}
-								</div>
+								<div className="form_groupheaderSubtext">{resources.textModuleDefaultOfferText}</div>
 							</div>
 							<div className="col-xs-12 u_pbt_20">
 								<div className="row">
@@ -272,11 +294,14 @@ class SettingsTextModulesComponent extends React.Component {
 									</div>
 									<div className="col-xs-8">
 										<HtmlInputComponent
-										// label={resources.str_introductionText}
-										placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_deals)}
-										value={textModules.offer.introduction}
-										onTextChange={val => this.updateValue('offer', 'introduction', val)}
-										disabled={!canUpdateTextBlocks}
+											// label={resources.str_introductionText}
+											placeholder={format(
+												resources.textModulePlaceholderIntroductionText,
+												resources.str_deals
+											)}
+											value={textModules.offer.introduction}
+											onTextChange={(val) => this.updateValue("offer", "introduction", val)}
+											disabled={!canUpdateTextBlocks}
 										/>
 									</div>
 									<div className="col-xs-4 left-center-heading">
@@ -284,11 +309,14 @@ class SettingsTextModulesComponent extends React.Component {
 									</div>
 									<div className="col-xs-8">
 										<HtmlInputComponent
-										// label={resources.str_finalText}
-										placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_deals)}
-										value={textModules.offer.conclusion}
-										onTextChange={val => this.updateValue('offer', 'conclusion', val)}
-										disabled={!canUpdateTextBlocks}
+											// label={resources.str_finalText}
+											placeholder={format(
+												resources.textModulePlaceholderConclusionText,
+												resources.str_deals
+											)}
+											value={textModules.offer.conclusion}
+											onTextChange={(val) => this.updateValue("offer", "conclusion", val)}
+											disabled={!canUpdateTextBlocks}
 										/>
 									</div>
 									<div className="col-xs-4 left-center-heading">
@@ -296,19 +324,27 @@ class SettingsTextModulesComponent extends React.Component {
 									</div>
 									<div className="col-xs-8">
 										<HtmlInputComponent
-										// label={resources.str_emails}
-										placeholder={resources.textModulesPlaceholderEmailText}
-										value={textModules.offer.email}
-										onTextChange={val => this.updateValue('offer', 'email', val)}
-										disabled={!canUpdateTextBlocks}
+											// label={resources.str_emails}
+											placeholder={resources.textModulesPlaceholderEmailText}
+											value={textModules.offer.email}
+											onTextChange={(val) => this.updateValue("offer", "email", val)}
+											disabled={!canUpdateTextBlocks}
 										/>
 									</div>
 								</div>
+								<ButtonComponent
+									type="cancel"
+									callback={() => {
+										window.history.back();
+									}}
+									label="Cancel"
+									float="float-right"
+								/>
 							</div>
 						</div>
-					: null}
-				
-					{pathName === "/settings/text-modules/invoice" ? 
+					) : null}
+
+					{pathName === "/settings/text-modules/invoice" ? (
 						<div>
 							<div className="row">
 								<div className="col-xs-12 text-h4">
@@ -318,100 +354,116 @@ class SettingsTextModulesComponent extends React.Component {
 									</div>
 								</div>
 								<div className="col-xs-12 u_pbt_20">
-								<div className="row">
-									<div className="col-xs-4 left-center-heading">
-										<label>{resources.str_introductionText}</label>
+									<div className="row">
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.str_introductionText}</label>
+										</div>
+										<div className="col-xs-8">
+											<HtmlInputComponent
+												// label={resources.str_introductionText}
+												placeholder={format(
+													resources.textModulePlaceholderIntroductionText,
+													resources.str_bills
+												)}
+												value={textModules.invoice.introduction}
+												onTextChange={(val) => this.updateValue("invoice", "introduction", val)}
+												disabled={!canUpdateTextBlocks}
+											/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.str_finalText}</label>
+										</div>
+										<div className="col-xs-8">
+											<HtmlInputComponent
+												// label={resources.str_finalText}
+												placeholder={format(
+													resources.textModulePlaceholderConclusionText,
+													resources.str_bills
+												)}
+												value={textModules.invoice.conclusion}
+												onTextChange={(val) => this.updateValue("invoice", "conclusion", val)}
+												disabled={!canUpdateTextBlocks}
+											/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.str_emails}</label>
+										</div>
+										<div className="col-xs-8">
+											<HtmlInputComponent
+												// label={resources.str_emails}
+												placeholder={resources.textModulesPlaceholderEmailText}
+												value={textModules.invoice.email}
+												onTextChange={(val) => this.updateValue("invoice", "email", val)}
+												disabled={!canUpdateTextBlocks}
+											/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.textModulesRecurringInvoiceEmailSubject}</label>
+										</div>
+										<div className="col-xs-8">
+											<TextInputComponent
+												name={"recurringInvoiceEmailSubject"}
+												value={textModules.recurringInvoice.emailSubject}
+												onChange={(evt) =>
+													this.updateValue(
+														"recurringInvoice",
+														"emailSubject",
+														evt.target.value
+													)
+												}
+												// label={resources.textModulesRecurringInvoiceEmailSubject}
+												placeholder={resources.textModulesPlaceholderEmailText}
+												autoComplete="off"
+												spellCheck="false"
+												wrapperClass="box-border"
+												disabled={!canUpdateTextBlocks}
+											/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.textModulesRecurringInvoiceEmailText}</label>
+										</div>
+										<div className="col-xs-8">
+											<HtmlInputComponent
+												// label={resources.textModulesRecurringInvoiceEmailText}
+												placeholder={resources.textModulesPlaceholderEmailText}
+												value={textModules.recurringInvoice.email}
+												onTextChange={(val) =>
+													this.updateValue("recurringInvoice", "email", val)
+												}
+												disabled={!canUpdateTextBlocks}
+											/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.textModulesCancellationEmailSubject}</label>
+										</div>
+										<div className="col-xs-8">
+											<TextInputComponent
+												name={"cancellationEmailSubject"}
+												value={textModules.cancellation.emailSubject}
+												onChange={(evt) =>
+													this.updateValue("cancellation", "emailSubject", evt.target.value)
+												}
+												// label={resources.textModulesCancellationEmailSubject}
+												placeholder={resources.textModulesPlaceholderEmailText}
+												autoComplete="off"
+												spellCheck="false"
+												wrapperClass="box-border"
+												disabled={!canUpdateTextBlocks}
+											/>
+										</div>
+										<div className="col-xs-4 left-center-heading">
+											<label>{resources.textModulesCancellationEmailShippment}</label>
+										</div>
+										<div className="col-xs-8">
+											<HtmlInputComponent
+												// label={resources.textModulesCancellationEmailShippment}
+												placeholder={resources.textModulesPlaceholderEmailText}
+												value={textModules.cancellation.email}
+												onTextChange={(val) => this.updateValue("cancellation", "email", val)}
+												disabled={!canUpdateTextBlocks}
+											/>
+										</div>
 									</div>
-									<div className="col-xs-8">
-									<HtmlInputComponent
-										// label={resources.str_introductionText}
-										placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_bills)}
-										value={textModules.invoice.introduction}
-										onTextChange={val => this.updateValue('invoice', 'introduction', val)}
-										disabled={!canUpdateTextBlocks}
-									/>
-									</div>
-									<div className="col-xs-4 left-center-heading">
-										<label>{resources.str_finalText}</label>
-									</div>
-									<div className="col-xs-8">
-									<HtmlInputComponent
-										// label={resources.str_finalText}
-										placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_bills)}
-										value={textModules.invoice.conclusion}
-										onTextChange={val => this.updateValue('invoice', 'conclusion', val)}
-										disabled={!canUpdateTextBlocks}
-									/>
-									</div>
-									<div className="col-xs-4 left-center-heading">
-										<label>{resources.str_emails}</label>
-									</div>
-									<div className="col-xs-8">
-									<HtmlInputComponent
-										// label={resources.str_emails}
-										placeholder={resources.textModulesPlaceholderEmailText}
-										value={textModules.invoice.email}
-										onTextChange={val => this.updateValue('invoice', 'email', val)}
-										disabled={!canUpdateTextBlocks}
-									/>
-									</div>
-									<div className="col-xs-4 left-center-heading">
-										<label>{resources.textModulesRecurringInvoiceEmailSubject}</label>
-									</div>
-									<div className="col-xs-8">
-									<TextInputComponent
-										name={'recurringInvoiceEmailSubject'}
-										value={textModules.recurringInvoice.emailSubject}
-										onChange={evt => this.updateValue('recurringInvoice', 'emailSubject', evt.target.value)}
-										// label={resources.textModulesRecurringInvoiceEmailSubject}
-										placeholder={resources.textModulesPlaceholderEmailText}
-										autoComplete="off"
-										spellCheck="false"
-										wrapperClass="box-border"
-										disabled={!canUpdateTextBlocks}
-									/>
-									</div>
-									<div className="col-xs-4 left-center-heading">
-										<label>{resources.textModulesRecurringInvoiceEmailText}</label>
-									</div>
-									<div className="col-xs-8">
-									<HtmlInputComponent
-										// label={resources.textModulesRecurringInvoiceEmailText}
-										placeholder={resources.textModulesPlaceholderEmailText}
-										value={textModules.recurringInvoice.email}
-										onTextChange={val => this.updateValue('recurringInvoice', 'email', val)}
-										disabled={!canUpdateTextBlocks}
-									/>
-									</div>
-									<div className="col-xs-4 left-center-heading">
-										<label>{resources.textModulesCancellationEmailSubject}</label>
-									</div>
-									<div className="col-xs-8">
-									<TextInputComponent
-										name={'cancellationEmailSubject'}
-										value={textModules.cancellation.emailSubject}
-										onChange={evt => this.updateValue('cancellation', 'emailSubject', evt.target.value)}
-										// label={resources.textModulesCancellationEmailSubject}
-										placeholder={resources.textModulesPlaceholderEmailText}
-										autoComplete="off"
-										spellCheck="false"
-										wrapperClass="box-border"
-										disabled={!canUpdateTextBlocks}
-									/>
-									</div>
-									<div className="col-xs-4 left-center-heading">
-										<label>{resources.textModulesCancellationEmailShippment}</label>
-									</div>
-									<div className="col-xs-8">
-									<HtmlInputComponent
-										// label={resources.textModulesCancellationEmailShippment}
-										placeholder={resources.textModulesPlaceholderEmailText}
-										value={textModules.cancellation.email}
-										onTextChange={val => this.updateValue('cancellation', 'email', val)}
-										disabled={!canUpdateTextBlocks}
-									/>
-									</div>
-								</div>
 								</div>
 							</div>
 
@@ -428,43 +480,53 @@ class SettingsTextModulesComponent extends React.Component {
 											<label>{resources.str_posTermsAndConditions}</label>
 										</div>
 										<div className="col-xs-8">
-										<HtmlInputComponent
-										// label={resources.str_posTermsAndConditions}
-										placeholder={format(resources.textModulePlaceholderIntroductionText, resources.str_posReceiptSmall)}
-										value={textModules.posReceipt.introduction}
-										onTextChange={val => this.updateValue('posReceipt', 'introduction', val)}
-										disabled={!canUpdateTextBlocks}
-										/>
+											<HtmlInputComponent
+												// label={resources.str_posTermsAndConditions}
+												placeholder={format(
+													resources.textModulePlaceholderIntroductionText,
+													resources.str_posReceiptSmall
+												)}
+												value={textModules.posReceipt.introduction}
+												onTextChange={(val) =>
+													this.updateValue("posReceipt", "introduction", val)
+												}
+												disabled={!canUpdateTextBlocks}
+											/>
 										</div>
 										<div className="col-xs-4 left-center-heading">
 											<label>{resources.str_finalText}</label>
 										</div>
 										<div className="col-xs-8">
-										<HtmlInputComponent
-										// label={resources.str_finalText}
-										placeholder={format(resources.textModulePlaceholderConclusionText, resources.str_posReceiptSmall)}
-										value={textModules.posReceipt.conclusion}
-										onTextChange={val => this.updateValue('posReceipt', 'conclusion', val)}
-										disabled={!canUpdateTextBlocks}
-										/>
+											<HtmlInputComponent
+												// label={resources.str_finalText}
+												placeholder={format(
+													resources.textModulePlaceholderConclusionText,
+													resources.str_posReceiptSmall
+												)}
+												value={textModules.posReceipt.conclusion}
+												onTextChange={(val) =>
+													this.updateValue("posReceipt", "conclusion", val)
+												}
+												disabled={!canUpdateTextBlocks}
+											/>
 										</div>
 										<div className="col-xs-4 left-center-heading">
 											<label>{resources.str_emails}</label>
 										</div>
 										<div className="col-xs-8">
-										<HtmlInputComponent
-										// label={resources.str_emails}
-										placeholder={resources.textModulesPlaceholderEmailText}
-										value={textModules.posReceipt.email}
-										onTextChange={val => this.updateValue('posReceipt', 'email', val)}
-										disabled={!canUpdateTextBlocks}
-									/>
+											<HtmlInputComponent
+												// label={resources.str_emails}
+												placeholder={resources.textModulesPlaceholderEmailText}
+												value={textModules.posReceipt.email}
+												onTextChange={(val) => this.updateValue("posReceipt", "email", val)}
+												disabled={!canUpdateTextBlocks}
+											/>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					: null}
+					) : null}
 					{/* <div className="row u_pt_20">
 						<div className="col-xs-4 form_groupheader_edit text-h4">
 							{resources.str_purchaseOrderUpperCase}
@@ -498,7 +560,6 @@ class SettingsTextModulesComponent extends React.Component {
 							/>
 						</div>
 					</div> */}
-
 				</div>
 			</div>
 		);

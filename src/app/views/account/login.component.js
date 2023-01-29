@@ -16,6 +16,7 @@ import sidebarMorningIcon from 'assets/images/svg/15_million_freelancers.svg';
 import sidebarAfternoonIcon from 'assets/images/svg/160_countries.svg';
 import sidebarEveningIcon from 'assets/images/svg/gst.svg';
 import sidebarNightIcon from 'assets/images/svg/startups.svg';
+import landingImage from "assets/images/login/login.jpg";
 import OldBrowserModalComponent from 'shared/modals/old-browser-modal.component';
 import { isOutdatedBrowser } from 'helpers/isOutdatedBrowser';
 // import { errorCodesWithMessages } from 'helpers/constants';
@@ -27,6 +28,7 @@ import { connect } from 'react-redux';
 import { detectDevice } from 'helpers/detectDevice';
 import Carousel from 'shared/carousel/Carousel.component';
 import Invoiz from 'services/invoiz.service';
+
 class LoginComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -333,7 +335,7 @@ class LoginComponent extends React.Component {
 						</Link>
 					</div> */}
 
-					<div className="landing-carousel-wrapper">
+					{/* <div className="landing-carousel-wrapper">
 						<Carousel 
 							className="landing-carousel"
 							activeSlide={activeSlide} 
@@ -419,7 +421,9 @@ class LoginComponent extends React.Component {
 								/>
 							</Carousel.PageIndicators>
 						</Carousel>
-					</div>
+					</div> */}
+					
+					<img className='landing-image' src={landingImage}/>
 
 					<div className="media-coverage text-center">
 						<p className="media-coverage-title">National media that has covered us!</p>

@@ -1,380 +1,391 @@
 @import "../abstracts/_variables";
 @import "../abstracts/_mixins";
 
-@mixin button-color($bgColor:lightgray, $textColor:white, $step:13) {
-    color: $textColor;
+@mixin button-color($bgColor: lightgray, $textColor: white, $step: 13) {
+	color: $textColor;
 	background: $bgColor;
-	
-    &::before {
-        background: lighten($bgColor,$step);
+
+	&::before {
+		background: lighten($bgColor, $step);
 	}
-	
-    &::after {
-        background: lighten($bgColor,$step);
+
+	&::after {
+		background: lighten($bgColor, $step);
 	}
-	
-    &:link, &:visited, &:hover, &:focus, &:active {
-        color: $textColor;
+
+	&:link,
+	&:visited,
+	&:hover,
+	&:focus,
+	&:active {
+		color: $textColor;
 	}
-	
-    &:not(:disabled) {
-        &:hover, &:focus {
-            background: darken($bgColor,$step);
-            &::before {
-                background: $bgColor;
-            }
-            &::after {
-                background: $bgColor;
-            }
-        }
+
+	&:not(:disabled) {
+		&:hover,
+		&:focus {
+			background: darken($bgColor, $step);
+			&::before {
+				background: $bgColor;
+			}
+			&::after {
+				background: $bgColor;
+			}
+		}
 	}
-	
-    &.button-square, &.button-square-large {
-        &::before {
-            background: $bgColor;
-        }
-        &:not(:disabled) {
-            &:hover, &:focus {
-                &::before {
-                    background: lighten($bgColor,$step);
-                }
-            }
-        }
-    }
+
+	&.button-square,
+	&.button-square-large {
+		&::before {
+			background: $bgColor;
+		}
+		&:not(:disabled) {
+			&:hover,
+			&:focus {
+				&::before {
+					background: lighten($bgColor, $step);
+				}
+			}
+		}
+	}
 }
 
 .button {
-    $height: 48;
-    $height-small: 32;
-    display: inline-block;
-    text-align: center;
-    position: relative;
-    border: 0;
-    border-radius: 0;
-    cursor: pointer;
-    outline: none;
-    font-weight: 600;
+	$height: 48;
+	$height-small: 32;
+	display: inline-block;
+	text-align: center;
+	position: relative;
+	border: 0;
+	border-radius: 0;
+	cursor: pointer;
+	outline: none;
+	font-weight: 600;
 	transition: 0.1s all ease-in-out;
-	
-    @include rem(line-height,$height);
-    @include rem(height,$height);
-    @include rem(padding,0,30);
-    @include rem(margin-right,10);
-    @include rem(font-size,14);
-	@include button-color(#aaaaaa,white);
-	
-    &:before {
-        @include rem(font-size,13);
+
+	@include rem(line-height, $height);
+	@include rem(height, $height);
+	@include rem(padding, 0, 30);
+	@include rem(margin-right, 10);
+	@include rem(font-size, 14);
+	@include button-color(#aaaaaa, white);
+
+	&:before {
+		@include rem(font-size, 13);
 	}
-	
-    &:after {
-        @include rem(margin-left,3);
-        @include rem(font-size,10);
+
+	&:after {
+		@include rem(margin-left, 3);
+		@include rem(font-size, 10);
 	}
-	
-    &:disabled {
-        @include button-color(#f0f0f0,#dddddd,3);
+
+	&:disabled {
+		@include button-color(#f0f0f0, #dddddd, 3);
 	}
-	
-    &:last-child {
-        @include rem(margin-right,0);
+
+	&:last-child {
+		@include rem(margin-right, 0);
 	}
-	
-    &-primary {
-        @include button-color($color-primary);
+
+	&-primary {
+		@include button-color($color-primary);
 	}
-	
-    &-inverted {
-        @include button-color(white);
-        color: $color-primary;
-        &:hover {
-            color: $color-text-muted;
-            background: white !important;
-        }
-	}
-	
-    &-inverted-grey {
-        @include button-color(white);
-        color: #cdcdcd;
-        &:hover {
-            color: $color-primary;
-        }
-	}
-	
-    &-delete {
-        @include button-color($color-secondary);
-	}
-	
-    &-secondary {
-        @include button-color($color-secondary);
-	}
-	
-    &-transparent {
-        background: transparent !important;
-        &::before {
-            background: transparent !important;
-        }
-        &::after {
-            background: transparent !important;
-        }
-	}
-	
-    &-icon {
-        &-transparent {
-            &::before {
-                background: transparent !important;
-            }
-            &::after {
-                background: transparent !important;
-            }
-        }
-	}
-	
-    &-light {
-        @include button-color(transparent,$color-text-placeholder);
-        border: 1px solid transparent;
-        &:disabled {
-            @include button-color(transparent,#cccccc);
-        }
-        &:not(:disabled) {
-            &:hover, &:focus {
-                background: rgba(255,255,255,0.3);
-                border: 1px solid #dddddd;
-            }
-        }
-	}
-	
-    &-wide, &-wide-long-text {
-        display: block;
-        width: 100%;
-	}
-	
-    &-wide-long-text {
-        @include rem(padding,0,6);
-	}
-	
-    &-square, &-square-large {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        @include rem(width,48);
-        @include rem(height,48);
-        @include rem(margin,0);
-		@include rem(padding,0);
-		
-        &:before {
-            display: flex;
-            align-items: center;
-            margin: 0;
+
+	&-inverted {
+		@include button-color(white);
+		color: $color-primary;
+		&:hover {
+			color: $color-text-muted;
+			background: white !important;
 		}
-		
-        &.button-small {
-            @include rem(width,$height-small);
-            @include rem(padding,0);
-        }
 	}
-	
-    &-square-large {
-        @include rem(height,64);
-        @include rem(width,64);
+
+	&-inverted-grey {
+		@include button-color(white);
+		color: #cdcdcd;
+		&:hover {
+			color: $color-primary;
+		}
 	}
-	
-    &-small {
-        @include rem(line-height,$height-small);
-        @include rem(height,$height-small);
-        @include rem(font-size,13);
-        @include rem(padding,0,24);
+
+	&-delete {
+		@include button-color($color-secondary);
 	}
-	
-    @each $name, $char in $iconfont-icons {
+
+	&-secondary {
+		@include button-color($color-secondary);
+	}
+
+	&-transparent {
+		background: transparent !important;
+		&::before {
+			background: transparent !important;
+		}
+		&::after {
+			background: transparent !important;
+		}
+	}
+
+	&-icon {
+		&-transparent {
+			&::before {
+				background: transparent !important;
+			}
+			&::after {
+				background: transparent !important;
+			}
+		}
+	}
+
+	&-light {
+		@include button-color(transparent, $color-text-placeholder);
+		border: 1px solid transparent;
+		&:disabled {
+			@include button-color(transparent, #cccccc);
+		}
+		&:not(:disabled) {
+			&:hover,
+			&:focus {
+				background: rgba(255, 255, 255, 0.3);
+				border: 1px solid #dddddd;
+			}
+		}
+	}
+
+	&-wide,
+	&-wide-long-text {
+		display: block;
+		width: 100%;
+	}
+
+	&-wide-long-text {
+		@include rem(padding, 0, 6);
+	}
+
+	&-square,
+	&-square-large {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		@include rem(width, 48);
+		@include rem(height, 48);
+		@include rem(margin, 0);
+		@include rem(padding, 0);
+
+		&:before {
+			display: flex;
+			align-items: center;
+			margin: 0;
+		}
+
+		&.button-small {
+			@include rem(width, $height-small);
+			@include rem(padding, 0);
+		}
+	}
+
+	&-square-large {
+		@include rem(height, 64);
+		@include rem(width, 64);
+	}
+
+	&-small {
+		@include rem(line-height, $height-small);
+		@include rem(height, $height-small);
+		@include rem(font-size, 13);
+		@include rem(padding, 0, 24);
+	}
+
+	@each $name, $char in $iconfont-icons {
 		&-icon-#{$name} {
-			@include rem(padding-left,0);
-			
-            &.button-wide {
-                @include rem(padding-left,$height + 30);
+			@include rem(padding-left, 0);
+
+			&.button-wide {
+				@include rem(padding-left, $height + 30);
 			}
-			
-            &.button-wide-long-text {
-                @include rem(padding-left,$height + 6);
+
+			&.button-wide-long-text {
+				@include rem(padding-left, $height + 6);
 			}
-			
-            &.button-wide::before, &.button-wide-long-text::before {
-                position: absolute;
-                left: 0;
+
+			&.button-wide::before,
+			&.button-wide-long-text::before {
+				position: absolute;
+				left: 0;
 			}
-			
-            &.button-wide-long-text::before {
-                @include rem(margin-right,6);
+
+			&.button-wide-long-text::before {
+				@include rem(margin-right, 6);
 			}
-			
-            &.button-square::before {
-                @include rem(left,16);
-                @include rem(width,48);
-                @include rem(height,48);
-                margin-right: 0;
+
+			&.button-square::before {
+				@include rem(left, 16);
+				@include rem(width, 48);
+				@include rem(height, 48);
+				margin-right: 0;
 			}
-			
-            &.button-square-large:before {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                @include rem(font-size,20);
-                @include rem(height,64);
-                width: 100%;
-                margin-right: 0;
+
+			&.button-square-large:before {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				@include rem(font-size, 20);
+				@include rem(height, 64);
+				width: 100%;
+				margin-right: 0;
 			}
-			
-            &.button-square.button-small {
-                @include rem(width,$height-small);
-                &::before {
-                    @include rem(left,8);
-                    @include rem(margin-right,0);
-                    padding-top: 0;
-                }
+
+			&.button-square.button-small {
+				@include rem(width, $height-small);
+				&::before {
+					@include rem(left, 8);
+					@include rem(margin-right, 0);
+					padding-top: 0;
+				}
 			}
-			
-            &.button-small {
-                &.button-wide {
-                    @include rem(padding-left,$height-small + 8);
-                }
-                &::before {
-                    @include rem(width,$height-small);
-                    @include rem(height,$height-small);
-                    @include rem(margin-right,24);
-                }
+
+			&.button-small {
+				&.button-wide {
+					@include rem(padding-left, $height-small + 8);
+				}
+				&::before {
+					@include rem(width, $height-small);
+					@include rem(height, $height-small);
+					@include rem(margin-right, 24);
+				}
 			}
-			
-            &.button-light {
-                &::before {
-                    @include rem(margin-right,-8);
-                }
+
+			&.button-light {
+				&::before {
+					@include rem(margin-right, -8);
+				}
 			}
-			
-            &.button-light.button-small {
-                @include rem(padding-right,8);
-                &::before {
-                    @include rem(margin-right,0);
-                }
+
+			&.button-light.button-small {
+				@include rem(padding-right, 8);
+				&::before {
+					@include rem(margin-right, 0);
+				}
 			}
-			
-            @include icon(before, $name) {
-                display: inline-block;
-                transition: 0.1s all ease-in-out;
-                @include rem(width,$height);
-                @include rem(height,$height);
-                @include rem(margin-right,30);
-            }
-        }
+
+			@include icon(before, $name) {
+				display: inline-block;
+				transition: 0.1s all ease-in-out;
+				@include rem(width, $height);
+				@include rem(height, $height);
+				@include rem(margin-right, 30);
+			}
+		}
 	}
-	
+
 	@each $name, $char in $iconfont-icons {
 		&-icon-after-#{$name} {
-			@include rem(padding-right,0);
-			
-            &.button-wide {
-                @include rem(padding-right,$height + 16);
-            }
-            &.button-wide::after {
-                position: absolute;
-                right: 0;
-            }
-            &.button-square::after {
-                @include rem(right,16);
-                @include rem(width,50);
-                @include rem(height,45);
-                @include rem(padding-top,3);
-                margin-left: 0;
-            }
-            &.button-square-large:after {
-                @include rem(font-size,20);
-                @include rem(width,64);
-                @include rem(height,53);
-                @include rem(padding-top,12);
-                margin-left: 0;
-            }
-            &.button-square.button-small {
-                @include rem(width,$height-small);
-                &::before {
-                    @include rem(right,8);
-                    @include rem(margin-left,0);
-                    padding-top: 0;
-                }
-            }
-            &.button-small {
-                &.button-wide {
-                    @include rem(padding-right,$height-small + 8);
-                }
-                &::after {
-                    @include rem(width,$height-small);
-                    @include rem(height,$height-small);
-                    @include rem(margin-left,24);
-                }
-            }
-            &.button-light {
-                &::after {
-                    @include rem(margin-left,-8);
-                }
-            }
-            &.button-light.button-small {
-                @include rem(padding-left,8);
-                &::after {
-                    @include rem(margin-left,0);
-                }
-            }
-            @include icon(after, $name) {
-                display: inline-block;
-                transition: 0.1s all ease-in-out;
-                @include rem(width,$height);
-                @include rem(height,$height);
-                @include rem(margin-left,38);
-                @include rem(margin-right,-1);
-            }
-        }
+			@include rem(padding-right, 0);
+
+			&.button-wide {
+				@include rem(padding-right, $height + 16);
+			}
+			&.button-wide::after {
+				position: absolute;
+				right: 0;
+			}
+			&.button-square::after {
+				@include rem(right, 16);
+				@include rem(width, 50);
+				@include rem(height, 45);
+				@include rem(padding-top, 3);
+				margin-left: 0;
+			}
+			&.button-square-large:after {
+				@include rem(font-size, 20);
+				@include rem(width, 64);
+				@include rem(height, 53);
+				@include rem(padding-top, 12);
+				margin-left: 0;
+			}
+			&.button-square.button-small {
+				@include rem(width, $height-small);
+				&::before {
+					@include rem(right, 8);
+					@include rem(margin-left, 0);
+					padding-top: 0;
+				}
+			}
+			&.button-small {
+				&.button-wide {
+					@include rem(padding-right, $height-small + 8);
+				}
+				&::after {
+					@include rem(width, $height-small);
+					@include rem(height, $height-small);
+					@include rem(margin-left, 24);
+				}
+			}
+			&.button-light {
+				&::after {
+					@include rem(margin-left, -8);
+				}
+			}
+			&.button-light.button-small {
+				@include rem(padding-left, 8);
+				&::after {
+					@include rem(margin-left, 0);
+				}
+			}
+			@include icon(after, $name) {
+				display: inline-block;
+				transition: 0.1s all ease-in-out;
+				@include rem(width, $height);
+				@include rem(height, $height);
+				@include rem(margin-left, 38);
+				@include rem(margin-right, -1);
+			}
+		}
 	}
-	
-    &-round {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: $color-primary !important;
-        background: white !important;
-        background-color: white !important;
-		@include rem(font-size,14);
-		
-        &:before {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white !important;
-            background: $color-primary !important;
-            border-radius: 50%;
-            width: 1.5rem !important;
-            height: 1.5rem !important;
-            @include rem(font-size,10);
-            @include rem(margin-right,10);
-        }
-    }
+
+	&-round {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: $color-primary !important;
+		background: white !important;
+		background-color: white !important;
+		@include rem(font-size, 14);
+
+		&:before {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			color: white !important;
+			background: $color-primary !important;
+			border-radius: 50%;
+			width: 1.5rem !important;
+			height: 1.5rem !important;
+			@include rem(font-size, 10);
+			@include rem(margin-right, 10);
+		}
+	}
 }
 
 .buttonRow {
-    display: flex;
+	display: flex;
 	justify-content: space-between;
-	
-    &-right {
-        justify-content: flex-end;
+
+	&-right {
+		justify-content: flex-end;
 	}
-	
-    &-left {
-        justify-content: flex-start;
+
+	&-left {
+		justify-content: flex-start;
 	}
-	
-    .button.button-left {
-        margin-right: auto;
+
+	.button.button-left {
+		margin-right: auto;
 	}
-	
-    .button.button-right {
-        margin-left: auto;
-    }
+
+	.button.button-right {
+		margin-left: auto;
+	}
 }
 
 .button-rounded {
@@ -391,7 +402,8 @@
 	font-weight: normal;
 	text-align: left;
 
-	&:not(:disabled):hover, &:not(:disabled):focus {
+	&:not(:disabled):hover,
+	&:not(:disabled):focus {
 		color: $color-text;
 		background: transparent;
 	}
@@ -408,15 +420,24 @@
 }
 
 .button-primary {
-    background: $color-primary;
+	background: $color-primary;
 }
 
-.button-primary:not(:disabled):hover, .button-primary:not(:disabled):focus {
-    background: $color-primary-hover;
+.button-primary:not(:disabled):hover,
+.button-primary:not(:disabled):focus {
+	background: $color-primary-hover;
 }
 
 .button-default {
-    color: $color-primary;
-    background-color: $color-white;
-    border: 1px solid;
+	color: $color-primary;
+	background-color: $color-white;
+	border: 1px solid;
+}
+
+.float-right {
+	float: right;
+}
+
+.float-left {
+	float: left;
 }
