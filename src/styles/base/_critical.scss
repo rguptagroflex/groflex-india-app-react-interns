@@ -8,122 +8,125 @@ $foreground: #666666;
 $duration: 1000;
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 }
 
 @keyframes blinker {
-    50% {
-        background: #e6f0fc;
-    }
+	50% {
+		background: #e6f0fc;
+	}
 }
 
 @keyframes slidein {
-    0% {
-        width: 0%;
-        opacity: 0;
-    }
-    100% {
-        width: $submenu-width;
-        opacity: 1;
-    }
+	0% {
+		width: 0%;
+		opacity: 0;
+	}
+	100% {
+		width: $submenu-width;
+		opacity: 1;
+	}
 }
 
 .loader {
-    z-index: 10;
-    color: #5f6262;
-    background: rgba(255,255,255,0.9);
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    z-index: 10;
-    top: 0;
-    bottom: 0;
-    left: 0;
+	z-index: 10;
+	color: #5f6262;
+	background: rgba(255, 255, 255, 0.9);
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	z-index: 10;
+	top: 0;
+	bottom: 0;
+	left: 0;
 	right: 0;
-	
-    &-opaque {
-        background: transparent;
+
+	&-opaque {
+		background: transparent;
 	}
-	
-    &_content {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+
+	&_content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
-	
-    &_text {
-        display: inline-block;
-        font-size: 15px;
-        margin-top: 6px;
+
+	&_text {
+		display: inline-block;
+		font-size: 15px;
+		margin-top: 6px;
 	}
-	
-    &_spinner {
-        position: relative;
+
+	&_spinner {
+		position: relative;
 		border: $width solid $background;
-		
-        &, &::after {
-            box-sizing: inherit;
-            border-radius: 50% !important;
-            width: $size;
-            height: $size;
+
+		&,
+		&::after {
+			box-sizing: inherit;
+			border-radius: 50% !important;
+			width: $size;
+			height: $size;
 		}
-		
-        &::after {
-            content: "";
-            position: absolute;
-            top: -$width;
-            left: -$width;
-            top: -$width;
-            border: $width solid $foreground;
-            border-right-color: transparent;
-            border-top-color: transparent;
-            animation: spin #{$duration}ms linear infinite;
-        }
-    }
+
+		&::after {
+			content: "";
+			position: absolute;
+			top: -$width;
+			left: -$width;
+			top: -$width;
+			border: $width solid $foreground;
+			border-right-color: transparent;
+			border-top-color: transparent;
+			animation: spin #{$duration}ms linear infinite;
+		}
+	}
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
+html,
+body {
+	margin: 0 auto;
+	padding: 0;
+	height: 100%;
 }
 
-html, * {
-    box-sizing: border-box;
+html,
+* {
+	box-sizing: border-box;
 }
 
 body {
-    background: $color-bg-medium;
-    color: $color-text;
+	background: $color-bg-medium;
+	color: $color-text;
 }
 
 .critical_logo {
-    width: 136px;
-    height: 41px;
-    margin-bottom: 30px;
-    fill: black;
+	width: 136px;
+	height: 41px;
+	margin-bottom: 30px;
+	fill: black;
 }
 
 .app-version {
-    display: none;
+	display: none;
 }
 
 .freshwidget-theme {
-    width: 117px;
-    text-align: center;
+	width: 117px;
+	text-align: center;
 }
 .freshwidget-theme:hover {
-    background-color: #194B7C!important;
+	background-color: #194b7c !important;
 }
 
 .freshwidget-button {
-    top: unset!important;
-    bottom: 171px!important;
+	top: unset !important;
+	bottom: 171px !important;
 }

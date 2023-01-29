@@ -12,7 +12,8 @@ class ButtonComponent extends React.Component {
 			type: this.props.type || 'primary',
 			isWide: !!this.props.isWide,
 			isSquare: !!this.props.isSquare,
-			buttonIcon: this.props.buttonIcon || null
+			buttonIcon: this.props.buttonIcon || null,
+			float: this.props.float || null
 		};
 	}
 
@@ -25,14 +26,15 @@ class ButtonComponent extends React.Component {
 			type: props.type || 'primary',
 			isWide: !!props.isWide,
 			isSquare: !!props.isSquare,
-			buttonIcon: props.buttonIcon || null
+			buttonIcon: props.buttonIcon || null,
+			float: props.float || null
 		});
 	}
 
 	render () {
 		const buttonClasses = `button button-${this.state.type} ${!this.state.isSquare ? 'button-rounded' : ''} ${
 			this.state.isWide ? 'button-wide' : ''
-		}`;
+		} ${this.state.float}`;
 		const buttonIcon = this.state.buttonIcon ? (
 			<div className={`icon ${this.state.loading ? 'loader_spinner' : this.state.buttonIcon}`} />
 		) : null;

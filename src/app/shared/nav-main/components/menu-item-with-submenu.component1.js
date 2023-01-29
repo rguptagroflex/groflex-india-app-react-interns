@@ -177,9 +177,9 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 					data-qs-id={`global-menu-item-${name}`}
 				>
 				{resources.menuItems[resourceKey]}
-				<span className="collapsed-title">
+				{/* <span className="collapsed-title">
 					{resources.menuItems[resourceKey]}
-				</span>				
+				</span>				 */}
 			</div>
 			<SubMenuBarComponent
 					visible={submenuVisible}
@@ -204,10 +204,10 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			>
 				{/* {title} */}
 				{resources.menuItems[resourceKey]}
-				<span className="collapsed-title">
-					{/* {title} */}
+				{/* <span className="collapsed-title">
+					
 					{resources.menuItems[resourceKey]}
-				</span>
+				</span> */}
 				
 			</div>
 			<SubMenuBarComponent
