@@ -631,7 +631,7 @@ class StartImpressTemplatesComponent extends React.Component {
 				
 
 					<div className="col-xs-12">
-						<StartFeatureCarouselComponent />
+						{/* <StartFeatureCarouselComponent /> */}
 					</div>
 
 					<div className="col-xs-12">
