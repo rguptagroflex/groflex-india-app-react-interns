@@ -59,8 +59,28 @@ class PageContainer extends React.Component {
 	}
 
 	update() {
-		// this.setupIntercom()
-		// 	.then(() => IntercomAPI.update());
+		this.setupIntercom()
+		.then(() => {
+			//console.log(this.state.intercomUser);
+			let properties = {
+				'FIRSTNAME': this.state.intercomUser.name,
+				'EMAIL': this.state.intercomUser.email,
+				'PLAN' : this.state.intercomUser.Plan,
+				'SMS' : this.state.intercomUser.phone,
+				'WHATSAPP': this.state.intercomUser.phone,
+				'LAST_LOGIN_TIME' : this.state.intercomUser.Last_Login_Time,
+				'REGISTERED_AT' : this.state.intercomUser.registeredat,
+				'USEDREFERRALCODES' : this.state.intercomUser.usedReferralCodes,
+				'UTM_CAMPAIGN' : this.state.intercomUser.utm_campaign,
+				'UTM_SOURCE' : this.state.intercomUser.utm_source,
+				'UTM_MEDIUM' : this.state.intercomUser.utm_medium,
+				'UTM_TERM' : this.state.intercomUser.utm_term,
+				'UTM_CONTENT' : this.state.intercomUser.utm_content
+			  }
+			  console.log(properties);
+			sendinblue.identify(this.state.intercomUser.email, properties)
+			//sendinblue || sendinblue.identify (this.state.intercomUser.email, this.state.intercomUser);
+		});
 
 		this.setState(
 			{
@@ -175,7 +195,7 @@ class PageContainer extends React.Component {
 			utmParams.utm_term ? (intercomUser.utm_term = utmParams.utm_term) : null;
 			utmParams.utm_content ? (intercomUser.utm_content = utmParams.utm_content) : null;
 		}
-
+		//console.log('intercomUser', intercomUser)
 		await this.setState({intercomUser: {...intercomUser}});
 		invoiz.on('userModelSubscriptionDataSet', this.update, this);
 	}

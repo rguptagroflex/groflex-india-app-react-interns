@@ -64,7 +64,7 @@ export const request = (endpoint, options) => {
 	if (fetchOptions.method !== 'GET' && options.responseType) {
 		fetchOptions.responseType = options.responseType;
 	}
-
+	//console.log(endpoint, fetchOptions)
 	return new Promise((resolve, reject) => {
 		fetch(endpoint, fetchOptions)
 			.then(res => {
