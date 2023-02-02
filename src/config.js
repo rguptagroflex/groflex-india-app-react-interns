@@ -5,9 +5,7 @@ import WebStorageKey from "enums/web-storage-key.enum";
 
 const apiServers = {
 	local: "http://localhost:3000",
-	// local: 'https://qa.imprezz.in',
-	//local: 'https://dev.imprezz.in',
-	// local: 'https://dev.groflex.in',
+	//local: 'https://dev.groflex.io',
 	development: "https://dev.groflex.io",
 	qa: "https://qa.groflex.io",
 	staging: "https://staging.groflex.io",

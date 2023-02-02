@@ -46,7 +46,11 @@ class SettingsAccountComponent extends React.Component {
 		return (
 			<Provider store={store}>
 				<div className="settings-account-wrapper wrapper-has-topbar-with-margin">
-					<TopbarComponent title={'Account details'} viewIcon={`icon-user_outlined_black`} />
+					<TopbarComponent title={
+						pathName === "/settings/account" ? 'Account details' : 
+						pathName === "/settings/account-setting" ? 'Setting' : 
+						pathName === "/settings/billing" ? 'Your Billing' : ''
+						} viewIcon={`icon-user_outlined_black`} />
 					<div className="box">
 						{/* <h1>{resources.str_account}</h1> */}
 						{pathName === "/settings/account" ? 

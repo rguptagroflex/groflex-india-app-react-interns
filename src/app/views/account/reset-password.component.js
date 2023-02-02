@@ -75,12 +75,12 @@ class ResetPasswordComponent extends React.Component {
 					</div>
 
 					<div className="landing-sidebar-footer">
-						<a href="https://www.imprezz.in/imprint/" target="_blank">
+						<a href="https://www.groflex.io/imprint/" target="_blank">
 							{resources.str_imprint}
 						</a>
 						<div className="link-divider" />
-						<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
-							{resources.str_termsPrivacy}
+						<a href="https://www.groflex.io/privacy-policy/" target="_blank">
+							{"Terms & Conditions"}
 						</a>
 					</div>
 				</div>
@@ -88,7 +88,7 @@ class ResetPasswordComponent extends React.Component {
 				<div className="landing-content">
 					<div className="invoiz-logo">
 						<Link to="/account/login">
-							<img src="/assets/images/svg/imprezz.svg" />
+							<img src="/assets/images/svg/groflex.svg" />
 						</Link>
 					</div>
 

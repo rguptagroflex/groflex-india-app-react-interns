@@ -163,18 +163,18 @@ class RegistrationInvitationComponent extends React.Component {
 						<div className="landing-fact-text">{password.length > 0 ? getPasswordInfo(password) : ''}</div>
 					</div>
 					<div className="landing-sidebar-footer">
-						<a href="https://app.imprezz.in/imprint/" target="_blank">
+						<a href="https://app.groflex.io/imprint/" target="_blank">
 						imprint
 						</a>
 						<div className="link-divider" />
-						<a href="https://app.imprezz.in/privacy-policy/" target="_blank">
-						Terms &amp; Privacy
+						<a href="https://app.groflex.io/privacy-policy/" target="_blank">
+						Terms & Conditions
 						</a>
 					</div>
 				</div>
 				<div className="landing-content">
 					<div className="invoiz-logo">
-						<img src="/assets/images/svg/imprezz.svg" />
+						<img src="/assets/images/svg/groflex.svg" />
 					</div>
 					<div className="landing-content-inner landing-content-big">
 						{this.props.invalidCode ? (
@@ -182,9 +182,9 @@ class RegistrationInvitationComponent extends React.Component {
 								<div>Unfortunately, your invitation link is not valid.</div>
 								<ButtonComponent
 									callback={() => {
-										window.location.href = 'https://app.imprezz.in/';
+										window.location.href = 'https://app.groflex.io/';
 									}}
-									label="To imprezz"
+									label="To groflex"
 									dataQsId="registration-invitation-invalid-btn"
 								/>
 							</div>
@@ -246,7 +246,7 @@ class RegistrationInvitationComponent extends React.Component {
 										/>
 									</div>
 									<div className="col-xs-12 col-md-6 u_mb_20 text-medium text-light registration-invitation-hint">
-										By joining, you agree to the <a href="https://www.imprezz.in/privacy-policy/">Terms of Use and Privacy Policy.</a>
+										By joining, you agree to the <a href="https://www.groflex.io/privacy-policy/">Terms & Conditions.</a>
 									</div>
 								</div>
 								<div className="row">

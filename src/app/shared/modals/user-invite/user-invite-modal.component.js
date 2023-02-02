@@ -13,7 +13,7 @@ const modalContent = [
 	{
 		headline: 'Invite an additional user',
 		subheadline:
-			'Invite a user to join your Imprezz account as one of the roles below by sending them an invitation by e-mail.',
+			'Invite a user to join your Groflex account as one of the roles below by sending them an invitation by e-mail.',
 		buttonLabel: 'Send invitation'
 	},
 	{

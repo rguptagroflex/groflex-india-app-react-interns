@@ -120,7 +120,7 @@ class ForgotPasswordComponent extends React.Component {
 					
 				<div className="imprezz-logo">
 						<Link to="/account/login">
-							<img src="/assets/images/svg/imprezz.svg" />
+							<img src="/assets/images/svg/groflex.svg" />
 						</Link>
 					</div>
 
