@@ -122,6 +122,7 @@ class AccountSubscriptionComponent extends React.Component {
 				case ChargebeePlan.UNLIMITED_YEARLY_21:
 				case ChargebeePlan.FREE_PLAN_2021:
 				case ChargebeePlan.UNLIMITED_INTERNAL:
+				case ChargebeePlan.FREE_PLAN:
 					const isUnlimitedPlan =
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED ||
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED_999 ||
@@ -129,7 +130,8 @@ class AccountSubscriptionComponent extends React.Component {
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED_MONTHLY ||
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED_INTERNAL ||
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY_21 ||
-						subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021;
+						subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021 || 
+						subscriptionDetail.planId === ChargebeePlan.FREE_PLAN;
 					title = (
 						<div>
 							{isUnlimitedPlan
@@ -466,6 +468,7 @@ class AccountSubscriptionComponent extends React.Component {
 						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
 						<div className="col-xs-12">
 							<div className="text-h5 u_mb_8">{'Free Plan'}</div>
+							{/* <div className="text-h5 u_mb_8">{''}</div> */}
 							{/* <div className="text-h6 u_mb_8">{title}</div>
 							<div>{content}</div> */}
 							{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (

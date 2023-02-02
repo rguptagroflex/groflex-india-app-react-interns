@@ -374,10 +374,10 @@ class RegistrationComponent extends React.Component {
 						<hr></hr>
 						<div style={{ display: "flex" }}>
 							<p>
-								For more details visit <a href={"https://imprezz.in"}>www.imprezz.in</a>
+								For more details visit <a href={"https://groflex.io"} target="_blank">www.groflex.io</a>
 							</p>
-							<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
-								Terms & Privacy
+							<a href="https://www.groflex.io/privacy-policy/" target="_blank">
+								Terms & Conditions
 							</a>
 						</div>
 					</div>

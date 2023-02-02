@@ -1,5 +1,5 @@
 import invoiz from 'services/invoiz.service';
-// import Intercom, { IntercomAPI } from 'services/intercom.service';
+import Intercom, { IntercomAPI } from 'services/intercom.service';
 import _, { first } from "lodash";
 import React from 'react';
 import routes from 'routes';
@@ -15,7 +15,7 @@ import { getBrowserLanguage } from 'helpers/getBrowserLanguage';
 import { fetchLanguageFile } from 'redux/ducks/language/lang';
 import LanguageComponent from 'shared/language/language.component';
 import RegistrationViewState from 'enums/account/registration-view-state.enum';
-// import Intercom, { IntercomAPI } from 'react-intercom';
+//import Intercom, { IntercomAPI } from 'react-intercom';
 import config from 'config';
 import WebStorageService from 'services/webstorage.service';
 import WebStorageKey from 'enums/web-storage-key.enum';
@@ -41,7 +41,7 @@ class PageContainer extends React.Component {
 		};
 
 		this.isLoggedInOnce = false;
-		this.intercomAppID = config.releaseStage !== "production" ? `qrsrkmrh` : `y1zi63l6`;
+		this.intercomAppID = config.releaseStage !== "production" ? 'azrlzv5b' : 'flyfsv5l'; //`qrsrkmrh` : `y1zi63l6`;
 
 		// invoiz.on('footerContentUpdated', (hasFooterContent) => {
 		// 	this.setState({
@@ -60,27 +60,7 @@ class PageContainer extends React.Component {
 
 	update() {
 		this.setupIntercom()
-		.then(() => {
-			//console.log(this.state.intercomUser);
-			let properties = {
-				'FIRSTNAME': this.state.intercomUser.name,
-				'EMAIL': this.state.intercomUser.email,
-				'PLAN' : this.state.intercomUser.Plan,
-				'SMS' : this.state.intercomUser.phone,
-				'WHATSAPP': this.state.intercomUser.phone,
-				'LAST_LOGIN_TIME' : this.state.intercomUser.Last_Login_Time,
-				'REGISTERED_AT' : this.state.intercomUser.registeredat,
-				'USEDREFERRALCODES' : this.state.intercomUser.usedReferralCodes,
-				'UTM_CAMPAIGN' : this.state.intercomUser.utm_campaign,
-				'UTM_SOURCE' : this.state.intercomUser.utm_source,
-				'UTM_MEDIUM' : this.state.intercomUser.utm_medium,
-				'UTM_TERM' : this.state.intercomUser.utm_term,
-				'UTM_CONTENT' : this.state.intercomUser.utm_content
-			  }
-			  console.log(properties);
-			sendinblue.identify(this.state.intercomUser.email, properties)
-			//sendinblue || sendinblue.identify (this.state.intercomUser.email, this.state.intercomUser);
-		});
+		.then(() => IntercomAPI.update());
 
 		this.setState(
 			{
@@ -129,7 +109,7 @@ class PageContainer extends React.Component {
 					}
 					await this.setState({intercomUser: {...this.state.intercomUser, phone: invoiz.user.mobile}})
 					// IntercomAPI('update');
-					// IntercomAPI.update();
+					 IntercomAPI.update();
 				}}
 				closeModal={() => {
 					ModalService.close(<UserWizardOnBoardingModalComponent store={store} />);
@@ -207,7 +187,7 @@ class PageContainer extends React.Component {
 	componentDidUpdate() {
 		invoiz.on('userModelSubscriptionDataSet', this.update, this);
 		// IntercomAPI('update');
-		// IntercomAPI.update();
+		IntercomAPI.update();
 	}
 
 	render() {
@@ -276,7 +256,7 @@ class PageContainer extends React.Component {
 					{/* {
 						window.Intercom('boot', {app_id: this.intercomAppID, ...this.state.intercomUser})
 					} */}
-					{/* <Intercom appId={this.intercomAppID} user={this.state.intercomUser} /> */}
+					<Intercom appId={this.intercomAppID} user={this.state.intercomUser} />
 				</div>
 			</LanguageComponent>
 		);
@@ -296,7 +276,7 @@ class AppComponent extends React.Component {
 
 	componentDidUpdate() {
 		// IntercomAPI('update');
-		// IntercomAPI.update();
+		IntercomAPI.update();
 	}
 
 	render() {

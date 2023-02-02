@@ -1344,7 +1344,7 @@ class CustomerEditComponent extends React.Component {
 		if (customer.address.countryIso !== "IN" && (customer.baseCurrency === "" || !customer.baseCurrency) && planRestricted) {
 			invoiz.page.showToast({
 				type: "error",
-				message: `Please upgrade your Imprezz plan to use Multicurrency!`,
+				message: `Please upgrade your Groflex plan to use Multicurrency!`,
 			});
 			return;
 		}

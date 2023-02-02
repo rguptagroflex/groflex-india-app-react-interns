@@ -8,13 +8,13 @@ const SubmenuBarComponent = ({ title, name, visible, hasImprintAndPrivacy, child
 	const imprint = (
 		<div className="submenuImprint">
 			<div>
-				<a href="https://www.imprezz.in/imprint/" target="_blank">
+				<a href="https://www.groflex.io/imprint/" target="_blank">
 					{resources.str_imprint}
 				</a>
 			</div>
 			<div>
-				<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
-					{resources.str_termsPrivacy}
+				<a href="https://www.groflex.io/privacy-policy/" target="_blank">
+					{"Terms & Conditions"}
 				</a>
 			</div>
 		</div>

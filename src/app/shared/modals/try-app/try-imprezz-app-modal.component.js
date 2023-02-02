@@ -22,7 +22,7 @@ class TryImprezzAppModal extends Component {
             <div>
                 <div className="row">
                     <div className="try-mobile-app-left-pane col-sm-6 text-center">
-                        <h1 className="modal-heading">Use Imprezz Mobile</h1>
+                        <h1 className="modal-heading">Use Groflex Mobile</h1>
                         <p>Try our newly launched Android App and enjoy more benefits</p>
                         <img className="try-mobile-img" src="/assets/images/mobile-app/try_mobile_app.jpg" />
                         <div className="benefits text-left">

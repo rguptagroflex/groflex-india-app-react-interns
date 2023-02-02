@@ -203,7 +203,7 @@ class SettingsUserComponent extends React.Component {
 							},
 							() => {
 								invoiz.showNotification({
-									message: `${user.firstName} ${user.lastName} is now the owner of this imprezz account.`
+									message: `${user.firstName} ${user.lastName} is now the owner of this groflex account.`
 								});
 								this.fetchUserList();
 								ModalService.close();
@@ -602,7 +602,7 @@ class SettingsUserComponent extends React.Component {
 			ModalService.open(
 				`Are you sure that you would like to delete user ${
 					firstName && lastName ? `${firstName} ${lastName}` : `${email}`
-				} from this Imprezz account? Please note you can always invite this user back later.`,
+				} from this Groflex account? Please note you can always invite this user back later.`,
 				{
 					headline: 'Delete user',
 					cancelLabel: 'Cancel',
@@ -640,7 +640,7 @@ class SettingsUserComponent extends React.Component {
 			ModalService.open(
 				`Are you sure that you would like to delete the Chartered Accountant ${
 					firstName && lastName ? `${firstName} ${lastName}` : `${email}`
-				} from this Imprezz account? Please note you can always invite this user back later.`,
+				} from this Groflex account? Please note you can always invite this user back later.`,
 				{
 					headline: 'Delete Chartered Accountant',
 					cancelLabel: 'Cancel',
