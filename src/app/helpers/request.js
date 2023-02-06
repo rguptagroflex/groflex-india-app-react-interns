@@ -65,8 +65,18 @@ export const request = (endpoint, options) => {
 		fetchOptions.responseType = options.responseType;
 	}
 	//console.log(endpoint, fetchOptions)
-	return new Promise((resolve, reject) => {
-		fetch(endpoint, fetchOptions)
+
+	if (!endpoint.includes("/lang/lang_en.json") && config.releaseStage == "local") {
+		var options = {
+			'method': 'POST',
+			'headers': {
+			'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(fetchOptions)
+		
+		};
+		return new Promise((resolve, reject) => {
+		fetch('http://localhost:18000/serverconnect', options)
 			.then(res => {
 				if (!res.ok) {
 					if (res.status === 401 && res.url !== config.account.endpoints.login) {
@@ -106,7 +116,7 @@ export const request = (endpoint, options) => {
 			.then(data => {
 				try {
 					if(isMatching(fetchOptions.headers['Content-Type'],textTypes))
-						 data = JSON.parse(data);
+						data = JSON.parse(data);
 						resolve({ body: data });
 					
 				} catch (err) {
@@ -114,5 +124,57 @@ export const request = (endpoint, options) => {
 				}
 			})
 			.catch(reason => {});
-	});
+		});
+	} else {
+		return new Promise((resolve, reject) => {
+			fetch(endpoint, fetchOptions)
+				.then(res => {
+					if (!res.ok) {
+						if (res.status === 401 && res.url !== config.account.endpoints.login) {
+							invoiz.user.logout();
+						} else {
+							if (res.status === 404) {
+								const error = {
+									body: res.statusText
+								};
+
+								reject(error);
+							} else if (res.status === 500) {
+								const error = {
+									body: res.statusText
+								};
+
+								reject(error);
+							} else {
+								res.json().then(err => {
+									const error = {
+										body: err
+									};
+
+									reject(error);
+								});
+							}
+						}
+
+						throw Error(res.statusText);
+					}
+					if(isMatching(fetchOptions.headers['Content-Type'],textTypes))
+						return res.text();
+					if(isMatching(fetchOptions.headers['Content-Type'],blobTypes))
+						return res.blob()
+					return res
+				})
+				.then(data => {
+					try {
+						if(isMatching(fetchOptions.headers['Content-Type'],textTypes))
+							data = JSON.parse(data);
+							resolve({ body: data });
+						
+					} catch (err) {
+						resolve(true);
+					}
+				})
+				.catch(reason => {});
+		});
+	}
 };
