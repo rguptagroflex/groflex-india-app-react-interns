@@ -185,7 +185,7 @@ class MenuBarComponent extends React.Component {
 				);
 			}
 			// return <MenuItemComponent key={name} {...menuItemData} resources={resources}/>;
-			return <li><MenuItemComponent key={name} {...menuItemData} resources={resources}/></li>
+			return <li key={name}><MenuItemComponent key={name} {...menuItemData} resources={resources}/></li>
 		});
 	}
 

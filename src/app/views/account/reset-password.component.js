@@ -11,6 +11,7 @@ import { Link } from 'react-router-dom';
 import { format } from 'util';
 import { connect } from 'react-redux';
 import imprezzLogoSmall from 'assets/images/impress_short_icon.png';
+import landingImage from "assets/images/login/login.jpg";
 import { detectDevice } from 'helpers/detectDevice';
 
 class ResetPasswordComponent extends React.Component {
@@ -63,37 +64,25 @@ class ResetPasswordComponent extends React.Component {
 		return (
 			<div className={`landing-wrapper reset-password-wrapper`}>
 				<div className="landing-sidebar">
-					<div className="landing-fact-imprezz-logo">
-						<Link to="/account/login">
-							<img className="imprezz-small-image" src={imprezzLogoSmall} />
-						</Link>
-					</div>
-					<div className="landing-fact">
-						<div className="landing-fact-icon-background" />
-						<img src={iconSrc} className={`landing-fact-icon`} />
-						<div className="landing-fact-text">{factText}</div>
-					</div>
-
-					<div className="landing-sidebar-footer">
-						<a href="https://www.groflex.io/imprint/" target="_blank">
-							{resources.str_imprint}
-						</a>
-						<div className="link-divider" />
-						<a href="https://www.groflex.io/privacy-policy/" target="_blank">
-							{"Terms & Conditions"}
-						</a>
-					</div>
-				</div>
-
-				<div className="landing-content">
-					<div className="invoiz-logo">
+					<div className="imprezz-logo">
 						<Link to="/account/login">
 							<img src="/assets/images/svg/groflex.svg" />
 						</Link>
 					</div>
 
-					{content}
+					<img className='landing-image' src={landingImage}/>
 
+					<div className="footer">
+						<hr></hr>
+						<div style={{display: 'flex'}}>
+							<p>For more details visit <a href={"https://groflex.io"} target="_blank">www.groflex.in</a></p>
+							<a href="https://www.groflex.io/privacy-policy/" target="_blank">Terms & Conditions</a>
+						</div>
+					</div>
+				</div>
+
+				<div className="landing-content">
+					{content}
 					<div className="landing-content-footer">
 						{resources.doNotForgetStr} <Link to="/account/login">{resources.str_toTheLogin}</Link>
 					</div>
@@ -259,10 +248,9 @@ class ResetPasswordComponent extends React.Component {
 			<div className="landing-content-inner">
 				{this.isMobile ? <div className="mobile-text-content">{resources.mobileDisplayText}</div> : null}
 				<div className={`landing-content-headline ${passwordAlertClicked && !passwordValid ? 'alert' : ''}`}>
-				 {resources.str_resetPassword}
+				 {resources.str_resetPassword}<br></br>
+								<span className='sub-heading'>{resources.str_enterNewPasswordText}</span>
 				</div>
-
-				<p>{resources.str_enterNewPasswordText}</p>
 
 				<div className={showPasswordError ? 'landing-password-mismatch' : ''}>
 					<TextInputComponent

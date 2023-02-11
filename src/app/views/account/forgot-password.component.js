@@ -12,6 +12,7 @@ import { isOutdatedBrowser } from 'helpers/isOutdatedBrowser';
 import TextInputComponent from 'shared/inputs/text-input/text-input.component';
 import { connect } from 'react-redux';
 import imprezzLogoSmall from 'assets/images/impress_short_icon.png';
+import landingImage from "assets/images/login/login.jpg";
 import { detectDevice } from 'helpers/detectDevice';
 import Carousel from 'shared/carousel/Carousel.component';
 
@@ -130,7 +131,7 @@ class ForgotPasswordComponent extends React.Component {
 						</Link>
 					</div> */}
 
-					<div className="landing-carousel-wrapper">
+					{/* <div className="landing-carousel-wrapper">
 					<Carousel 
 							className="landing-carousel"
 							activeSlide={activeSlide} 
@@ -216,7 +217,9 @@ class ForgotPasswordComponent extends React.Component {
 								/>
 							</Carousel.PageIndicators>
 						</Carousel>
-					</div>
+					</div> */}
+
+					<img className='landing-image' src={landingImage}/>
 
 					<div className="media-coverage text-center">
 						<p className="media-coverage-title">National media that has covered us!</p>

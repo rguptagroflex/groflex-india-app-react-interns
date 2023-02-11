@@ -7,6 +7,7 @@ class Intercom extends React.Component {
 
     render() {
         const { appId: app_id, user } = this.props;
+        // return <div></div>
         return <div>{window.Intercom('boot', {app_id, ...user})}</div>
     }
 }

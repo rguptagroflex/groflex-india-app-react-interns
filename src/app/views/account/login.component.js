@@ -291,7 +291,7 @@ class LoginComponent extends React.Component {
 			hidePasswordField ? this.onEmailSubmit() : this.onLoginSubmit()
 		}
 
-		this.setState({ emailError: false });
+		this.setState({ emailError: '' });
 	}
 
 	render() {
@@ -482,7 +482,7 @@ class LoginComponent extends React.Component {
 							<div className="landing-email-input-wrapper">
 								<div className="login-input-wrapper">
 									<TextInputComponent
-										autoComplete
+										// autoComplete
 										value={this.state.email}
 										label={resources.str_enterEmail}
 										id={'login-email'}
@@ -513,7 +513,7 @@ class LoginComponent extends React.Component {
 								{oauthLoginError ? <div className="google-error">{oauthLoginError}</div> : null}
 								
 								{ !hidePasswordField &&
-									<div className="left- text-right" style={{marginTop: '-15px'}}>
+									<div className="left- text-right" style={{marginTop: '0px'}}>
 										{/* {`${resources.str_forgotPassword}?`} {this.isMobile ? <br/> : null} */}
 										<Link to="/account/forgot_password">
 											{resources.str_forgotPassword}
