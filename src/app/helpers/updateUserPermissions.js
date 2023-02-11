@@ -6,7 +6,7 @@ export const updateUserPermissions = (callback) => {
 	invoiz
 		.request(config.account.endpoints.getUserPermissions, { auth: true })
 		.then(({ body: { data } }) => {
-			console.log(data);
+			// console.log(data);
 			if (invoiz.user) {
 				invoiz.user.rights = data.features;
 				callback && callback();

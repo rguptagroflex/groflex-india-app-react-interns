@@ -166,7 +166,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass}`;
 
 		return isCollapsedState ? (
-			<li>
+			<li key={name}>
 				<div
 					ref="subMenuBarCollapsed"
 					onMouseEnter={() => this.showSubmenu()}
@@ -181,7 +181,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 					{resources.menuItems[resourceKey]}
 				</span>				 */}
 			</div>
-			<SubMenuBarComponent
+			<SubMenuBarComponent key={`sub-item-${name}`}
 					visible={submenuVisible}
 					title={title}
 					name={name}
@@ -194,7 +194,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			</li>
 			
 		) : (
-			<li>
+			<li key={name}>
 			<div
 				ref="subMenuBarNormal"
 				onClick={e => this.showSubmenu(e, true)}
@@ -210,7 +210,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 				</span> */}
 				
 			</div>
-			<SubMenuBarComponent
+			<SubMenuBarComponent key={`sub-item-${name}`}
 					visible={submenuVisible}
 					title={title}
 					name={name}

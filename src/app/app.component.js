@@ -60,7 +60,28 @@ class PageContainer extends React.Component {
 
 	update() {
 		this.setupIntercom()
-		.then(() => IntercomAPI.update());
+		.then(() => {
+			IntercomAPI.update()
+			//console.log(this.state.intercomUser);
+			// let properties = {
+			// 	'FIRSTNAME': this.state.intercomUser.name,
+			// 	'EMAIL': this.state.intercomUser.email,
+			// 	'PLAN' : this.state.intercomUser.Plan,
+			// 	'SMS' : this.state.intercomUser.phone,
+			// 	'WHATSAPP': this.state.intercomUser.phone,
+			// 	'LAST_LOGIN_TIME' : this.state.intercomUser.Last_Login_Time,
+			// 	'REGISTERED_AT' : this.state.intercomUser.registeredat,
+			// 	'USEDREFERRALCODES' : this.state.intercomUser.usedReferralCodes,
+			// 	'UTM_CAMPAIGN' : this.state.intercomUser.utm_campaign,
+			// 	'UTM_SOURCE' : this.state.intercomUser.utm_source,
+			// 	'UTM_MEDIUM' : this.state.intercomUser.utm_medium,
+			// 	'UTM_TERM' : this.state.intercomUser.utm_term,
+			// 	'UTM_CONTENT' : this.state.intercomUser.utm_content
+			//   }
+			//   console.log(properties);
+			//   window.sib.email_id = this.state.intercomUser.email
+			// sendinblue.identify(this.state.intercomUser.email, properties)
+		});
 
 		this.setState(
 			{
