@@ -64,7 +64,7 @@ export const request = (endpoint, options) => {
 	if (fetchOptions.method !== 'GET' && options.responseType) {
 		fetchOptions.responseType = options.responseType;
 	}
-	console.log(endpoint, fetchOptions, config.releaseStage)
+	//console.log(endpoint, fetchOptions, config.releaseStage)
 
 	if (!endpoint.includes("/lang/lang_en.json") && config.releaseStage == "local" && config.byPassCors) {
 		var options = {
