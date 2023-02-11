@@ -64,9 +64,9 @@ export const request = (endpoint, options) => {
 	if (fetchOptions.method !== 'GET' && options.responseType) {
 		fetchOptions.responseType = options.responseType;
 	}
-	//console.log(endpoint, fetchOptions)
+	console.log(endpoint, fetchOptions, config.releaseStage)
 
-	if (!endpoint.includes("/lang/lang_en.json") && config.releaseStage == "local") {
+	if (!endpoint.includes("/lang/lang_en.json") && config.releaseStage == "local" && config.byPassCors) {
 		var options = {
 			'method': 'POST',
 			'headers': {
@@ -76,7 +76,7 @@ export const request = (endpoint, options) => {
 		
 		};
 		return new Promise((resolve, reject) => {
-		fetch('http://localhost:18000/serverconnect', options)
+		fetch(`http://localhost:18000/serverconnect?url=${endpoint}`, options)
 			.then(res => {
 				if (!res.ok) {
 					if (res.status === 401 && res.url !== config.account.endpoints.login) {

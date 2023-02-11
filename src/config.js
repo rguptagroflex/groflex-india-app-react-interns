@@ -14,6 +14,8 @@ const apiServers = {
 	admin: "https://invoiz-admin.buhl.de",
 };
 
+const byPassCors = true
+
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
 
@@ -67,7 +69,7 @@ const resourceUrls = {
 const config = {
 	apiRoot,
 	releaseStage,
-
+	byPassCors,
 	resourceHost,
 	imageResourceHost,
 	assetResourceHost,
