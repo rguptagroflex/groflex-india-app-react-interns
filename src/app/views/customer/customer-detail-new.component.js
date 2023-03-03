@@ -110,27 +110,27 @@ class CustomerDetailNewComponent extends React.Component {
 		this.setState({ activeTab: tab });
 	}
 
-	// onSaveNotesClick({ notes, notesAlert }) {
-	// 	const customer = _.cloneDeep(this.state.customer);
+	onSaveNotesClick({ notes, notesAlert }) {
+		const customer = _.cloneDeep(this.state.customer);
 
-	// 	customer.notes = notes;
-	// 	customer.notesAlert = notesAlert;
+		customer.notes = notes;
+		customer.notesAlert = notesAlert;
 
-	// 	invoiz
-	// 		.request(`${config.resourceHost}customer/${customer.id}`, {
-	// 			auth: true,
-	// 			method: 'PUT',
-	// 			data: customer,
-	// 		})
-	// 		.then((response) => {
-	// 			invoiz.page.showToast({ message: 'Das Kundenprofil wurde erfolgreich aktualisiert!' });
-	// 			const customerUpdated = new Customer(customer);
-	// 			this.setState({ customer: customerUpdated });
-	// 		})
-	// 		.catch(() => {
-	// 			invoiz.page.showToast({ message: lang.defaultErrorMessage });
-	// 		});
-	// }
+		invoiz
+			.request(`${config.resourceHost}customer/${customer.id}`, {
+				auth: true,
+				method: 'PUT',
+				data: customer,
+			})
+			.then((response) => {
+				invoiz.page.showToast({ message: 'The customer has been updated successfully!' });
+				const customerUpdated = new Customer(customer);
+				this.setState({ customer: customerUpdated });
+			})
+			.catch(() => {
+				invoiz.page.showToast({ message: lang.defaultErrorMessage });
+			});
+	}
 
 	onTopbarButtonClick(action) {
 		const { customer } = this.state;

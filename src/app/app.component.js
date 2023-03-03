@@ -15,7 +15,6 @@ import { getBrowserLanguage } from 'helpers/getBrowserLanguage';
 import { fetchLanguageFile } from 'redux/ducks/language/lang';
 import LanguageComponent from 'shared/language/language.component';
 import RegistrationViewState from 'enums/account/registration-view-state.enum';
-//import Intercom, { IntercomAPI } from 'react-intercom';
 import config from 'config';
 import WebStorageService from 'services/webstorage.service';
 import WebStorageKey from 'enums/web-storage-key.enum';
@@ -41,7 +40,7 @@ class PageContainer extends React.Component {
 		};
 
 		this.isLoggedInOnce = false;
-		this.intercomAppID = config.releaseStage !== "production" ? 'azrlzv5b' : 'flyfsv5l'; //`qrsrkmrh` : `y1zi63l6`;
+		//this.intercomAppID = config.releaseStage !== "production" ? 'azrlzv5b' : 'flyfsv5l'; //`qrsrkmrh` : `y1zi63l6`;
 
 		// invoiz.on('footerContentUpdated', (hasFooterContent) => {
 		// 	this.setState({
@@ -61,7 +60,7 @@ class PageContainer extends React.Component {
 	update() {
 		this.setupIntercom()
 		.then(() => {
-			IntercomAPI.update()
+			//IntercomAPI.update()
 			// console.log(this.state.intercomUser);
 			let properties = {
 				'FIRSTNAME': this.state.intercomUser.firstName,
@@ -81,8 +80,12 @@ class PageContainer extends React.Component {
 				'UTM_CONTENT' : this.state.intercomUser.utm_content
 			  }
 			//   console.log(properties, 'isLoggedIn', this.isLoggedIn());
-			  window.sib.email_id = this.state.intercomUser.email
-			  window.sendinblue.identify(this.state.intercomUser.email, properties)
+			if(config.releaseStage == "production" || config.releaseStage == "development") {
+				window.sib.email_id = this.state.intercomUser.email
+				window.sendinblue.identify(this.state.intercomUser.email, properties)
+				IntercomAPI.update(this.state.intercomUser)
+			}
+			
 		});
 
 		this.setState(
@@ -132,7 +135,7 @@ class PageContainer extends React.Component {
 					}
 					await this.setState({intercomUser: {...this.state.intercomUser, phone: invoiz.user.mobile}})
 					// IntercomAPI('update');
-					 IntercomAPI.update();
+					 IntercomAPI.update(this.state.intercomUser);
 				}}
 				closeModal={() => {
 					ModalService.close(<UserWizardOnBoardingModalComponent store={store} />);
