@@ -88,7 +88,7 @@ const CustomerMetadataComponent = (props) => {
 	};
 
 	const wrapperClass = buttonData.length === 1 ? "button-single" : "button-half";
-	
+
 	const buttons = buttonData.map((button, index) => {
 		if (index <= 3) {
 			return (
@@ -172,7 +172,7 @@ const CustomerMetadataComponent = (props) => {
 					}`}
 				</div>
 			</div>
-			
+
 			{symmetricButtons(buttons)}
 			{/* <div className="buttons">{ symmetricButtons(buttons)}</div> */}
 			{/* <div className="buttons">{buttons}</div> */}
