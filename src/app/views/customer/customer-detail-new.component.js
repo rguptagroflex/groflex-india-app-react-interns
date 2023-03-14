@@ -808,7 +808,10 @@ class CustomerDetailNewComponent extends React.Component {
 						<div className="row">
 							<CustomerContactInformationComponent customer={customer} />
 						</div>
-						<div style={true ? { opacity: "0.3", pointerEvents: "none" } : {}} className="row">
+						<div
+							style={true ? { opacity: "0.3", pointerEvents: "none", userSelect: "none" } : {}}
+							className="row"
+						>
 							{customer.type === "customer" && (
 								<div className="box box-rounded col-no-gutter-bottom customer-statements">
 									{false && <div className="customer-statements-container-blank"></div>}
