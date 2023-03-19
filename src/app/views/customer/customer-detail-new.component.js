@@ -809,15 +809,22 @@ class CustomerDetailNewComponent extends React.Component {
 							<CustomerContactInformationComponent customer={customer} />
 						</div>
 						<div
-							style={true ? { opacity: "0.3", pointerEvents: "none", userSelect: "none" } : {}}
+							style={
+								customer.type !== "customer"
+									? { opacity: "0.3", pointerEvents: "none", userSelect: "none" }
+									: {}
+							}
 							className="row"
 						>
-							{customer.type === "customer" && (
-								<div className="box box-rounded col-no-gutter-bottom customer-statements">
-									{false && <div className="customer-statements-container-blank"></div>}
-									<LedgerComponent customerId={customer.id} resources={resources} />
-								</div>
-							)}
+							{
+								(console.log("CUSTOMER TYPE: ", customer.type),
+								(
+									<div className="box box-rounded col-no-gutter-bottom customer-statements">
+										{false && <div className="customer-statements-container-blank"></div>}
+										<LedgerComponent customerId={customer.id} resources={resources} />
+									</div>
+								))
+							}
 						</div>
 						{/* {!forceReloadChild && (
 							<div className="box box-rounded customer-todos-activities u_p_0">

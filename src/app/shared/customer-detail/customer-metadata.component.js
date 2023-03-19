@@ -127,87 +127,93 @@ const CustomerMetadataComponent = (props) => {
 		$("#customer-detail-metadata-name").dotdotdot({ height: 68, truncate: "letter" });
 	}, 0);
 	return (
-		<div className="box box-rounded customer-metadata row">
-			<div className="customer-avatar col-xs-6 ">
-				{customer.kind === "person" &&
-					customer.salutation === "Familie" &&
-					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="120px" svg={CustomerPrivatFamily} />
-					) : (
-						<SVGInline height="120px" svg={ForeignCustomer} />
-					))}
-				{customer.kind === "person" &&
-					(customer.salutation === "Mr" || !customer.salutation) &&
-					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="120px" svg={CustomerPrivatMan} />
-					) : (
-						<SVGInline height="120px" svg={ForeignCustomer} />
-					))}
-				{customer.kind === "person" &&
-					customer.salutation === "Mrs" &&
-					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="120px" svg={CustomerPrivatWoman} />
-					) : (
-						<SVGInline height="120px" svg={ForeignCustomer} />
-					))}
-				{customer.kind === "company" &&
-					(customer.address.countryIso === `IN` ? (
-						<SVGInline height="120px" svg={CustomerCompany} />
-					) : (
-						<SVGInline height="120px" svg={ForeignCustomer} />
-					))}
-			</div>
-			<div className="customer-detail-metadata-name col-xs-6 ">
-				<div
-					id="customer-detail-metadata-name"
-					className={`u_mb_10 ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
-				>
-					{customer.name}
+		<div
+			style={{ minHeight: "98%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+			className="box box-rounded customer-metadata row"
+		>
+			<div className="row">
+				<div className="customer-avatar col-xs-6 ">
+					{customer.kind === "person" &&
+						customer.salutation === "Familie" &&
+						(customer.address.countryIso === `IN` ? (
+							<SVGInline height="120px" svg={CustomerPrivatFamily} />
+						) : (
+							<SVGInline height="120px" svg={ForeignCustomer} />
+						))}
+					{customer.kind === "person" &&
+						(customer.salutation === "Mr" || !customer.salutation) &&
+						(customer.address.countryIso === `IN` ? (
+							<SVGInline height="120px" svg={CustomerPrivatMan} />
+						) : (
+							<SVGInline height="120px" svg={ForeignCustomer} />
+						))}
+					{customer.kind === "person" &&
+						customer.salutation === "Mrs" &&
+						(customer.address.countryIso === `IN` ? (
+							<SVGInline height="120px" svg={CustomerPrivatWoman} />
+						) : (
+							<SVGInline height="120px" svg={ForeignCustomer} />
+						))}
+					{customer.kind === "company" &&
+						(customer.address.countryIso === `IN` ? (
+							<SVGInline height="120px" svg={CustomerCompany} />
+						) : (
+							<SVGInline height="120px" svg={ForeignCustomer} />
+						))}
 				</div>
-				<div className="text-muted ">
-					{`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
-						customer.address.countryIso !== `IN`
-							? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
-							: ``
-					}`}
-				</div>
-			</div>
-
-			{symmetricButtons(buttons)}
-			{/* <div className="buttons">{ symmetricButtons(buttons)}</div> */}
-			{/* <div className="buttons">{buttons}</div> */}
-
-			{!!otherActions.length && (
-				<React.Fragment>
-					<ButtonComponent
-						id="customer-detail-other-button"
-						type="primary"
-						isWide="true"
-						label={
-							<div>
-								Additional actions <div className="icon icon-arr_down"></div>
-							</div>
-						}
-						wrapperClass="button-more"
-						dataQsId="customerDetail-btn-other"
-					/>
-					<div className="popover-container">
-						<PopoverComponent
-							showOnClick={true}
-							contentClass={`invoice-list-cell-dropdown-content`}
-							entries={[otherActions]}
-							onClick={(entry) => onCreateButtonClick(entry.url, entry.action)}
-							elementId="customer-detail-other-button"
-							arrowAlignment={Direction.CENTER}
-							alignment={Direction.CENTER}
-							fixedWidth={180}
-							offsetTop={-7}
-							keepOpenOnScroll={true}
-							positionAbsolute={true}
-						/>
+				<div className="customer-detail-metadata-name col-xs-6 ">
+					<div
+						id="customer-detail-metadata-name"
+						className={`u_mb_10 ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
+					>
+						{customer.name}
 					</div>
-				</React.Fragment>
-			)}
+					<div className="text-muted ">
+						{`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
+							customer.address.countryIso !== `IN`
+								? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
+								: ``
+						}`}
+					</div>
+				</div>
+			</div>
+
+			<div>
+				{symmetricButtons(buttons)}
+				{/* <div className="buttons">{ symmetricButtons(buttons)}</div> */}
+				{/* <div className="buttons">{buttons}</div> */}
+				{!!otherActions.length && (
+					<React.Fragment>
+						<ButtonComponent
+							id="customer-detail-other-button"
+							type="primary"
+							isWide="true"
+							label={
+								<div>
+									Additional actions <div className="icon icon-arr_down"></div>
+								</div>
+							}
+							wrapperClass="button-more"
+							dataQsId="customerDetail-btn-other"
+						/>
+						<div className="popover-container">
+							<PopoverComponent
+								showOnClick={true}
+								contentClass={`invoice-list-cell-dropdown-content`}
+								entries={[otherActions]}
+								onClick={(entry) => onCreateButtonClick(entry.url, entry.action)}
+								elementId="customer-detail-other-button"
+								arrowAlignment={Direction.CENTER}
+								alignment={Direction.CENTER}
+								fixedWidth={180}
+								offsetTop={-7}
+								keepOpenOnScroll={true}
+								positionAbsolute={true}
+							/>
+						</div>
+					</React.Fragment>
+				)}
+			</div>
 		</div>
 	);
 };

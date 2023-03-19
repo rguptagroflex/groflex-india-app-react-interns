@@ -39,7 +39,7 @@ class CustomerContactInformationComponent extends React.Component {
 		const customer = this.props.customer;
 
 		return (
-			<div className="box box-rounded customer-contact-information">
+			<div style={{ minHeight: "196px" }} className="box box-rounded customer-contact-information">
 				{/* <div className="text-h4 u_mb_20">Contact information</div> */}
 				<div className="customer-contact-information-scroll-container">
 					<div className="row u_mb_0">
@@ -53,7 +53,7 @@ class CustomerContactInformationComponent extends React.Component {
 										{customer.email || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3">
+								{/* <div className="col-xs-3">
 									{customer.email && (
 										<ButtonComponent
 											callback={() => {
@@ -64,7 +64,7 @@ class CustomerContactInformationComponent extends React.Component {
 											wrapperClass="button-circle"
 										/>
 									)}
-								</div>
+								</div> */}
 							</div>
 						</div>
 						<div className="col-xs-6 u_mb_10 u_mt_10">
@@ -77,7 +77,7 @@ class CustomerContactInformationComponent extends React.Component {
 										{customer.website || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3">
+								{/* <div className="col-xs-3">
 									{customer.website && (
 										<ButtonComponent
 											callback={() => {
@@ -88,7 +88,7 @@ class CustomerContactInformationComponent extends React.Component {
 											wrapperClass="button-circle"
 										/>
 									)}
-								</div>
+								</div> */}
 							</div>
 						</div>
 						<div className="col-xs-6 u_mb_10 u_mt_10">
@@ -166,7 +166,7 @@ class CustomerContactInformationComponent extends React.Component {
 										<div className="text-placeholder">Not available</div>
 									)}
 								</div>
-								<div className="col-xs-3">
+								{/* <div className="col-xs-3">
 									{customer.address.street && (
 										<ButtonComponent
 											callback={() => {
@@ -177,7 +177,7 @@ class CustomerContactInformationComponent extends React.Component {
 											wrapperClass="button-circle"
 										/>
 									)}
-								</div>
+								</div> */}
 							</div>
 						</div>
 					</div>
