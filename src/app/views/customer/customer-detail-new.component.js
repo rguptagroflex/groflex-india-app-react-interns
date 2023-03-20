@@ -810,7 +810,7 @@ class CustomerDetailNewComponent extends React.Component {
 						</div>
 						<div
 							style={
-								customer.type !== "customer"
+								customer.type === "customer"
 									? { opacity: "0.3", pointerEvents: "none", userSelect: "none" }
 									: {}
 							}

@@ -143,12 +143,12 @@ class CustomerContactInformationComponent extends React.Component {
 								<div className="col-xs-3"></div>
 							</div>
 						</div>
-						<div className="col-xs-6 u_mb_10 u_mt_10">
+						<div className="col-xs-12 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-4">
+								<div className="col-xs-2">
 									<div className="text-muted">Address</div>
 								</div>
-								<div className="col-xs-5">
+								<div className="col-xs-10">
 									{customer.address.city ||
 									customer.country ||
 									customer.address.street ||

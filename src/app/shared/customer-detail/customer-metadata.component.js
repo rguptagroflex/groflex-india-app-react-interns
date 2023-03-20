@@ -56,12 +56,12 @@ const CustomerMetadataComponent = (props) => {
 			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
 			url: `/timetracking/new/${customer.id}`,
 		},
-		// {
-		// 	label: "Expenditure",
-		// 	icon: "icon-expense",
-		// 	isAvailable: customer.type == contactTypes.PAYEE ? true : false,
-		// 	url: `/expense/new/customer/${customer.id}`,
-		// },
+		{
+			label: "Expenditure",
+			icon: "icon-expense",
+			isAvailable: customer.type == contactTypes.PAYEE ? true : false,
+			url: `/expense/new/customer/${customer.id}`,
+		},
 		// {
 		// 	label: "Purchase order",
 		// 	icon: "icon-order",
@@ -112,7 +112,9 @@ const CustomerMetadataComponent = (props) => {
 	const symmetricButtons = (buttons = []) => {
 		let displayButtons = [];
 		let buttonsLength = customer.type === `payee` ? buttons.length : buttons.length - 1;
-		for (let i = 1; i < buttonsLength; i++) {
+		// let buttonsLength = buttons.length;
+		const startingIndex = buttonsLength === 1 ? 0 : 1;
+		for (let i = startingIndex; i < buttonsLength; i++) {
 			displayButtons.push(
 				<div className="buttons" key={`symmetric ${i}`}>
 					{buttons[i - 1]} {buttons[i]}
@@ -120,12 +122,20 @@ const CustomerMetadataComponent = (props) => {
 			);
 			i++;
 		}
+		console.log(
+			"SYMMETRICBUTTON FUNCTION, console log buttons array: ",
+			buttons,
+			"\n DISPLAY BUTTONS:",
+			displayButtons
+		);
 		return displayButtons;
 	};
 
 	setTimeout(() => {
 		$("#customer-detail-metadata-name").dotdotdot({ height: 68, truncate: "letter" });
 	}, 0);
+	console.log("buttons array: ", buttons);
+	console.log("buttons data: ", buttonData);
 	return (
 		<div
 			style={{ minHeight: "98%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
