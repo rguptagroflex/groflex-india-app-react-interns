@@ -249,14 +249,14 @@ const config = {
 					mainSubmenuItem: "expenditure",
 					resourceKey: "expenditures",
 				},
-				{
-					name: "purchaseOrders",
-					icon: "order",
-					title: "Purchase Orders",
-					url: "/purchase-orders",
-					mainSubmenuItem: "expenditure",
-					resourceKey: "purchaseOrder",
-				},
+				// {
+				// 	name: "purchaseOrders",
+				// 	icon: "order",
+				// 	title: "Purchase Orders",
+				// 	url: "/purchase-orders",
+				// 	mainSubmenuItem: "expenditure",
+				// 	resourceKey: "purchaseOrder",
+				// },
 				{
 					name: "debitNotes",
 					icon: "order",

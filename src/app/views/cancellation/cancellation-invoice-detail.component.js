@@ -29,7 +29,7 @@ const createDetailViewHeadObjects = (cancellation, activeAction, resources) => {
 		},
 		{
 			name: resources.str_pdf,
-			icon: "icon-pdf",
+			icon: "icon-pfeil icon-rotate-180",
 			action: CancellationInvoiceAction.DOWNLOAD_PDF,
 			actionActive: activeAction === CancellationInvoiceAction.DOWNLOAD_PDF,
 			dataQsId: "cancellation-head-action-downloadPdf",
@@ -121,6 +121,7 @@ class CancellationInvoiceDetailComponent extends React.Component {
 				? TransactionPrintSetting.CUSTOM_LETTER_PAPER
 				: TransactionPrintSetting.DEFAULT_LETTER_PAPER,
 		};
+		this.pdfWrapper = React.createRef();
 	}
 
 	componentDidMount() {
@@ -150,11 +151,11 @@ class CancellationInvoiceDetailComponent extends React.Component {
 						let currentPage = 1;
 						const numPages = pdf.numPages;
 						const myPDF = pdf;
-
+						const wrapper = this.pdfWrapper && this.pdfWrapper.current;
 						const handlePages = (page) => {
 							const wrapper = document.getElementById("invoice-detail-pdf-wrapper");
 							const canvas = document.createElement("canvas");
-							canvas.width = "925";
+							canvas.width = wrapper.getBoundingClientRect().width;
 							const context = canvas.getContext("2d");
 							const viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
 							canvas.height = viewport.height;
@@ -233,33 +234,33 @@ class CancellationInvoiceDetailComponent extends React.Component {
 						cancellation.refundType === `credits` ? `cancellations` : `expenses/cancellations`
 					}`}
 				/>
-
-				<div className="detail-view-head-container">
-					<DetailViewHeadPrintPopoverComponent
-						printSettingUrl={`${config.resourceHost}cancellation/${this.state.cancellation.id}/print/setting`}
-						letterPaperType={letterPaperType}
-						letterPaperChangeCallback={(letterPaperType) => {
-							this.setState({ letterPaperType });
-						}}
-						ref="detail-head-print-settings-popover"
-						resources={resources}
-					/>
-					{/* <div className="detail-view-background"></div> */}
-					{detailHeadContent}
+				<div className="detail-view-head-wrapper-new">
+					{/* <div className="detail-view-head-container"> */}
+						<DetailViewHeadPrintPopoverComponent
+							printSettingUrl={`${config.resourceHost}cancellation/${this.state.cancellation.id}/print/setting`}
+							letterPaperType={letterPaperType}
+							letterPaperChangeCallback={(letterPaperType) => {
+								this.setState({ letterPaperType });
+							}}
+							ref="detail-head-print-settings-popover"
+							resources={resources}
+						/>
+						{/* <div className="detail-view-background"></div> */}
+						{detailHeadContent}
+					{/* </div> */}
 				</div>
-
 				<div className="detail-view-content-wrapper">
 					<div className="detail-view-content-left">
-						<div className="detail-view-document">
+						<div className="detail-view-document-wrapper">
 							{/* {images} */}
 
 							<img className="detail-view-preview" src="/assets/images/invoice-preview.png" />
-							<div id="invoice-detail-pdf-wrapper" />
+							<div id="invoice-detail-pdf-wrapper" className="detail-view-pdf-wrapper" ref={this.pdfWrapper}/>
 						</div>
 					</div>
 
 					<div className="detail-view-content-right">
-						<div className="detail-view-box">
+						<div className="detail-view-box-new">
 							<div className="notes_heading text-h4">{resources.str_reversalReason}</div>
 							<p>{this.state.cancellation.notes}</p>
 						</div>

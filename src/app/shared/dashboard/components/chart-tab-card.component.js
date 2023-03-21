@@ -394,7 +394,7 @@ class ChartTabCardComponent extends React.Component {
                                                 }</span>
                                             </div>
                                         </div>
-                                    : <div className="chart-label text-center">
+                                    : <div className="">
                                         <p className="chart-label-text">{
                                             parseFloat(this.state.activeChartData.totalValue)
                                                 ? <div className={`${tab.name.replaceAll(' ', '_')}-bar-chart chartist-chart bar-chart text-center`} />
