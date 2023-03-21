@@ -28,7 +28,29 @@
 			}
 		}
 	}
-
+	.detail-view-box {
+	margin-top: -422px;
+	height:250px;
+	}
+	.icon-pdf {
+		color: green;
+	}
+	.detail-view-head-advanced-infos-right {
+		margin-right: -200px;
+	}
+	
+	.detail-view-head-container {
+		height:550px;
+	}
+	a:visited, a:focus, a:hover, a:active {
+		color: #00A353;
+	}
+	.detail-view-head-advanced-component .detail-view-head-advanced-infos .info-item-value, .detail-view-head-advanced-component .detail-view-head-advanced-infos .info-item-value a {
+		color:green;
+	}
+	.detail-view-head-advanced-actions{
+		margin-right: -120px;
+	}
 }
 
 

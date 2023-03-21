@@ -1,12 +1,13 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 const IconButtonComponent = (props) => {
 	const { id, dataQsId, icon, label, labelAction, hint, size, wrapperClass, callback, type } = props;
 
 	return (
-		<div className={`icon-button-wrapper ${wrapperClass || ''}`}>
+		<div className={`icon-button-wrapper ${wrapperClass || ""}`}>
 			<button
+				style={{ cursor: "pointer" }}
 				id={id}
 				data-qs-id={dataQsId}
 				className={`icon-button icon-button-${size} icon-button-${type} u_c`}
@@ -19,7 +20,7 @@ const IconButtonComponent = (props) => {
 			{label && (
 				<div
 					className={`text-small text-semibold text-center u_mt_6 u_c ${
-						labelAction ? 'icon-button-label-action' : ''
+						labelAction ? "icon-button-label-action" : ""
 					}`}
 					onClick={() => {
 						labelAction && labelAction();
@@ -47,8 +48,8 @@ IconButtonComponent.propTypes = {
 };
 
 IconButtonComponent.defaultProps = {
-	size: 'medium',
-	type: 'secondary',
+	size: "medium",
+	type: "secondary",
 };
 
 export default IconButtonComponent;
