@@ -2,33 +2,32 @@
 @import "../../abstracts/_mixins";
 
 .customer-statements {
-    margin-bottom: 0 !important;
-    padding-bottom: 17px !important;
+	// margin-bottom: 0 !important;
+	// padding-bottom: 17px !important;
 
-   
-    .first-row{
-        margin-bottom: 15px !important;
-    }
- 
-    .second-row{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
-    }
-    .radio{
-        display: flex;
-        justify-content: space-between;
-        padding: 10px 30px 0 30px;
-    }
-    .button-component-wrapper{
-        padding-left: 20px;
-        padding-top: 0.2rem;
-        padding-bottom: 0.25rem;
-    }
-    .customer-statements-container-blank{
-        width: 356.828px;
-        height: 161.750px;
-    }
+	.first-row {
+		margin-bottom: 15px !important;
+	}
+
+	.second-row {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+	}
+	.radio {
+		display: flex;
+		justify-content: space-between;
+		padding: 10px 30px 0 30px;
+	}
+	.button-component-wrapper {
+		padding-left: 20px;
+		padding-top: 0.2rem;
+		padding-bottom: 0.25rem;
+	}
+	.customer-statements-container-blank {
+		width: 356.828px;
+		height: 161.75px;
+	}
 }
 /* .customer-statements-adjustment-1{
     .customer-conditions{
