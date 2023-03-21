@@ -87,7 +87,7 @@ class CancellationListComponent extends React.Component {
 				title={ cancelType === debitNoteState ? `Debit notes` : `Credit notes` }
 				viewIcon={`icon-rechnung`}
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action, selectedRows)}
-				//buttons={topbarButtons}
+				buttons={topbarButtons}
 			/>
 		);
 
@@ -186,15 +186,15 @@ class CancellationListComponent extends React.Component {
 							headline: 'Delete Invoice(s)',
 						}
 					);
-				// 	ModalService.open(
-				// 	<Provider store={store}>
-				// 		<InvoiceMultiActionComponent onConfirm={() => this.onMultiActionConfirmed()} />
-				// 	</Provider>,
-				// 	{
-				// 		width: 500,
-				// 		headline: resources.str_deleteInvoices
-				// 	}
-				// );
+					ModalService.open(
+					<Provider store={store}>
+						<InvoiceMultiActionComponent onConfirm={() => this.onMultiActionConfirmed()} />
+					</Provider>,
+					{
+						width: 500,
+						headline: resources.str_deleteInvoices
+					}
+				);
 				}
 
 				break;
@@ -255,31 +255,31 @@ class CancellationListComponent extends React.Component {
 								field: 'date',
 								filter: true,
 								comparator: (date1, date2) => dateCompareSort(date1, date2, config.dateFormat.client),
-								// filterParams: {
-								// 	suppressAndOrCondition: true,
-								// 	filterOptions: ListAdvancedDefaultSettings.DATE_FILTER_PARAMS_OPTIONS,
-								// 	comparator: (filterLocalDateAtMidnight, cellValue) =>
-								// 		dateCompare(filterLocalDateAtMidnight, cellValue, config.dateFormat.client),
-								// },
+								 filterParams: {
+								 	suppressAndOrCondition: true,
+								 	filterOptions: ListAdvancedDefaultSettings.DATE_FILTER_PARAMS_OPTIONS,
+								 	comparator: (filterLocalDateAtMidnight, cellValue) =>
+										dateCompare(filterLocalDateAtMidnight, cellValue, config.dateFormat.client),
+								 },
 							},
-							// {
-							// 	headerName: 'Total gross',
-							// 	field: 'totalGross',
-							// 	hide: true,
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// 	comparator: localeCompareNumeric,
-							// 	cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
-							// 	valueFormatter: (evt) => {
-							// 		return formatCurrency(evt.value);
-							// 	},
-							// 	filter: 'agNumberColumnFilter',
-							// 	filterParams: {
-							// 		suppressAndOrCondition: true,
-							// 	},
-							// 	customProps: {
-							// 		calculateHeaderSum: true,
-							// 	},
-							// },
+							 {
+							 	headerName: 'Total gross',
+							 	field: 'totalGross',
+							 	hide: true,
+								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								comparator: localeCompareNumeric,
+								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
+							 	valueFormatter: (evt) => {
+							 		return formatCurrency(evt.value);
+							 	},
+							 	filter: 'agNumberColumnFilter',
+							 	filterParams: {
+							 		suppressAndOrCondition: true,
+							 	},
+							 	customProps: {
+							 		calculateHeaderSum: true,
+							 	},
+							 },
 							{
 								headerName: 'Amount credited',
 								field: 'paidAmount',
@@ -328,24 +328,24 @@ class CancellationListComponent extends React.Component {
 									longName: 'Refund type',
 								},
 							},
-							// {
-							// 	headerName: 'Total net',
-							// 	field: 'totalNet',
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// 	hide: true,
-							// 	comparator: localeCompareNumeric,
-							// 	cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
-							// 	valueFormatter: (evt) => {
-							// 		return formatCurrency(evt.value);
-							// 	},
-							// 	filter: 'agNumberColumnFilter',
-							// 	filterParams: {
-							// 		suppressAndOrCondition: true,
-							// 	},
-							// 	customProps: {
-							// 		calculateHeaderSum: true,
-							// 	},
-							// },
+							{
+								headerName: 'Total net',
+								field: 'totalNet',
+								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								hide: true,
+								comparator: localeCompareNumeric,
+								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
+								valueFormatter: (evt) => {
+									return formatCurrency(evt.value);
+								},
+								filter: 'agNumberColumnFilter',
+								filterParams: {
+									suppressAndOrCondition: true,
+								},
+								customProps: {
+									calculateHeaderSum: true,
+								},
+							},
 						]}
 						defaultSortModel={{
 							colId: 'number',
@@ -357,19 +357,19 @@ class CancellationListComponent extends React.Component {
 							subHeadline: `${cancelType === debitNoteState ? `Debit notes are created when expenditures are cancelled` : `Credit notes are created when invoices are cancelled`}`,
 							buttons: (
 								<React.Fragment>
-									{/* <ButtonComponent
+									<ButtonComponent
 										label="Los geht's"
 										buttonIcon="icon-plus"
 										dataQsId="empty-list-create-button"
 										callback={() => invoiz.router.navigate('/invoice/new')}
-									/> */}
-									{/* <ButtonComponent
+									/>
+									<ButtonComponent
 					label={resources.str_hereWeGo}
 					buttonIcon="icon-plus"
 					dataQsId="empty-list-create-button"
 					callback={() => invoiz.router.navigate('/invoice/new')}
-					disabled={!canCreateInvoice}
-				/> */}
+					// disabled={!canCreateInvoice}
+				/>
 								</React.Fragment>
 							),
 						}}
@@ -462,34 +462,34 @@ class CancellationListComponent extends React.Component {
 						loadingRowsMessage={`Loading ${cancelType === debitNoteState ? `debit` : `credit`} notes ...`}
 						noFilterResultsMessage={`No ${cancelType === debitNoteState ? `debit` : `credit`} notes matched the filter`}
 						webStorageKey={cancelType === debitNoteState ? WebStorageKey.DEBIT_CANCELLATION_LIST_SETTINGS: WebStorageKey.CANCELLATION_LIST_SETTINGS}
-						// actionCellPopup={{
-						// 	popupEntriesFunc: (item) => {
-						// 		const entries = [];
-						// 		let cancellation = null;
+						actionCellPopup={{
+							popupEntriesFunc: (item) => {
+								const entries = [];
+								let cancellation = null;
 
-						// 		if (item) {
-						// 			cancellation = new Cancellation(item);
-						// 					entries.push({
-						// 						label: 'Delete',
-						// 						action: 'delete',
-						// 						dataQsId: 'cancellation-list-item-dropdown-delete',
-						// 					});
+								if (item) {
+									cancellation = new Cancellation(item);
+											entries.push({
+												label: 'Delete',
+												action: 'delete',
+												dataQsId: 'cancellation-list-item-dropdown-delete',
+											});
 										
 
-						// 			if (entries.length === 0) {
-						// 				entries.push({
-						// 					label: 'No action available',
-						// 					customEntryClass: 'popover-entry-disabled',
-						// 				});
-						// 			}
-						// 		}
+									if (entries.length === 0) {
+										entries.push({
+											label: 'No action available',
+											customEntryClass: 'popover-entry-disabled',
+										});
+									}
+								}
 
-						// 		return [entries];
-						// 	},
-						// 	onPopupItemClicked: (itemData, popupEntry) => {
-						// 		this.onActionCellPopupItemClick(itemData, popupEntry);
-						// 	},
-						// }}
+								return [entries];
+							},
+							onPopupItemClicked: (itemData, popupEntry) => {
+								this.onActionCellPopupItemClick(itemData, popupEntry);
+							},
+						}}
 						onRowDataLoaded={(cancellationData) => {
 							if (!this.isUnmounted) {
 								this.setState({
