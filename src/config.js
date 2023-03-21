@@ -5,7 +5,7 @@ import WebStorageKey from "enums/web-storage-key.enum";
 
 const apiServers = {
 	// local: "http://localhost:3000",
-	local: 'https://dev.groflex.io',
+	local: "https://dev.groflex.io",
 	development: "https://dev.groflex.io",
 	qa: "https://qa.groflex.io",
 	staging: "https://staging.groflex.io",
@@ -14,7 +14,7 @@ const apiServers = {
 	admin: "https://invoiz-admin.buhl.de",
 };
 
-const byPassCors = true
+const byPassCors = true;
 
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
@@ -196,7 +196,7 @@ const config = {
 		// 	]
 		// },
 		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
-		{ name: 'articles', icon: 'article_outlined', title: 'Artikel', url: '/articles', resourceKey: 'article' },
+		{ name: "articles", icon: "article_outlined", title: "Artikel", url: "/articles", resourceKey: "article" },
 		// {
 		// 	name: "articles",
 		// 	icon: "article",
@@ -249,14 +249,14 @@ const config = {
 					mainSubmenuItem: "expenditure",
 					resourceKey: "expenditures",
 				},
-				{
-					name: "purchaseOrders",
-					icon: "order",
-					title: "Purchase Orders",
-					url: "/purchase-orders",
-					mainSubmenuItem: "expenditure",
-					resourceKey: "purchaseOrder",
-				},
+				// {
+				// 	name: "purchaseOrders",
+				// 	icon: "order",
+				// 	title: "Purchase Orders",
+				// 	url: "/purchase-orders",
+				// 	mainSubmenuItem: "expenditure",
+				// 	resourceKey: "purchaseOrder",
+				// },
 				{
 					name: "debitNotes",
 					icon: "order",
@@ -264,6 +264,14 @@ const config = {
 					url: "/expenses/cancellations",
 					mainSubmenuItem: "expenditure",
 					resourceKey: "debitNotes",
+				},
+				{
+					name: "cashAndBank",
+					icon: "order",
+					title: "Cash and bank",
+					url: "/cash-and-bank",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "cashAndBank",
 				},
 			],
 		},

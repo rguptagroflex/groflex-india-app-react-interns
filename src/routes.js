@@ -86,6 +86,7 @@ import CancellationListWrapper from "views/cancellation/cancellation-list.wrappe
 
 import RedirectComponent from "views/redirect/redirect.component";
 import MarketplaceWrapper from "./app/views/marketplace/marketplace.wrapper";
+import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
 // import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
 // import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
 // import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
@@ -479,7 +480,7 @@ const routes = [
 		component: TimetrackingBilledWrapper,
 		exact: true,
 		title: "Abgerechnete Zeiten",
-		menuItem: "invoices",		
+		menuItem: "invoices",
 		submenuItem: "timetracking",
 		resourceKey: "billedTimes",
 	},
@@ -969,6 +970,18 @@ const routes = [
 		menuItem: "expenditure",
 		submenuItem: "expenses",
 		resourceKey: "expenseEdit",
+	},
+	,
+	// Cash and bank
+	{
+		path: "/cash-and-bank",
+		type: RouteTypes.PRIVATE,
+		component: CashAndBankWrapper,
+		exact: true,
+		title: "Cash and Bank",
+		menuItem: "expenditure",
+		submenuItem: "cashAndBank",
+		resourceKey: "cashAndBank",
 	},
 
 	// GST Export
