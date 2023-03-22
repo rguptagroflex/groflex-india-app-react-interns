@@ -3,32 +3,10 @@
 
 .cancellation-invoice-detail-wrapper {
 
-	.detail-view-document {
-		margin: -425px auto 0;
+	.detail-view-head-advanced-component .detail-view-head-advanced-infos {
+		padding-top: 6px;
+		width: 634px;
 	}
-
-	.detail-view-head-controls {
-		top: 95px;
-	}
-
-	.detail-view-head-controls {
-		.detail-view-head-controls-item.item-print {
-			margin-right: 2px;
-
-			.icon {
-				pointer-events: none;
-			}
-		}
-
-		.detail-view-head-controls-item.item-print-settings {
-			line-height: 17px;
-
-			.icon {
-				color: $color-text-muted;
-			}
-		}
-	}
-
 }
 
 

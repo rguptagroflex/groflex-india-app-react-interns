@@ -69,12 +69,12 @@ class DashboardComponent extends React.Component {
 					{/* <DashboardOnboardingComponent /> */}
 					{/* <DashboardQuickButtonsComponent /> */}
 					<div className="row" style={{paddingTop: '18px'}}>
-						<div className="col-xs-12">
+						<div className="col-xs-6">
 							<DashboardReceivablesStatsComponent />
 						</div>
-						{/* <div className="col-xs-6">
+						<div className="col-xs-6">
 							<DashboardUnpaidExpensesStatsComponent />
-						</div> */}
+						</div>
 					</div>
 					<div className="row">
 						<div className="col-xs-6">
@@ -84,24 +84,24 @@ class DashboardComponent extends React.Component {
 							<DashboardQuotationsPurchaseOrderStatsComponent />
 						</div>
 					</div>
-					{/* <div className="row">
+					<div className="row">
 						<div className="col-xs-12">
 							<DashboardSalesExpensesStatsComponent />
 						</div>
-					</div> */}
+					</div>
 					<div className="row">
-						<div className="col-xs-6">
+						{/* <div className="col-xs-6">
 							<DashboardSalesByArticleStatsComponent />
 						</div>
 						<div className="col-xs-6">
 							<DashboardSalesByCustomerStatsComponent />
-						</div>
-						{/* <div className="col-xs-6">
+						</div> */}
+						<div className="col-xs-6">
 							<DashboardSalesArticleCustomerStatsComponent />
 						</div>
 						<div className="col-xs-6">
 							<DashboardExpenseArticleStatsComponent />
-						</div> */}
+						</div>
 					</div>
 					{/* <div className="row">
 						<div className="col-xs-5 col-gutter-right-10">

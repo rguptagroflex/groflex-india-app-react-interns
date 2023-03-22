@@ -20,7 +20,7 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
     constructor(props) {
         super(props);
 
-        this.chartColors = ['F3BBF8', 'EF78F6', 'B577BA', 'CC73D2', '9F17A9', '6A1370'];
+        this.chartColors = ['FBC3B1', 'F78C6B', 'F5683D', 'E9400C', 'C2350A', '882507'];
         this.state = {
             isLoading: false,
             errorOccurred: false,

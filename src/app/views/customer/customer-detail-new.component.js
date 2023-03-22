@@ -798,10 +798,7 @@ class CustomerDetailNewComponent extends React.Component {
 							customer={customer}
 							bulkPayment={this.bulkPayment}
 							issueRefund={this.bulkRefund}
-						/>
-						{customer.contactPersons && !!customer.contactPersons.length && (
-							<CustomerContactPersonsComponent contactPersons={customer.contactPersons} />
-						)}
+						/>						
 						{/* <CustomerContactInformationComponent customer={customer} /> */}
 					</div>
 					<div className="col-xs-8 col-no-gutter-left flexible-height">
@@ -905,6 +902,13 @@ class CustomerDetailNewComponent extends React.Component {
 								</div>
 							</div>
 						)} */}
+					</div>
+				</div>
+				<div className="row">
+					<div className="col-xs-12">
+						{customer.contactPersons && !!customer.contactPersons.length && (
+							<CustomerContactPersonsComponent contactPersons={customer.contactPersons} />
+						)}
 					</div>
 				</div>
 				<div className="row">

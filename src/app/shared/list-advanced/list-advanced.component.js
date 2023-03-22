@@ -1331,7 +1331,7 @@ class ListAdvancedComponent extends React.Component {
 
 				<div className={`icon-btn ${hasFilter ? '' : 'disabled'}`} onClick={() => this.onFilterClearClick()}>
 					<div className="icon icon-filter_reset"></div>
-					<div className="icon-label">Clear</div>
+					<div className="icon-label">Clear filters</div>
 				</div>
 
 				<div className="icon-btn" onClick={() => this.onShowColumnsSettingsModalClick()}>
