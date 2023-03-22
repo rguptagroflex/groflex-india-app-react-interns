@@ -134,6 +134,16 @@
     padding-left: 38px;
     padding-top: 25px;
 
+		@include breakpoint-md {
+			background-color: #d4ecf3;
+			width: 13rem;
+			position: fixed;
+			top: 0;
+			left: 80px;
+			padding-top: 0;
+			padding-left: 0;
+		}
+
 	&.submenu-invoices {
 		.submenuList {
 			margin-bottom: 103px;
