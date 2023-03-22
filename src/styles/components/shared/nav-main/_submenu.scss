@@ -151,4 +151,20 @@
 		-o-animation: 0.3s slidein;
 		animation: 0.3s slidein;
 	}
+
+	@include breakpoint-md {
+		height: 100vh;
+		z-index: 10011;
+		width: 190px;
+		top: 0;
+		position: fixed;
+		cursor: default;
+		background-color: #fff;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		padding-right: 15px;
+		padding-left: 15px;
+		left: 84px;
+	}
 }
