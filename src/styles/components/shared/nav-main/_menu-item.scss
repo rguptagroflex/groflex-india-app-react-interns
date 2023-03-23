@@ -115,6 +115,119 @@
 	}
 }
 
+.popup-menuItem {
+	position: relative;
+	color: $color-menu-text;
+	font-weight: 600;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	flex-direction: row;
+	user-select: none;
+	width: 100%;
+	white-space: nowrap;
+	@include rem(min-height, 70);
+	@include rem(max-height, 70);
+	@include rem(line-height, 21);
+	@include rem(font-size, 14);
+	@include rem(border-bottom, 1, solid, $color-menu-item-divider);
+	@include rem(border-left, 5, solid, transparent);
+
+	.collapsed-title {
+		position: absolute;
+		top: 40px;
+		left: 0;
+		width: $menu-small-width - 5px - 2 * 3px;
+		text-align: center;
+		color: #66696d;
+		font-size: 10px;
+		opacity: 0;
+		transition: opacity 0.2s ease-in-out;
+	}
+
+	&:link,
+	&:visited,
+	&:focus,
+	&:hover,
+	&:active {
+		color: $color-black !important;
+	}
+
+	&::before {
+		color: $color-menu-icon;
+	}
+
+	&:hover,
+	&.hover {
+		color: $color-menu-active-item !important; // $color-white
+		background-color: $color-menu-active-background-item; // $color-submenu
+
+		&::before {
+			color: $color-menu-active-item !important; // $color-white
+		}
+
+		.collapsed-title {
+			color: $color-menu-active-item !important; // $color-white
+		}
+	}
+
+	&:before {
+		top: 0;
+		bottom: 0;
+		display: flex;
+		align-items: center;
+		font-weight: normal;
+		transition: margin 0.2s ease-in-out;
+
+		@include rem(margin-right, 20);
+		@include rem(left, 0);
+		@include rem(font-size, 21);
+		@include rem(margin-left, 20);
+
+		@include breakpoint-md {
+			@include rem(margin-right, 35);
+		}
+	}
+
+	@include breakpoint-lg {
+		@include rem(height, 50);
+		@include rem(min-height, 50);
+
+		&::before {
+			// margin-left: 32px;
+			font-size: 14px;
+		}
+	}
+
+	// @include breakpoint-md {
+	// 	overflow: hidden;
+	// 	@include rem(width, $menu-small-width);
+	// 	@include rem(height, 82);
+	// 	@include rem(padding, 0, 0, 0, 0);
+
+	// 	> span {
+	// 		overflow: hidden;
+	// 	}
+
+	// 	&:before {
+	// 		@include rem(margin-left, 30);
+	// 	}
+
+	// 	.collapsed-title {
+	// 		width: $menu-small-width - 2 * 3px;
+	// 	}
+	// }
+
+	@include breakpoint-menu-sm {
+		@include rem(height, 50);
+		@include rem(min-height, 50);
+
+		&::before {
+			// margin-left: 32px;
+			font-size: 14px;
+		}
+	}
+}
 // .menuItem-notFocused {
 // 	&::before {
 // 		color: #5b5f65 !important;

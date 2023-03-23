@@ -58,7 +58,7 @@ class MenuFooterComponent extends React.Component {
 	}
 
 	onLogoutClick() {
-		const { onLogout } = this.props;		
+		const { onLogout } = this.props;
 
 		onLogout(() => {
 			this.props.userLoggedOut();
@@ -75,7 +75,7 @@ class MenuFooterComponent extends React.Component {
 	async fetchTenantDetails() {
 		const tenantURL = `${config.resourceHost}tenant`;
 		const response = (await invoiz.request(tenantURL, { auth: true })).body.data;
-		this.setState({tenant: response})
+		this.setState({ tenant: response })
 	}
 
 	navigateToPage(url) {
@@ -85,7 +85,7 @@ class MenuFooterComponent extends React.Component {
 	};
 
 	render() {
-		const { submenuVisible, resources, activeItem, activeSubmenuItem  } = this.props;
+		const { submenuVisible, resources, activeItem, activeSubmenuItem } = this.props;
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
 
@@ -94,7 +94,7 @@ class MenuFooterComponent extends React.Component {
 		}
 
 		const iconClass = 'icon icon-logout_outlined';
-		const logoutClass = `menuItem ${iconClass} ${submenuVisible ? 'menuItem-notFocused' : ''}`;
+		const logoutClass = `popup-menuItem ${iconClass} ${submenuVisible ? 'menuItem-notFocused' : ''}`;
 		const notificationClass = `menuItem icon icon-bell`;
 
 		return (
@@ -102,52 +102,53 @@ class MenuFooterComponent extends React.Component {
 				<div className={notificationClass} onClick={this.onNewsfeedClick.bind(this)}>
 					{resources.str_notification} {newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null}
 				</div>
-				<div className="menuItem profile_logo" >
-					<span className=" icon icon-user_outlined"></span> My Account
+				<div className="menuItem showmenu icon icon-user_outlined">
+					{/* <span className="icon icon-user_outlined"></span> */}
+					My Account
 
-					<div className="menu-profile-popup">
+					<div className="menu-profile-popup profile_logo">
 						<div className="menu-profile-popup-head">
 							<div className="icon icon-user_outlined"></div>
 							<div className="text-info">{this.state.tenant.companyAddress.companyName || 'Business Name'}</div>
 						</div>
 						<div className="menu-profile-popup-middle1">
-							<a 	className={`menuItem small icon icon-user_outlined_black ${activeSubmenuItem == 'account' ? 'menuItem-active' : ''}`}
-								onClick={() => this.navigateToPage('/settings/account')} 
-								data-href = "/settings/account"
-								data-qs-id = {`global-menu-item-Account-details`}
+							<a className={`popup-menuItem small icon icon-user_outlined_black ${activeSubmenuItem == 'account' ? 'menuItem-active' : ''}`}
+								onClick={() => this.navigateToPage('/settings/account')}
+								data-href="/settings/account"
+								data-qs-id={`global-menu-item-Account-details`}
 							>
 								{'Account details'}
 							</a>
-							<a  className={`menuItem small icon icon-settings_outlined ${activeSubmenuItem == 'account-setting' ? 'menuItem-active' : ''}`}
-								onClick={() => this.navigateToPage('/settings/account-setting')} 
-								data-href = "/settings/account-setting"
-								data-qs-id = {`global-menu-item-Setting`}
+							<a className={`popup-menuItem small icon icon-settings_outlined ${activeSubmenuItem == 'account-setting' ? 'menuItem-active' : ''}`}
+								onClick={() => this.navigateToPage('/settings/account-setting')}
+								data-href="/settings/account-setting"
+								data-qs-id={`global-menu-item-Setting`}
 							>
 								{'Setting'}
 							</a>
-							
-							<a  className={`menuItem small icon icon-credit_card ${activeSubmenuItem == 'billing' ? 'menuItem-active' : ''}`}
-								onClick={() => this.navigateToPage('/settings/billing')} 
-								data-href = "/settings/billing"
-								data-qs-id = {`global-menu-item-Your-billing`}
+
+							<a className={`popup-menuItem small icon icon-credit_card ${activeSubmenuItem == 'billing' ? 'menuItem-active' : ''}`}
+								onClick={() => this.navigateToPage('/settings/billing')}
+								data-href="/settings/billing"
+								data-qs-id={`global-menu-item-Your-billing`}
 							>
 								{'Your billing'}
 							</a>
-							<a 	className={`menuItem small icon icon-teams ${activeSubmenuItem == 'user' ? 'menuItem-active' : ''}`}
-								onClick={() => this.navigateToPage('/settings/user')} 
-								data-href = "/settings/user"
-								data-qs-id = {`global-menu-item-Your-Teams`}
+							<a className={`popup-menuItem small icon icon-teams ${activeSubmenuItem == 'user' ? 'menuItem-active' : ''}`}
+								onClick={() => this.navigateToPage('/settings/user')}
+								data-href="/settings/user"
+								data-qs-id={`global-menu-item-Your-Teams`}
 							>
 								{'Teams'}
 							</a>
 						</div>
 						<div className="menu-profile-popup-middle2">
-							<a 	className="menuItem small icon icon-help_outlined"
+							<a className="popup-menuItem small icon icon-help_outlined"
 								href="https://groflex.io" target="_blank"
 							>
 								{'Groflex Help Center'}
 							</a>
-							<a 	className="menuItem small icon icon-vpn_policy"
+							<a className="popup-menuItem small icon icon-vpn_policy"
 								href="https://www.groflex.io/privacy-policy/" target="_blank"
 							>
 								{'Terms & Conditions'}

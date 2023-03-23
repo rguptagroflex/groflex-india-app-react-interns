@@ -74,8 +74,8 @@
 	.menu-profile-popup {
 		display: none;
 		position: fixed;
-		bottom: 30px;
-		left: 230px;
+		bottom: 5px;
+		left: 250px;
 		width: 245px;
 		padding: 0px 0px 10px 1px;
 		background-color: white;
@@ -83,13 +83,24 @@
 		border-radius: 4px;
 		flex-direction: column;
 
+		@include breakpoint-md {
+			left: 85px;
+			bottom: 5px;
+		}
+
 		.menuItem.small {
 			height: 35px;
 			min-height: 35px;
 		}
 	}
 
-	.profile_logo:hover {
+	// .profile_logo:hover {
+	// 	.menu-profile-popup {
+	// 		display: flex;
+	// 	}
+	// }
+
+	.showmenu:hover {
 		.menu-profile-popup {
 			display: flex;
 		}
