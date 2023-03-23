@@ -94,7 +94,7 @@ class MenuFooterComponent extends React.Component {
 		}
 
 		const iconClass = 'icon icon-logout_outlined';
-		const logoutClass = `menuItem ${iconClass} ${submenuVisible ? 'menuItem-notFocused' : ''}`;
+		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? 'menuItem-notFocused' : ''}`;
 		const notificationClass = `menuItem icon icon-bell`;
 
 		return (

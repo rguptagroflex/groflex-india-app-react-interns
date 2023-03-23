@@ -92,6 +92,10 @@
 		-ms-scrollbar-width: thin;
 	}
 
+	@include breakpoint-md {
+		margin-top: 35px;
+	}
+
 	&.submenu-visible {
 		.menuItem:not(.menuItem-active) {
 			// @include breakpoint-lg() {
