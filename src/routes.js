@@ -981,6 +981,7 @@ const routes = [
 		title: "Cash and Bank",
 		menuItem: "expenditure",
 		submenuItem: "cashAndBank",
+		pageClass: PageClassNames.ONLY_SIDE_MARGIN,
 		resourceKey: "cashAndBank",
 	},
 

@@ -1,0 +1,15 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.cash-and-bank-component-wrapper {
+	.bank-list-wrapper {
+		margin: 0;
+
+		.add-bank-icon {
+			color: #00a353;
+		}
+	}
+
+	.cash-list-wrapper {
+	}
+}
