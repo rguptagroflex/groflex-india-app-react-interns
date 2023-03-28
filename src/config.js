@@ -5,13 +5,13 @@ import WebStorageKey from "enums/web-storage-key.enum";
 
 const apiServers = {
 	// local: "http://localhost:3000",
-	local: 'https://dev.groflex.io',
-	development: "https://dev.groflex.io",
-	qa: "https://qa.groflex.io",
-	staging: "https://staging.groflex.io",
-	production: "https://app.groflex.io",
-	integration: "https://web-integration-invoiz.buhl.de",
-	admin: "https://invoiz-admin.buhl.de",
+	local: 'https://dev.groflex.in',
+	development: "https://dev.groflex.in",
+	qa: "https://qa.groflex.in",
+	staging: "https://staging.groflex.in",
+	production: "https://app.groflex.in",
+	// integration: "https://web-integration-invoiz.buhl.de",
+	// admin: "https://invoiz-admin.buhl.de",
 };
 
 const byPassCors = true
