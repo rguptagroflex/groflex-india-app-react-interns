@@ -163,11 +163,11 @@ class RegistrationInvitationComponent extends React.Component {
 						<div className="landing-fact-text">{password.length > 0 ? getPasswordInfo(password) : ''}</div>
 					</div>
 					<div className="landing-sidebar-footer">
-						<a href="https://app.groflex.io/imprint/" target="_blank">
+						<a href="https://groflex.in/privacy-policy" target="_blank">
 						imprint
 						</a>
 						<div className="link-divider" />
-						<a href="https://app.groflex.io/privacy-policy/" target="_blank">
+						<a href="https://groflex.in/terms-&-conditions" target="_blank">
 						Terms & Conditions
 						</a>
 					</div>
@@ -182,7 +182,7 @@ class RegistrationInvitationComponent extends React.Component {
 								<div>Unfortunately, your invitation link is not valid.</div>
 								<ButtonComponent
 									callback={() => {
-										window.location.href = 'https://app.groflex.io/';
+										window.location.href = 'https://app.groflex.in/';
 									}}
 									label="To groflex"
 									dataQsId="registration-invitation-invalid-btn"
@@ -246,7 +246,7 @@ class RegistrationInvitationComponent extends React.Component {
 										/>
 									</div>
 									<div className="col-xs-12 col-md-6 u_mb_20 text-medium text-light registration-invitation-hint">
-										By joining, you agree to the <a href="https://www.groflex.io/privacy-policy/">Terms & Conditions.</a>
+										By joining, you agree to the <a href="https://groflex.in/terms-&-conditions">Terms & Conditions.</a>
 									</div>
 								</div>
 								<div className="row">

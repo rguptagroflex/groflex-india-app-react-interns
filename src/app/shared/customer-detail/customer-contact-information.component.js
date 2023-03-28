@@ -1,7 +1,7 @@
-import React from 'react';
-import ButtonComponent from 'shared/button/button.component';
-import PerfectScrollbar from 'perfect-scrollbar';
-import { normalizeHttpUrl } from 'helpers/normalizeHttpUrl';
+import React from "react";
+import ButtonComponent from "shared/button/button.component";
+import PerfectScrollbar from "perfect-scrollbar";
+import { normalizeHttpUrl } from "helpers/normalizeHttpUrl";
 
 class CustomerContactInformationComponent extends React.Component {
 	constructor(props) {
@@ -11,7 +11,7 @@ class CustomerContactInformationComponent extends React.Component {
 	}
 
 	componentDidMount() {
-		this.perfectScrollbar = new PerfectScrollbar('.customer-contact-information-scroll-container', {
+		this.perfectScrollbar = new PerfectScrollbar(".customer-contact-information-scroll-container", {
 			suppressScrollX: true,
 		});
 	}
@@ -24,36 +24,36 @@ class CustomerContactInformationComponent extends React.Component {
 
 	onShowExternalMapsClick() {
 		const { customer } = this.props;
-		window.open(`http://www.google.com/maps/search/${customer.mapData.mapAddress}`, '_blank');
+		window.open(`http://www.google.com/maps/search/${customer.mapData.mapAddress}`, "_blank");
 	}
 
 	onEmailClick(email) {
-		window.open(`mailto:${email}`, '_self');
+		window.open(`mailto:${email}`, "_self");
 	}
 
 	onWebsiteClick(website) {
-		window.open(normalizeHttpUrl(website), '_blank');
+		window.open(normalizeHttpUrl(website), "_blank");
 	}
 
 	render() {
 		const customer = this.props.customer;
 
 		return (
-			<div className="box box-rounded customer-contact-information">
-				<div className="text-h4 u_mb_20">Contact information</div>
+			<div style={{ minHeight: "196px" }} className="box box-rounded customer-contact-information">
+				{/* <div className="text-h4 u_mb_20">Contact information</div> */}
 				<div className="customer-contact-information-scroll-container">
-					<div className="row u_mb_20">
-						<div className="col-xs-6 u_mb_20">
+					<div className="row u_mb_0">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
 								<div className="col-xs-4">
 									<div className="text-muted">E-mail</div>
 								</div>
 								<div className="col-xs-5">
-									<div className={`text-truncate ${!customer.email ? 'text-placeholder' : null}`}>
-										{customer.email || 'Not available'}
+									<div className={`text-truncate ${!customer.email ? "text-placeholder" : null}`}>
+										{customer.email || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3">
+								{/* <div className="col-xs-3">
 									{customer.email && (
 										<ButtonComponent
 											callback={() => {
@@ -64,20 +64,20 @@ class CustomerContactInformationComponent extends React.Component {
 											wrapperClass="button-circle"
 										/>
 									)}
-								</div>
+								</div> */}
 							</div>
 						</div>
-						<div className="col-xs-6 u_mb_20">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
 								<div className="col-xs-4">
 									<div className="text-muted">Website</div>
 								</div>
 								<div className="col-xs-5">
-									<div className={`text-truncate ${!customer.website ? 'text-placeholder' : null}`}>
-										{customer.website || 'Not available'}
+									<div className={`text-truncate ${!customer.website ? "text-placeholder" : null}`}>
+										{customer.website || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3">
+								{/* <div className="col-xs-3">
 									{customer.website && (
 										<ButtonComponent
 											callback={() => {
@@ -88,89 +88,85 @@ class CustomerContactInformationComponent extends React.Component {
 											wrapperClass="button-circle"
 										/>
 									)}
-								</div>
+								</div> */}
 							</div>
 						</div>
-						<div className="col-xs-6 u_mb_20">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
 								<div className="col-xs-4">
 									<div className="text-muted">Telephone</div>
 								</div>
 								<div className="col-xs-5">
-									<div className={customer.phone1 ? '' : 'text-placeholder'}>
-										{customer.phone1 || 'Not available'}
+									<div className={customer.phone1 ? "" : "text-placeholder"}>
+										{customer.phone1 || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3">
-								</div>
+								<div className="col-xs-3"></div>
 							</div>
 						</div>
 						{customer.phone2 && (
-							<div className="col-xs-6 u_mb_20">
+							<div className="col-xs-6 u_mb_10 u_mt_10">
 								<div className="row">
 									<div className="col-xs-4">
-											<div className="text-muted">Telephone 2</div>
+										<div className="text-muted">Telephone 2</div>
 									</div>
 									<div className="col-xs-5">
 										<div>{customer.phone2}</div>
 									</div>
-									<div className="col-xs-3">
-									</div>
+									<div className="col-xs-3"></div>
 								</div>
 							</div>
 						)}
 						{customer.fax && (
-							<div className="col-xs-6 u_mb_20">
+							<div className="col-xs-6 u_mb_10 u_mt_10">
 								<div className="row">
 									<div className="col-xs-4">
-											<div className="text-muted">Fax</div>
+										<div className="text-muted">Fax</div>
 									</div>
 									<div className="col-xs-5">
 										<div>{customer.fax}</div>
 									</div>
-									<div className="col-xs-3">
-									</div>
+									<div className="col-xs-3"></div>
 								</div>
 							</div>
 						)}
-						<div className="col-xs-6 u_mb_20">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
 								<div className="col-xs-4">
 									<div className="text-muted">Mobile</div>
 								</div>
 								<div className="col-xs-5">
-									<div className={customer.mobile ? '' : 'text-placeholder'}>
-										{customer.mobile || 'Not available'}
+									<div className={customer.mobile ? "" : "text-placeholder"}>
+										{customer.mobile || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3">
-								</div>
+								<div className="col-xs-3"></div>
 							</div>
 						</div>
-						<div className="col-xs-6 u_mb_20">
+						<div className="col-xs-12 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-4">
+								<div className="col-xs-2">
 									<div className="text-muted">Address</div>
 								</div>
-								<div className="col-xs-5">
+								<div className="col-xs-10">
 									{customer.address.city ||
-										customer.country ||
-										customer.address.street ||
-										customer.address.zipCode ? (
-											<React.Fragment>
-												{customer.address.street && <div>{customer.address.street}</div>}
-												{(customer.address.zipCode || customer.address.city) && (
-													<div>
-														{customer.address.zipCode} {customer.address.city}
-													</div>
-												)}
-												{customer.country && <div>{customer.country}</div>}
-											</React.Fragment>
-										) : (
-											<div className="text-placeholder">Not available</div>
+									customer.country ||
+									customer.address.street ||
+									customer.address.zipCode ? (
+										<React.Fragment>
+											{customer.address.street && <div>{customer.address.street}</div>}
+											{(customer.address.zipCode || customer.address.city) && (
+												<div>
+													{customer.address.zipCode} {customer.address.city}
+												</div>
+											)}
+											{customer.country && <div>{customer.country}</div>}
+										</React.Fragment>
+									) : (
+										<div className="text-placeholder">Not available</div>
 									)}
 								</div>
-								<div className="col-xs-3">
+								{/* <div className="col-xs-3">
 									{customer.address.street && (
 										<ButtonComponent
 											callback={() => {
@@ -181,7 +177,7 @@ class CustomerContactInformationComponent extends React.Component {
 											wrapperClass="button-circle"
 										/>
 									)}
-								</div>
+								</div> */}
 							</div>
 						</div>
 					</div>

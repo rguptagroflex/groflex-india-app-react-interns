@@ -176,7 +176,7 @@ class DashboardSalesExpensesStatsComponent extends React.Component {
 						value: item.value,
 					};
 				}),
-				color: '0f2659',
+				color: '00A353',
 				name: 'sales'
 			},
 			{
@@ -189,7 +189,7 @@ class DashboardSalesExpensesStatsComponent extends React.Component {
 						value: item.value,
 					};
 				}),
-				color: '6A1370',
+				color: '0071CA',
 				name: 'expenses'
 			}
 		];

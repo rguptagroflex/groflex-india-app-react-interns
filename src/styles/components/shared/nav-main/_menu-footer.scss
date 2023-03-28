@@ -68,6 +68,19 @@
 			height: 27px;
 			padding-left: 5.5px;
 			padding-top: 1.5px;
+			
+		}
+		@include breakpoint-md {
+			.icon.icon-user_outlined {
+				width: 50px;
+				height: 28px;
+				overflow: unset;
+				margin-left: 21px;
+				border-radius: 16px;
+				margin-right: 28px;
+				padding-left: 10%;
+				padding-right: 10%;
+			}
 		}
 	}
 
@@ -82,10 +95,31 @@
 		box-shadow: 0px 2px 8px 1px #e3e3e3;
 		border-radius: 4px;
 		flex-direction: column;
+		z-index: 1;
 
+		@include breakpoint-md {
+			left: 50px;
+		}
+		.icon.icon-user_outlined {
+			background: $color-primary;
+			color: #ffff;
+			margin-left: 19px;
+			border-radius: 15px;
+			margin-right: 8px;
+			width: 30px;
+			height: 30px;
+			padding-left: 8px;
+			padding-right: 0px;
+			padding-top: 3px;
+			
+		}
 		.menuItem.small {
 			height: 35px;
 			min-height: 35px;
+			
+			@include breakpoint-md {
+				width: 100%;
+			}
 		}
 	}
 

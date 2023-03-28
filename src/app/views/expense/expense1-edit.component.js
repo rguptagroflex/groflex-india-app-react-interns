@@ -1,41 +1,41 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import TabInputComponent from 'shared/inputs/tab-input/tab-input.component';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import { Link } from "react-router-dom";
+import TopbarComponent from "shared/topbar/topbar.component";
+import TabInputComponent from "shared/inputs/tab-input/tab-input.component";
 
-import _ from 'lodash';
+import _ from "lodash";
 // import moment from 'moment';
-import Uploader from 'fine-uploader';
-import Decimal from 'decimal.js';
-import { format } from 'util';
-import config from 'config';
-import CheckboxInputComponent from 'shared/inputs/checkbox-input/checkbox-input.component';
-import DateInputComponent from 'shared/inputs/date-input/date-input.component';
-import RadioInputComponent from 'shared/inputs/radio-input/radio-input.component';
-import PopoverComponent from 'shared/popover/popover.component';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
+import Uploader from "fine-uploader";
+import Decimal from "decimal.js";
+import { format } from "util";
+import config from "config";
+import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
+import DateInputComponent from "shared/inputs/date-input/date-input.component";
+import RadioInputComponent from "shared/inputs/radio-input/radio-input.component";
+import PopoverComponent from "shared/popover/popover.component";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
 
-import RecipientComponent from 'shared/recipient/recipient.component';
-import ModalService from 'services/modal.service';
-import LetterPositionsHeadComponent from 'shared/letter/letter-positions-head.component';
-import LetterPositionsComponent from 'shared/letter/letter-positions.component';
-import LetterPositionsTotalComponent from 'shared/letter/letter-positions-total.component';
-import Expense from 'models/expense.model';
-import { updateExpenseArticles } from 'helpers/transaction/updateExpenseArticles';
-import { saveInventory } from 'helpers/transaction/saveInventory';
-import { saveExpense } from 'helpers/transaction/saveExpense';
-import { saveCustomer } from 'helpers/transaction/saveCustomer';
-import { convertToWords } from 'helpers/convertRupeesIntoWords';
-import { handleTransactionFormErrors, handleImageError } from 'helpers/errors';
-import CancelExpenseModalComponent from 'shared/modals/cancel-expense-modal.component';
+import RecipientComponent from "shared/recipient/recipient.component";
+import ModalService from "services/modal.service";
+import LetterPositionsHeadComponent from "shared/letter/letter-positions-head.component";
+import LetterPositionsComponent from "shared/letter/letter-positions.component";
+import LetterPositionsTotalComponent from "shared/letter/letter-positions-total.component";
+import Expense from "models/expense.model";
+import { updateExpenseArticles } from "helpers/transaction/updateExpenseArticles";
+import { saveInventory } from "helpers/transaction/saveInventory";
+import { saveExpense } from "helpers/transaction/saveExpense";
+import { saveCustomer } from "helpers/transaction/saveCustomer";
+import { convertToWords } from "helpers/convertRupeesIntoWords";
+import { handleTransactionFormErrors, handleImageError } from "helpers/errors";
+import CancelExpenseModalComponent from "shared/modals/cancel-expense-modal.component";
 
-import ChangeDetection from 'helpers/changeDetection';
-import { formatApiDate } from 'helpers/formatDate';
-import userPermissions from 'enums/user-permissions.enum';
+import ChangeDetection from "helpers/changeDetection";
+import { formatApiDate } from "helpers/formatDate";
+import userPermissions from "enums/user-permissions.enum";
 const changeDetection = new ChangeDetection();
 
-const expanseTypes={EXPENSE_TYPE:'expense',PURCHASE_TYPE:'purchase'}
+const expanseTypes = { EXPENSE_TYPE: "expense", PURCHASE_TYPE: "purchase" };
 class ExpenseEditComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -115,67 +115,67 @@ class ExpenseEditComponent extends React.Component {
 	}
 
 	render() {
-		const {
-			expense,
-			letterRecipientState,
-			miscOptions,
-			saving,
-			errorMessageReceiptNo
-		} = this.state;
-		let title = expense.receiptNumber?`Expenditure ${expense.receiptNumber}`:`Expenditure`
-		let subtitle
-		if(expense.metaData && expense.metaData.expenseCancellation){
+		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo } = this.state;
+		let title = expense.receiptNumber ? `Expenditure ${expense.receiptNumber}` : `Create expenditure`;
+		let subtitle;
+		if (expense.metaData && expense.metaData.expenseCancellation) {
 			subtitle = (
 				<div>
-					(Debit note no.{' '}
-					<a onClick={() => invoiz.router.redirectTo(`/expenses/cancellation/${expense.metaData.expenseCancellation.id}`, false, false, true)}>
+					(Debit note no.{" "}
+					<a
+						onClick={() =>
+							invoiz.router.redirectTo(
+								`/expenses/cancellation/${expense.metaData.expenseCancellation.id}`,
+								false,
+								false,
+								true
+							)
+						}
+					>
 						{expense.metaData.expenseCancellation.number}
-					</a>
-					{' '}
-					{expense.metaData.expenseCancellation.paidAmount > 0 ? `available for utilization` : null} 
-					)
+					</a>{" "}
+					{expense.metaData.expenseCancellation.paidAmount > 0 ? `available for utilization` : null})
 				</div>
-			)
+			);
 		}
 		const purchaseOrderNumber = expense.purchaseOrder && expense.purchaseOrder.number;
 		const purchaseOrderId = expense.purchaseOrder && expense.purchaseOrder.id;
 		const { resources } = this.props;
 		const topbar = this.state.isModal ? null : (
 			<TopbarComponent
-				title={title }
+				title={title}
 				subtitle={subtitle}
 				// title={this.state.expense.id ? resources.str_editOutput : resources.str_createOutput}
 				hasCancelButton={true}
 				cancelButtonCallback={() => this.onCancel()}
 				buttonCallback={(evt, button) => this.onTopbarButtonClick(button.action)}
-				backButtonRoute={'expenses'}
+				backButtonRoute={"expenses"}
 				buttons={[
-					
 					{
 						type: "primary",
 						label: resources.str_toSave,
-						buttonIcon: 'icon-check',
-						action: 'save',
-						dataQsId: 'expense-topbar-button-save',
+						buttonIcon: "icon-check",
+						action: "save",
+						dataQsId: "expense-topbar-button-save",
 						loading: saving,
-						disabled:expense.status !=='open'
+						disabled: expense.status !== "open",
 					},
 					{
-						type: 'default',
-						label: 'Cancel',//esources.expenseEditSaveAndCaptureButtonText,
-						buttonIcon: '',
-						action: 'cancel',
-						dataQsId: 'expense-topbar-button-cancel',
+						type: "default",
+						label: "Cancel", //esources.expenseEditSaveAndCaptureButtonText,
+						buttonIcon: "",
+						action: "cancel",
+						dataQsId: "expense-topbar-button-cancel",
 						loading: saving,
-						disabled:expense.status !=='paid'
-					}
+						disabled: expense.status !== "paid",
+					},
 				]}
 			/>
 		);
 
 		const isPaidElements =
 			this.state.expense.payKind !== "open" ? (
-				<div className="row u_pb_40">
+				<div className="row u_pb_40 u_pt_60">
 					<div className="col-xs-6 paykind-wrapper">
 						<label className="paykind-radio-label">{resources.str_payment}</label>
 						<RadioInputComponent
@@ -275,50 +275,123 @@ class ExpenseEditComponent extends React.Component {
 				{topbar}
 
 				<div className="box wrapper-has-topbar-with-margin">
-					<div className="row" >
-							<div className="col-xs-8">
-									<div className="text-h4 heading u_pt_60">{resources.str_details}
-										{convertedFormPurchaseOrder}
-									</div>
+					<div className="row">
+						<div className="col-xs-8">
+							<div className="text-h4 heading">
+								{resources.str_details}
+								{convertedFormPurchaseOrder}
 							</div>
+						</div>
 
-							<div className="col-xs-4">
-								<div className=" u_pt_60">
-								<TabInputComponent
+						<div className="col-xs-4">
+							<div className=" u_pt_60">
+								{/* About to change to radio */}
+								{/* <TabInputComponent
 										key="toggleExpensePurchase"
 										items={[{ label: "Expense", value: "expense" }, { label:"Purchase", value:"purchase" }]}
 										value={this.state.expense.type}
 										componentClass="dashboard-tab-input"
 										dataQsId="dashboard-topSalesStats-tabs-yearMonth"
 										onChange={e => this.onExpenseTypeChage(e)}
+									/> */}
+							</div>
+						</div>
+					</div>
+					<div className="row">
+						<div className="col-xs-6">
+							<div className={`letter-positions-total-content`}>
+								<div className="letter-positions-radio">
+									<RadioInputComponent
+										// useCustomStyle={true}
+										key="toggleExpensePurchase"
+										options={[
+											{ label: "Expense", value: "expense" },
+											{ label: "Purchase", value: "purchase" },
+										]}
+										value={this.state.expense.type}
+										onChange={(e) => {
+											this.onExpenseTypeChage(e);
+										}}
+										dataQsId="dashboard-topSalesStats-tabs-yearMonth"
 									/>
 								</div>
 							</div>
-
-					</div>
-					
-
-					
-
-					<div className="row">
-						<div className="col-xs-6">
-							<RecipientComponent
-								transaction={expense}
-								customerData={expense.customerData}
-								recipientState={letterRecipientState}
-								onChange={(option, baseCurrency, exchangeRate) => this.onRecipientChange(option, baseCurrency, exchangeRate)}
-								onCloseEditMode={(customerData, baseCurrency, exchangeRate, defaultExchangeRateToggle) =>
-									this.onRecipientEditClose(customerData, baseCurrency, exchangeRate, defaultExchangeRateToggle)
-								}
-								resources={resources}
-								activeComponentAction={this.activeComponentHandler}
-								isActiveComponentHasError={this.state.isActiveComponentHasError}
-								activeComponent={this.state.activeComponent}
-								recipientType={"payee"}
-							/>
 						</div>
 					</div>
-					<div className="row u_pb_40">
+
+					<div className="row u_mt_40">
+						<div className="col-xs-6 u_pt_28">
+							<div className="row">
+								<div className="col-xs-12" style={{ fontSize: "16px", fontWeight: 600 }}>
+									{`BILL TO (SHIP TO)`}
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-xs-12">
+									<RecipientComponent
+										transaction={expense}
+										customerData={expense.customerData}
+										recipientState={letterRecipientState}
+										onChange={(option, baseCurrency, exchangeRate) =>
+											this.onRecipientChange(option, baseCurrency, exchangeRate)
+										}
+										onCloseEditMode={(
+											customerData,
+											baseCurrency,
+											exchangeRate,
+											defaultExchangeRateToggle
+										) =>
+											this.onRecipientEditClose(
+												customerData,
+												baseCurrency,
+												exchangeRate,
+												defaultExchangeRateToggle
+											)
+										}
+										resources={resources}
+										activeComponentAction={this.activeComponentHandler}
+										isActiveComponentHasError={this.state.isActiveComponentHasError}
+										activeComponent={this.state.activeComponent}
+										recipientType={"payee"}
+									/>
+								</div>
+							</div>
+						</div>
+						<div className="col-xs-6">
+							<div className="row">
+								<div className="col-xs-6 u_pt_28">
+									<b>Invoice No.</b>
+								</div>
+								<div className="col-xs-6">
+									<TextInputExtendedComponent
+										name="expense-receipt-no"
+										dataQsId="expense-edit-receipt-no"
+										value={this.state.expense.receiptNumber}
+										//placeholder={"Enter issued invoice no."}
+										onChange={(value) => this.onReceiptNoChange(value)}
+										//errorMessage={errorMessageReceiptNo}
+									/>
+								</div>
+							</div>
+							<div className="row">
+								<div className="col-xs-6 u_pt_8">
+									<b>Invoice Date</b>
+								</div>
+								<div className="col-xs-6">
+									<div className="dateInput">
+										<DateInputComponent
+											dataQsId="expense-edit-booking-date"
+											name={"expense-booking-date"}
+											value={this.state.expense.displayDate}
+											required={true}
+											onChange={(name, value, date) => this.onDateChange(name, value, date)}
+										/>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style={{ display: "none" }} className="row u_pb_40">
 						<div className="col-xs-6">
 							{/* <div className="textarea">
 								<label className="textarea_label">{resources.str_description}</label>
@@ -366,8 +439,8 @@ class ExpenseEditComponent extends React.Component {
 							/>
 						</div>
 					</div>
-					<div className="text-h4 heading">{resources.str_article}</div>
-					<div className="row">
+					<div className="text-h4 heading u_mt_40">{resources.str_article}</div>
+					<div className="row u_mb_40">
 						<div className="col-xs-12">
 							<div className="transaction-form-positions">
 								<LetterPositionsHeadComponent
@@ -422,7 +495,7 @@ class ExpenseEditComponent extends React.Component {
 									dataQsId="expense-edit-ispaid"
 									name={"isPaid"}
 									label={resources.str_paid}
-									checked={expense.payKind !=='open'}
+									checked={expense.payKind !== "open"}
 									onChange={() => this.onPaidChange()}
 								/>
 							</div>
@@ -431,25 +504,27 @@ class ExpenseEditComponent extends React.Component {
 					{isPaidElements}
 					<div className="text-h4 heading">{resources.expenseEditDocumentHeading}</div>
 					<div className="row">
-						<div className="col-xs-12">
+						<div className="col-xs-7">
 							{receiptList}
 							<div
+								style={{ borderColor: "#00A353" }}
 								id="expense-receipt-dropbox"
-								className="expense-edit-drop-box drop-box text-center u_p_20 u_mb_4"
+								className="expense-edit-drop-box drop-box text-center u_p_10 u_mb_1"
 								data-qs-id="expense-edit-receipt-upload"
 							>
 								<label className="text-muted">
-									<p className="upload-image">
+									{/* <p className="upload-image">
 										<img src="/assets/images/svg/impress_bild.svg" height="100" />
-									</p>
+									</p> */}
 									<p
+										style={{ color: "#00A353" }}
 										dangerouslySetInnerHTML={{
-											__html: resources.expenseEditDocumentDragAndDropText,
+											__html: resources.expenseEditDocumentDragAndDropTextNew,
 										}}
 									></p>
-									<p
-										dangerouslySetInnerHTML={{ __html: resources.expenseEditDocumentReciptText }}
-									></p>
+									{/* <p
+										dangerouslySetInnerHTML={{ __html: resources.expenseEditDocumentReciptText + "sdfkjbdfs" }}
+									></p> */}
 									<input
 										className="u_hidden"
 										type="file"
@@ -525,11 +600,17 @@ class ExpenseEditComponent extends React.Component {
 		const newExpense = new Expense(expense);
 		newExpense.setCustomer(customerData);
 		if (customerData.countryIso !== "IN" && baseCurrency && exchangeRate) {
-			this.createCustomer ? newExpense.customerData.defaultExchangeRateToggle = defaultExchangeRateToggle : customerData.defaultExchangeRateToggle;
+			this.createCustomer
+				? (newExpense.customerData.defaultExchangeRateToggle = defaultExchangeRateToggle)
+				: customerData.defaultExchangeRateToggle;
 			newExpense.exchangeRate = exchangeRate;
 			newExpense.baseCurrency = baseCurrency;
-			defaultExchangeRateToggle ? newExpense.customerData.exchangeRate = exchangeRate : newExpense.customerData.exchangeRate;
-			defaultExchangeRateToggle ? newExpense.customerData.defaultExchangeRateToggle = defaultExchangeRateToggle : newExpense.customerData.defaultExchangeRateToggle;
+			defaultExchangeRateToggle
+				? (newExpense.customerData.exchangeRate = exchangeRate)
+				: newExpense.customerData.exchangeRate;
+			defaultExchangeRateToggle
+				? (newExpense.customerData.defaultExchangeRateToggle = defaultExchangeRateToggle)
+				: newExpense.customerData.defaultExchangeRateToggle;
 			newExpense.positions = this.calculatePositions(newExpense);
 		}
 		this.setState({ expense: newExpense, isActiveComponentHasError: false });
@@ -683,8 +764,8 @@ class ExpenseEditComponent extends React.Component {
 
 		isPaid = !isPaid;
 
-		if (expense.payKind==='open') {
-			expense.payKind = 'cash';
+		if (expense.payKind === "open") {
+			expense.payKind = "cash";
 			// expense.payDate = moment().format('YYYY-MM-DD');
 			expense.payDate = formatApiDate();
 			//expense.status='paid'   do while saving
@@ -742,10 +823,10 @@ class ExpenseEditComponent extends React.Component {
 		this.setState({ expense, errorMessageReceiptNo: "" });
 	}
 
-	onExpenseTypeChage(value){
+	onExpenseTypeChage(value) {
 		const { expense } = this.state;
 		expense.type = value;
-		this.setState({ expense});
+		this.setState({ expense });
 	}
 
 	onTopbarButtonClick(action) {
@@ -772,7 +853,7 @@ class ExpenseEditComponent extends React.Component {
 							width: 600,
 							headline: `Save expense`,
 							cancelLabel: resources.str_abortStop,
-							confirmIcon: "icon-check",
+							// confirmIcon: "icon-check",
 							confirmLabel: `Save now`,
 							confirmButtonType: "primary",
 							onConfirm: () => {
@@ -799,10 +880,10 @@ class ExpenseEditComponent extends React.Component {
 				}
 
 				break;
-			case 'cancel':{
-				this.cancelExpense()
+			case "cancel": {
+				this.cancelExpense();
 			}
-			}
+		}
 	}
 
 	cancelExpense() {
@@ -810,7 +891,7 @@ class ExpenseEditComponent extends React.Component {
 		const { resources } = this.props;
 		ModalService.open(<CancelExpenseModalComponent expense={expense} resources={resources} />, {
 			//headline: format(resources.invoiceCancelHeading, invoice.number),
-			width: 800
+			width: 800,
 		});
 	}
 
@@ -830,7 +911,7 @@ class ExpenseEditComponent extends React.Component {
 
 				if (requestData.payKind === "open") {
 					delete requestData.payDate;
-				}else requestData.status ='paid'
+				} else requestData.status = "paid";
 				if (requestData.payee === null) {
 					requestData.payee = "";
 				}

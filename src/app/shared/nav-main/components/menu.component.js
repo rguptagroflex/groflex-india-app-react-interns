@@ -13,7 +13,7 @@ import UpgradeModalComponent from 'shared/modals/upgrade-modal.component';
 
 import { fetchNewsfeedData } from 'redux/ducks/newsfeed';
 import userPermissions from 'enums/user-permissions.enum';
-import { IntercomAPI } from 'react-intercom';
+// import { IntercomAPI } from 'react-intercom';
 
 class MenuComponent extends React.Component {
 	constructor(props) {
@@ -56,7 +56,7 @@ class MenuComponent extends React.Component {
 		this.setState({ hideMenu: true }, () => {
 			logoutCallback();
 			//location.reload();
-			IntercomAPI('shutdown');
+			// IntercomAPI('shutdown');
 			invoiz.user.logout(true);
 		});
 	}

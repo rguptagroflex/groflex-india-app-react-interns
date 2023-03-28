@@ -446,7 +446,7 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
 
     async fetchDataAndCreateChart() {
         await this.fetchInvoiceList();
-        // await this.fetchExpenseList();
+        await this.fetchExpenseList();
     }
 
     async onDateChange(type, dateRange) {
@@ -466,9 +466,9 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
         if(prevState.invoiceList !== this.state.invoiceList) {
             this.createInvoiceChartData();
         } 
-        // else if(prevState.expenseList !== this.state.expenseList) {
-        //     this.createExpenseChartData();
-        // }
+        else if(prevState.expenseList !== this.state.expenseList) {
+            this.createExpenseChartData();
+        }
     }
 
     componentDidMount() {
@@ -482,7 +482,7 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
 
         const tabs = [
             { name: 'Invoices', chartData: this.state.invoiceChartData, refresh: this.createInvoiceChartData.bind(this) },
-            // { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
+            { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
         ];
 
         const content = errorOccurred ? (

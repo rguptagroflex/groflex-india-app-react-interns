@@ -32,7 +32,7 @@
 		padding: 0;
 		display: flex;
 		margin-top: 5px;
-		
+
 		.icon {
 			margin: 0 auto;
 			line-height: 40px;
@@ -50,8 +50,8 @@
 	.customer-metadata {
 		text-align: center;
 		margin-bottom: 8px;
-		padding-top: 0;
-		
+		// padding-top: 0;
+
 		.customer-avatar {
 			margin: 12px auto 20px;
 			float: left;
@@ -64,7 +64,7 @@
 
 			.text-muted {
 				font-size: 14px;
-    			line-height: 20px;
+				line-height: 20px;
 				font-weight: 400;
 			}
 		}
@@ -157,7 +157,7 @@
 			min-width: 30px;
 			width: 30px;
 			height: 30px;
-			
+
 			.icon {
 				line-height: 30px;
 			}
@@ -191,7 +191,8 @@
 		.customer-tab-content {
 			padding: 20px 30px 5px;
 
-			.Select-placeholder, .Select-input {
+			.Select-placeholder,
+			.Select-input {
 				line-height: 35px;
 			}
 
@@ -229,7 +230,7 @@
 		// .ct-label.ct-horizontal,
 		// .ct-label.ct-vertical {
 		// 	color: $color-text;
-		// 	font-size: 15px;			
+		// 	font-size: 15px;
 		// }
 
 		// .ct-label.ct-horizontal {
@@ -275,7 +276,7 @@
 	.customer-document-wrapper {
 		height: 596px;
 	}
-	
+
 	.customerDocument {
 		&_container {
 			display: block !important;
@@ -329,7 +330,7 @@
 		margin-left: 10px;
 	}
 
-	.list-component .list-table .list-table-cell{
+	.list-component .list-table .list-table-cell {
 		padding: 20px 10px !important;
 	}
 
@@ -340,7 +341,7 @@
 	// 			&:hover {
 	// 				cursor: pointer;
 	// 				background: $color-table-hover;
-		
+
 	// 				.cell-selectable {
 	// 					border-bottom: 1px solid $color-line-light;
 	// 				}
