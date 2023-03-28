@@ -4,8 +4,8 @@ import WebStorageService from "services/webstorage.service";
 import WebStorageKey from "enums/web-storage-key.enum";
 
 const apiServers = {
-	// local: "http://localhost:3000",
-	local: 'https://dev.groflex.in',
+	local: "http://localhost:3000",
+	// local: 'https://dev.groflex.in',
 	development: "https://dev.groflex.in",
 	qa: "https://qa.groflex.in",
 	staging: "https://staging.groflex.in",
@@ -14,7 +14,7 @@ const apiServers = {
 	// admin: "https://invoiz-admin.buhl.de",
 };
 
-const byPassCors = true
+const byPassCors = false
 
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
@@ -22,7 +22,7 @@ delete window.settings;
 let apiRoot = WebStorageService.getItem(WebStorageKey.API_ROOT) || apiServers[releaseStage];
 
 if (!apiRoot) {
-	apiRoot = "https://app.groflex.io";
+	apiRoot = "https://app.groflex.in";
 }
 
 const path = window.location.pathname;

@@ -75,8 +75,8 @@ class ResetPasswordComponent extends React.Component {
 					<div className="footer">
 						<hr></hr>
 						<div style={{display: 'flex'}}>
-							<p>For more details visit <a href={"https://groflex.io"} target="_blank">www.groflex.in</a></p>
-							<a href="https://www.groflex.io/privacy-policy/" target="_blank">Terms & Conditions</a>
+							<p>For more details visit <a href={"https://groflex.in"} target="_blank">www.groflex.in</a></p>
+							<a href="https://groflex.in/terms-&-conditions" target="_blank">Terms & Conditions</a>
 						</div>
 					</div>
 				</div>

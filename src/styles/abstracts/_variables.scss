@@ -77,7 +77,7 @@ $color-blue-white:#8accff; // #98c5fc;
 
 $color-bg-dark: #e5e5e5;
 $color-bg-medium: #f5f5f5;
-$color-big-icons: #0079B3;
+$color-big-icons: $color-secondary;
 
 $color-text: #272d30;
 $color-text-light: #656768;
@@ -89,7 +89,7 @@ $color-dot-disabled: #eee;
 $color-button-disabled: $color-disabled; //#F0F0F0;
 $color-button-text-disabled: $color-white; //#bcbcbc;
 $color-imprint-footer-grey: #99a0aa;
-$text-placeholder: #0079B3;
+$text-placeholder: $color-secondary;
 $color-text-lighter: #707070;
 $color-default-hover: #e9f2fb;
 $color-menu-background:#FFFFFF; //#0F2759;
@@ -127,13 +127,13 @@ $color-salesTax: #c5c2bc;
 $color-tradeTax: #dddbd7;
 $color-incomeTax: #e8e7e4;
 
-$color-sales-top1: #0079B3;
+$color-sales-top1: $color-secondary;
 $color-sales-top2: #707E8E;
 $color-sales-top3: #A9B2BB;
 $color-sales-top4: #E2E5E8;
 $color-sales-top5: #DBDBDB;
 
-$barchart-color: #0079B3;
+$barchart-color: $color-secondary;
 
 $topbar-color: $color-white;
 

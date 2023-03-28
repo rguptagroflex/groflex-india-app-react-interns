@@ -302,6 +302,8 @@ class DashboardSalesArticleCustomerStatsComponent extends React.Component {
                     selectedDateFilterType={selectedDateFilterType}
                     onDateChange={this.onDateChange.bind(this)}
                     tabs={tabs}
+                    demoButtonText={"Create Invoice"}
+                    demoButtonLink={'/invoice/new'}
                 />
             )
                 
