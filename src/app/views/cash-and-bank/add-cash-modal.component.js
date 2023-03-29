@@ -1,29 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalService from "../../services/modal.service";
 import ButtonComponent from "../../shared/button/button.component";
 import NumberInputComponent from "../../shared/inputs/number-input/number-input.component";
-import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 
 const AddCashModalComponent = ({ onConfirm }) => {
-	document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-	document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+	useEffect(() => {
+		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
+		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+		return () => {
+			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
+			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
+		};
+	});
 
-	const [cashData, setCashData] = useState({
+	const [newCashData, setNewCashData] = useState({
 		cashBalance: 0,
 		notes: "",
 	});
 	const handleCashBalanceChange = (value) => {
-		setCashData({ ...cashData, cashBalance: value });
+		setNewCashData({ ...newCashData, cashBalance: value });
 	};
 
 	const handleNotesChange = (event) => {
-		setCashData({ ...cashData, notes: event.target.value });
+		setNewCashData({ ...newCashData, notes: event.target.value });
 	};
 
 	const handleSave = () => {
-		onConfirm(cashData);
+		onConfirm(newCashData);
 	};
-	console.log(cashData, "add modal cash data hai");
+	console.log(newCashData, "add modal cash data hai");
 
 	return (
 		<div className="add-cash-modal-container" style={{ minHeight: "200px" }}>
@@ -35,16 +40,18 @@ const AddCashModalComponent = ({ onConfirm }) => {
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="add-cash-modal-body">
 					<NumberInputComponent
 						onChange={handleCashBalanceChange}
-						value={cashData.cashBalance}
+						value={newCashData.cashBalance}
 						label="Opening balance"
 					/>
 					<div className="textarea">
-						<label className="textarea_label">Notes</label>
+						<label style={{ fontSize: "16px" }} className="textarea_label">
+							Notes
+						</label>
 						<textarea
 							className="textarea_input"
 							rows="4"
 							onChange={handleNotesChange}
-							value={cashData.notes}
+							value={newCashData.notes}
 						/>
 						<span className="textarea_bar" />
 					</div>
@@ -57,7 +64,7 @@ const AddCashModalComponent = ({ onConfirm }) => {
 				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent
-						disabled={!cashData.cashBalance}
+						disabled={!newCashData.cashBalance}
 						buttonIcon="icon-check"
 						callback={handleSave}
 						label={"Save"}

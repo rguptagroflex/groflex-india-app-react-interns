@@ -125,6 +125,7 @@ const CashListComponent = () => {
 										backgroundColor: "white",
 										border: "1px solid #CCCCCC",
 										marginTop: "10px",
+										zIndex: 1,
 									}}
 								>
 									<p

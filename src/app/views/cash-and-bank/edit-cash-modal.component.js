@@ -1,19 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ModalService from "../../services/modal.service";
 import ButtonComponent from "../../shared/button/button.component";
-import NumberInputComponent from "../../shared/inputs/number-input/number-input.component";
 
 const EditCashModalComponent = ({ formData, onConfirm }) => {
-	document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-	document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+	useEffect(() => {
+		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
+		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+		return () => {
+			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
+			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
+		};
+	});
 
 	const [cashData, setCashData] = useState({
 		cashBalance: formData.cashBalance,
 		notes: formData.notes,
 	});
-	const handleCashBalanceChange = (value) => {
-		setCashData({ ...cashData, cashBalance: value });
-	};
 
 	const handleNotesChange = (event) => {
 		setCashData({ ...cashData, notes: event.target.value });
@@ -30,15 +32,22 @@ const EditCashModalComponent = ({ formData, onConfirm }) => {
 				Edit bank details
 			</div>
 
-			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="add-cash-modal-body-container">
-				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="add-cash-modal-body">
-					<NumberInputComponent
-						onChange={handleCashBalanceChange}
-						value={cashData.cashBalance}
-						label="Opening balance"
-					/>
+			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="edit-cash-modal-body-container">
+				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="edit-cash-modal-body">
+					<div style={{ marginBottom: "21px" }}>
+						<label style={{ color: "#747474", fontSize: "16px" }}>Opening balance</label>
+						<div style={{ marginTop: "10px" }}>
+							₹
+							{Number(cashData.cashBalance).toLocaleString("en", {
+								minimumFractionDigits: 2,
+								maximumFractionDigits: 2,
+							})}
+						</div>
+					</div>
 					<div className="textarea">
-						<label className="textarea_label">Notes</label>
+						<label style={{ fontSize: "16px" }} className="textarea_label">
+							Notes
+						</label>
 						<textarea
 							className="textarea_input"
 							rows="4"
