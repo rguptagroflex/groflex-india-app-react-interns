@@ -29,7 +29,7 @@ class IntercomApiService {
                 fetch('https://api.sendpulse.com/oauth/access_token', requestOptions)
                     .then(response => response.json())
                     .then(data => {
-                        console.log(data);
+                        // console.log(data);
                         const requestOptions1 = {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ class IntercomApiService {
                         fetch('https://api.sendpulse.com/addressbooks/103726/emails', requestOptions1)
                             .then(response => response.json())
                             .then(data => {
-                                console.log(data);
+                                // console.log(data);
                             } );
                     } );
             }            
