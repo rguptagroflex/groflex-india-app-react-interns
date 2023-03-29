@@ -1291,7 +1291,7 @@ class RegistrationComponent extends React.Component {
 				const alertIcon = <span className={`icon icon-close`} />;
 				const passwordErrorElement = <div className="landing-password-error">{resources.passwordNotMatch}</div>;
 
-				headlineElement = this.isMobile ? resources.trailPeriodMessage : resources.createInvoizAccount;
+				headlineElement = resources.createInvoizAccount; //this.isMobile ? resources.trailPeriodMessage : resources.createInvoizAccount;
 				
 				headlineElement = (
 					<div>
