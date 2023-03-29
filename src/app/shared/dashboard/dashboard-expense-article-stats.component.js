@@ -315,6 +315,8 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
                     selectedDateFilterType={selectedDateFilterType}
                     onDateChange={this.onDateChange.bind(this)}
                     tabs={tabs}
+                    demoButtonText={"Create Expense"}
+                    demoButtonLink={'/expense/new'}
                 />
             )
                 

@@ -54,7 +54,7 @@ class MenuFooterComponent extends React.Component {
 	// }
 
 	componentWillUnmount() {
-		invoiz.off('updateNewsfeedCount');
+		// invoiz.off('updateNewsfeedCount');
 	}
 
 	onLogoutClick() {
@@ -143,12 +143,12 @@ class MenuFooterComponent extends React.Component {
 						</div>
 						<div className="menu-profile-popup-middle2">
 							<a 	className="menuItem small icon icon-help_outlined"
-								href="https://groflex.io" target="_blank"
+								href="https://groflex.in" target="_blank"
 							>
 								{'Groflex Help Center'}
 							</a>
 							<a 	className="menuItem small icon icon-vpn_policy"
-								href="https://www.groflex.io/privacy-policy/" target="_blank"
+								href="https://groflex.in/privacy-policy" target="_blank"
 							>
 								{'Terms & Conditions'}
 							</a>
