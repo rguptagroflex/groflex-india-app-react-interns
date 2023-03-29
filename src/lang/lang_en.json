@@ -1940,7 +1940,8 @@
 		"expenditures": "Expenditure",
 		"expense": "Expenses",
 		"creditNotes": "Credit notes",
-		"debitNotes": "Debit notes"
+		"debitNotes": "Debit notes",
+		"chartOfAccounts":"Chart of accounts"
 	},
 	"routesTitle": {
 		"login": "Login",

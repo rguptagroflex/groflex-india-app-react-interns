@@ -4,7 +4,7 @@ import lang from "lang";
 import moment from "moment";
 import _ from "lodash";
 import config from "config";
-import { getLabelForCountry } from "helpers/getCountries";
+// import { getLabelForCountry } from "helpers/getCountries";
 import TopbarComponent from "shared/topbar/topbar.component";
 import { formatCurrency } from "helpers/formatCurrency";
 import ModalService from "services/modal.service";
@@ -22,6 +22,7 @@ import WebStorageKey from "enums/web-storage-key.enum";
 import WebStorageService from "services/webstorage.service";
 import { isNil } from "helpers/isNil";
 import userPermissions from "enums/user-permissions.enum";
+import ChartOfAccountPersonModalComponent from "./chartofaccount-personmodalcomponent.js";
 import { connect, Provider } from "react-redux";
 import store from "redux/store";
 import Customer from "../../models/customer.model";
@@ -31,7 +32,7 @@ const LABEL_COMPANY = "Company";
 const LABEL_PERSON = "Individual";
 const LABEL_CONTACTPERSON = "Contact person";
 
-class CustomerListNewComponent extends React.Component {
+class ChartofaccountNewComponent extends React.Component {
 	constructor(props) {
 		super(props);
 
@@ -65,7 +66,7 @@ class CustomerListNewComponent extends React.Component {
 
 			topbarButtons.push({
 				type: "primary",
-				label: "Create contact",
+				label: "New accounts",
 				buttonIcon: "icon-plus",
 				action: "create",
 				disabled: !canDeleteCustomer,
@@ -83,10 +84,13 @@ class CustomerListNewComponent extends React.Component {
 
 		const topbar = (
 			<TopbarComponent
-				title={`Contacts`}
-				viewIcon={`icon-customer`}
+				title={`Chart of accounts`}
+				// viewIcon={`icon-customer`}
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
+				// onClick={(button) => this.onEditChartOfAccount(button.index)}
+				// callback={()=> this.onAddNewAccounts()}
 				buttons={topbarButtons}
+
 				// viewIconLongClickAction={() => {
 				// 	ModalService.open(<div>Möchtest du die alte Kundenliste wieder aktivieren?</div>, {
 				// 		headline: 'Alte Kundenliste aktivieren',
@@ -118,6 +122,32 @@ class CustomerListNewComponent extends React.Component {
 				: `<span class="icon icon-arrow_right2 master-detail-arrow ${masterDetailArrowClass}"></span>`
 			: `<span class="icon icon-factory"></span>`;
 	}
+	// onEditChartOfAccount(index) {
+	// 	const { customer, salutations, titles } = this.state;
+	// 	const { jobTitles, resources } = this.props;
+	// 	const cP = new ContactPerson(customer.contactPersons[index]);
+
+	// 	ModalService.open(
+	// 		<ChartOfAccountPersonModalComponent
+	// 			contactPerson={cP}
+	// 			salutations={salutations}
+	// 			titles={titles}
+	// 			jobTitles={jobTitles}
+	// 			onSalutationsChange={(salutations) => this.setState({ salutations })}
+	// 			onTitlesChange={(titles) => this.setState({ titles })}
+	// 			onSave={(contactPerson) => {
+	// 				ModalService.close();
+	// 				customer.contactPersons[index] = contactPerson;
+	// 				this.setState({ customer });
+	// 			}}
+	// 			resources={resources}
+	// 		/>,
+	// 		{
+	// 			modalClass: "edit-contact-person-modal-component",
+	// 			width: 800,
+	// 		}
+	// 	);
+	// }
 
 	onActionCellPopupItemClick(customer, entry) {
 		const { resources } = this.props;
@@ -192,15 +222,28 @@ class CustomerListNewComponent extends React.Component {
 	// 	}
 	// }
 
+	onAddNewAccounts() {
+		// const { customer, salutations, titles } = this.state;
+		// const { jobTitles, resources } = this.props;
+
+		ModalService.open(<ChartOfAccountPersonModalComponent />, {
+			modalClass: "edit-contact-person-modal-component",
+			width: 630,
+		});
+	}
+
 	onTopbarButtonClick(action) {
 		const { resources } = this.props;
 		const { canCreateCustomer, canDeleteCustomer, canUpdateCustomer } = this.state;
 		let selectedRowsData = null;
 		let allRowsData = null;
 
+		// ModalService.open(<onAddNewAccounts />);
+
 		switch (action) {
 			case "create":
-				invoiz.router.navigate("/customer/new");
+				// invoiz.router.navigate("/customer/new");
+				this.onAddNewAccounts();
 				break;
 
 			case "import":
@@ -287,7 +330,7 @@ class CustomerListNewComponent extends React.Component {
 						ref="listAdvanced"
 						columnDefs={[
 							{
-								headerName: "Number",
+								headerName: "Code",
 								field: "number",
 								sort: "asc",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
@@ -303,51 +346,51 @@ class CustomerListNewComponent extends React.Component {
 									convertNumberToTextFilterOnDemand: true,
 								},
 							},
+							// {
+							// 	headerName: "Type",
+							// 	field: "kind",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	width: getScaledValue(60, window.innerWidth, 1600),
+							// 	cellRenderer: (evt) => {
+							// 		return this.getCompanyPersonIcon(evt.value, 20, true);
+							// 	},
+							// 	filterParams: {
+							// 		suppressMiniFilter: true,
+							// 		comparator: (a, b) => {
+							// 			let pos = 0;
+
+							// 			if (
+							// 				a === customerTypes.COMPANY ||
+							// 				a === ListAdvancedDefaultSettings.CUSTOMER_TYPE_CONTACTPERSON
+							// 			) {
+							// 				pos = 1;
+							// 			}
+
+							// 			if (a === customerTypes.PERSON) {
+							// 				pos = 0;
+							// 			}
+
+							// 			return pos;
+							// 		},
+							// 		valueFormatter: (evt) => {
+							// 			return evt.value === customerTypes.PERSON
+							// 				? LABEL_PERSON
+							// 				: evt.value === customerTypes.COMPANY
+							// 				? LABEL_COMPANY
+							// 				: LABEL_CONTACTPERSON;
+							// 		},
+							// 	},
+							// 	customProps: {
+							// 		longName: "Contact kind",
+							// 		disableContextMenuCopyItem: true,
+							// 		filterListItemValueRenderer: (value, listItemHtml) => {
+							// 			const iconHtml = this.getCompanyPersonIcon(value, 15);
+							// 			$(iconHtml).insertBefore($(listItemHtml).find(".ag-set-filter-item-value"));
+							// 		},
+							// 	},
+							// },
 							{
-								headerName: "Type",
-								field: "kind",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								width: getScaledValue(60, window.innerWidth, 1600),
-								cellRenderer: (evt) => {
-									return this.getCompanyPersonIcon(evt.value, 20, true);
-								},
-								filterParams: {
-									suppressMiniFilter: true,
-									comparator: (a, b) => {
-										let pos = 0;
-
-										if (
-											a === customerTypes.COMPANY ||
-											a === ListAdvancedDefaultSettings.CUSTOMER_TYPE_CONTACTPERSON
-										) {
-											pos = 1;
-										}
-
-										if (a === customerTypes.PERSON) {
-											pos = 0;
-										}
-
-										return pos;
-									},
-									valueFormatter: (evt) => {
-										return evt.value === customerTypes.PERSON
-											? LABEL_PERSON
-											: evt.value === customerTypes.COMPANY
-											? LABEL_COMPANY
-											: LABEL_CONTACTPERSON;
-									},
-								},
-								customProps: {
-									longName: "Contact kind",
-									disableContextMenuCopyItem: true,
-									filterListItemValueRenderer: (value, listItemHtml) => {
-										const iconHtml = this.getCompanyPersonIcon(value, 15);
-										$(iconHtml).insertBefore($(listItemHtml).find(".ag-set-filter-item-value"));
-									},
-								},
-							},
-							{
-								headerName: "Contact type",
+								headerName: "Account type",
 								field: "type",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								width: getScaledValue(100, window.innerWidth, 500),
@@ -360,7 +403,7 @@ class CustomerListNewComponent extends React.Component {
 								},
 							},
 							{
-								headerName: "Name",
+								headerName: "Account Sub Type",
 								field: "name",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								width: getScaledValue(210, window.innerWidth, 1600),
@@ -379,23 +422,23 @@ class CustomerListNewComponent extends React.Component {
 								comparator: localeCompare,
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 							},
-							{
-								headerName: "Outstanding amount",
-								field: "outstandingAmount",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								comparator: localeCompareNumeric,
-								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
-								valueFormatter: (evt) => {
-									return formatCurrency(evt.value);
-								},
-								filter: "agNumberColumnFilter",
-								filterParams: {
-									suppressAndOrCondition: true,
-								},
-								customProps: {
-									calculateHeaderSum: true,
-								},
-							},
+							// {
+							// 	headerName: "Outstanding amount",
+							// 	field: "outstandingAmount",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	comparator: localeCompareNumeric,
+							// 	cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
+							// 	valueFormatter: (evt) => {
+							// 		return formatCurrency(evt.value);
+							// 	},
+							// 	filter: "agNumberColumnFilter",
+							// 	filterParams: {
+							// 		suppressAndOrCondition: true,
+							// 	},
+							// 	customProps: {
+							// 		calculateHeaderSum: true,
+							// 	},
+							// },
 							// {
 							// 	headerName: 'Outstanding Balance',
 							// 	field: 'outstandingAmount',
@@ -410,97 +453,97 @@ class CustomerListNewComponent extends React.Component {
 							// 		return evt.value === '' || evt.value === null ? 'INR' : formatCurrencySymbolDisplayInFront(evt.value);
 							// 	},
 							// },
-							{
-								headerName: "First name",
-								field: "firstName",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								hide: true,
-								comparator: localeCompare,
-								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-							},
-							{
-								headerName: "Last name",
-								field: "lastName",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								hide: true,
-								comparator: localeCompare,
-							},
-							{
-								headerName: "Address",
-								field: "street",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								width: getScaledValue(225, window.innerWidth, 1600),
-								comparator: localeCompare,
-								cellRenderer: "inlineActionCellRenderer",
-								...Object.assign({}, ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS, {
-									customProps: {
-										...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS.customProps,
-										inlineActionType: ListAdvancedDefaultSettings.CellInlineActionType.MAPS,
-									},
-								}),
-							},
-							{
-								headerName: 'Country',
-								field: 'country',
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								hide: true,
-								comparator: localeCompare,
-							},
-							{
-								headerName: "E-Mail",
-								field: "email",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								width: getScaledValue(220, window.innerWidth, 1600),
-								cellRenderer: "inlineActionCellRenderer",
-								customProps: {
-									inlineActionType: ListAdvancedDefaultSettings.CellInlineActionType.MAIL,
-								},
-							},
-							{
-								headerName: "Website",
-								field: "website",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								hide: true,
-								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-								cellRenderer: "inlineActionCellRenderer",
-								...Object.assign({}, ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS, {
-									customProps: {
-										...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS.customProps,
-										inlineActionType: ListAdvancedDefaultSettings.CellInlineActionType.WEBSITE,
-									},
-								}),
-							},
-							{
-								headerName: "Telephone",
-								field: "phone1",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								width: getScaledValue(160, window.innerWidth, 1600),
-								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
-							},
-							{
-								headerName: "Telephone 2",
-								field: "phone2",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-								hide: true,
-								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
-							},
-							{
-								headerName: "Mobile number",
-								field: "mobile",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
-							},
-							{
-								headerName: "Fax",
-								field: "fax",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-								hide: true,
-								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
-							},
+							// {
+							// 	headerName: "First name",
+							// 	field: "firstName",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	hide: true,
+							// 	comparator: localeCompare,
+							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
+							// },
+							// {
+							// 	headerName: "Last name",
+							// 	field: "lastName",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	hide: true,
+							// 	comparator: localeCompare,
+							// },
+							// {
+							// 	headerName: "Status",
+							// 	field: "street",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	width: getScaledValue(225, window.innerWidth, 1600),
+							// 	comparator: localeCompare,
+							// 	cellRenderer: "inlineActionCellRenderer",
+							// 	...Object.assign({}, ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS, {
+							// 		customProps: {
+							// 			...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS.customProps,
+							// 			inlineActionType: ListAdvancedDefaultSettings.CellInlineActionType.MAPS,
+							// 		},
+							// 	}),
+							// },
+							// {
+							// 	headerName: 'Country',
+							// 	field: 'country',
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	hide: true,
+							// 	comparator: localeCompare,
+							// },
+							// {
+							// 	headerName: "E-Mail",
+							// 	field: "email",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	width: getScaledValue(220, window.innerWidth, 1600),
+							// 	cellRenderer: "inlineActionCellRenderer",
+							// 	customProps: {
+							// 		inlineActionType: ListAdvancedDefaultSettings.CellInlineActionType.MAIL,
+							// 	},
+							// },
+							// {
+							// 	headerName: "Website",
+							// 	field: "website",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	hide: true,
+							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
+							// 	cellRenderer: "inlineActionCellRenderer",
+							// 	...Object.assign({}, ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS, {
+							// 		customProps: {
+							// 			...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS.customProps,
+							// 			inlineActionType: ListAdvancedDefaultSettings.CellInlineActionType.WEBSITE,
+							// 		},
+							// 	}),
+							// },
+							// {
+							// 	headerName: "Telephone",
+							// 	field: "phone1",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	width: getScaledValue(160, window.innerWidth, 1600),
+							// 	cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
+							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
+							// },
+							// {
+							// 	headerName: "Telephone 2",
+							// 	field: "phone2",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
+							// 	hide: true,
+							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
+							// },
+							// {
+							// 	headerName: "Mobile number",
+							// 	field: "mobile",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
+							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
+							// },
+							// {
+							// 	headerName: "Fax",
+							// 	field: "fax",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
+							// 	hide: true,
+							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS_PHONE,
+							// },
 							// {
 							// 	headerName: 'Main contact person',
 							// 	field: 'isMainContact',
@@ -521,7 +564,7 @@ class CustomerListNewComponent extends React.Component {
 							// 	},
 							// },
 							{
-								headerName: "Category",
+								headerName: "Description",
 								field: "category",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompare,
@@ -529,30 +572,39 @@ class CustomerListNewComponent extends React.Component {
 									suppressMiniFilter: true,
 								},
 							},
-							{
-								headerName: "Currency",
-								field: "baseCurrency",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								comparator: localeCompare,
-								valueFormatter: (evt) => {
-									return evt.value === "" || evt.value === null ? "INR" : evt.value;
-								},
-								filterParams: {
-									suppressMiniFilter: true,
-									valueFormatter: (evt) => {
-										return !evt.value ? `INR` : evt.value;
-									},
-								},
-							},
-							{
-								headerName: "GST number",
-								field: "address.gstNumber",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								comparator: localeCompare,
-								filterParams: {
-									suppressMiniFilter: true,
-								},
-							},
+							// {
+							// 	headerName: "Status",
+							// 	field: "category",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	comparator: localeCompare,
+							// 	filterParams: {
+							// 		suppressMiniFilter: true,
+							// 	},
+							// },
+							// {
+							// 	headerName: "Currency",
+							// 	field: "baseCurrency",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	comparator: localeCompare,
+							// 	valueFormatter: (evt) => {
+							// 		return evt.value === "" || evt.value === null ? "INR" : evt.value;
+							// 	},
+							// 	filterParams: {
+							// 		suppressMiniFilter: true,
+							// 		valueFormatter: (evt) => {
+							// 			return !evt.value ? `INR` : evt.value;
+							// 		},
+							// 	},
+							// },
+							// {
+							// 	headerName: "GST number",
+							// 	field: "address.gstNumber",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	comparator: localeCompare,
+							// 	filterParams: {
+							// 		suppressMiniFilter: true,
+							// 	},
+							// },
 							// {
 							// 	headerName: 'Payment term',
 							// 	field: 'payCondition',
@@ -594,7 +646,7 @@ class CustomerListNewComponent extends React.Component {
 							// 	comparator: localeCompare,
 							// },
 							// {
-							// 	headerName: 'Notes',
+							// 	headerName: 'status',
 							// 	field: 'notes',
 							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 							// 	hide: true,
@@ -837,4 +889,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(CustomerListNewComponent);
+export default connect(mapStateToProps)(ChartofaccountNewComponent);

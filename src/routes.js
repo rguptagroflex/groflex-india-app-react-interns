@@ -58,6 +58,9 @@ import PurchaseOrderSendMailWrapper from "views/purchase-order/purchase-order-se
 // import BankingFinanceCockpitWrapper from "views/banking/banking-financecockpit.wrapper";
 // import BankingEmptyStateWrapper from "views/banking/banking-empty-state.wrapper";
 // import BankingTransactionsWrapper from "views/banking/banking-transactions.wrapper";
+
+
+import ChartofaccountListWrapper from "views/chartofaccounts/chartofaccount-list.wrapper"
 import CustomerListWrapper from "views/customer/customer-list.wrapper";
 import CustomerDetailWrapper from "views/customer/customer-detail.wrapper";
 import CustomerEditWrapper from "views/customer/customer-edit.wrapper";
@@ -969,6 +972,18 @@ const routes = [
 		menuItem: "expenditure",
 		submenuItem: "expenses",
 		resourceKey: "expenseEdit",
+	},
+	// chart of accounts
+	{
+		path: "/expenses/chart-of-accounts",
+		type: RouteTypes.PRIVATE,
+		component: ChartofaccountListWrapper,
+		exact: true,
+		title: "Ausgabe ",
+		menuItem: "expenditure",
+		submenuItem: "chartOfAccounts",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "chartOfAccounts",
 	},
 
 	// GST Export
