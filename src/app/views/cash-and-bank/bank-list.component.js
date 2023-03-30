@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SVGInline from "react-svg-inline";
 import plusIcon from "../../../assets/images/icons/plus.svg";
 import menu_three_dots from "../../../assets/images/icons/menu_three_dots.svg";
@@ -6,79 +6,84 @@ import ModalService from "../../services/modal.service";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import AddBankModalComponent from "./add-bank-modal.component";
 import EditBankModalComponent from "./edit-bank-modal.component";
+import invoiz from "../../services/invoiz.service";
 
 const BankListComponent = () => {
-	const [banksList, setbanksList] = useState([
-		{
-			bankName: "HDFC bank",
-			accountNumber: "7543635659650233",
-			accountName: "Joe Doe",
-			ifscCode: "GD56936F4",
-			balance: 2300,
-			openingBalance: 0,
-			branch: "",
-			customerId: "",
-			notes: "",
-		},
-		{
-			bankName: "Axis Bank",
-			accountNumber: "6596457832103652",
-			accountName: "Luna Davidson",
-			ifscCode: "RP49673J1",
-			balance: 1658,
-			openingBalance: 0,
-			branch: "",
-			customerId: "",
-			notes: "",
-		},
-		// {
-		// 	bankName: "Axis Bank",
-		// 	accountNumber: "6596457832103653",
-		// 	accountName: "Luna Davidson",
-		// 	ifscCode: "RP49673J2",
-		// 	balance: 1658,
-		// 	openingBalance: 0,
-		// 	branch: "",
-		// 	customerId: "",
-		// 	notes: "",
-		// },
-	]);
+	const [banksList, setBanksList] = useState([]);
+	useEffect(() => {
+		getBanksList();
+	}, []);
+
+	const getBanksList = () => {
+		invoiz.request("https://dev.groflex.in/api/bank", { auth: true }).then((res) => {
+			console.log(res.body.data);
+			setBanksList([...res.body.data].filter((bank) => bank.type === "bank"));
+		});
+	};
+
+	const getBankDetails = (id) => {
+		return invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true });
+	};
 
 	const openAddBankModal = () => {
 		const handleAddBank = (newBankData) => {
-			setbanksList([...banksList, { ...newBankData }]);
-			console.log(newBankData, "Hogaya add bank");
+			invoiz
+				.request("https://dev.groflex.in/api/bank", { auth: true, method: "POST", data: { ...newBankData } })
+				.then((res) => {
+					setBanksList([...banksList, { ...res.body.data }]);
+				});
 			ModalService.close();
 		};
-
 		ModalService.open(<AddBankModalComponent onConfirm={handleAddBank} />, {
 			width: 630,
 		});
 	};
-	const openEditBankModal = (index) => {
+
+	const openEditBankModal = (index, id) => {
 		const handleEditBank = (editedBankData) => {
-			let newBanksList = [...banksList];
-			newBanksList[index] = { ...editedBankData };
-			setbanksList([...newBanksList]);
-			console.log(editedBankData, "Hogaya edit bank");
+			invoiz
+				.request(`https://dev.groflex.in/api/bank/${id}`, {
+					auth: true,
+					method: "PUT",
+					data: { ...editedBankData },
+				})
+				.then((res) => {
+					console.log(res, "EDIT BANK KA RESPONSE");
+					let newBanksList = [...banksList];
+					newBanksList[index] = { ...editedBankData };
+					setBanksList([...newBanksList]);
+				});
+
+			// console.log(editedBankData, "Hogaya edit bank");
+			ModalService.close();
+		};
+		getBankDetails(id).then((res) =>
+			ModalService.open(<EditBankModalComponent formData={res.body.data} onConfirm={handleEditBank} />, {
+				width: 630,
+			})
+		);
+	};
+
+	const openDeleteBankModal = (id) => {
+		const handleDeleteBank = () => {
+			invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true, method: "DELETE" }).then((res) => {
+				// console.log(res, "DELETE KIYA BANK");
+				const newBankList = banksList.filter((bank) => {
+					return bank.id !== id;
+				});
+				setBanksList([...newBankList]);
+			});
 			ModalService.close();
 		};
 
-		ModalService.open(<EditBankModalComponent formData={banksList[index]} onConfirm={handleEditBank} />, {
-			width: 630,
+		ModalService.open(`Do you really want to delete this bank account?`, {
+			width: 600,
+			headline: `Delete this bank account`,
+			cancelLabel: "Cancel",
+			confirmLabel: `Delete`,
+			confirmButtonType: "primary",
+			onConfirm: () => handleDeleteBank(),
 		});
-	};
-
-	const openDeleteBankModal = () => {
-		const handleDeleteBank = (accountNumber) => {
-			const newBankList = banksList.filter((bank) => {
-				return bank.accountNumber !== accountNumber;
-			});
-			console.log(newBankList, "NEW BANK LIST AFTER DELETING");
-			setbanksList([...newBankList]);
-			ModalService.close()
-		};
-		ModalService.open()
 	};
 
 	const BankListColumnHeadings = () => {
@@ -110,7 +115,7 @@ const BankListComponent = () => {
 		);
 	};
 
-	const BankListRowItem = ({ bankName, accountName, accountNumber, ifscCode, balance, lastItem, index }) => {
+	const BankListRowItem = ({ bank, lastItem, index }) => {
 		const [menuOptionVisible, setMenuOptionVisible] = useState(false);
 
 		return (
@@ -130,13 +135,13 @@ const BankListComponent = () => {
 						textAlign: "center",
 					}}
 				>
-					<p style={{ padding: "0 5px" }}>{bankName}</p>
-					<p style={{ padding: "0 5px" }}>{accountNumber}</p>
-					<p style={{ padding: "0 5px" }}>{accountName}</p>
-					<p style={{ padding: "0 5px" }}>{ifscCode}</p>
+					<p style={{ padding: "0 5px" }}>{bank.bankName}</p>
+					<p style={{ padding: "0 5px" }}>{bank.accountNumber}</p>
+					<p style={{ padding: "0 5px" }}>{bank.accountName}</p>
+					<p style={{ padding: "0 5px" }}>{bank.IFSCCode}</p>
 					<p style={{ padding: "0 5px" }}>
 						₹
-						{Number(balance).toLocaleString("en", {
+						{Number(bank.openingBalance).toLocaleString("en", {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2,
 						})}
@@ -176,11 +181,11 @@ const BankListComponent = () => {
 								>
 									<p
 										onClick={() => {
-											openEditBankModal(index);
+											openEditBankModal(index, bank.id);
 										}}
 										style={{
-											margin: "8px 0",
-											padding: "6px 10px",
+											margin: "0",
+											padding: "12px 10px",
 											textAlign: "left",
 											borderBottom: "1px solid #EBF5FF",
 											cursor: "pointer",
@@ -189,10 +194,10 @@ const BankListComponent = () => {
 										Edit
 									</p>
 									<p
-										onClick={() => openDeleteBankModal(accountNumber)}
+										onClick={() => openDeleteBankModal(bank.id)}
 										style={{
-											margin: "8px 0",
-											padding: "6px 10px",
+											margin: "0",
+											padding: "12px 10px",
 											textAlign: "left",
 											borderBottom: "1px solid #EBF5FF",
 											cursor: "pointer",
@@ -208,7 +213,8 @@ const BankListComponent = () => {
 			</div>
 		);
 	};
-	console.log(banksList, "BANK LIST");
+
+	// console.log(banksList, "BANK LIST COMPONENT's BANK LIST");
 	return (
 		<div style={{ padding: 0, margin: "0 0 25px 0" }} className="box bank-list-wrapper">
 			<div
@@ -246,14 +252,15 @@ const BankListComponent = () => {
 					{banksList.map((item, index) => {
 						return (
 							<BankListRowItem
-								key={item.ifscCode}
-								bankName={item.bankName}
-								accountName={item.accountName}
-								accountNumber={item.accountNumber}
-								ifscCode={item.ifscCode}
-								balance={item.balance}
+								key={item.accountNumber}
 								lastItem={banksList.length === index + 1}
 								index={index}
+								bank={item}
+								// bankName={item.bankName}
+								// accountName={item.accountName}
+								// accountNumber={item.accountNumber}
+								// ifscCode={item.IFSCCode}
+								// balance={item.openingBalance}
 							/>
 						);
 					})}

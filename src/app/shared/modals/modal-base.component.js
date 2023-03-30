@@ -83,7 +83,7 @@ class ModalBaseComponent extends React.Component {
 				{options.cancelLabel ? (
 					<div className="modal-base-cancel">
 						<ButtonComponent
-							type="default"
+							type="cancel"
 							callback={() => ModalService.close(true)}
 							label={options.cancelLabel}
 							dataQsId="modal-btn-cancel"

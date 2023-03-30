@@ -14,11 +14,22 @@ const AddCashModalComponent = ({ onConfirm }) => {
 	});
 
 	const [newCashData, setNewCashData] = useState({
-		cashBalance: 0,
+		type: "cash",
+		openingBalance: 0,
+		bankName: "cash",
+		accountNumber: "cash",
+		accountName: "cash",
+		IFSCCode: "cash",
+		branch: "",
+		customerId: "",
 		notes: "",
 	});
-	const handleCashBalanceChange = (value) => {
-		setNewCashData({ ...newCashData, cashBalance: value });
+	const handleOpeningBalanceChange = (value) => {
+		if (!value) {
+			setNewCashData({ ...newCashData, openingBalance: 0 });
+			return;
+		}
+		setNewCashData({ ...newCashData, openingBalance: value });
 	};
 
 	const handleNotesChange = (event) => {
@@ -39,8 +50,9 @@ const AddCashModalComponent = ({ onConfirm }) => {
 			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="add-cash-modal-body-container">
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="add-cash-modal-body">
 					<NumberInputComponent
-						onChange={handleCashBalanceChange}
-						value={newCashData.cashBalance}
+						defaultNonZero
+						onChange={handleOpeningBalanceChange}
+						value={newCashData.openingBalance}
 						label="Opening balance"
 					/>
 					<div className="textarea">
@@ -64,7 +76,7 @@ const AddCashModalComponent = ({ onConfirm }) => {
 				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent
-						disabled={!newCashData.cashBalance}
+						disabled={!newCashData.openingBalance}
 						buttonIcon="icon-check"
 						callback={handleSave}
 						label={"Save"}

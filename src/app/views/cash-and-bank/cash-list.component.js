@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SVGInline from "react-svg-inline";
 import plusIcon from "../../../assets/images/icons/plus.svg";
 import menu_three_dots from "../../../assets/images/icons/menu_three_dots.svg";
@@ -6,17 +6,32 @@ import ModalService from "../../services/modal.service";
 import AddCashModalComponent from "./add-cash-modal.component";
 import EditCashModalComponent from "./edit-cash-modal.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
+import invoiz from "../../services/invoiz.service";
 
 const CashListComponent = () => {
-	const [cashData, setCashData] = useState({
-		cashBalance: 1234,
-		notes: "",
-	});
+	const [cashData, setCashData] = useState({});
+	useEffect(() => {
+		getCashList();
+	}, []);
+
+	const getCashList = () => {
+		invoiz.request("https://dev.groflex.in/api/bank", { auth: true }).then((res) => {
+			console.log("CASH DATA RESPONSE :", { ...res.body.data.find((bank) => bank.type === "cash") });
+			setCashData({ ...res.body.data.find((bank) => bank.type === "cash") });
+		});
+	};
+	const getCashDetails = (id) => {
+		return invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true });
+	};
 
 	const openAddCashModal = () => {
 		const handleAddCash = (newCashData) => {
-			setCashData({ ...newCashData });
-			console.log(newCashData, "Hogaya add cash");
+			invoiz
+				.request("https://dev.groflex.in/api/bank", { auth: true, method: "POST", data: { ...newCashData } })
+				.then((res) => {
+					console.log(res, "RESPONSE of ADD CASH");
+					setCashData({ ...res.body.data });
+				});
 			ModalService.close();
 		};
 
@@ -25,22 +40,42 @@ const CashListComponent = () => {
 		});
 	};
 
-	const openEditCashModal = () => {
+	const openEditCashModal = (id) => {
 		const handleEditCash = (editedCashData) => {
-			setCashData({ ...editedCashData });
-			console.log(editedCashData, "Hogaya edit cash");
+			invoiz
+				.request(`https://dev.groflex.in/api/bank/${id}`, {
+					auth: true,
+					method: "PUT",
+					data: { ...editedCashData },
+				})
+				.then((res) => {
+					console.log(res, "EDIT CASH KA RESPONSE");
+					setCashData({ ...res.body.data });
+				});
 			ModalService.close();
 		};
-
-		ModalService.open(<EditCashModalComponent formData={cashData} onConfirm={handleEditCash} />, {
-			width: 630,
+		getCashDetails(id).then((res) => {
+			ModalService.open(<EditCashModalComponent formData={res.body.data} onConfirm={handleEditCash} />, {
+				width: 630,
+			});
 		});
 	};
 
-	const handleDeleteCashBalance = () => {
-		setCashData({
-			cashBalance: 0,
-			notes: "",
+	const openDeleteCashBalance = (id) => {
+		const handleDeleteCash = () => {
+			invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true, method: "DELETE" }).then((res) => {
+				setCashData({});
+			});
+			ModalService.close();
+		};
+
+		ModalService.open(`Do you really want to delete this cash balance?`, {
+			width: 600,
+			headline: `Delete this cash balance`,
+			cancelLabel: "Cancel",
+			confirmLabel: `Delete`,
+			confirmButtonType: "primary",
+			onConfirm: () => handleDeleteCash(),
 		});
 	};
 	const CashListColumnHeadings = () => {
@@ -68,7 +103,7 @@ const CashListComponent = () => {
 		);
 	};
 
-	const CashRow = ({ cashBalance = 0 }) => {
+	const CashRow = ({ cashData }) => {
 		const [menuOptionVisible, setMenuOptionVisible] = useState(false);
 
 		return (
@@ -90,7 +125,7 @@ const CashListComponent = () => {
 				>
 					<p style={{ textAlign: "left", padding: "0 0 0 2em" }}>
 						₹
-						{Number(cashBalance).toLocaleString("en", {
+						{Number(cashData.openingBalance).toLocaleString("en", {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2,
 						})}
@@ -129,10 +164,10 @@ const CashListComponent = () => {
 									}}
 								>
 									<p
-										onClick={openEditCashModal}
+										onClick={() => openEditCashModal(cashData.id)}
 										style={{
-											margin: "8px 0",
-											padding: "6px 10px",
+											margin: "0",
+											padding: "12px 10px",
 											textAlign: "left",
 											borderBottom: "1px solid #EBF5FF",
 											cursor: "pointer",
@@ -141,10 +176,10 @@ const CashListComponent = () => {
 										Edit
 									</p>
 									<p
-										onClick={handleDeleteCashBalance}
+										onClick={() => openDeleteCashBalance(cashData.id)}
 										style={{
-											margin: "8px 0",
-											padding: "6px 10px",
+											margin: "0",
+											padding: "12px 10px",
 											textAlign: "left",
 											borderBottom: "1px solid #EBF5FF",
 											cursor: "pointer",
@@ -171,14 +206,14 @@ const CashListComponent = () => {
 					Cash
 				</p>
 				<p
-					onClick={cashData.cashBalance ? null : openAddCashModal}
+					onClick={cashData.openingBalance ? null : openAddCashModal}
 					// className="add-cash-button
 					style={{
 						margin: "auto 0",
 						fontWeight: "600",
-						color: cashData.cashBalance ? "#C6C6C6" : "#00A353",
-						cursor: cashData.cashBalance ? "default" : "pointer",
-						border: `1px solid ${cashData.cashBalance ? "#C6C6C6" : "#00A353"}`,
+						color: cashData.openingBalance ? "#C6C6C6" : "#00A353",
+						cursor: cashData.openingBalance ? "default" : "pointer",
+						border: `1px solid ${cashData.openingBalance ? "#C6C6C6" : "#00A353"}`,
 						padding: "8px 25px",
 						borderRadius: "4px",
 					}}
@@ -187,15 +222,15 @@ const CashListComponent = () => {
 						width="14px"
 						height="14px"
 						svg={plusIcon}
-						fill={cashData.cashBalance ? "#C6C6C6" : "#00A353"}
+						fill={cashData.openingBalance ? "#C6C6C6" : "#00A353"}
 					/>
 					<span style={{ marginLeft: "9px" }}>Add opening balance</span>
 				</p>
 			</div>
-			{cashData.cashBalance ? (
+			{cashData.openingBalance ? (
 				<div className="cash-list">
 					<CashListColumnHeadings />
-					<CashRow cashBalance={cashData.cashBalance} />
+					<CashRow cashData={cashData} />
 				</div>
 			) : null}
 		</div>

@@ -3,6 +3,12 @@ import ModalService from "../../services/modal.service";
 import ButtonComponent from "../../shared/button/button.component";
 
 const EditCashModalComponent = ({ formData, onConfirm }) => {
+	const [cashData, setCashData] = useState({
+		...formData,
+		openingBalance: formData.openingBalance,
+		notes: formData.notes,
+	});
+
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
@@ -10,11 +16,6 @@ const EditCashModalComponent = ({ formData, onConfirm }) => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
-	});
-
-	const [cashData, setCashData] = useState({
-		cashBalance: formData.cashBalance,
-		notes: formData.notes,
 	});
 
 	const handleNotesChange = (event) => {
@@ -38,7 +39,7 @@ const EditCashModalComponent = ({ formData, onConfirm }) => {
 						<label style={{ color: "#747474", fontSize: "16px" }}>Opening balance</label>
 						<div style={{ marginTop: "10px" }}>
 							₹
-							{Number(cashData.cashBalance).toLocaleString("en", {
+							{Number(cashData.openingBalance).toLocaleString("en", {
 								minimumFractionDigits: 2,
 								maximumFractionDigits: 2,
 							})}
@@ -65,7 +66,7 @@ const EditCashModalComponent = ({ formData, onConfirm }) => {
 				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent
-						disabled={!cashData.cashBalance}
+						disabled={!cashData.openingBalance}
 						buttonIcon="icon-check"
 						callback={handleSave}
 						label={"Save"}

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import ModalService from "../../services/modal.service";
 import ButtonComponent from "../../shared/button/button.component";
-import BankSearchInputComponent from "../../shared/inputs/bank-search-input/bank-search-input.component";
 import NumberInputComponent from "../../shared/inputs/number-input/number-input.component";
+import SelectInput from "../../shared/inputs/select-input/select-input.component";
 import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 
 const AddBankModalComponent = ({ onConfirm }) => {
@@ -17,22 +17,46 @@ const AddBankModalComponent = ({ onConfirm }) => {
 
 	const [reEnteredAccountNumber, setReEnteredAccountNumber] = useState("");
 	const [newBankData, setNewBankData] = useState({
-		bankName: "temporary bank",
+		type: "bank",
+		bankName: "",
 		accountNumber: "",
 		accountName: "",
-		ifscCode: "",
-		balance: 0,
+		IFSCCode: "",
+		// balance: "",
 		openingBalance: 0,
 		branch: "",
 		customerId: "",
 		notes: "",
 	});
 
-	const handleAccountNumberChange = (value) => {
-		setNewBankData({ ...newBankData, accountNumber: value });
+	const handleAccountNumberChange = (event) => {
+		let enteredAccountNumber = event.target.value;
+		if (!enteredAccountNumber) {
+			setNewBankData({ ...newBankData, accountNumber: "" });
+			return;
+		}
+		enteredAccountNumber = enteredAccountNumber
+			.split("-")
+			.join("")
+			.match(/.{1,4}/g)
+			.join("-");
+		setNewBankData({ ...newBankData, accountNumber: enteredAccountNumber });
 	};
-	const handleReEnterAccountNumberChange = (value) => {
-		setReEnteredAccountNumber(value);
+	const handleReEnterAccountNumberChange = (event) => {
+		let reEnteredAccountNumber = event.target.value;
+		if (!reEnteredAccountNumber) {
+			setReEnteredAccountNumber("");
+			return;
+		}
+		reEnteredAccountNumber = reEnteredAccountNumber
+			.split("-")
+			.join("")
+			.match(/.{1,4}/g)
+			.join("-");
+		setReEnteredAccountNumber(reEnteredAccountNumber);
+	};
+	const handleBankNameChange = (option) => {
+		setNewBankData({ ...newBankData, bankName: option.value });
 	};
 	const handleAccountNameChange = (event) => {
 		setNewBankData({ ...newBankData, accountName: event.target.value });
@@ -44,48 +68,61 @@ const AddBankModalComponent = ({ onConfirm }) => {
 		setNewBankData({ ...newBankData, customerId: event.target.value });
 	};
 	const handleIfscCodeChange = (event) => {
-		setNewBankData({ ...newBankData, ifscCode: event.target.value });
+		const enteredIfsc = event.target.value;
+		if (enteredIfsc.length > 11) return;
+		setNewBankData({ ...newBankData, IFSCCode: enteredIfsc });
 	};
 	const handleOpeningBalanceChange = (value) => {
+		if (!value) {
+			setNewBankData({ ...newBankData, openingBalance: 0 });
+			return;
+		}
 		setNewBankData({ ...newBankData, openingBalance: value });
 	};
 	const handleNotesChange = (event) => {
 		setNewBankData({ ...newBankData, notes: event.target.value });
 	};
-
 	const handleSave = () => {
 		onConfirm(newBankData);
 	};
-
-	console.log(newBankData, "New bank data from modal");
-	console.log(reEnteredAccountNumber, "reintered acc number from modal");
 	return (
 		<div className="add-bank-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
-				Add opening balance
+				Add bank details
 			</div>
 
 			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="add-bank-modal-body-container">
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="add-bank-modal-body">
-					{/* <BankSearchInputComponent
-						autoFocus={true}
-						selectedBank={null}
-						onBankChanged={(selectedBank) => {
-							setNewBankData({ ...newBankData, bankName: selectedBank });
-						}}
-					/> */}
+					<div style={{ marginBottom: "10px" }}>
+						<SelectInput
+							allowCreate={false}
+							notAsync={true}
+							loadedOptions={[
+								{ label: "BOB", value: "BOB" },
+								{ label: "HDFC", value: "HDFC" },
+							]}
+							value={newBankData.bankName}
+							options={{
+								clearable: false,
+								noResultsText: false,
+								labelKey: "label",
+								valueKey: "value",
+								matchProp: "label",
+								placeholder: "Select Bank",
+								handleChange: handleBankNameChange,
+							}}
+						/>
+					</div>
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col_xs_6">
-							<NumberInputComponent
-								defaultNonZero
+							<TextInputComponent
 								label="Account number"
 								value={newBankData.accountNumber}
 								onChange={handleAccountNumberChange}
 							/>
 						</div>
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
-							<NumberInputComponent
-								defaultNonZero
+							<TextInputComponent
 								label="Re-enter account number"
 								value={reEnteredAccountNumber}
 								onChange={handleReEnterAccountNumberChange}
@@ -119,7 +156,7 @@ const AddBankModalComponent = ({ onConfirm }) => {
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
 							<TextInputComponent
 								label="IFSC Code"
-								value={newBankData.ifscCode}
+								value={newBankData.IFSCCode}
 								onChange={handleIfscCodeChange}
 							/>
 						</div>
