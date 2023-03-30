@@ -5,6 +5,15 @@ import NumberInputComponent from "../../shared/inputs/number-input/number-input.
 import SelectInput from "../../shared/inputs/select-input/select-input.component";
 import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 
+const bankNamesList = [
+	{ label: "Bank Of Baroda", value: "Bank Of Baroda" },
+	{ label: "Bank of Maharashtra", value: "Bank of Maharashtra" },
+	{ label: "Canara Bank", value: "Canara Bank" },
+	{ label: "Central Bank of India", value: "Central Bank of India" },
+	{ label: "Indian Overseas Bank", value: "Indian Overseas Bank" },
+	{ label: "Bank of India", value: "Bank of India" },
+	{ label: "Indian Bank", value: "Indian Bank" },
+];
 const AddBankModalComponent = ({ onConfirm }) => {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
@@ -97,10 +106,7 @@ const AddBankModalComponent = ({ onConfirm }) => {
 						<SelectInput
 							allowCreate={false}
 							notAsync={true}
-							loadedOptions={[
-								{ label: "BOB", value: "BOB" },
-								{ label: "HDFC", value: "HDFC" },
-							]}
+							loadedOptions={bankNamesList}
 							value={newBankData.bankName}
 							options={{
 								clearable: false,
