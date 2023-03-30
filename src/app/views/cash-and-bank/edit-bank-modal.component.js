@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ModalService from "../../services/modal.service";
 import ButtonComponent from "../../shared/button/button.component";
-import BankSearchInputComponent from "../../shared/inputs/bank-search-input/bank-search-input.component";
-import NumberInputComponent from "../../shared/inputs/number-input/number-input.component";
 import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 
 const EditBankModalComponent = ({ formData, onConfirm }) => {
@@ -19,6 +17,12 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 		customerId: formData.customerId,
 		notes: formData.notes,
 	});
+	const [formErrors, setFormErrors] = useState({
+		accountNumberError: "",
+		reEnterAccountNumberError: "",
+		accountNameError: "",
+		IFSCCodeError: "",
+	});
 
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
@@ -32,7 +36,7 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 	const handleAccountNumberChange = (event) => {
 		let enteredAccountNumber = event.target.value;
 		if (!enteredAccountNumber) {
-			setNewBankData({ ...newBankData, accountNumber: "" });
+			setEditedBankData({ ...editedBankData, accountNumber: "" });
 			return;
 		}
 		enteredAccountNumber = enteredAccountNumber
@@ -41,7 +45,12 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 			.match(/.{1,4}/g)
 			.join("-");
 		setEditedBankData({ ...editedBankData, accountNumber: enteredAccountNumber });
+		setFormErrors({ ...formErrors, accountNumberError: "" });
+		if (enteredAccountNumber === reEnteredAccountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "" });
+		}
 	};
+
 	const handleReEnterAccountNumberChange = (event) => {
 		let reEnteredAccountNumber = event.target.value;
 		if (!reEnteredAccountNumber) {
@@ -54,30 +63,81 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 			.match(/.{1,4}/g)
 			.join("-");
 		setReEnteredAccountNumber(reEnteredAccountNumber);
+		if (reEnteredAccountNumber === editedBankData.accountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "" });
+		} else {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "Account number does not match" });
+		}
 	};
+
 	const handleAccountNameChange = (event) => {
 		setEditedBankData({ ...editedBankData, accountName: event.target.value });
+		setFormErrors({ ...formErrors, accountNameError: "" });
 	};
+
+	const handleIfscCodeChange = (event) => {
+		const enteredIfsc = event.target.value;
+		if (enteredIfsc.length < 11) {
+			setEditedBankData({ ...editedBankData, IFSCCode: enteredIfsc });
+			setFormErrors({ ...formErrors, IFSCCodeError: "IFSC Code must be 11 digits" });
+		} else if (enteredIfsc.length > 11) {
+			return;
+		} else {
+			setEditedBankData({ ...editedBankData, IFSCCode: enteredIfsc });
+			setFormErrors({ ...formErrors, IFSCCodeError: "" });
+		}
+	};
+
 	const handleBranchChange = (event) => {
 		setEditedBankData({ ...editedBankData, branch: event.target.value });
 	};
+
 	const handleCustomerIdChange = (event) => {
 		setEditedBankData({ ...editedBankData, customerId: event.target.value });
 	};
-	const handleIfscCodeChange = (event) => {
-		const enteredIfsc = event.target.value;
-		if (enteredIfsc.length > 11) return;
-		setEditedBankData({ ...editedBankData, IFSCCode: enteredIfsc });
-	};
+
 	const handleNotesChange = (event) => {
 		setEditedBankData({ ...editedBankData, notes: event.target.value });
 	};
+	const checkForEmptyFields = () => {
+		let emptyFlag = false;
 
-	const handleSave = () => {
-		onConfirm(editedBankData);
+		if (!editedBankData.accountNumber) {
+			setFormErrors({ ...formErrors, accountNumberError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!reEnteredAccountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!editedBankData.accountName) {
+			setFormErrors({ ...formErrors, accountNameError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!editedBankData.IFSCCode) {
+			setFormErrors({ ...formErrors, IFSCCodeError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		return emptyFlag;
 	};
 
-	console.log(editedBankData, "New bank data from edit modal");
+	const handleSave = () => {
+		//Check for empty fields
+		if (checkForEmptyFields()) return;
+
+		//check for reentered acc number
+		if (editedBankData.accountNumber !== reEnteredAccountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "Account number does not match" });
+			return;
+		}
+
+		//Finally submitting if no errors of any type
+		if (Object.values(formErrors).every((error) => error === "")) {
+			onConfirm(editedBankData);
+		}
+	};
+
+	console.log(editedBankData, "Edit bank data from edit modal");
 	console.log(reEnteredAccountNumber, "reintered acc number from edit bank modal");
 	return (
 		<div className="add-bank-modal-container" style={{ minHeight: "200px" }}>
@@ -106,14 +166,16 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="Account number"
+								errorMessage={formErrors.accountNumberError}
+								label="Account number*"
 								value={editedBankData.accountNumber}
 								onChange={handleAccountNumberChange}
 							/>
 						</div>
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="Re-enter account number"
+								errorMessage={formErrors.reEnterAccountNumberError}
+								label="Re-enter account number*"
 								value={reEnteredAccountNumber}
 								onChange={handleReEnterAccountNumberChange}
 							/>
@@ -122,7 +184,8 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="Account name"
+								errorMessage={formErrors.accountNameError}
+								label="Account name*"
 								value={editedBankData.accountName}
 								onChange={handleAccountNameChange}
 							/>
@@ -145,7 +208,8 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 						</div>
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="IFSC code"
+								errorMessage={formErrors.IFSCCodeError}
+								label="IFSC code*"
 								value={editedBankData.IFSCCode}
 								onChange={handleIfscCodeChange}
 							/>

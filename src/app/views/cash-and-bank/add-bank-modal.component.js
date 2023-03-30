@@ -14,6 +14,7 @@ const bankNamesList = [
 	{ label: "Bank of India", value: "Bank of India" },
 	{ label: "Indian Bank", value: "Indian Bank" },
 ];
+
 const AddBankModalComponent = ({ onConfirm }) => {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
@@ -37,6 +38,19 @@ const AddBankModalComponent = ({ onConfirm }) => {
 		customerId: "",
 		notes: "",
 	});
+	const [formErrors, setFormErrors] = useState({
+		bankNameError: "",
+		accountNumberError: "",
+		reEnterAccountNumberError: "",
+		accountNameError: "",
+		IFSCCodeError: "",
+		openingBalanceError: "",
+	});
+
+	const handleBankNameChange = (option) => {
+		setNewBankData({ ...newBankData, bankName: option.value });
+		setFormErrors({ ...formErrors, bankNameError: "" });
+	};
 
 	const handleAccountNumberChange = (event) => {
 		let enteredAccountNumber = event.target.value;
@@ -50,7 +64,12 @@ const AddBankModalComponent = ({ onConfirm }) => {
 			.match(/.{1,4}/g)
 			.join("-");
 		setNewBankData({ ...newBankData, accountNumber: enteredAccountNumber });
+		setFormErrors({ ...formErrors, accountNumberError: "" });
+		if (enteredAccountNumber === reEnteredAccountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "" });
+		}
 	};
+
 	const handleReEnterAccountNumberChange = (event) => {
 		let reEnteredAccountNumber = event.target.value;
 		if (!reEnteredAccountNumber) {
@@ -63,37 +82,98 @@ const AddBankModalComponent = ({ onConfirm }) => {
 			.match(/.{1,4}/g)
 			.join("-");
 		setReEnteredAccountNumber(reEnteredAccountNumber);
+		if (reEnteredAccountNumber === newBankData.accountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "" });
+		} else {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "Account number does not match" });
+		}
 	};
-	const handleBankNameChange = (option) => {
-		setNewBankData({ ...newBankData, bankName: option.value });
-	};
+
 	const handleAccountNameChange = (event) => {
 		setNewBankData({ ...newBankData, accountName: event.target.value });
+		setFormErrors({ ...formErrors, accountNameError: "" });
 	};
-	const handleBranchChange = (event) => {
-		setNewBankData({ ...newBankData, branch: event.target.value });
-	};
-	const handleCustomerIdChange = (event) => {
-		setNewBankData({ ...newBankData, customerId: event.target.value });
-	};
+
 	const handleIfscCodeChange = (event) => {
 		const enteredIfsc = event.target.value;
-		if (enteredIfsc.length > 11) return;
-		setNewBankData({ ...newBankData, IFSCCode: enteredIfsc });
+		if (enteredIfsc.length < 11) {
+			setNewBankData({ ...newBankData, IFSCCode: enteredIfsc });
+			setFormErrors({ ...formErrors, IFSCCodeError: "IFSC Code must be 11 digits" });
+		} else if (enteredIfsc.length > 11) {
+			return;
+		} else {
+			setNewBankData({ ...newBankData, IFSCCode: enteredIfsc });
+			setFormErrors({ ...formErrors, IFSCCodeError: "" });
+		}
 	};
+
 	const handleOpeningBalanceChange = (value) => {
 		if (!value) {
 			setNewBankData({ ...newBankData, openingBalance: 0 });
 			return;
 		}
 		setNewBankData({ ...newBankData, openingBalance: value });
+		setFormErrors({ ...formErrors, openingBalanceError: "" });
 	};
+
+	const handleBranchChange = (event) => {
+		setNewBankData({ ...newBankData, branch: event.target.value });
+	};
+
+	const handleCustomerIdChange = (event) => {
+		setNewBankData({ ...newBankData, customerId: event.target.value });
+	};
+
 	const handleNotesChange = (event) => {
 		setNewBankData({ ...newBankData, notes: event.target.value });
 	};
-	const handleSave = () => {
-		onConfirm(newBankData);
+
+	const checkForEmptyFields = () => {
+		let emptyFlag = false;
+		if (!newBankData.bankName) {
+			setFormErrors({ ...formErrors, bankNameError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!newBankData.accountNumber) {
+			setFormErrors({ ...formErrors, accountNumberError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!reEnteredAccountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!newBankData.accountName) {
+			setFormErrors({ ...formErrors, accountNameError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!newBankData.IFSCCode) {
+			setFormErrors({ ...formErrors, IFSCCodeError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		if (!newBankData.openingBalance) {
+			setFormErrors({ ...formErrors, openingBalanceError: "This is a mandatory field" });
+			emptyFlag = true;
+		}
+		return emptyFlag;
 	};
+
+	const handleSave = () => {
+		//Check for empty fields
+		if (checkForEmptyFields()) return;
+
+		//check for reentered acc number
+		if (newBankData.accountNumber !== reEnteredAccountNumber) {
+			setFormErrors({ ...formErrors, reEnterAccountNumberError: "Account number does not match" });
+			return;
+		}
+
+		//Finally submitting if no errors of any type
+		if (Object.values(formErrors).every((error) => error === "")) {
+			onConfirm(newBankData);
+		}
+	};
+
+	console.log("Form errors", formErrors);
 	return (
 		<div className="add-bank-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
@@ -114,7 +194,7 @@ const AddBankModalComponent = ({ onConfirm }) => {
 								labelKey: "label",
 								valueKey: "value",
 								matchProp: "label",
-								placeholder: "Select Bank",
+								placeholder: "Select Bank*",
 								handleChange: handleBankNameChange,
 							}}
 						/>
@@ -122,14 +202,16 @@ const AddBankModalComponent = ({ onConfirm }) => {
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="Account number"
+								errorMessage={formErrors.accountNumberError}
+								label="Account number*"
 								value={newBankData.accountNumber}
 								onChange={handleAccountNumberChange}
 							/>
 						</div>
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="Re-enter account number"
+								errorMessage={formErrors.reEnterAccountNumberError}
+								label="Re-enter account number*"
 								value={reEnteredAccountNumber}
 								onChange={handleReEnterAccountNumberChange}
 							/>
@@ -138,7 +220,8 @@ const AddBankModalComponent = ({ onConfirm }) => {
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="Account name"
+								errorMessage={formErrors.accountNameError}
+								label="Account name*"
 								value={newBankData.accountName}
 								onChange={handleAccountNameChange}
 							/>
@@ -161,7 +244,8 @@ const AddBankModalComponent = ({ onConfirm }) => {
 						</div>
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
 							<TextInputComponent
-								label="IFSC Code"
+								errorMessage={formErrors.IFSCCodeError}
+								label="IFSC Code*"
 								value={newBankData.IFSCCode}
 								onChange={handleIfscCodeChange}
 							/>
@@ -170,7 +254,8 @@ const AddBankModalComponent = ({ onConfirm }) => {
 					<div style={{ width: "100%" }}>
 						<NumberInputComponent
 							defaultNonZero
-							label="Opening balance"
+							errorMessage={formErrors.openingBalanceError}
+							label="Opening balance*"
 							value={newBankData.openingBalance}
 							onChange={handleOpeningBalanceChange}
 						/>
