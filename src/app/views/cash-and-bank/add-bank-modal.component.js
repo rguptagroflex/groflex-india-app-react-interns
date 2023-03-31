@@ -48,6 +48,9 @@ const AddBankModalComponent = ({ onConfirm }) => {
 	});
 
 	const handleBankNameChange = (option) => {
+		if (!option) {
+			return;
+		}
 		setNewBankData({ ...newBankData, bankName: option.value });
 		setFormErrors({ ...formErrors, bankNameError: "" });
 	};
@@ -182,7 +185,7 @@ const AddBankModalComponent = ({ onConfirm }) => {
 
 			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="add-bank-modal-body-container">
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="add-bank-modal-body">
-					<div style={{ marginBottom: "10px" }}>
+					<div style={{ marginBottom: "20px" }}>
 						<SelectInput
 							allowCreate={false}
 							notAsync={true}
