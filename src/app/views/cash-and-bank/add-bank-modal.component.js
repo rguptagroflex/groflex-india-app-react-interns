@@ -4,6 +4,7 @@ import ButtonComponent from "../../shared/button/button.component";
 import NumberInputComponent from "../../shared/inputs/number-input/number-input.component";
 import SelectInput from "../../shared/inputs/select-input/select-input.component";
 import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
+import TextInputErrorComponent from "../../shared/inputs/text-input/text-input-error.component";
 
 const bankNamesList = [
 	{ label: "Bank Of Baroda", value: "Bank Of Baroda" },
@@ -201,6 +202,12 @@ const AddBankModalComponent = ({ onConfirm }) => {
 								handleChange: handleBankNameChange,
 							}}
 						/>
+						<div style={{ marginTop: "18px" }}>
+							<TextInputErrorComponent
+								errorMessage={formErrors.bankNameError}
+								visible={!!formErrors.bankNameError}
+							/>
+						</div>
 					</div>
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col_xs_6">
