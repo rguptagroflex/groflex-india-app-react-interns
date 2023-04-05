@@ -480,9 +480,14 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
         const { resources } = this.props;
 
 
+        // const tabs = [
+        //     { name: 'Invoices', chartData: this.state.invoiceChartData, refresh: this.createInvoiceChartData.bind(this) },
+        //     { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
+        // ];
+
         const tabs = [
             { name: 'Invoices', chartData: this.state.invoiceChartData, refresh: this.createInvoiceChartData.bind(this) },
-            { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
+            // { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
         ];
 
         const content = errorOccurred ? (

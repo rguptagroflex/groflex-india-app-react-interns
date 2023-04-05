@@ -28,6 +28,7 @@ import DashboardSalesArticleCustomerStatsComponent from '../../shared/dashboard/
 class DashboardComponent extends React.Component {
 	constructor(props) {
 		super(props);
+		this.expense = false;
 		scrollToTop();
 	}
 
@@ -69,12 +70,22 @@ class DashboardComponent extends React.Component {
 					{/* <DashboardOnboardingComponent /> */}
 					{/* <DashboardQuickButtonsComponent /> */}
 					<div className="row" style={{paddingTop: '18px'}}>
-						<div className="col-xs-6">
-							<DashboardReceivablesStatsComponent />
-						</div>
-						<div className="col-xs-6">
-							<DashboardUnpaidExpensesStatsComponent />
-						</div>
+						{this.expense && (
+								<div className="col-xs-6">
+								<DashboardReceivablesStatsComponent />
+							</div>
+							)}
+						{this.expense && (
+							<div className="col-xs-6">
+								<DashboardUnpaidExpensesStatsComponent />
+							</div>
+							)}
+						{!this.expense && (
+							<div className="col-xs-12">
+								<DashboardReceivablesStatsComponent />
+							</div>
+							)}
+						
 					</div>
 					<div className="row">
 						<div className="col-xs-6">
@@ -84,24 +95,43 @@ class DashboardComponent extends React.Component {
 							<DashboardQuotationsPurchaseOrderStatsComponent />
 						</div>
 					</div>
-					<div className="row">
-						<div className="col-xs-12">
-							<DashboardSalesExpensesStatsComponent />
+					{this.expense && (
+							<div className="row">
+							<div className="col-xs-12">
+								<DashboardSalesExpensesStatsComponent />
+							</div>
 						</div>
-					</div>
+							)}
+					
 					<div className="row">
+					{!this.expense && (
+							 <div className="col-xs-6">
+							 <DashboardSalesByArticleStatsComponent />
+						 </div>
+							)}
+							{!this.expense && (
+							<div className="col-xs-6">
+							<DashboardSalesByCustomerStatsComponent />
+						</div> 
+							)}
 						{/* <div className="col-xs-6">
 							<DashboardSalesByArticleStatsComponent />
 						</div>
 						<div className="col-xs-6">
 							<DashboardSalesByCustomerStatsComponent />
 						</div> */}
-						<div className="col-xs-6">
+						{this.expense && (
+							<div className="col-xs-6">
 							<DashboardSalesArticleCustomerStatsComponent />
 						</div>
+							)}
+							{this.expense && (
 						<div className="col-xs-6">
-							<DashboardExpenseArticleStatsComponent />
-						</div>
+						<DashboardExpenseArticleStatsComponent />
+					</div>
+							)}
+						
+						
 					</div>
 					{/* <div className="row">
 						<div className="col-xs-5 col-gutter-right-10">

@@ -62,7 +62,8 @@ class StartQuickLinksComponent extends Component {
         super(props);
         this.state = { 
             quickLinks: [],
-            quickLinksEditable: false
+            quickLinksEditable: false,
+            expense:false
         }
     }
 
@@ -83,7 +84,12 @@ class StartQuickLinksComponent extends Component {
     async fetchQuickLinks() {
         try {
             let links = (await invoiz.request(`${config.resourceHost}quick-links`, {auth: true})).body.data.links;
-            links = links.map(linkItem => {
+            
+            if(!this.state.expense) {
+                links = links.filter(x => x.linkId != 'create-purchase-orders' && x.linkId != 'add-expenses' && x.linkId != 'add-stocks' );
+            }
+            
+            links = links.map(linkItem => {                
                 const {name, link} = quickLinksMap.find(item => item.linkId === linkItem.linkId);
                 return {...linkItem, name, link}
             })
