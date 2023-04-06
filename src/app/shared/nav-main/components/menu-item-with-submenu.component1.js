@@ -16,10 +16,11 @@ const buildSubmenuComponents = (permissions, canViewDunning, canViewTimesheet, n
 	if (!canViewDunning) {
 		submenuItems = submenuItems.filter(item => item.name !== 'dunning');
 	}
+	// In all case we need to show timesheet
+	// if (!canViewTimesheet) {
+	// 	submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
+	// }
 
-	if (!canViewTimesheet) {
-		submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
-	}
 	if(noInventory) {
 		submenuItems = submenuItems.filter(item => item.name !== 'inventory');
 	}

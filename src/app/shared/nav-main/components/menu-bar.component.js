@@ -97,9 +97,9 @@ class MenuBarComponent extends React.Component {
 		 if (!canViewOffer && !canViewImprezzOffer && !canViewPurchaseOrder) {
 			return permitteditems.filter(item => item.name !== 'offers' && item.name !== 'purchaseOrders');
 		 } 
-		 if (!canViewDashboard) {
-			return permitteditems.filter(item => item.name !== 'dashboard');		  
-		  } 
+		//  if (!canViewDashboard) {
+		// 	return permitteditems.filter(item => item.name !== 'dashboard');		  
+		//   } 
 		 if (!canViewExpenses) {
 		  return permitteditems.filter(item => item.name !== 'expenses');		  
 		} 
