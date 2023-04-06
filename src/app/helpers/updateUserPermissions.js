@@ -10,7 +10,6 @@ export const updateUserPermissions = (callback) => {
 			if (invoiz.user) {
 				invoiz.user.rights = data.features;
 				// expense 
-				invoiz.user.rights.viewDashboardSalesAndExpenseStatistics = false;
 				invoiz.user.rights.createExpense = false;
 				invoiz.user.rights.convertPurchaseOrderToExpense = false;
 				invoiz.user.rights.deleteExpense = false;
