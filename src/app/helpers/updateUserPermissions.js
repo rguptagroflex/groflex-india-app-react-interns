@@ -6,10 +6,11 @@ export const updateUserPermissions = (callback) => {
 	invoiz
 		.request(config.account.endpoints.getUserPermissions, { auth: true })
 		.then(({ body: { data } }) => {
-			console.log(data);
+			//console.log(data);
 			if (invoiz.user) {
 				invoiz.user.rights = data.features;
 				// expense 
+				//invoiz.user.rights.viewDashboardSalesAndExpenseStatistics = false;
 				invoiz.user.rights.createExpense = false;
 				invoiz.user.rights.convertPurchaseOrderToExpense = false;
 				invoiz.user.rights.deleteExpense = false;
