@@ -271,14 +271,14 @@ const createDetailViewHeadObjects = (challan, activeAction, resources) => {
 			controlsItemClass: "item-print-settings",
 			id: "detail-head-print-settings-popover-anchor",
 		},
-		{
-			name: resources.str_copyANGLink,
-			icon: "icon-copy",
-			action: DeliveryChallanAction.SHOW_COPY_LINK_POPOVER,
-			dataQsId: "offerDetail-head-action-copylink",
-			controlsItemClass: "item-copy",
-			id: "detail-head-copy-link-popover-anchor",
-		}
+		// {
+		// 	name: resources.str_copyANGLink,
+		// 	icon: "icon-copy",
+		// 	action: DeliveryChallanAction.SHOW_COPY_LINK_POPOVER,
+		// 	dataQsId: "offerDetail-head-action-copylink",
+		// 	controlsItemClass: "item-copy",
+		// 	id: "detail-head-copy-link-popover-anchor",
+		// }
 	);
 
 	// if (offer.state !== OfferState.DRAFT) {

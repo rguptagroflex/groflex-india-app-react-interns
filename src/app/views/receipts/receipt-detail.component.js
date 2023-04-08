@@ -289,16 +289,16 @@ const createDetailViewHeadObjects = (invoice, activeAction, letterPaperType, res
 		);
 	}
 
-	if (invoice.state !== InvoiceState.DRAFT) {
-		object.actionElements.push({
-			name: 'Copy or e-mail invoice link',
-			icon: 'icon-copy',
-			action: InvoiceAction.COPY_CUSTOMERCENTER_LINK,
-			dataQsId: 'invoiceDetail-head-action-copylink',
-			controlsItemClass: 'item-copy',
-			id: 'detail-head-copy-link-popover-anchor',
-		});
-	}
+	// if (invoice.state !== InvoiceState.DRAFT) {
+	// 	object.actionElements.push({
+	// 		name: 'Copy or e-mail invoice link',
+	// 		icon: 'icon-copy',
+	// 		action: InvoiceAction.COPY_CUSTOMERCENTER_LINK,
+	// 		dataQsId: 'invoiceDetail-head-action-copylink',
+	// 		controlsItemClass: 'item-copy',
+	// 		id: 'detail-head-copy-link-popover-anchor',
+	// 	});
+	// }
 
 	if (invoice.state !== InvoiceState.DRAFT) {
 		object.actionElements.push({

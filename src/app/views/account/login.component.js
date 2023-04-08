@@ -541,7 +541,7 @@ class LoginComponent extends React.Component {
 						{/* <div className='landing-content-inner-middle'>{resources.str_loginBetweenLable}</div> */}
 						<div className="landing-content-inner-footer">
 							<hr></hr> 
-							{/* {oauthGoogleUrl ? (
+							{oauthGoogleUrl ? (
 								<ButtonComponent
 									callback={() => this.onGoogleLoginClicked()}
 									label={resources.googleLogin}
@@ -550,7 +550,7 @@ class LoginComponent extends React.Component {
 									disabled={isLogginIn}
 									dataQsId="login-btn-googleLogin"
 								/>
-							) : null} */}
+							) : null}
 							
 							<p className="terms-privacy-link">
 								By signing up you're agreeing to our 

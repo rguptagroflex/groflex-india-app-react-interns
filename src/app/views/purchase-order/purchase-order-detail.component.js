@@ -318,16 +318,16 @@ const createDetailViewHeadObjects = (purchaseOrder, activeAction, resources) => 
 		}
 	);
 
-	if (purchaseOrder.state !== PurchaseOrderState.DRAFT) {
-		object.actionElements.push({
-			name: resources.str_copyANGLinkPurchaseOrder,
-			icon: 'icon-copy',
-			action: PurchaseOrderAction.SHOW_COPY_LINK_POPOVER,
-			dataQsId: 'purchaseOrderDetail-head-action-copylink',
-			controlsItemClass: 'item-copy',
-			id: 'detail-head-copy-link-popover-anchor'
-		});
-	}
+	// if (purchaseOrder.state !== PurchaseOrderState.DRAFT) {
+	// 	object.actionElements.push({
+	// 		name: resources.str_copyANGLinkPurchaseOrder,
+	// 		icon: 'icon-copy',
+	// 		action: PurchaseOrderAction.SHOW_COPY_LINK_POPOVER,
+	// 		dataQsId: 'purchaseOrderDetail-head-action-copylink',
+	// 		controlsItemClass: 'item-copy',
+	// 		id: 'detail-head-copy-link-popover-anchor'
+	// 	});
+	// }
 
 	let subHeadline = null;
 	if (purchaseOrder.expense && purchaseOrder.expense.id) {
