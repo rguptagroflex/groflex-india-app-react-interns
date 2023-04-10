@@ -5,7 +5,7 @@ import WebStorageKey from "enums/web-storage-key.enum";
 
 const apiServers = {
 	// local: "http://localhost:3000",
-	local: 'https://dev.groflex.in',
+	local: "https://dev.groflex.in",
 	development: "https://dev.groflex.in",
 	qa: "https://qa.groflex.in",
 	staging: "https://staging.groflex.in",
@@ -14,7 +14,7 @@ const apiServers = {
 	// admin: "https://invoiz-admin.buhl.de",
 };
 
-const byPassCors = true
+const byPassCors = true;
 
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
@@ -196,7 +196,7 @@ const config = {
 		// 	]
 		// },
 		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
-		{ name: 'articles', icon: 'article_outlined', title: 'Artikel', url: '/articles', resourceKey: 'article' },
+		{ name: "articles", icon: "article_outlined", title: "Artikel", url: "/articles", resourceKey: "article" },
 		// {
 		// 	name: "articles",
 		// 	icon: "article",
@@ -264,6 +264,14 @@ const config = {
 					url: "/expenses/cancellations",
 					mainSubmenuItem: "expenditure",
 					resourceKey: "debitNotes",
+				},
+				{
+					name: "Chart of accounts",
+					// icon: "order",
+					title: "Chart of accounts",
+					url: "/expenses/chart-of-accounts",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "chartOfAccounts",
 				},
 			],
 		},
@@ -426,7 +434,7 @@ const config = {
 			updateBusinessDetails: `${resourceHost}tenant/set_business_details`,
 			resendCode: `${resourceHost}user/email/resend_code`,
 			funFacts: `${resourceHost}funfacts`,
-			deleteAccount: `${resourceHost}user`,
+			deleteAccount: `${resourceHost}user` ,
 			getTenantInfo: `${resourceHost}tenant`,
 			checkInvitationCode: `${resourceUrls.user}/invitation`,
 			registerUser: `${resourceUrls.user}/register`,

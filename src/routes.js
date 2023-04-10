@@ -59,8 +59,7 @@ import PurchaseOrderSendMailWrapper from "views/purchase-order/purchase-order-se
 // import BankingEmptyStateWrapper from "views/banking/banking-empty-state.wrapper";
 // import BankingTransactionsWrapper from "views/banking/banking-transactions.wrapper";
 
-
-import ChartofaccountListWrapper from "views/chartofaccounts/chartofaccount-list.wrapper"
+import ChartofaccountListWrapper from "views/chartofaccounts/chartofaccount-list.wrapper";
 import CustomerListWrapper from "views/customer/customer-list.wrapper";
 import CustomerDetailWrapper from "views/customer/customer-detail.wrapper";
 import CustomerEditWrapper from "views/customer/customer-edit.wrapper";
@@ -482,7 +481,7 @@ const routes = [
 		component: TimetrackingBilledWrapper,
 		exact: true,
 		title: "Abgerechnete Zeiten",
-		menuItem: "invoices",		
+		menuItem: "invoices",
 		submenuItem: "timetracking",
 		resourceKey: "billedTimes",
 	},

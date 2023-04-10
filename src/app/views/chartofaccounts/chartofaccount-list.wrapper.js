@@ -1,5 +1,4 @@
 import React from 'react';
-import ChartofaccountListComponent from './chartofaccount-list.component';
 import store from 'redux/store';
 import { Provider } from 'react-redux';
 import ChartofaccountNewComponent from './chartofaccount-list-new-component';

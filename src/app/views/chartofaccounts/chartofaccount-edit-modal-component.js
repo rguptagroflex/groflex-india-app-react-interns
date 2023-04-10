@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import NumberInputComponent from "../../shared/inputs/number-input/number-input.component";
 import ButtonComponent from "../../shared/button/button.component";
 import ModalService from "../../services/modal.service";
-import DualToggleComponent from "../../shared/oval-toggle/dual-toggle.component";
 import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 import SelectInput from "../../shared/inputs/select-input/select-input.component";
 import OvalToggleComponent from "../../shared/oval-toggle/oval-toggle.component";
@@ -14,6 +13,7 @@ const accountOptions = [
 	{ label: "Income", value: "income" },
 	{ label: "Expenses", value: "expenses" },
 ];
+
 const assets = [
 	{ value: "inventory", label: "Inventory" },
 	{ value: "accountReceivable", label: "Account receivable" },
@@ -56,38 +56,41 @@ const expenses = [
 	{ value: "uncategorizedExpenses", label: "Uncategorized expenses" },
 ];
 
-function ChartOfAccountPersonModalComponent({ onConfirm }) {
+function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+		if (previousData.status === "active") {
+			previousData.status = true;
+			setActive(true);
+		} else {
+			previousData.status = false;
+			setActive(false);
+		}
+		setChartData(previousData);
+
 		return () => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
-	});
+	}, []);
 
-	const [active, setActive] = useState(false);
+	const [active, setActive] = useState(true);
 	const [chartData, setChartData] = useState({
 		accountType: "",
 		accountSubType: "",
-		status: "inactive",
+		status: "",
 		accountCode: "",
 		accountName: "",
 		description: "",
+		id: "",
 	});
+
 	const [accountNameError, setAccountNameError] = useState(false);
 	const [accountTypeError, setAccountTypeError] = useState(false);
 
-	const handleDescriptionChange = (event) => {
-		setChartData({ ...chartData, description: event.target.value });
-	};
-
 	const handleAccountCodeChange = (value) => {
 		setChartData({ ...chartData, accountCode: value });
-	};
-
-	const handleAccountNameChange = (event) => {
-		setChartData({ ...chartData, accountName: event.target.value });
 	};
 
 	const handleAccountStatus = (newValue) => {
@@ -99,6 +102,16 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 			};
 		});
 	};
+	const handleAccountSubTypeChange = (types) => {
+		if (!types) {
+			return;
+		}
+		setChartData({ ...chartData, accountSubType: types.value });
+	};
+
+	const handleAccountNameChange = (event) => {
+		setChartData({ ...chartData, accountName: event.target.value });
+	};
 
 	const handleAccountTypeChange = (option) => {
 		if (!option) {
@@ -107,11 +120,8 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 		setChartData({ ...chartData, accountType: option.value });
 	};
 
-	const handleAccountSubTypeChange = (types) => {
-		if (!types) {
-			return;
-		}
-		setChartData({ ...chartData, accountSubType: types.value });
+	const handleDescriptionChange = (event) => {
+		setChartData({ ...chartData, description: event.target.value });
 	};
 
 	const handleSave = () => {
@@ -123,8 +133,10 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 		setAccountNameError(false);
 		setAccountTypeError(false);
 		onConfirm(chartData);
+
 		ModalService.close();
 	};
+
 	return (
 		<div className="add-chart-modal-container" style={{ minHeight: "200px" }}>
 			<div
@@ -134,13 +146,12 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 				}}
 				className="modal-base-headline"
 			>
-				Add account
+				Edit account
 			</div>
 			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }}>
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }}>
 					<div>
 						<SelectInput
-							// style={{ marginLeft: "0px" }}
 							allowCreate={false}
 							notAsync={true}
 							loadedOptions={accountOptions}
@@ -155,6 +166,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 								placeholder: "Account type",
 								handleChange: handleAccountTypeChange,
 							}}
+							style={{ marginLeft: "-15px" }}
 							aria-invalid={accountTypeError}
 							aria-describedby={accountTypeError ? "accountTypeError" : null}
 						/>
@@ -166,9 +178,9 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 							)}
 						</div>
 					</div>
-					<div style={{ margin: 0 }}>
+
+					<div>
 						<SelectInput
-							style={{ margin: "0px" }}
 							allowCreate={false}
 							notAsync={true}
 							name="accountSubType"
@@ -221,10 +233,10 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 							)}
 						</div>
 					</div>
+
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col-xs-6 ">
 							<TextInputComponent
-								style={{ padding: "0px" }}
 								name="accountName"
 								required
 								value={chartData.accountName}
@@ -268,9 +280,10 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 								Activate account(Active accounts only will appear in dropdown )
 							</label>
 						</div>
-						<div className="col-xs-2 ">
+						<div>
 							<OvalToggleComponent
 								checked={active}
+								items={[{ label: "Active" }, { label: "Inactive" }]}
 								onChange={handleAccountStatus}
 								value={chartData.status}
 							/>
