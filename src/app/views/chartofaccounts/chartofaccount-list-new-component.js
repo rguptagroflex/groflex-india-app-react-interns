@@ -421,7 +421,7 @@ class ChartofaccountNewComponent extends React.Component {
 						}}
 						exportFilename={`Exported chartofaccount list ${moment().format(config.dateFormat.client)}`}
 						gatherRemovedSelectedRowsBy="id"
-						multiSelect={true}
+						multiSelect={false}
 						usePagination={true}
 						searchFieldPlaceholder={lang.customerSearchCategory}
 						loadingRowsMessage={"Loading chartofaccount list..."}
@@ -500,7 +500,8 @@ class ChartofaccountNewComponent extends React.Component {
 							}
 						}}
 						onRowClicked={(chartofaccount) => {
-							invoiz.router.navigate(`/chartofaccount/${chartofaccount.id}`);
+							this.onActionCellPopupItemClick(chartofaccount, {action: "edit"});
+							//invoiz.router.navigate(`/chartofaccount/${chartofaccount.id}`);
 						}}
 						onRowSelectionChanged={(selectedRows) => {
 							if (!this.isUnmounted) {
