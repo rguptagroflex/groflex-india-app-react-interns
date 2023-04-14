@@ -1,0 +1,16 @@
+@import "../../../abstracts/variables";
+@import "../../../abstracts/mixins";
+
+.cash-and-bank-component-wrapper {
+	.add-bank-modal-container {
+		.modal-base-view {
+			padding: 0;
+		}
+		.modal-base-content {
+			margin: 0;
+		}
+		.Select-placeholder {
+			padding: 0 !important;
+		}
+	}
+}

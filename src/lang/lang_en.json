@@ -1950,7 +1950,8 @@
 		"expense": "Expenses",
 		"creditNotes": "Credit notes",
 		"debitNotes": "Debit notes",
-		"chartOfAccounts":"Chart of accounts"
+		"chartOfAccounts":"Chart of accounts",
+		"cashAndBank": "Cash and bank"
 	},
 	"routesTitle": {
 		"login": "Login",

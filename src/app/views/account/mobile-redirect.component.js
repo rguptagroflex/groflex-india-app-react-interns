@@ -20,15 +20,15 @@ class MobileRedirectComponent extends React.Component {
 		return (
 			<div className="landing-wrapper mobile-redirect-wrapper">
 				<div className="invoiz-logo">
-					<img src="/assets/images/svg/Groflex.svg" alt="Groflex" />
+					<img src="/assets/images/svg/groflex.svg" alt="Groflex" />
 				</div>
 
-				<h2>{resources.str_useOurApp}</h2>
+				{/* <h2>{resources.str_useOurApp}</h2> */}
 				<p>
 					{resources.redirectToMobileAppText}
 				</p>
 
-				{badge}
+				{/* {badge} */}
 			</div>
 		);
 	}
