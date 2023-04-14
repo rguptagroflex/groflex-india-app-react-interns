@@ -1580,6 +1580,15 @@
 	"contactDeleteConfirmText": "Do you really want to delete the contact?",
 	"contactsDeleteConfirmText": "Do you really want to delete the contacts?",
 
+	"chartofaccountEmptyListHeadingText": "No chart of accounts available",
+	"chartofaccountSearchPlaceholderText": "Search chartofaccount",
+	"chartofaccountCreateButtonText": "Create chart of accounts",
+	"chartofaccountDeletePopupHeading": "Delete chart of accounts",
+	"chartofaccountDeleteSuccessMessage":"The chartofaccount was deleted successfully",
+	"chartofaccountDeleteConfirmText": "Do you really want to delete the chartofaccount?",
+	"chartofaccountDeleteNotAllowedMessage": "The chartofaccount cannot be deleted because times have been recorded for them.",
+	"chartofaccountEmptyListCreateContactText": "Create your first chartofaccount or import your existing chartofaccount base",
+
 	"articleNotAvailableText": "No articles available yet",
 	"createOrImportArticalText": "Create your first article or import your existing article master",
 	"createArticle": "Create article",
@@ -1941,6 +1950,7 @@
 		"expense": "Expenses",
 		"creditNotes": "Credit notes",
 		"debitNotes": "Debit notes",
+		"chartOfAccounts":"Chart of accounts",
 		"cashAndBank": "Cash and bank"
 	},
 	"routesTitle": {

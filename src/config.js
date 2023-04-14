@@ -266,6 +266,14 @@ const config = {
 					resourceKey: "debitNotes",
 				},
 				{
+					name: "Chart of accounts",
+					// icon: "order",
+					title: "Chart of accounts",
+					url: "/expenses/chart-of-accounts",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "chartOfAccounts",
+				},
+				{
 					name: "cashAndBank",
 					icon: "order",
 					title: "Cash and bank",
@@ -434,7 +442,7 @@ const config = {
 			updateBusinessDetails: `${resourceHost}tenant/set_business_details`,
 			resendCode: `${resourceHost}user/email/resend_code`,
 			funFacts: `${resourceHost}funfacts`,
-			deleteAccount: `${resourceHost}user`,
+			deleteAccount: `${resourceHost}user` ,
 			getTenantInfo: `${resourceHost}tenant`,
 			checkInvitationCode: `${resourceUrls.user}/invitation`,
 			registerUser: `${resourceUrls.user}/register`,
