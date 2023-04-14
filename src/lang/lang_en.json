@@ -1940,7 +1940,10 @@
 		"expenditures": "Expenditure",
 		"expense": "Expenses",
 		"creditNotes": "Credit notes",
-		"debitNotes": "Debit notes"
+		"debitNotes": "Debit notes",
+		"reports":"Reports"
+
+		
 	},
 	"routesTitle": {
 		"login": "Login",
@@ -2011,7 +2014,12 @@
 		"adminPanel": "Admin panel",
 		"marketplace": " App Store",
 		"startPage": "Start page",
-		"dashboard": "Dashboard"
+		"dashboard": "Dashboard",
+		"balanceSheet":"Balance sheet",
+		"profitAndLoss":"Profit and loss",
+		"generalLedger":"General ledger",
+		"cashFlowStatement":"Cash flow statement"
+
 	},
 	"monthNames": [
 		"January",
