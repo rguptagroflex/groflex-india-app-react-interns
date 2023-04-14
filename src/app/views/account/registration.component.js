@@ -415,7 +415,7 @@ class RegistrationComponent extends React.Component {
 							{footer}
 						</div>
 						<div className="landing-content-inner-footer">
-							{oauthGoogleUrl ? (
+							{/* {oauthGoogleUrl ? (
 								<hr></hr>
 							) : null}
 							
@@ -428,7 +428,7 @@ class RegistrationComponent extends React.Component {
 									// disabled={isLogginIn}
 									dataQsId="login-btn-googleLogin"
 								/>
-							) : null}
+							) : null} */}
 							{/* <p className="terms-privacy-link">
 								By signing up you're agreeing to our
 								<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
@@ -1291,7 +1291,7 @@ class RegistrationComponent extends React.Component {
 				const alertIcon = <span className={`icon icon-close`} />;
 				const passwordErrorElement = <div className="landing-password-error">{resources.passwordNotMatch}</div>;
 
-				headlineElement = this.isMobile ? resources.trailPeriodMessage : resources.createInvoizAccount;
+				headlineElement = resources.createInvoizAccount; //this.isMobile ? resources.trailPeriodMessage : resources.createInvoizAccount;
 				
 				headlineElement = (
 					<div>
