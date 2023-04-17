@@ -11,7 +11,7 @@ const AddCashModalComponent = ({ onConfirm }) => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
-	});
+	}, []);
 
 	const [newCashData, setNewCashData] = useState({
 		type: "cash",

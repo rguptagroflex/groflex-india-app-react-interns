@@ -1941,7 +1941,8 @@
 		"expense": "Expenses",
 		"creditNotes": "Credit notes",
 		"debitNotes": "Debit notes",
-		"cashAndBank": "Cash and bank"
+		"cashAndBank": "Cash and bank",
+		"transactions": "Transactions"
 	},
 	"routesTitle": {
 		"login": "Login",

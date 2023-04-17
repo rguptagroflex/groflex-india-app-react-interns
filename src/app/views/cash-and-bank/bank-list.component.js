@@ -100,7 +100,7 @@ const BankListComponent = () => {
 						padding: 0,
 						margin: 0,
 						display: "grid",
-						gridTemplateColumns: "2fr 3fr 2fr 2fr 2fr 4fr",
+						gridTemplateColumns: "3fr 3fr 2fr 2fr 2fr 4fr",
 						textAlign: "center",
 					}}
 				>
@@ -131,14 +131,14 @@ const BankListComponent = () => {
 						padding: 0,
 						margin: 0,
 						display: "grid",
-						gridTemplateColumns: "2fr 3fr 2fr 2fr 2fr 4fr",
+						gridTemplateColumns: "3fr 3fr 2fr 2fr 2fr 4fr",
 						textAlign: "center",
 					}}
 				>
 					<p style={{ padding: "0 5px" }}>{bank.bankName}</p>
 					<p style={{ padding: "0 5px" }}>{bank.accountNumber}</p>
 					<p style={{ padding: "0 5px" }}>{bank.accountName}</p>
-					<p style={{ padding: "0 5px" }}>{bank.IFSCCode}</p>
+					<p style={{ padding: "0 5px" }}>{bank.IFSCCode.toUpperCase()}</p>
 					<p style={{ padding: "0 5px" }}>
 						₹
 						{Number(bank.openingBalance).toLocaleString("en", {
@@ -223,6 +223,7 @@ const BankListComponent = () => {
 			>
 				<p style={{ margin: "21px 0" }} className="text-h4">
 					Bank Details
+					<span style={{ fontSize: 12, fontWeight: 400, display: "block" }}> (Max 3 banks allowed) </span>
 				</p>
 				<p
 					onClick={banksList.length < 3 ? openAddBankModal : null}

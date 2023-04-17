@@ -1,7 +1,7 @@
 import React from "react";
 import { useEffect, useRef } from "react";
 
-export default function OnClickOutside({ onClickOutside, children }) {
+export default function OnClickOutside({ onClickOutside, children, rest }) {
 	const ref = useRef(null);
 
 	useEffect(() => {
@@ -16,5 +16,9 @@ export default function OnClickOutside({ onClickOutside, children }) {
 		};
 	}, [onClickOutside]);
 
-	return <div ref={ref}>{children}</div>;
+	return (
+		<div {...rest} ref={ref}>
+			{children}
+		</div>
+	);
 }

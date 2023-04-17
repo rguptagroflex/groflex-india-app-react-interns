@@ -31,7 +31,7 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
-	});
+	}, []);
 
 	const handleAccountNumberChange = (event) => {
 		let enteredAccountNumber = event.target.value;
