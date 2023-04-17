@@ -439,13 +439,13 @@ class CustomerListNewComponent extends React.Component {
 									},
 								}),
 							},
-							// {
-							// 	headerName: 'Country',
-							// 	field: 'country',
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// 	hide: true,
-							// 	comparator: localeCompare,
-							// },
+							{
+								headerName: 'Country',
+								field: 'country',
+								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								hide: true,
+								comparator: localeCompare,
+							},
 							{
 								headerName: "E-Mail",
 								field: "email",

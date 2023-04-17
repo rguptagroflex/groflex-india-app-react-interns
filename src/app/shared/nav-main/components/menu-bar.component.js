@@ -92,14 +92,14 @@ class MenuBarComponent extends React.Component {
 		const { canSeeEditGstReports, canViewImprezzOffer, canViewOffer, canViewExpenses, canViewPurchaseOrder, canViewDashboard, noGST, menuItems } = this.state;
 		const permitteditems = [...config.menuItemsData];
 		 if (!canSeeEditGstReports && !canViewExpenses && !canViewDashboard) {
-			return permitteditems.filter(item => item.name !== 'expenses' && item.name !== 'documentExport' && item.name !== 'dashboard');
+			return permitteditems.filter(item => item.name !== 'expenses' && item.name !== 'documentExport');
 		 } 
 		 if (!canViewOffer && !canViewImprezzOffer && !canViewPurchaseOrder) {
 			return permitteditems.filter(item => item.name !== 'offers' && item.name !== 'purchaseOrders');
 		 } 
-		 if (!canViewDashboard) {
-			return permitteditems.filter(item => item.name !== 'dashboard');		  
-		  } 
+		//  if (!canViewDashboard) {
+		// 	return permitteditems.filter(item => item.name !== 'dashboard');		  
+		//   } 
 		 if (!canViewExpenses) {
 		  return permitteditems.filter(item => item.name !== 'expenses');		  
 		} 
