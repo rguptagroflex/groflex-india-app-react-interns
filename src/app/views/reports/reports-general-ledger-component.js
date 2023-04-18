@@ -5,50 +5,50 @@ import SelectInputComponent from "../../shared/inputs/select-input/select-input.
 import CalenderIcon from "../../../assets/images/icons/calender.svg";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 import { printPdf } from "../../helpers/printPdf";
- import DetailViewHeadAdvancedComponent from "../../shared/detail-view/detail-view-head-advanced.component";
+import DetailViewHeadAdvancedComponent from "../../shared/detail-view/detail-view-head-advanced.component";
 // import { CancellationInvoiceAction } from "../constants/cancellationInvoiceAction";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 // import { faEnvelope, faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
 function DetailViewHeadObjects({ cancellation, activeAction, resources }) {
 	const actionElements = [
-    {
-      name: resources.str_sendEmail,
-      icon: "icon-mail",
-      // action: CancellationInvoiceAction.EMAIL,
-      dataQsId: "cancellation-head-action-email",
-    },
-    {
-      name: resources.str_pdf,
-      icon: "icon-pfeil icon-rotate-180",
-      // action: CancellationInvoiceAction.DOWNLOAD_PDF,
-      // actionActive: activeAction === CancellationInvoiceAction.DOWNLOAD_PDF,
-      dataQsId: "cancellation-head-action-downloadPdf",
-    },
-    {
-      name: resources.str_print,
-      icon: "icon-print2",
-      // action: CancellationInvoiceAction.PRINT,
-      // actionActive: activeAction === CancellationInvoiceAction.PRINT,
-      dataQsId: "cancellation-head-action-print",
-      controlsItemClass: "item-print",
-      id: "detail-head-print-anchor",
-    },
-    // {
-    // 	name: '',
-    // 	icon: 'icon-arr_down',
-    // 	action: CancellationInvoiceAction.SHOW_PRINT_SETTINGS_POPOVER,
-    // 	dataQsId: 'cancellation-head-action-printSettings',
-    // 	controlsItemClass: 'item-print-settings',
-    // 	id: 'detail-head-print-settings-popover-anchor'
-    // }
-  ];
+		{
+			name: resources.str_sendEmail,
+			icon: "icon-mail",
+			// action: CancellationInvoiceAction.EMAIL,
+			dataQsId: "cancellation-head-action-email",
+		},
+		{
+			name: resources.str_pdf,
+			icon: "icon-pfeil icon-rotate-180",
+			// action: CancellationInvoiceAction.DOWNLOAD_PDF,
+			// actionActive: activeAction === CancellationInvoiceAction.DOWNLOAD_PDF,
+			dataQsId: "cancellation-head-action-downloadPdf",
+		},
+		{
+			name: resources.str_print,
+			icon: "icon-print2",
+			// action: CancellationInvoiceAction.PRINT,
+			// actionActive: activeAction === CancellationInvoiceAction.PRINT,
+			dataQsId: "cancellation-head-action-print",
+			controlsItemClass: "item-print",
+			id: "detail-head-print-anchor",
+		},
+		// {
+		// 	name: '',
+		// 	icon: 'icon-arr_down',
+		// 	action: CancellationInvoiceAction.SHOW_PRINT_SETTINGS_POPOVER,
+		// 	dataQsId: 'cancellation-head-action-printSettings',
+		// 	controlsItemClass: 'item-print-settings',
+		// 	id: 'detail-head-print-settings-popover-anchor'
+		// }
+	];
 	return (
 		<div>
-			<div>
+			{/* <div>
 			<DetailViewHeadAdvancedComponent
 			actionElements={headContents.actionElements}
 			/>
-			</div>
+			</div> */}
 			<div className="action-elements" style={{ marginLeft: "500px" }}>
 				<button
 					className="action-button"
@@ -57,7 +57,7 @@ function DetailViewHeadObjects({ cancellation, activeAction, resources }) {
 				>
 					<div className="action-icon">
 						{/* <FontAwesomeIcon icon={faEnvelope} /> */}
-						
+
 						<span className="action-name">{resources.str_sendEmail}</span>
 					</div>
 				</button>
