@@ -69,10 +69,10 @@ class CustomTopbarComponent extends React.Component {
 		this.setState({ ...this.state, topbarDropdown: false });
 	}
 
-	openMoneyInModal() {
-		this.closeTopbarDropdown();
-		ModalService.open(<MoneyInModalComponent formData={{}} onConfirm={() => {}} />, { width: 630 });
-	}
+	// openMoneyInModal() {
+	// 	this.closeTopbarDropdown();
+	// 	ModalService.open(<MoneyInModalComponent formData={{}} onConfirm={() => {}} />, { width: 630 });
+	// }
 
 	render() {
 		let backButton = null;
@@ -189,7 +189,9 @@ class CustomTopbarComponent extends React.Component {
 										<div
 											onClick={() => {
 												this.closeTopbarDropdown();
-												this.props.onDropDownClick("money-in");
+												// this.props.onDropDownClick("money-in");
+												// this.props.buttonCallback("money-in");
+												this.props.openMoneyInModal();
 											}}
 											className="drop-down-opt"
 											style={{
@@ -206,7 +208,8 @@ class CustomTopbarComponent extends React.Component {
 										<div
 											onClick={() => {
 												this.closeTopbarDropdown();
-												this.props.onDropDownClick("money-out");
+												// this.props.onDropDownClick("money-out");
+												this.props.openMoneyOutModal();
 											}}
 											className="drop-down-opt"
 											style={{

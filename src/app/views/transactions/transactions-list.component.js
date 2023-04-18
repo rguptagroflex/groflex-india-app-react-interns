@@ -75,8 +75,11 @@ class TransactionsListComponent extends React.Component {
 				onDropDownClick={this.onTopbarButtonClick}
 				title={`Transactions`}
 				viewIcon={`icon-coins`}
-				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
+				// buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
+				buttonCallback={this.onTopbarButtonClick}
 				buttons={topbarButtons}
+				openMoneyInModal={this.openMoneyInModal}
+				openMoneyOutModal={this.openMoneyOutModal}
 			/>
 		);
 
@@ -208,18 +211,44 @@ class TransactionsListComponent extends React.Component {
 	}
 
 	/*Used functions*/
-	addTransactions(moneyInOutData) {
-		invoiz
-			.request("https://dev.groflex.in/api/chartofaccount", {
-				auth: true,
-				method: "POST",
-				data: { ...moneyInOutData },
-			})
-			.then((res) => {
-				console.log("RSPOINSE FOR POST TRANSACTION MONEY IN", res);
-				this.setState({ ...this.state, refreshData: !this.state.refreshData });
-			});
-		ModalService.close();
+	openMoneyInModal() {
+		const handleAddTransaction = (moneyInData) => {
+			invoiz
+				.request("https://dev.groflex.in/api/bankTransaction", {
+					auth: true,
+					method: "POST",
+					data: { ...moneyInData },
+				})
+				.then((res) => {
+					console.log("RSPOINSE FOR POST MONEY IN TRANSACTION", res);
+					this.setState({ ...this.state, refreshData: !this.state.refreshData });
+				});
+			ModalService.close();
+		};
+
+		ModalService.open(<MoneyInModalComponent onConfirm={handleAddTransaction} />, {
+			width: 630,
+		});
+	}
+
+	openMoneyOutModal() {
+		const handleAddTransaction = (moneyOutData) => {
+			invoiz
+				.request("https://dev.groflex.in/api/bankTransaction", {
+					auth: true,
+					method: "POST",
+					data: { ...moneyOutData },
+				})
+				.then((res) => {
+					console.log("RSPOINSE FOR POST MONEY OUT TRANSACTION", res);
+					this.setState({ ...this.state, refreshData: !this.state.refreshData });
+				});
+			ModalService.close();
+		};
+
+		ModalService.open(<MoneyOutModalComponent onConfirm={handleAddTransaction} />, {
+			width: 630,
+		});
 	}
 
 	onTopbarButtonClick(action) {
@@ -231,13 +260,11 @@ class TransactionsListComponent extends React.Component {
 		switch (action) {
 			case "money-in":
 				console.log("Dropped down");
-				ModalService.open(<MoneyInModalComponent formData={{}} onConfirm={() => {}} />, {
-					width: 630,
-				});
+				this.addTransactions();
 				break;
 			case "money-out":
 				console.log("Dropped down");
-				ModalService.open(<MoneyOutModalComponent formData={{}} onConfirm={() => {}} />, {
+				ModalService.open(<MoneyOutModalComponent onConfirm={() => {}} />, {
 					width: 630,
 				});
 				break;
@@ -308,12 +335,12 @@ class TransactionsListComponent extends React.Component {
 		const { resources } = this.props;
 		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, customerData } = this.state;
 		return (
-			<div className="customer-list-component-wrapper">
+			<div className="transaction-list-component-wrapper">
 				{this.createTopbar()}
 
-				<div className="customer-list-wrapper">
+				<div className="transaction-list-wrapper">
 					<ListAdvancedComponent
-						// refreshData={this.state.refreshData}
+						refreshData={this.state.refreshData}
 						ref="listAdvanced"
 						columnDefs={[
 							{
@@ -476,13 +503,13 @@ class TransactionsListComponent extends React.Component {
 									customer = new Customer(item);
 									if (canUpdateCustomer && canDeleteCustomer) {
 										entries.push({
-											dataQsId: `customer-list-item-dropdown-entry-delete`,
+											dataQsId: `transaction-list-item-dropdown-entry-delete`,
 											label: resources.str_clear,
 											action: "delete",
 										});
 
 										// entries.push({
-										// 	dataQsId: `customer-list-item-dropdown-entry-edit`,
+										// 	dataQsId: `transaction-list-item-dropdown-entry-edit`,
 										// 	label: resources.str_toEdit,
 										// 	action: "edit",
 										// });
@@ -494,7 +521,7 @@ class TransactionsListComponent extends React.Component {
 										// 	label = "Mark as inactive";
 										// }
 										// entries.push({
-										// 	dataQsId: "customer-list-item-dropdown-entry-status",
+										// 	dataQsId: "transaction-list-item-dropdown-entry-status",
 										// 	label: label,
 										// 	action: "state",
 										// });
