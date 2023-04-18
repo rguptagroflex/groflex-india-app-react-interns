@@ -1,0 +1,226 @@
+.general-ledger-component {
+  // .tabs {
+  //     .tab-list {
+  //         padding: 0;
+  //         background: #EFF7FF !important;
+  //         border-bottom: 0.5px solid #C4C4C4;
+  //         cursor: pointer;
+
+  //         .tab {
+  //             width: 100%;
+  //             text-align: center;
+              
+  //             &.active {
+  //                 border-bottom: 2px solid #0071CA;
+
+  //                 p {
+  //                     color: #0071CA;
+  //                     font-weight: 600;
+  //                 }
+  //             }
+
+  //             p {
+  //                 font-size: 18px;
+  //                 font-weight: 600;
+  //                 color: #272D30;
+  //                 line-height: 24px;
+  //             }
+  //         }
+  //     }
+
+      // .tab-contents {
+      //     .content {
+      //         position: relative;
+      //         display: flex;
+      //         flex-direction: column;
+      //         min-height: 450px;
+      //     }
+
+      //     .selectInput {
+      //         width: 180px;
+      //         margin: 20px 0 0 20px;
+      //         border: 1px solid #C4C4C4;
+      //         border-radius: 4px;
+              
+      //         .Select-value-label {
+      //             font-size: 16px;
+      //             color: #000;
+      //         }
+      //     }
+
+          .time-period-select {
+              .date-input {
+                  position: relative;
+                  
+                  .input-icon {
+                      position: absolute;
+                      left: 0;
+                      margin: 8px;
+                      z-index: 1;
+                  }
+
+                  .Select-value-label {
+                      padding-left: 18px;
+                  }
+              }
+          }
+
+          .start-end-date-selector-group {
+              margin-top: 20px;
+
+              .dateInput {
+                  display: inline-block;
+                  border: 1px solid #C4C4C4;
+                  border-radius: 4px;
+                  margin-left: 20px;
+                  width: 120px;
+                  padding: 0 5px;
+              }
+          }
+
+          .back-button {
+              cursor: pointer;
+              font-size: 16px;
+              color: #747474;
+              margin: 20px 0 0 20px;
+
+              .tab-name {
+                  color: #0079B3;
+                  font-weight: 600;
+              }
+          }            
+          
+          .donut-chart-wrapper {
+              position: relative;
+              min-height: 300px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              .chartist-chart {
+                  margin-top: 30px;
+              }
+
+              .chartist-tooltip {
+                  background-color: #fff;
+                  color: #747474;
+                  filter: drop-shadow(1px 1px 8px rgba(0,0,0,0.14));
+  
+                  .tooltip-wrapper {
+                      padding: 8px;
+  
+                      .series-name {
+                          font-size: 12px;
+                          color: #747474;
+                          margin: 0;
+                      }
+  
+                      .series-value {
+                          font-size: 14px;
+                          font-weight: 600;
+                          color: #272D30;
+                          margin: 5px 0 0 0;
+                      }
+                  }
+  
+                  &:after {
+                      border-top-color: #fff;
+                  }
+              }
+  
+              .bar-chart {
+                  height: 250px;
+              }
+
+              .chart-label {
+                  position: absolute;
+                  top: 50%;
+                  left: 0;
+                  right: 0;
+                  width: fit-content;
+                  margin: 0 auto;
+                  font-weight: 600;
+                  margin-top: -20px;
+
+                  &-text {
+                      font-size: 16px;
+                      color: #747474;
+                      margin: 4px 0;
+
+                      button {
+                          padding: 10px 44px;
+                          border-radius: 36.5px;
+                          background: white;
+                          border: 2px solid #007983;
+                          color: #007983;
+                          font-weight: 600;
+                          font-size: 14px;
+                          margin-top: 15px;
+                      }
+                  }
+
+                  &-value {
+                      font-weight: 600;
+                      font-size: 22px;
+                      color: black;
+                      margin: 4px 0;
+                  }
+
+                  
+              }
+          }
+
+          button.chart-type-toggle {
+              position: absolute;
+              top: 0;
+              right: 0;
+              align-self: flex-end;
+              margin: 20px;
+              padding: 5px;
+              background: #EBF5FF;
+              border: 0.5px solid #DDDDDD;
+              border-radius: 5px;
+              cursor: pointer;
+              z-index: 20;
+          }
+
+          .value-categories {
+              margin-bottom: 20px;
+
+              .value-category {
+                  display: flex;
+                  // justify-content: center;
+                  align-items: center;
+
+                  cursor: pointer;
+                  padding: 0 30px;
+                  
+                  &-text {
+                      font-weight: 600;
+                      font-size: 14px;
+                      color: #63C2CD;
+                      margin-bottom: 5px;
+                  }
+
+                  &-value {
+                      font-size: 14px;
+                      color: #747474;
+                      margin: 0;
+
+                      span {
+                          margin-left: 5px;
+                      }
+                  }
+
+                  &-dot {
+                      height: 14px;
+                      min-width: 14px;
+                      border-radius: 50%;
+                      display: inline-block;
+                      margin-right: 10px;
+                  }
+              }
+          }
+      }
+//   }
+// }

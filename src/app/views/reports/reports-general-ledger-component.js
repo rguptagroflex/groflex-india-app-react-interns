@@ -4,7 +4,107 @@ import TopbarComponent from "../../shared/topbar/topbar.component";
 import SelectInputComponent from "../../shared/inputs/select-input/select-input.component";
 import CalenderIcon from "../../../assets/images/icons/calender.svg";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
+import { printPdf } from "../../helpers/printPdf";
+ import DetailViewHeadAdvancedComponent from "../../shared/detail-view/detail-view-head-advanced.component";
+// import { CancellationInvoiceAction } from "../constants/cancellationInvoiceAction";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faEnvelope, faFilePdf, faPrint } from "@fortawesome/free-solid-svg-icons";
+function DetailViewHeadObjects({ cancellation, activeAction, resources }) {
+	const actionElements = [
+    {
+      name: resources.str_sendEmail,
+      icon: "icon-mail",
+      // action: CancellationInvoiceAction.EMAIL,
+      dataQsId: "cancellation-head-action-email",
+    },
+    {
+      name: resources.str_pdf,
+      icon: "icon-pfeil icon-rotate-180",
+      // action: CancellationInvoiceAction.DOWNLOAD_PDF,
+      // actionActive: activeAction === CancellationInvoiceAction.DOWNLOAD_PDF,
+      dataQsId: "cancellation-head-action-downloadPdf",
+    },
+    {
+      name: resources.str_print,
+      icon: "icon-print2",
+      // action: CancellationInvoiceAction.PRINT,
+      // actionActive: activeAction === CancellationInvoiceAction.PRINT,
+      dataQsId: "cancellation-head-action-print",
+      controlsItemClass: "item-print",
+      id: "detail-head-print-anchor",
+    },
+    // {
+    // 	name: '',
+    // 	icon: 'icon-arr_down',
+    // 	action: CancellationInvoiceAction.SHOW_PRINT_SETTINGS_POPOVER,
+    // 	dataQsId: 'cancellation-head-action-printSettings',
+    // 	controlsItemClass: 'item-print-settings',
+    // 	id: 'detail-head-print-settings-popover-anchor'
+    // }
+  ];
+	return (
+		<div>
+			<div>
+			<DetailViewHeadAdvancedComponent
+			actionElements={headContents.actionElements}
+			/>
+			</div>
+			<div className="action-elements" style={{ marginLeft: "500px" }}>
+				<button
+					className="action-button"
+					onClick={() => console.log("Send email")}
+					data-qsid="cancellation-head-action-email"
+				>
+					<div className="action-icon">
+						{/* <FontAwesomeIcon icon={faEnvelope} /> */}
+						
+						<span className="action-name">{resources.str_sendEmail}</span>
+					</div>
+				</button>
+				<button
+					// className={`action-button ${
+					// 	activeAction === CancellationInvoiceAction.DOWNLOAD_PDF ? "active" : ""
+					// }`}
+					onClick={() => printPdf()}
+					data-qsid="cancellation-head-action-downloadPdf"
+				>
+					<div className="action-icon">
+						{/* <FontAwesomeIcon icon={faFilePdf} className="rotate-180" /> */}
+						<span className="action-name">{resources.str_pdf}</span>
+					</div>
+				</button>
+				<button
+					// className={`action-button ${activeAction === CancellationInvoiceAction.PRINT ? "active" : ""}`}
+					onClick={() => console.log("Print")}
+					data-qsid="cancellation-head-action-print"
+				>
+					<div className="action-icon">
+						{/* <FontAwesomeIcon icon={faPrint} /> */}
+						<span className="action-name">{resources.str_print}</span>
+					</div>
+				</button>
+			</div>
+			{/* Uncomment the following code to display the print settings button */}
+			{/* <button
+        className="action-button item-print-settings"
+        onClick={() => console.log("Show print settings popover")}
+        data-qsid="cancellation-head-action-printSettings"
+        id="detail-head-print-settings-popover-anchor"
+      >
+        <div className="action-icon">
+          <FontAwesomeIcon icon={faCaretDown} />
+          <span className="action-name">Print Settings</span>
+        </div>
+      </button> */}
+		</div>
+	);
+}
 function ReportsGeneralLedger(props) {
+	const resources = {
+		str_sendEmail: "Send Email",
+		str_pdf: "PDF",
+		str_print: "Print",
+	};
 	// const [activeTab, setActiveTab] = useState(0);
 	// const [chartTitle, setChartTitle] = useState(props.chartTitle || 'Total');
 	// const [activeChartType, setActiveChartType] = useState(props.activeChartType || 'pie');
@@ -73,7 +173,7 @@ function ReportsGeneralLedger(props) {
 				}}
 			/>
 			<div
-				className="time-period-select"
+				className="general-ledger-component"
 				style={{
 					marginTop: "90px",
 					marginLeft: "50px",
@@ -84,9 +184,11 @@ function ReportsGeneralLedger(props) {
 					// borderRadius: "30px",
 					// borderColor: "black",
 					// display: "flex",
+					display: "inline-block",
 				}}
 			>
 				{/* {showCategoryFilter && ( */}
+				{/* <div className="time-period-select"> */}
 				<SelectInputComponent
 					allowCreate={false}
 					notAsync={true}
@@ -106,59 +208,61 @@ function ReportsGeneralLedger(props) {
 						// },
 					}}
 				/>
-				{/* )} */}
-				{/* //////////////////////////// */}
-				{/* {showDateFilter && (
-					<div className="time-period-select">
-						<SelectInputComponent
-							allowCreate={false}
-							notAsync={true}
-							loadedOptions={dateOptions}
-							value={dateFilterValue}
-							icon={CalenderIcon}
-							containerClass="date-input"
-							options={{
-								clearable: false,
-								noResultsText: false,
-								labelKey: "label",
-								valueKey: "value",
-								matchProp: "label",
-								placeholder: "Select Date",
-								handleChange: (option) => {
-									updateSelectedDate(option);
-								},
-							}}
-						/>
+			</div>
+			{showDateFilter && (
+				<div className="time-period-select">
+					<SelectInputComponent
+						allowCreate={false}
+						notAsync={true}
+						loadedOptions={dateOptions}
+						value={dateFilterValue}
+						icon={CalenderIcon}
+						containerClass="date-input"
+						options={{
+							clearable: false,
+							noResultsText: false,
+							labelKey: "label",
+							valueKey: "value",
+							matchProp: "label",
+							placeholder: "Select Date",
+							handleChange: (option) => {
+								updateSelectedDate(option);
+							},
+						}}
+					/>
 
-						{showCustomDateRangeSelector && (
-							<div className="start-end-date-selector-group">
-								<DateInputComponent
-									name={"date"}
-									value={customStartDate.format("DD-MM-YYYY")}
-									required={true}
-									label={"Start Date"}
-									noBorder={true}
-									onChange={(name, value) => {
-										console.log("setting custom start date");
-										setCustomStartDate(moment(value, "DD-MM-YYYY"));
-										updateSelectedDate({ value: "custom" });
-									}}
-								/>
-								<DateInputComponent
-									name={"date"}
-									value={customEndDate.format("DD-MM-YYYY")}
-									required={true}
-									label={"End Date"}
-									noBorder={true}
-									onChange={(name, value) => {
-										setCustomEndDate(moment(value, "DD-MM-YYYY"));
-										updateSelectedDate({ value: "custom" });
-									}}
-								/>
-							</div>
-						)}
-					</div>
-				)} */}
+					{showCustomDateRangeSelector && (
+						<div className="start-end-date-selector-group">
+							<DateInputComponent
+								name={"date"}
+								value={customStartDate.format("DD-MM-YYYY")}
+								required={true}
+								label={"Start Date"}
+								noBorder={true}
+								onChange={(name, value) => {
+									console.log("setting custom start date");
+									setCustomStartDate(moment(value, "DD-MM-YYYY"));
+									updateSelectedDate({ value: "custom" });
+								}}
+							/>
+							<DateInputComponent
+								name={"date"}
+								value={customEndDate.format("DD-MM-YYYY")}
+								required={true}
+								label={"End Date"}
+								noBorder={true}
+								onChange={(name, value) => {
+									setCustomEndDate(moment(value, "DD-MM-YYYY"));
+									updateSelectedDate({ value: "custom" });
+								}}
+							/>
+						</div>
+					)}
+				</div>
+			)}
+			{/* </div> */}
+			<div style={{}}>
+				<DetailViewHeadObjects resources={resources} />
 			</div>
 
 			<div

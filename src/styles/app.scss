@@ -46,6 +46,7 @@
 @import "base/tabs";
 
 // SHARED COMPONENTS
+
 @import "components/shared/dashboard/banking";
 @import "components/shared/dashboard/onboarding";
 @import "components/shared/dashboard/tax-estimation-configuration";
@@ -186,6 +187,7 @@
 @import "components/shared/nav-modal/nav-modal";
 
 // VIEWS
+@import "components/views/reports//general-ledger";
 @import "components/views/account/forgot-password";
 @import "components/views/account/login";
 @import "components/views/account/mobile-redirect";
@@ -239,6 +241,7 @@
 @import "components/shared/popup.component";
 @import "components/shared/settings/change-user";
 @import "components/shared/modals/change-user-role-modal.component";
+
 
 
 //marketplace
