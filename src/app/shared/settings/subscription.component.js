@@ -17,6 +17,7 @@ import ButtonComponent from "shared/button/button.component";
 import { format } from "util";
 import ZohoPlan from "enums/zoho-plan.enum";
 import ChargebeeAddon from "../../enums/chargebee-addon.enum";
+import RadioInputComponent from "shared/inputs/radio-input/radio-input.component";
 
 class AccountSubscriptionComponent extends React.Component {
 	constructor(props) {
@@ -28,6 +29,8 @@ class AccountSubscriptionComponent extends React.Component {
 
 		this.state = {
 			updatedSubscriptionDetail: null,
+			planType: "yearly",
+			planPrice: "₹3999/ Year"
 		};
 
 		// invoiz.on('userModelSubscriptionDataSet', () => {
@@ -295,12 +298,20 @@ class AccountSubscriptionComponent extends React.Component {
 	onManageSubscriptionClick(portal) {
 		const { resources } = this.props;
 		let { subscriptionDetail } = this.props;
+		let { planType } = this.state;
+		let plan = ChargebeePlan.ACCOUNTING_YEARLY_PLAN;
 		if (this.state.updatedSubscriptionDetail) {
 			subscriptionDetail = this.state.updatedSubscriptionDetail;
 		}
 
 		if (portal) {
-			redirectToChargebee(null, false);
+			if(planType === "yearly") {
+				plan = ChargebeePlan.ACCOUNTING_YEARLY_PLAN;
+			} else {
+				plan = ChargebeePlan.ACCOUNTING_MONTHLY_PLAN;
+			}
+
+			redirectToChargebee(plan, false);
 		} 
 		// else if (
 		// 	subscriptionDetail.planId === ChargebeePlan.TRIAL ||
@@ -331,36 +342,45 @@ class AccountSubscriptionComponent extends React.Component {
 
 	getPlanName() {
 		let { subscriptionDetail } = this.props;
-		if (subscriptionDetail.planId === ChargebeePlan.FREE_MONTH) {
-			return `Free Monthly Plan`;
-		} else if (
-			subscriptionDetail.planId === ChargebeePlan.STARTER_249 ||
-			subscriptionDetail.planId === ChargebeePlan.STARTER_MONTHLY ||
-			subscriptionDetail.planId === RazorpayPlan.STARTER_MONTHLY
-		) {
-			return `Starter Monthly Plan`;
-		} else if (
-			subscriptionDetail.planId === ChargebeePlan.STANDARD_749 ||
-			subscriptionDetail.planId === ChargebeePlan.STANDARD_MONTHLY ||
-			subscriptionDetail.planId === RazorpayPlan.STANDARD_MONTHLY
-		) {
-			return `Standard Monthly Plan`;
-		} else if (
-			subscriptionDetail.planId === ChargebeePlan.UNLIMITED_999 ||
-			subscriptionDetail.planId === ChargebeePlan.UNLIMITED_MONTHLY ||
-			subscriptionDetail.planId === RazorpayPlan.UNLIMITED_MONTHLY
-		) {
-			return `Unlimited Monthly Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.STARTER_YEARLY || subscriptionDetail.planId === ChargebeePlan.STARTER_YEARLY_21) {
-			return `Starter Yearly Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.STANDARD_YEARLY || subscriptionDetail.planId === ChargebeePlan.STANDARD_YEARLY_21) {
-			return `Standard Yearly Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY || subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY_21) {
-			return `Unlimited Yearly Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.UNLIMITED_INTERNAL) {
-			return `Imprezz Internal Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021) {
-			return 'Free Plan 2021'
+		// if (subscriptionDetail.planId === ChargebeePlan.FREE_MONTH) {
+		// 	return `Free Monthly Plan`;
+		// } else if (
+		// 	subscriptionDetail.planId === ChargebeePlan.STARTER_249 ||
+		// 	subscriptionDetail.planId === ChargebeePlan.STARTER_MONTHLY ||
+		// 	subscriptionDetail.planId === RazorpayPlan.STARTER_MONTHLY
+		// ) {
+		// 	return `Starter Monthly Plan`;
+		// } else if (
+		// 	subscriptionDetail.planId === ChargebeePlan.STANDARD_749 ||
+		// 	subscriptionDetail.planId === ChargebeePlan.STANDARD_MONTHLY ||
+		// 	subscriptionDetail.planId === RazorpayPlan.STANDARD_MONTHLY
+		// ) {
+		// 	return `Standard Monthly Plan`;
+		// } else if (
+		// 	subscriptionDetail.planId === ChargebeePlan.UNLIMITED_999 ||
+		// 	subscriptionDetail.planId === ChargebeePlan.UNLIMITED_MONTHLY ||
+		// 	subscriptionDetail.planId === RazorpayPlan.UNLIMITED_MONTHLY
+		// ) {
+		// 	return `Unlimited Monthly Plan`;
+		// } else if (subscriptionDetail.planId === ChargebeePlan.STARTER_YEARLY || subscriptionDetail.planId === ChargebeePlan.STARTER_YEARLY_21) {
+		// 	return `Starter Yearly Plan`;
+		// } else if (subscriptionDetail.planId === ChargebeePlan.STANDARD_YEARLY || subscriptionDetail.planId === ChargebeePlan.STANDARD_YEARLY_21) {
+		// 	return `Standard Yearly Plan`;
+		// } else if (subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY || subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY_21) {
+		// 	return `Unlimited Yearly Plan`;
+		// } else if (subscriptionDetail.planId === ChargebeePlan.UNLIMITED_INTERNAL) {
+		// 	return `Imprezz Internal Plan`;
+		// } else if (subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021) {
+		// 	return 'Free Plan 2021'
+		// } else {
+		// 	return ``;
+		// }
+		if (subscriptionDetail.planId === ChargebeePlan.FREE_PLAN) {
+			return `Free Plan`;
+		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN) { 
+			return `Accounting Monthly Plan`;
+		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN) { 
+			return `Accounting Yearly Plan`;
 		} else {
 			return ``;
 		}
@@ -376,242 +396,431 @@ class AccountSubscriptionComponent extends React.Component {
 		return addonExists;
 	}
 
+	onPlanTypeFieldChange(value) {
+		// const { resources } = this.props;
+		// // let { planType } = this.state;
+		// planType
+		// customer[key] = value;
+		if(value === "yearly") {
+			this.setState({ planType:value, planPrice: "₹3999/ Year" });
+		} else {
+			this.setState({ planType:value, planPrice: "₹399/ Month"  });
+		}
+		
+	}
+
+	getPlanDetails() {
+		const { resources } = this.props;
+		let { subscriptionDetail } = this.props;
+
+		if (this.state.updatedSubscriptionDetail) {
+			subscriptionDetail = this.state.updatedSubscriptionDetail;
+		}
+
+		let title;
+		let content;
+		let buttonTitle;
+
+		const subscriptionNextPaymentDate = subscriptionDetail.nextBillingAt
+			? formatDate(subscriptionDetail.nextBillingAt)
+			: null;
+
+		const subscriptionCurrentTermStartDate = subscriptionDetail.currentTermStart
+		? formatDate(subscriptionDetail.currentTermStart)
+		: null;
+
+		const subscriptionCurrentTermEndDate = subscriptionDetail.currentTermEnd
+		? formatDate(subscriptionDetail.currentTermEnd)
+		: null;
+
+		let subscriptionDatePercentage = 30;
+		if (
+			subscriptionDetail.status === SubscriptionStatus.CANCELLED ||
+			subscriptionDetail.status === SubscriptionStatus.NON_RENEWING
+		) {
+			const currentTermEnd = subscriptionDetail.currentTermEnd && formatDate(subscriptionDetail.currentTermEnd);
+
+			if (moment() <= new Date(subscriptionDetail.currentTermEnd)) {
+				content = format(resources.accountActiveTillDate, currentTermEnd);
+			} else {
+				content = resources.accountNoActive;
+			}
+
+			title = resources.str_accountTerminated;
+			buttonTitle = resources.str_activeNow;
+		} else {
+			switch (subscriptionDetail.planId) {
+				case ChargebeePlan.ACCOUNTING_MONTHLY_PLAN:
+				case ChargebeePlan.ACCOUNTING_YEARLY_PLAN:
+				case ChargebeePlan.FREE_PLAN:
+
+				content = (
+						<div>
+							{(
+								<div>
+									<span className="text-medium text-start-date" >{'Start Date'} : {subscriptionCurrentTermStartDate}</span>
+									<span className="text-medium text-end-date">
+										{'End Date'} : {subscriptionCurrentTermEndDate}
+									</span>
+									<div className="subscription-quota-bar">
+										<div
+											className="subscription-quota-used"
+											style={{ width: `${subscriptionDatePercentage}%` }}
+										/>
+									</div>
+								</div>
+							)}
+							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE ? (
+								<div className="text-semibold text-next-payment">
+									{format(resources.subscriptionNextPlanInfo, subscriptionNextPaymentDate)}
+								</div>
+							) : null}
+						</div>
+					);
+					title = this.getPlanName();
+					//buttonTitle = resources.str_manageTariff;
+					buttonTitle = `Upgrade plan`;
+					break;
+			}
+		}
+
+		return { title, subscriptionCurrentTermStartDate, subscriptionCurrentTermEndDate, subscriptionNextPaymentDate, content, buttonTitle };
+	}
+
 	render() {
 		const { resources } = this.props;
 		let { subscriptionDetail, canEditSubscription } = this.props;
-		const { title, content, buttonTitle } = this.getAccountContent();
-		const { impressTitle, impressContent } = this.getImpressContent(); //, hasImpressButton
+		let { planType, planPrice } = this.state;
+		// const { title, content, buttonTitle } = this.getAccountContent();
+		const { title, content } = this.getPlanDetails();
+		// const { impressTitle, impressContent } = this.getImpressContent(); //, hasImpressButton
 		let buttonElement2;
 		let buttonElement1;
 		if (this.state.updatedSubscriptionDetail) {
 			subscriptionDetail = this.state.updatedSubscriptionDetail;
 		}
 
-		let unlimitedPlan =
-			subscriptionDetail.status === "active" &&
-			(subscriptionDetail.planId === ChargebeePlan.UNLIMITED ||
-				subscriptionDetail.planId === ChargebeePlan.UNLIMITED_999 ||
-				subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY ||
-				subscriptionDetail.planId === RazorpayPlan.UNLIMITED_YEARLY);
+		// let unlimitedPlan =
+		// 	subscriptionDetail.status === "active" &&
+		// 	(subscriptionDetail.planId === ChargebeePlan.UNLIMITED ||
+		// 		subscriptionDetail.planId === ChargebeePlan.UNLIMITED_999 ||
+		// 		subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY ||
+		// 		subscriptionDetail.planId === RazorpayPlan.UNLIMITED_YEARLY);
 
-		if (!title) {
-			return null;
-		}
+		// if (!title) {
+		// 	return null;
+		// }
 
-		if (subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE) {
-			buttonElement1 = (
-				<ButtonComponent
-					buttonIcon={"icon-visible"}
-					type="secondary"
-					isWide={false}
-					callback={() => this.onManageSubscriptionClick(true)}
-					label={`Manage subscription`}
-					dataQsId="settings-account-btn-subscription"
-					disabled={!canEditSubscription}
-				/>
-			);
+		// if (subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE) {
+		// 	buttonElement1 = (
+		// 		<ButtonComponent
+		// 			buttonIcon={"icon-visible"}
+		// 			type="secondary"
+		// 			isWide={false}
+		// 			callback={() => this.onManageSubscriptionClick(true)}
+		// 			label={`Manage subscription`}
+		// 			dataQsId="settings-account-btn-subscription"
+		// 			disabled={!canEditSubscription}
+		// 		/>
+		// 	);
 
-			buttonElement2 = (
-				<ButtonComponent
-					buttonIcon={"icon-check"}
-					type="primary"
-					isWide={false}
-					callback={() => this.onManageSubscriptionClick(false)}
-					label={buttonTitle}
-					dataQsId="settings-account-btn-subscription"
-					disabled={!canEditSubscription}
-				/>
-			);
-		} else if (
-			subscriptionDetail.vendor === SubscriptionVendor.ZOHO &&
-			!(
-				subscriptionDetail.status === "active" &&
-				(subscriptionDetail.planId === ZohoPlan.UNLIMITED ||
-					subscriptionDetail.planId === ZohoPlan.UNLIMITED_999 ||
-					subscriptionDetail.planId === ZohoPlan.UNLIMITED_YEARLY)
-			)
-		) {
-			buttonElement = (
-				<ButtonComponent
-					buttonIcon={"icon-check"}
-					type="primary"
-					isWide={false}
-					callback={() => this.onManageSubscriptionClick()}
-					label={buttonTitle}
-					dataQsId="settings-account-btn-subscription"
-					disabled={!canEditSubscription}
-				/>
-			);
-		} else if (subscriptionDetail.vendor === SubscriptionVendor.RZRPAY) {
-			buttonElement2 = (
-				<ButtonComponent
-					buttonIcon={"icon-check"}
-					type="primary"
-					isWide={false}
-					callback={() => this.onManageSubscriptionClick()}
-					label={buttonTitle}
-					dataQsId="settings-account-btn-subscription"
-					disabled={!canEditSubscription}
-				/>
-			);
-		}
+		// 	buttonElement2 = (
+		// 		<ButtonComponent
+		// 			buttonIcon={"icon-check"}
+		// 			type="primary"
+		// 			isWide={false}
+		// 			callback={() => this.onManageSubscriptionClick(false)}
+		// 			label={buttonTitle}
+		// 			dataQsId="settings-account-btn-subscription"
+		// 			disabled={!canEditSubscription}
+		// 		/>
+		// 	);
+		// } 
+		// else if (
+		// 	subscriptionDetail.vendor === SubscriptionVendor.ZOHO &&
+		// 	!(
+		// 		subscriptionDetail.status === "active" &&
+		// 		(subscriptionDetail.planId === ZohoPlan.UNLIMITED ||
+		// 			subscriptionDetail.planId === ZohoPlan.UNLIMITED_999 ||
+		// 			subscriptionDetail.planId === ZohoPlan.UNLIMITED_YEARLY)
+		// 	)
+		// ) {
+		// 	buttonElement = (
+		// 		<ButtonComponent
+		// 			buttonIcon={"icon-check"}
+		// 			type="primary"
+		// 			isWide={false}
+		// 			callback={() => this.onManageSubscriptionClick()}
+		// 			label={buttonTitle}
+		// 			dataQsId="settings-account-btn-subscription"
+		// 			disabled={!canEditSubscription}
+		// 		/>
+		// 	);
+		// } else if (subscriptionDetail.vendor === SubscriptionVendor.RZRPAY) {
+		// 	buttonElement2 = (
+		// 		<ButtonComponent
+		// 			buttonIcon={"icon-check"}
+		// 			type="primary"
+		// 			isWide={false}
+		// 			callback={() => this.onManageSubscriptionClick()}
+		// 			label={buttonTitle}
+		// 			dataQsId="settings-account-btn-subscription"
+		// 			disabled={!canEditSubscription}
+		// 		/>
+		// 	);
+		// }
 
-		let purchasedQuotationAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_QUOTATION);
-		let purchasedImprezzQuotationAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_IMPREZZ_QUOTATION);
-		let purchasedInventoryAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_INVENTORY);
+		// let purchasedQuotationAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_QUOTATION);
+		// let purchasedImprezzQuotationAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_IMPREZZ_QUOTATION);
+		// let purchasedInventoryAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_INVENTORY);
 		
 		return (
-			<div className="settings-subscription-component">
-				{
-					subscriptionDetail.planId || true ? // only initial plan for groflex
-					<div className="row">
-						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
-						<div className="col-xs-12">
-							<div className="text-h5 u_mb_8">{'Free Plan'}</div>
-							{/* <div className="text-h5 u_mb_8">{''}</div> */}
-							{/* <div className="text-h6 u_mb_8">{title}</div>
-							<div>{content}</div> */}
-							{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
-								<div>
-									<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
-									<div>{impressContent}</div>
-								</div>
-							)} */}
-							{/* <div className="row" style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}>
-								<div className="">{buttonElement1}</div>
-								<div className="" style={{ marginLeft: 15 }}>
-									{buttonElement2}
-								</div>
-							</div> */}
-						</div>
-					</div>
-					: subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021
-					? <div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
-						<div className="col-xs-12 text-h4 u_pb_20">Add-On</div>
-						<div className="col-xs-12">
-							<div className="text-h5 u_mb_8">Buy Add-On for your Groflex business</div>
-							<div className="row">
-								<div className="col-xs-12">
-									<span style={{lineHeight: '35px'}} className="text-normal text-large">Unlimited Quotations at ₹999/year</span>
-									{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
-										<div>
-											<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
-											<div>{impressContent}</div>
-										</div>
-									)} */}
-									{
-										purchasedQuotationAddon 
-											? <div>
-												<p style={{display: 'inline', backgroundColor: "#D9F9D4", width: 'min-content', padding: '5px 10px', borderRadius: '4px'}}>Active</p>
-												<p style={{display: 'inline-block', marginLeft: '10px'}}>valid till {formatDate(subscriptionDetail.nextBillingAt)}</p>
-											</div>
-											// : <div className="row" style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}>
-											// 	<div className="" style={{ marginLeft: 15 }}>
-											// 		<ButtonComponent
-											// 			type="primary"
-											// 			isWide={false}
-											// 			callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021)}
-											// 			label="Buy Now"
-											// 			dataQsId="settings-account-btn-subscription"
-											// 			disabled={!canEditSubscription}
-											// 		/>
-											// 	</div>
-											// </div>
-											: <div style={{display: 'inline-block', float: 'right'}}>
-												<ButtonComponent
-													type="primary"
-													isWide={false}
-													callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021)}
-													label="Buy Now"
-													dataQsId="settings-account-btn-subscription"
-													disabled={!canEditSubscription}
-												/>
-											</div>
-									}
-								</div>
-								<div className="col-xs-12" style={{marginTop: '10px'}}>
-									<div style={{marginBottom: '10px'}}>
-										<hr></hr>
-									</div>
-									<span style={{lineHeight: '35px'}} className="text-normal text-large">Unlimited Imprezz Quotations at ₹1499/year</span>
-									{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
-										<div>
-											<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
-											<div>{impressContent}</div>
-										</div>
-									)} */}
-									{
-										purchasedImprezzQuotationAddon
-										? <div>
-											<p style={{display: 'inline', backgroundColor: "#D9F9D4", width: 'min-content', padding: '5px 10px', borderRadius: '4px'}}>Active</p>
-											<p style={{display: 'inline-block', marginLeft: '10px'}}>valid till {formatDate(subscriptionDetail.nextBillingAt)}</p>
-										</div>
-										: <div style={{display: 'inline-block', float: 'right'}}>
-											<ButtonComponent
-												type="primary"
-												isWide={false}
-												callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021, false, ChargebeeAddon.CHARGEBEE_ADDON_IMPREZZ_QUOTATION)}
-												label="Buy Now"
-												dataQsId="settings-account-btn-subscription"
-												disabled={!canEditSubscription}
-											/>
-										</div>
-									}
-								</div>
-								<div className="col-xs-12" style={{marginTop: '10px'}}>
-									<div style={{marginBottom: '10px'}}>
-										<hr></hr>
-									</div>
-									<span style={{lineHeight: '35px'}} className="text-normal text-large">Inventory at ₹1999/year</span>
-									{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
-										<div>
-											<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
-											<div>{impressContent}</div>
-										</div>
-									)} */}
-									{
-										purchasedInventoryAddon
-										? <div>
-											<p style={{display: 'inline', backgroundColor: "#D9F9D4", width: 'min-content', padding: '5px 10px', borderRadius: '4px'}}>Active</p>
-											<p style={{display: 'inline-block', marginLeft: '10px'}}>valid till {formatDate(subscriptionDetail.nextBillingAt)}</p>
-										</div>
-										: <div style={{display: 'inline-block', float: 'right'}}>
-											<ButtonComponent
-												type="primary"
-												isWide={false}
-												callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021, false, ChargebeeAddon.CHARGEBEE_ADDON_INVENTORY)}
-												label="Buy Now"
-												dataQsId="settings-account-btn-subscription"
-												disabled={!canEditSubscription}
-											/>
-										</div>
-									}
-								</div>
+			// <div className="settings-subscription-component">
+			// 	{
+			// 		subscriptionDetail.planId || true ? // only initial plan for groflex
+			// 		<div className="row">
+			// 			<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
+			// 			<div className="col-xs-12">
+			// 				<div className="text-h5 u_mb_8">{'Free Plan'}</div>
+			// 				{/* <div className="text-h5 u_mb_8">{''}</div> */}
+			// 				{/* <div className="text-h6 u_mb_8">{title}</div>
+			// 				<div>{content}</div> */}
+			// 				{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
+			// 					<div>
+			// 						<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
+			// 						<div>{impressContent}</div>
+			// 					</div>
+			// 				)} */}
+			// 				{/* <div className="row" style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}>
+			// 					<div className="">{buttonElement1}</div>
+			// 					<div className="" style={{ marginLeft: 15 }}>
+			// 						{buttonElement2}
+			// 					</div>
+			// 				</div> */}
+			// 			</div>
+			// 		</div>
+			// 		: subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021
+			// 		? <div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
+			// 			<div className="col-xs-12 text-h4 u_pb_20">Add-On</div>
+			// 			<div className="col-xs-12">
+			// 				<div className="text-h5 u_mb_8">Buy Add-On for your Groflex business</div>
+			// 				<div className="row">
+			// 					<div className="col-xs-12">
+			// 						<span style={{lineHeight: '35px'}} className="text-normal text-large">Unlimited Quotations at ₹999/year</span>
+			// 						{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
+			// 							<div>
+			// 								<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
+			// 								<div>{impressContent}</div>
+			// 							</div>
+			// 						)} */}
+			// 						{
+			// 							purchasedQuotationAddon 
+			// 								? <div>
+			// 									<p style={{display: 'inline', backgroundColor: "#D9F9D4", width: 'min-content', padding: '5px 10px', borderRadius: '4px'}}>Active</p>
+			// 									<p style={{display: 'inline-block', marginLeft: '10px'}}>valid till {formatDate(subscriptionDetail.nextBillingAt)}</p>
+			// 								</div>
+			// 								// : <div className="row" style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}>
+			// 								// 	<div className="" style={{ marginLeft: 15 }}>
+			// 								// 		<ButtonComponent
+			// 								// 			type="primary"
+			// 								// 			isWide={false}
+			// 								// 			callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021)}
+			// 								// 			label="Buy Now"
+			// 								// 			dataQsId="settings-account-btn-subscription"
+			// 								// 			disabled={!canEditSubscription}
+			// 								// 		/>
+			// 								// 	</div>
+			// 								// </div>
+			// 								: <div style={{display: 'inline-block', float: 'right'}}>
+			// 									<ButtonComponent
+			// 										type="primary"
+			// 										isWide={false}
+			// 										callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021)}
+			// 										label="Buy Now"
+			// 										dataQsId="settings-account-btn-subscription"
+			// 										disabled={!canEditSubscription}
+			// 									/>
+			// 								</div>
+			// 						}
+			// 					</div>
+			// 					<div className="col-xs-12" style={{marginTop: '10px'}}>
+			// 						<div style={{marginBottom: '10px'}}>
+			// 							<hr></hr>
+			// 						</div>
+			// 						<span style={{lineHeight: '35px'}} className="text-normal text-large">Unlimited Imprezz Quotations at ₹1499/year</span>
+			// 						{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
+			// 							<div>
+			// 								<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
+			// 								<div>{impressContent}</div>
+			// 							</div>
+			// 						)} */}
+			// 						{
+			// 							purchasedImprezzQuotationAddon
+			// 							? <div>
+			// 								<p style={{display: 'inline', backgroundColor: "#D9F9D4", width: 'min-content', padding: '5px 10px', borderRadius: '4px'}}>Active</p>
+			// 								<p style={{display: 'inline-block', marginLeft: '10px'}}>valid till {formatDate(subscriptionDetail.nextBillingAt)}</p>
+			// 							</div>
+			// 							: <div style={{display: 'inline-block', float: 'right'}}>
+			// 								<ButtonComponent
+			// 									type="primary"
+			// 									isWide={false}
+			// 									callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021, false, ChargebeeAddon.CHARGEBEE_ADDON_IMPREZZ_QUOTATION)}
+			// 									label="Buy Now"
+			// 									dataQsId="settings-account-btn-subscription"
+			// 									disabled={!canEditSubscription}
+			// 								/>
+			// 							</div>
+			// 						}
+			// 					</div>
+			// 					<div className="col-xs-12" style={{marginTop: '10px'}}>
+			// 						<div style={{marginBottom: '10px'}}>
+			// 							<hr></hr>
+			// 						</div>
+			// 						<span style={{lineHeight: '35px'}} className="text-normal text-large">Inventory at ₹1999/year</span>
+			// 						{/* {subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
+			// 							<div>
+			// 								<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
+			// 								<div>{impressContent}</div>
+			// 							</div>
+			// 						)} */}
+			// 						{
+			// 							purchasedInventoryAddon
+			// 							? <div>
+			// 								<p style={{display: 'inline', backgroundColor: "#D9F9D4", width: 'min-content', padding: '5px 10px', borderRadius: '4px'}}>Active</p>
+			// 								<p style={{display: 'inline-block', marginLeft: '10px'}}>valid till {formatDate(subscriptionDetail.nextBillingAt)}</p>
+			// 							</div>
+			// 							: <div style={{display: 'inline-block', float: 'right'}}>
+			// 								<ButtonComponent
+			// 									type="primary"
+			// 									isWide={false}
+			// 									callback={() => redirectToChargebee(ChargebeePlan.FREE_PLAN_2021, false, ChargebeeAddon.CHARGEBEE_ADDON_INVENTORY)}
+			// 									label="Buy Now"
+			// 									dataQsId="settings-account-btn-subscription"
+			// 									disabled={!canEditSubscription}
+			// 								/>
+			// 							</div>
+			// 						}
+			// 					</div>
+			// 				</div>
+			// 			</div>
+			// 		</div>
+			// 		: <div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
+			// 			<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
+			// 			<div className="col-xs-12">
+			// 				<div className="text-h5 u_mb_8">{this.getPlanName()}</div>
+			// 				<div className="text-h6 u_mb_8">{title}</div>
+			// 				<div>{content}</div>
+			// 				{subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
+			// 					<div>
+			// 						<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
+			// 						<div>{impressContent}</div>
+			// 					</div>
+			// 				)}
+			// 				{/* <div className="row" style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}>
+			// 					<div className="">{buttonElement1}</div>
+			// 					<div className="" style={{ marginLeft: 15 }}>
+			// 						{buttonElement2}
+			// 					</div>
+			// 				</div> */}
+			// 			</div>
+			// 		</div>
+			// 	}
+			// </div>
+			subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.FREE_PLAN ? 
+				<div>
+					<div className="box" style={{padding: "26px 32px"}}>
+						<div className="row">
+							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
+							<div className="col-xs-12">
+								<div className="text-h5 u_mb_8">{'Free Plan'}</div>
 							</div>
 						</div>
 					</div>
-					: <div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
-						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
-						<div className="col-xs-12">
-							<div className="text-h5 u_mb_8">{this.getPlanName()}</div>
-							<div className="text-h6 u_mb_8">{title}</div>
-							<div>{content}</div>
-							{subscriptionDetail.status === SubscriptionStatus.CANCELLED ? null : (
-								<div>
-									<div className="text-h6 u_mb_8 account-impress-headline">{impressTitle}</div>
-									<div>{impressContent}</div>
+					<div className="box" style={{padding: "26px 32px"}}>
+						<div className="row">
+							<div className="col-xs-12 text-h4 u_pb_10">{"Accounting Module"}</div>
+							<div className="col-xs-12 text-h6 u_pb_20">{"Your one-stop solution for all your accounting needs ! Here’s what you will get in the accounting module. "}</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon icon-check_circle">&nbsp;Cash and Bank</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon icon-check_circle">&nbsp;Transactions</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon icon-check_circle">&nbsp;Chart of Accounts</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon icon-check_circle">&nbsp;Bank Reconciliation</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon icon-check_circle">&nbsp;Cash Flow</div>
+							</div>
+							<div className="col-xs-12 u_pt_20 u_pb_20">							
+								<div className="text-h5 u_mb_8">{'Choose Plan'}</div>
+							</div>
+							<div className="col-xs-12">
+								<div className="row">
+									<RadioInputComponent
+										wrapperClass={`plan-type-toggle col-xs-6`}
+										options={[
+											{ label: "Yearly (Save 20%)", value: "yearly" },
+											{ label: "Monthly", value: "monthly" },
+										]}
+										value={planType || "yearly"}
+										onChange={(val) => this.onPlanTypeFieldChange(val)}
+										dataQsId="plan-type"
+									/>
 								</div>
-							)}
-							{/* <div className="row" style={{ display: "flex", marginTop: 25, justifyContent: "flex-end" }}>
-								<div className="">{buttonElement1}</div>
-								<div className="" style={{ marginLeft: 15 }}>
-									{buttonElement2}
-								</div>
-							</div> */}
+							</div>
+							<div className="col-xs-12 u_pt_10">							
+								<div className="text-h5 plan-price-text">{planPrice}</div>
+							</div>
+							<div className="col-xs-12" style={{"textAlign": "right"}}>							
+								<ButtonComponent
+									buttonIcon={"icon-check"}
+									type="primary"
+									isWide={false}
+									callback={() => this.onManageSubscriptionClick(true)}
+									label={"Buy Now"}
+									dataQsId="settings-account-btn-subscription"
+									disabled={!canEditSubscription}
+								/>
+							</div>
 						</div>
 					</div>
-				}
-			</div>
+				</div>
+			: 
+			(subscriptionDetail.planId && ( subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN )) ? 
+				<div className="settings-subscription-component">
+					<div className="box" style={{padding: "26px 32px"}}>
+						<div className="row">
+							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
+							<div className="col-xs-12">
+								<div className="text-h5 u_mb_8">{title}</div>
+							</div>
+							<div className="col-xs-12 text-h6 u_pb_20">{"You can now access these premium features "}</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Cash and Bank</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Transactions</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Chart of Accounts</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Bank Reconciliation</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Cash Flow</div>
+							</div>
+							<div className="col-xs-12 u_pt_20">{content}</div>
+							{/* <div className="col-xs-12 text-next-payment u_pt_20">{"Your next payment will be on 27.03.2024"}</div> */}
+						</div>
+					</div>
+				</div>
+			: 
+			null
 		);
 	}
 }

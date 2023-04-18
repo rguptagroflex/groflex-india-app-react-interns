@@ -891,8 +891,9 @@ const config = {
 
 			// get subscription details endpoint
 			getSubscriptionDetails: `${resourceHost}subscription/detail`,
-			updateSubscription: `${resourceHost}chargebee/subscription`,
+			//updateSubscription: `${resourceHost}chargebee/subscription`,
 			// updateSubscription: `${resourceHost}zoho/subscription`,
+			updateSubscription: `${resourceHost}chargebeev2/subscription`,
 
 			// account endpoint
 			account: `${resourceUrls.settings}account`,
