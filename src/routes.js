@@ -988,7 +988,7 @@ const routes = [
 	},
 	// Cash and bank
 	{
-		path: "/cash-and-bank",
+		path: "/expenses/cash-and-bank",
 		type: RouteTypes.PRIVATE,
 		component: CashAndBankWrapper,
 		exact: true,
@@ -1000,7 +1000,7 @@ const routes = [
 	},
 	// Transactions
 	{
-		path: "/transactions",
+		path: "/expenses/transactions",
 		type: RouteTypes.PRIVATE,
 		component: TransactionsListWrapper,
 		exact: true,

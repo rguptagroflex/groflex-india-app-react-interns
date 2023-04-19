@@ -37,6 +37,7 @@ const WebStorageKey = {
 	DEBIT_CANCELLATION_LIST_SETTINGS: "debitCancellationListSettings",
 	HIDE_FOOTER: "hideFooter",
 	CHARTOFACCOUNT_LIST_SETTING: "chartofaccountListSettings",
+	TRANSACTIONS_LIST_SETTING: "transactionsListSettings",
 };
 
 export default Object.freeze(WebStorageKey);

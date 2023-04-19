@@ -1589,6 +1589,14 @@
 	"chartofaccountDeleteNotAllowedMessage": "The chartofaccount cannot be deleted because times have been recorded for them.",
 	"chartofaccountEmptyListCreateContactText": "Create your first chartofaccount or import your existing chartofaccount base",
 
+	"transactionsEmptyListHeadingText": "No transactions available",
+	"transactionsEmptyListSubHeadingText": "Create your first transaction",
+	"transactionsSearchPlaceholderText": "Search transactions",
+	"transactionsCreateButtonText": "Create transaction",
+	"transactionsDeletePopupHeading": "Delete transaction",
+	"transactionsDeleteSuccessMessage": "The transaction was deleted successfully",
+	"transactionsDeleteConfirmText": "Do you really want to delete the transaction?",
+
 	"articleNotAvailableText": "No articles available yet",
 	"createOrImportArticalText": "Create your first article or import your existing article master",
 	"createArticle": "Create article",

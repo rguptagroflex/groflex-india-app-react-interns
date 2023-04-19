@@ -89,23 +89,11 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-		getTransactionsList();
 		return () => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
 	}, []);
-
-	const getTransactionsList = () => {
-		invoiz
-			.request(
-				"https://dev.groflex.in/api/bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true",
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log(res, "TRANSACTIONS");
-			});
-	};
 
 	const [moneyInData, setMoneyInData] = useState({
 		accountType: "",
@@ -113,7 +101,7 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 		reconcileStatus: false,
 		type: "in",
 		notes: "",
-		date: "",
+		date: new Date().toLocaleString("en-GB").split(",")[0].replaceAll("/", "-"),
 		credits: 0, //credits will be edited  in this modal
 		debits: 0,
 		customerId: 0,
@@ -213,8 +201,8 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 		}
 	};
 
-	console.log("Form money in", moneyInData);
-	console.log("Money in Form errors", formErrors);
+	console.log("Money in form data", moneyInData);
+	// console.log("Money in Form errors", formErrors);
 	return (
 		<div className="money-in-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
@@ -293,7 +281,7 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 								noBorder={true}
 								onChange={(name, value, date) => {
 									setMoneyInData({ ...moneyInData, date: moment(value, "DD-MM-YYYY") });
-									handleDateChange(name, value, date);
+									// handleDateChange(name, value, date);
 									// setMoneyInData({ ...moneyInData, date: `${value} ${currentTimeString()}` });
 									// setMoneyInData({ ...moneyInData, date: value });
 								}}
