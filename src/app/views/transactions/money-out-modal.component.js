@@ -66,15 +66,15 @@ const accountSubtypes = {
 	],
 };
 
-const customerOptions = [
-	{ label: "Joe Black", value: 591 },
-	{ label: "Michael Doe", value: 586 },
-];
+// const payeeOptions = [
+// 	{ label: "Joe Black", value: 591 },
+// 	{ label: "Michael Doe", value: 586 },
+// ];
 
-const paymentMethodOptions = [
-	{ label: "Bank 1", value: 19 },
-	{ label: "Bank 2", value: 25 },
-];
+// const paymentMethodOptions = [
+// 	{ label: "Bank 1", value: 19 },
+// 	{ label: "Bank 2", value: 25 },
+// ];
 
 const Label = ({ label, style, sublabel = "" }) => {
 	return (
@@ -201,6 +201,9 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 		}
 	};
 
+	let paymentMethodOptions = bankList.filter((bank) => bank.type === "bank");
+	paymentMethodOptions = paymentMethodOptions.map((bank) => ({ label: bank.bankName, value: bank.id }));
+	const payeeOptions = customerList.map((bank) => ({ label: bank.name, value: bank.id }));
 	console.log("Form money out", moneyInData);
 	// console.log("Money out Form errors", formErrors);
 	return (
@@ -296,7 +299,7 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 							<SelectInput
 								allowCreate={false}
 								notAsync={true}
-								loadedOptions={customerOptions}
+								loadedOptions={payeeOptions}
 								value={moneyInData.customerId}
 								options={{
 									clearable: false,

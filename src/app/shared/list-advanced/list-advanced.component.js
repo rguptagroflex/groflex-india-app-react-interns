@@ -187,6 +187,7 @@ class ListAdvancedComponent extends React.Component {
 			sortingOrder: ["asc", "desc"],
 			suppressCopyRowsToClipboard: true,
 			suppressPaginationPanel: true,
+			suppressPropertyNamesCheck: true,
 			suppressRowClickSelection: false,
 			overlayLoadingTemplate:
 				'<span class="ag-overlay-loading-center">' +

@@ -7,6 +7,8 @@ import OnClickOutside from "../../shared/on-click-outside/on-click-outside.compo
 import AddBankModalComponent from "./add-bank-modal.component";
 import EditBankModalComponent from "./edit-bank-modal.component";
 import invoiz from "../../services/invoiz.service";
+import config from "../../../config";
+import { Link } from "react-router-dom";
 
 const BankListComponent = () => {
 	const [banksList, setBanksList] = useState([]);
@@ -15,20 +17,20 @@ const BankListComponent = () => {
 	}, []);
 
 	const getBanksList = () => {
-		invoiz.request("https://dev.groflex.in/api/bank", { auth: true }).then((res) => {
+		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
 			console.log(res.body.data);
 			setBanksList([...res.body.data].filter((bank) => bank.type === "bank"));
 		});
 	};
 
 	const getBankDetails = (id) => {
-		return invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true });
+		return invoiz.request(`${config.resourceHost}bank/${id}`, { auth: true });
 	};
 
 	const openAddBankModal = () => {
 		const handleAddBank = (newBankData) => {
 			invoiz
-				.request("https://dev.groflex.in/api/bank", { auth: true, method: "POST", data: { ...newBankData } })
+				.request(`${config.resourceHost}bank`, { auth: true, method: "POST", data: { ...newBankData } })
 				.then((res) => {
 					setBanksList([...banksList, { ...res.body.data }]);
 				});
@@ -42,16 +44,17 @@ const BankListComponent = () => {
 	const openEditBankModal = (index, id) => {
 		const handleEditBank = (editedBankData) => {
 			invoiz
-				.request(`https://dev.groflex.in/api/bank/${id}`, {
+				.request(`${config.resourceHost}bank/${id}`, {
 					auth: true,
 					method: "PUT",
 					data: { ...editedBankData },
 				})
 				.then((res) => {
-					console.log(res, "EDIT BANK KA RESPONSE");
-					let newBanksList = [...banksList];
-					newBanksList[index] = { ...editedBankData };
-					setBanksList([...newBanksList]);
+					console.log(res, "EDIT BANK KA RESPONSE new");
+					// let newBanksList = [...banksList];
+					// newBanksList[index] = { ...editedBankData };
+					// setBanksList([...newBanksList]);
+					getBanksList();
 				});
 
 			// console.log(editedBankData, "Hogaya edit bank");
@@ -66,12 +69,13 @@ const BankListComponent = () => {
 
 	const openDeleteBankModal = (id) => {
 		const handleDeleteBank = () => {
-			invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true, method: "DELETE" }).then((res) => {
+			invoiz.request(`${config.resourceHost}bank/${id}`, { auth: true, method: "DELETE" }).then((res) => {
 				// console.log(res, "DELETE KIYA BANK");
-				const newBankList = banksList.filter((bank) => {
-					return bank.id !== id;
-				});
-				setBanksList([...newBankList]);
+				// const newBankList = banksList.filter((bank) => {
+				// 	return bank.id !== id;
+				// });
+				// setBanksList([...newBankList]);
+				getBanksList();
 			});
 			ModalService.close();
 		};
@@ -154,9 +158,12 @@ const BankListComponent = () => {
 							justifyContent: "right",
 						}}
 					>
-						<span style={{ color: "#00A353", fontWeight: "600", cursor: "pointer" }}>
+						<Link
+							to={`/expenses/transactions/${bank.id}`}
+							style={{ color: "#00A353", fontWeight: "600", cursor: "pointer" }}
+						>
 							View Transactions
-						</span>
+						</Link>
 						<OnClickOutside onClickOutside={() => setMenuOptionVisible(false)}>
 							<span
 								onClick={() => setMenuOptionVisible(!menuOptionVisible)}

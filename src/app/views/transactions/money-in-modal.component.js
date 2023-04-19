@@ -66,15 +66,15 @@ const accountSubtypes = {
 	],
 };
 
-const customerOptions = [
-	{ label: "Joe Black", value: 591 },
-	{ label: "Michael Doe", value: 586 },
-];
+// const customerOptions = [
+// 	{ label: "Joe Black", value: 591 },
+// 	{ label: "Michael Doe", value: 586 },
+// ];
 
-const paymentMethodOptions = [
-	{ label: "Bank 1", value: 19 },
-	{ label: "Bank 2", value: 25 },
-];
+// const paymentMethodOptions = [
+// 	{ label: "Bank 1", value: 19 },
+// 	{ label: "Bank 2", value: 25 },
+// ];
 
 const Label = ({ label, style, sublabel = "" }) => {
 	return (
@@ -200,9 +200,13 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 			onConfirm(moneyInData);
 		}
 	};
+	let paymentMethodOptions = bankList.filter((bank) => bank.type === "bank");
+	paymentMethodOptions = paymentMethodOptions.map((bank) => ({ label: bank.bankName, value: bank.id }));
+	const customerOptions = customerList.map((bank) => ({ label: bank.name, value: bank.id }));
 
-	console.log("Money in form data", moneyInData);
+	// console.log("Money in form data", moneyInData);
 	// console.log("Money in Form errors", formErrors);
+
 	return (
 		<div className="money-in-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">

@@ -32,6 +32,7 @@ import MoneyOutModalComponent from "./money-out-modal.component";
 import CustomButtonComponent from "./custom-button.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import { formatDate, formatApiDate, formateClientDateMonthYear } from "helpers/formatDate";
+import q from "q";
 
 const LABEL_COMPANY = "Company";
 const LABEL_PERSON = "Individual";
@@ -41,10 +42,13 @@ class TransactionsListComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			bankOptions: [],
+			customersOptions: [],
+			topbarHeading: "",
 			createTransactionDropdown: false,
 			refreshData: false,
 			isLoading: true,
-			customerData: null,
+			transactions: null,
 			selectedRows: [],
 			canCreateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CUSTOMER),
 			canUpdateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_CUSTOMER),
@@ -52,12 +56,32 @@ class TransactionsListComponent extends React.Component {
 		};
 	}
 
+	componentDidMount() {
+		let banks = [];
+		let customers = [];
+		const fetchBankAndCustomers = () => {
+			const fetchUrls = [
+				`${config.resourceHost}bank`,
+				`${config.resourceHost}customer?offset=0&searchText=&limit=9999999&orderBy=name&desc=false`,
+			];
+			const requests = fetchUrls.map((url) => invoiz.request(url, { auth: true }));
+			return q.all(requests);
+		};
+		const proceed = (...args) => {
+			// console.log(args, "ARGS");
+			banks = args[0];
+			customers = args[1];
+			this.setState({ ...this.state, bankOptions: banks.body.data, customersOptions: customers.body.data });
+		};
+		q.fcall(fetchBankAndCustomers).spread(proceed).done();
+	}
+
 	componentWillUnmount() {
 		this.isUnmounted = true;
 	}
 
 	createTopbar() {
-		const { customerData, isLoading, selectedRows, canCreateCustomer, canDeleteCustomer } = this.state;
+		const { transactions, isLoading, selectedRows, canCreateCustomer, canDeleteCustomer } = this.state;
 
 		const topbarButtons = [];
 
@@ -76,7 +100,7 @@ class TransactionsListComponent extends React.Component {
 		const topbar = (
 			<CustomTopbarComponent
 				// onDropDownClick={this.onTopbarButtonClick}
-				title={`Transactions`}
+				title={this.state.topbarHeading ? this.state.topbarHeading : "Transactions"}
 				viewIcon={`icon-coins`}
 				// buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
 				// buttonCallback={this.onTopbarButtonClick}
@@ -113,7 +137,7 @@ class TransactionsListComponent extends React.Component {
 					confirmButtonType: "primary",
 					onConfirm: () => {
 						invoiz
-							.request(`https://dev.groflex.in/api/bankTransaction/${transaction.id}`, {
+							.request(`${config.resourceHost}bankTransaction/${transaction.id}`, {
 								auth: true,
 								method: "DELETE",
 							})
@@ -142,7 +166,7 @@ class TransactionsListComponent extends React.Component {
 	openMoneyInModal() {
 		const handleAddTransaction = (moneyInData) => {
 			invoiz
-				.request("https://dev.groflex.in/api/bankTransaction", {
+				.request(`${config.resourceHost}bankTransaction`, {
 					auth: true,
 					method: "POST",
 					data: { ...moneyInData },
@@ -154,15 +178,22 @@ class TransactionsListComponent extends React.Component {
 			ModalService.close();
 		};
 
-		ModalService.open(<MoneyInModalComponent onConfirm={handleAddTransaction} />, {
-			width: 630,
-		});
+		ModalService.open(
+			<MoneyInModalComponent
+				bankList={this.state.bankOptions}
+				customerList={this.state.customersOptions}
+				onConfirm={handleAddTransaction}
+			/>,
+			{
+				width: 630,
+			}
+		);
 	}
 
 	openMoneyOutModal() {
 		const handleAddTransaction = (moneyOutData) => {
 			invoiz
-				.request("https://dev.groflex.in/api/bankTransaction", {
+				.request(`${config.resourceHost}bankTransaction`, {
 					auth: true,
 					method: "POST",
 					data: { ...moneyOutData },
@@ -174,9 +205,16 @@ class TransactionsListComponent extends React.Component {
 			ModalService.close();
 		};
 
-		ModalService.open(<MoneyOutModalComponent onConfirm={handleAddTransaction} />, {
-			width: 630,
-		});
+		ModalService.open(
+			<MoneyOutModalComponent
+				bankList={this.state.bankOptions}
+				customerList={this.state.customersOptions}
+				onConfirm={handleAddTransaction}
+			/>,
+			{
+				width: 630,
+			}
+		);
 	}
 
 	openCreateTransactionDropdown() {
@@ -209,7 +247,7 @@ class TransactionsListComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, customerData } = this.state;
+		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, transactions } = this.state;
 		return (
 			<div className="transaction-list-component-wrapper">
 				{this.createTopbar()}
@@ -260,72 +298,6 @@ class TransactionsListComponent extends React.Component {
 								filter: "agSetColumnFilter",
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 							},
-							// {
-							// 	headerName: "Account type",
-							// 	field: "accountType",
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// 	width: getScaledValue(210, window.innerWidth, 1600),
-							// 	filterParams: {
-							// 		suppressAndOrCondition: true,
-							// 	},
-							// 	cellRenderer: (evt) => {
-							// 		const str = evt.value;
-							// 		return str.charAt(0).toUpperCase() + str.slice(1);
-							// 	},
-							// 	comparator: localeCompare,
-							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-							// },
-							// {
-							// 	headerName: "Payment",
-							// 	field: "bankDetail",
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// 	width: getScaledValue(210, window.innerWidth, 1600),
-							// 	filterParams: {
-							// 		suppressAndOrCondition: true,
-							// 	},
-							// 	cellRenderer: (evt) => {
-							// 		return evt.value.bankName;
-							// 	},
-							// 	comparator: localeCompare,
-							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-							// },
-							// {
-							// 	headerName: "Debit",
-							// 	field: "debits",
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// 	width: getScaledValue(210, window.innerWidth, 1600),
-							// 	cellRenderer: (evt) => {
-							// 		if (evt.value) {
-							// 			const amount = evt.value;
-							// 			return `₹${Number(amount).toLocaleString("en", {
-							// 				minimumFractionDigits: 2,
-							// 				maximumFractionDigits: 2,
-							// 			})}`;
-							// 		}
-							// 		return "-";
-							// 	},
-							// 	comparator: localeCompare,
-							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-							// },
-							// {
-							// 	headerName: "Credit",
-							// 	field: "credits",
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// hide: true,
-							// 	width: getScaledValue(210, window.innerWidth, 1600),
-							// 	cellRenderer: (evt) => {
-							// 		if (evt.value) {
-							// 			const amount = evt.value;
-							// 			return `₹${Number(amount).toLocaleString("en", {
-							// 				minimumFractionDigits: 2,
-							// 				maximumFractionDigits: 2,
-							// 			})}`;
-							// 		}
-							// 		return "-";
-							// 	},
-							// 	comparator: localeCompare,
-							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-							// },
 							{
 								headerName: "Debit",
 								field: "debits",
@@ -343,7 +315,6 @@ class TransactionsListComponent extends React.Component {
 									suppressAndOrCondition: true,
 								},
 							},
-
 							{
 								headerName: "Credit",
 								field: "credits",
@@ -453,7 +424,11 @@ class TransactionsListComponent extends React.Component {
 							),
 						}}
 						fetchUrls={[
-							`https://dev.groflex.in/api/bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
+							`${
+								config.resourceHost
+							}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true${
+								this.props.bankDetailId ? `&bankDetailId=${this.props.bankDetailId}` : ""
+							}`,
 						]}
 						exportExcelCallbacks={{
 							processCellCallback: (params) => {
@@ -525,16 +500,24 @@ class TransactionsListComponent extends React.Component {
 								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
-						onRowDataLoaded={(customerData) => {
+						onRowDataLoaded={(transactions) => {
+							if (this.props.bankDetailId) {
+								const bankName = transactions[0].bankDetail.bankName;
+								const accountNumber = transactions[0].bankDetail.accountNumber.slice(-4);
+								this.setState({
+									...this.state,
+									topbarHeading: `${bankName} - XXXX ${accountNumber}`,
+								});
+							}
 							if (!this.isUnmounted) {
 								this.setState({
-									customerData,
+									transactions,
 									isLoading: false,
 								});
 							}
 						}}
 						onRowClicked={(transaction) => {
-							invoiz.router.navigate(`/transaction/${transaction.id}`);
+							// invoiz.router.navigate(`/transaction/${transaction.id}`);
 						}}
 						onRowSelectionChanged={(selectedRows) => {
 							if (!this.isUnmounted) {

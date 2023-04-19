@@ -3,10 +3,10 @@ import { Provider } from "react-redux";
 import store from "redux/store";
 import TransactionsListComponent from "./transactions-list.component";
 
-const TransactionsListWrapper = () => {
+const TransactionsListWrapper = ({ match }) => {
 	return (
 		<Provider store={store}>
-			<TransactionsListComponent />
+			<TransactionsListComponent bankDetailId={match.params.bankDetailId} />
 		</Provider>
 	);
 };

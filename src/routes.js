@@ -1011,6 +1011,18 @@ const routes = [
 		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
 		resourceKey: "transactions",
 	},
+	{
+		path: "/expenses/transactions/:bankDetailId",
+		type: RouteTypes.PRIVATE,
+		component: TransactionsListWrapper,
+		exact: true,
+		title: "Transactions",
+		menuItem: "expenditure",
+		submenuItem: "transactions",
+		// pageClass: PageClassNames.ONLY_SIDE_MARGIN,
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "transactions",
+	},
 
 	// GST Export
 	{
