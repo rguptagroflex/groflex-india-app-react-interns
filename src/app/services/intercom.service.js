@@ -16,7 +16,7 @@ class Intercom extends React.Component {
 class IntercomApiService {
     update(user) {
         if(user != null) {
-            if(config.releaseStage == "production" || config.releaseStage == "development") {
+            if(config.releaseStage == "production") {
                 const requestOptions = {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -42,9 +42,9 @@ class IntercomApiService {
                                         "Name": user.name,
                                         "Phone": user.phone,
                                         "Plan": user.Plan,
-                                        "Last_Login_Time": user.Last_Login_Time,
+                                        "Last_Login_Time": user.lastLoginsendpulse,
                                         "Whatsapp": user.phone,
-                                        "Registered_At": user.registeredat, 
+                                        "Registered_At": user.registeredTimesendpulse, 
                                         'Used_Referral_Codes' : user.usedReferralCodes,
                                         'UTM_Campaign' : user.utm_campaign,
                                         'UTM_Source' : user.utm_source,

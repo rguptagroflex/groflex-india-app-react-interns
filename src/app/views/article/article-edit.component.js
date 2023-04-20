@@ -37,7 +37,7 @@ class ArticleEditComponent extends React.Component {
 			inventory: this.props.inventory || new Inventory(),
 			currentStockError: "",
 			disableOpeningBalance: false,
-			noInventory: invoiz.user && invoiz.user.hasPlanPermission(planPermissionsEnum.NO_INVENTORY),
+			noInventory: true, //invoiz.user && invoiz.user.hasPlanPermission(planPermissionsEnum.NO_INVENTORY),   open when we lunch inventory
 			canCreateStockMovement: invoiz.user && invoiz.user.hasPermission(userPermissionsEnum.CREATE_STOCK_MOVEMENT),
 		};
 		this.vatPercentOptions = {

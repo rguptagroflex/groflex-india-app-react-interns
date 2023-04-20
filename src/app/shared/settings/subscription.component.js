@@ -18,6 +18,7 @@ import { format } from "util";
 import ZohoPlan from "enums/zoho-plan.enum";
 import ChargebeeAddon from "../../enums/chargebee-addon.enum";
 import RadioInputComponent from "shared/inputs/radio-input/radio-input.component";
+import LoaderComponent from 'shared/loader/loader.component';
 
 class AccountSubscriptionComponent extends React.Component {
 	constructor(props) {
@@ -30,7 +31,8 @@ class AccountSubscriptionComponent extends React.Component {
 		this.state = {
 			updatedSubscriptionDetail: null,
 			planType: "yearly",
-			planPrice: "₹3999/ Year"
+			planPrice: "₹3999/ Year",
+			isLoading: false
 		};
 
 		// invoiz.on('userModelSubscriptionDataSet', () => {
@@ -310,7 +312,7 @@ class AccountSubscriptionComponent extends React.Component {
 			} else {
 				plan = ChargebeePlan.ACCOUNTING_MONTHLY_PLAN;
 			}
-
+			this.setState({ isLoading: true });
 			redirectToChargebee(plan, false);
 		} 
 		// else if (
@@ -432,8 +434,9 @@ class AccountSubscriptionComponent extends React.Component {
 		const subscriptionCurrentTermEndDate = subscriptionDetail.currentTermEnd
 		? formatDate(subscriptionDetail.currentTermEnd)
 		: null;
+		
 
-		let subscriptionDatePercentage = 30;
+		let subscriptionDatePercentage = 0;
 		if (
 			subscriptionDetail.status === SubscriptionStatus.CANCELLED ||
 			subscriptionDetail.status === SubscriptionStatus.NON_RENEWING
@@ -449,6 +452,12 @@ class AccountSubscriptionComponent extends React.Component {
 			title = resources.str_accountTerminated;
 			buttonTitle = resources.str_activeNow;
 		} else {
+			let b = moment(subscriptionDetail.currentTermStart);
+			let a = moment(subscriptionDetail.currentTermEnd);
+			let c = moment();
+			let totalDays = a.diff(b, 'days');
+			let remainingDays = c.diff(b, 'days');
+			subscriptionDatePercentage = (remainingDays / totalDays) * 100;
 			switch (subscriptionDetail.planId) {
 				case ChargebeePlan.ACCOUNTING_MONTHLY_PLAN:
 				case ChargebeePlan.ACCOUNTING_YEARLY_PLAN:
@@ -490,7 +499,7 @@ class AccountSubscriptionComponent extends React.Component {
 	render() {
 		const { resources } = this.props;
 		let { subscriptionDetail, canEditSubscription } = this.props;
-		let { planType, planPrice } = this.state;
+		let { planType, planPrice, isLoading } = this.state;
 		// const { title, content, buttonTitle } = this.getAccountContent();
 		const { title, content } = this.getPlanDetails();
 		// const { impressTitle, impressContent } = this.getImpressContent(); //, hasImpressButton
@@ -726,8 +735,12 @@ class AccountSubscriptionComponent extends React.Component {
 			// 		</div>
 			// 	}
 			// </div>
+			
 			subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.FREE_PLAN ? 
 				<div>
+					isLoading ? (
+						<LoaderComponent text={"Loading..."} visible={isLoading} />
+					) : (null)
 					<div className="box" style={{padding: "26px 32px"}}>
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>

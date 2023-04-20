@@ -39,7 +39,11 @@ class ChartofaccountNewComponent extends React.Component {
 			canDeleteCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_CUSTOMER),
 		};
 	}
-
+	componentDidMount () {
+		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
+			invoiz.user.logout(true);
+		}
+	}
 	componentWillUnmount() {
 		this.isUnmounted = true;
 	}

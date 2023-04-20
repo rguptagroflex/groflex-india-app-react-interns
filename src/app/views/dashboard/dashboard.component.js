@@ -28,6 +28,10 @@ import DashboardSalesArticleCustomerStatsComponent from '../../shared/dashboard/
 class DashboardComponent extends React.Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			canViewExpense: false,
+		};
+
 		scrollToTop();
 	}
 
@@ -57,8 +61,12 @@ class DashboardComponent extends React.Component {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_DASHBOARD)) {
 			invoiz.user.logout(true);
 		}
+		this.setState({
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		});
 	}
 	render() {
+		const { canViewExpense } = this.state;
 		return (
 			<Provider store={store}>
 				<div className="dashboard-component-wrapper">
@@ -69,12 +77,22 @@ class DashboardComponent extends React.Component {
 					{/* <DashboardOnboardingComponent /> */}
 					{/* <DashboardQuickButtonsComponent /> */}
 					<div className="row" style={{paddingTop: '18px'}}>
-						<div className="col-xs-6">
-							<DashboardReceivablesStatsComponent />
-						</div>
-						<div className="col-xs-6">
-							<DashboardUnpaidExpensesStatsComponent />
-						</div>
+						{canViewExpense && (
+								<div className="col-xs-6">
+								<DashboardReceivablesStatsComponent />
+							</div>
+							)}
+						{canViewExpense && (
+							<div className="col-xs-6">
+								<DashboardUnpaidExpensesStatsComponent />
+							</div>
+							)}
+						{!canViewExpense && (
+							<div className="col-xs-12">
+								<DashboardReceivablesStatsComponent />
+							</div>
+							)}
+						
 					</div>
 					<div className="row">
 						<div className="col-xs-6">
@@ -84,24 +102,43 @@ class DashboardComponent extends React.Component {
 							<DashboardQuotationsPurchaseOrderStatsComponent />
 						</div>
 					</div>
-					<div className="row">
-						<div className="col-xs-12">
-							<DashboardSalesExpensesStatsComponent />
+					{canViewExpense && (
+							<div className="row">
+							<div className="col-xs-12">
+								<DashboardSalesExpensesStatsComponent />
+							</div>
 						</div>
-					</div>
+							)}
+					
 					<div className="row">
+					{!canViewExpense && (
+							 <div className="col-xs-6">
+							 <DashboardSalesByArticleStatsComponent />
+						 </div>
+							)}
+							{!canViewExpense && (
+							<div className="col-xs-6">
+							<DashboardSalesByCustomerStatsComponent />
+						</div> 
+							)}
 						{/* <div className="col-xs-6">
 							<DashboardSalesByArticleStatsComponent />
 						</div>
 						<div className="col-xs-6">
 							<DashboardSalesByCustomerStatsComponent />
 						</div> */}
-						<div className="col-xs-6">
+						{canViewExpense && (
+							<div className="col-xs-6">
 							<DashboardSalesArticleCustomerStatsComponent />
 						</div>
+							)}
+							{canViewExpense && (
 						<div className="col-xs-6">
-							<DashboardExpenseArticleStatsComponent />
-						</div>
+						<DashboardExpenseArticleStatsComponent />
+					</div>
+							)}
+						
+						
 					</div>
 					{/* <div className="row">
 						<div className="col-xs-5 col-gutter-right-10">

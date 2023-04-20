@@ -370,13 +370,13 @@ class OfferImpressDetailComponent extends React.Component {
 							buttonIcon: 'icon-mail',
 							action: OfferAction.EMAIL
 						},
-						{
-							type: 'text',
-							label: resources.str_copyANGLink,
-							buttonIcon: 'icon-copy',
-							action: OfferAction.SHOW_COPY_LINK_POPOVER,
-							id: 'detail-head-copy-link-popover-anchor'
-						},
+						// {
+						// 	type: 'text',
+						// 	label: resources.str_copyANGLink,
+						// 	buttonIcon: 'icon-copy',
+						// 	action: OfferAction.SHOW_COPY_LINK_POPOVER,
+						// 	id: 'detail-head-copy-link-popover-anchor'
+						// },
 						{
 							type: 'default',
 							label: resources.str_toEdit,
@@ -400,13 +400,13 @@ class OfferImpressDetailComponent extends React.Component {
 							buttonIcon: 'icon-edit',
 							action: OfferAction.EDIT
 						},
-						{
-							type: 'default',
-							label: resources.str_copyANGLink,
-							buttonIcon: 'icon-copy',
-							action: OfferAction.SHOW_COPY_LINK_POPOVER,
-							id: 'detail-head-copy-link-popover-anchor'
-						},
+						// {
+						// 	type: 'default',
+						// 	label: resources.str_copyANGLink,
+						// 	buttonIcon: 'icon-copy',
+						// 	action: OfferAction.SHOW_COPY_LINK_POPOVER,
+						// 	id: 'detail-head-copy-link-popover-anchor'
+						// },
 						{
 							type: 'primary',
 							label: resources.str_sendEmail,
@@ -459,13 +459,13 @@ class OfferImpressDetailComponent extends React.Component {
 						buttonIcon: 'icon-mail',
 						action: OfferAction.EMAIL
 					},
-					{
-						type: 'text',
-						label: resources.str_copyANGLink,
-						buttonIcon: 'icon-copy',
-						action: OfferAction.SHOW_COPY_LINK_POPOVER,
-						id: 'detail-head-copy-link-popover-anchor'
-					},
+					// {
+					// 	type: 'text',
+					// 	label: resources.str_copyANGLink,
+					// 	buttonIcon: 'icon-copy',
+					// 	action: OfferAction.SHOW_COPY_LINK_POPOVER,
+					// 	id: 'detail-head-copy-link-popover-anchor'
+					// },
 					{
 						type: 'default',
 						label: resources.str_toEdit,
@@ -529,13 +529,13 @@ class OfferImpressDetailComponent extends React.Component {
 						buttonIcon: 'icon-mail',
 						action: OfferAction.EMAIL
 					},
-					{
-						type: 'text',
-						label: resources.str_copyANGLink,
-						buttonIcon: 'icon-copy',
-						action: OfferAction.SHOW_COPY_LINK_POPOVER,
-						id: 'detail-head-copy-link-popover-anchor'
-					},
+					// {
+					// 	type: 'text',
+					// 	label: resources.str_copyANGLink,
+					// 	buttonIcon: 'icon-copy',
+					// 	action: OfferAction.SHOW_COPY_LINK_POPOVER,
+					// 	id: 'detail-head-copy-link-popover-anchor'
+					// },
 					{
 						type: 'primary',
 						label: resources.str_accepted,
@@ -595,13 +595,13 @@ class OfferImpressDetailComponent extends React.Component {
 						buttonIcon: 'icon-mail',
 						action: OfferAction.EMAIL
 					},
-					{
-						type: 'text',
-						label: resources.str_copyANGLink,
-						buttonIcon: 'icon-copy',
-						action: OfferAction.SHOW_COPY_LINK_POPOVER,
-						id: 'detail-head-copy-link-popover-anchor'
-					}
+					// {
+					// 	type: 'text',
+					// 	label: resources.str_copyANGLink,
+					// 	buttonIcon: 'icon-copy',
+					// 	action: OfferAction.SHOW_COPY_LINK_POPOVER,
+					// 	id: 'detail-head-copy-link-popover-anchor'
+					// }
 				);
 				dropdownEntries.push([
 					{

@@ -266,7 +266,7 @@ const config = {
 					resourceKey: "debitNotes",
 				},
 				{
-					name: "Chart of accounts",
+					name: "chartOfAccounts",
 					// icon: "order",
 					title: "Chart of accounts",
 					url: "/expenses/chart-of-accounts",

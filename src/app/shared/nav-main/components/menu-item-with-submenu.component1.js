@@ -8,7 +8,8 @@ import planPermissions from 'enums/plan-permissions.enum';
 
 
 const buildSubmenuComponents = (permissions, canViewDunning, canViewTimesheet, noInventory, submenuItems, activeSubmenuItem, resources) => {
-	const { canImportArticle, canImportContact } = permissions;
+	const { canImportArticle, canImportContact, viewAccounting, canViewExpenses } = permissions;
+	// console.log('submenuItems', submenuItems)
 	if (!canImportArticle && !canImportContact) {
 		submenuItems = submenuItems.filter(item => item.name !== 'dataImport');
 	}
@@ -17,9 +18,14 @@ const buildSubmenuComponents = (permissions, canViewDunning, canViewTimesheet, n
 		submenuItems = submenuItems.filter(item => item.name !== 'dunning');
 	}
 
-	if (!canViewTimesheet) {
-		submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
+	if(!canViewExpenses) {
+		submenuItems = submenuItems.filter(item => item.name !== 'expenditure' && item.name !== 'chartOfAccounts' && item.name !== 'cashAndBank');
 	}
+	// In all case we need to show timesheet
+	// if (!canViewTimesheet) {
+	// 	submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
+	// }
+
 	if(noInventory) {
 		submenuItems = submenuItems.filter(item => item.name !== 'inventory');
 	}
