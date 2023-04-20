@@ -130,7 +130,7 @@ class ChartofaccountNewComponent extends React.Component {
 	onAddNewAccounts() {
 		const handleNewAccount = (newAccountData) => {
 			invoiz
-				.request("https://dev.groflex.in/api/chartofaccount", {
+				.request(`${config.resourceHost}chartofaccount`, {
 					auth: true,
 					method: "POST",
 					data: { ...newAccountData },
@@ -149,7 +149,7 @@ class ChartofaccountNewComponent extends React.Component {
 
 	handleEditStatus(chartofaccount) {
 		invoiz
-			.request(`https://dev.groflex.in/api/chartofaccount/${chartofaccount.id}`, {
+			.request(`${config.resourceHost}chartofaccount/${chartofaccount.id}`, {
 				auth: true,
 				method: "PUT",
 				data: { ...chartofaccount },
@@ -162,7 +162,7 @@ class ChartofaccountNewComponent extends React.Component {
 	openEditAccountsModals(chartofaccount) {
 		const handleEditChart = (editedChartData) => {
 			invoiz
-				.request(`https://dev.groflex.in/api/chartofaccount/${chartofaccount.id}`, {
+				.request(`${config.resourceHost}chartofaccount/${chartofaccount.id}`, {
 					auth: true,
 					method: "PUT",
 					data: { ...editedChartData },
