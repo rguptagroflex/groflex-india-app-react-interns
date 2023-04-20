@@ -43,7 +43,7 @@ class ArticleListNewComponent extends React.Component {
 			canCreateArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_ARTICLE),
 			canUpdateArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_ARTICLE),
 			canDeleteArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_ARTICLE),
-			isInventoryNotAvailable: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),
+			isInventoryNotAvailable: true //invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),  open when we lunch inventory
 		};
 	}
 

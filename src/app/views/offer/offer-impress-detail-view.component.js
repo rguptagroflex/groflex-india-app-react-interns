@@ -97,14 +97,14 @@ const createDetailViewHeadObjects = (offer, activeAction, resources) => {
 			action: OfferAction.EMAIL,
 			dataQsId: 'offerDetail-head-action-email'
 		},
-		{
-			name: resources.str_copyANGLink,
-			icon: 'icon-copy',
-			action: OfferAction.SHOW_COPY_LINK_POPOVER,
-			dataQsId: 'offerDetail-head-action-copylink',
-			controlsItemClass: 'item-copy',
-			id: 'detail-head-copy-link-popover-anchor'
-		}
+		// {
+		// 	name: resources.str_copyANGLink,
+		// 	icon: 'icon-copy',
+		// 	action: OfferAction.SHOW_COPY_LINK_POPOVER,
+		// 	dataQsId: 'offerDetail-head-action-copylink',
+		// 	controlsItemClass: 'item-copy',
+		// 	id: 'detail-head-copy-link-popover-anchor'
+		// }
 	);
 
 	let subHeadline = null;

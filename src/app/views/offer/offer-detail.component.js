@@ -306,16 +306,16 @@ const createDetailViewHeadObjects = (offer, activeAction, resources) => {
 		}
 	);
 
-	if (offer.state !== OfferState.DRAFT) {
-		object.actionElements.push({
-			name: resources.str_copyANGLink,
-			icon: "icon-copy",
-			action: OfferAction.SHOW_COPY_LINK_POPOVER,
-			dataQsId: "offerDetail-head-action-copylink",
-			controlsItemClass: "item-copy",
-			id: "detail-head-copy-link-popover-anchor",
-		});
-	}
+	// if (offer.state !== OfferState.DRAFT) {
+	// 	object.actionElements.push({
+	// 		name: resources.str_copyANGLink,
+	// 		icon: "icon-copy",
+	// 		action: OfferAction.SHOW_COPY_LINK_POPOVER,
+	// 		dataQsId: "offerDetail-head-action-copylink",
+	// 		controlsItemClass: "item-copy",
+	// 		id: "detail-head-copy-link-popover-anchor",
+	// 	});
+	// }
 
 	let subHeadline = null;
 	if (offer.invoice && offer.invoice.id) {

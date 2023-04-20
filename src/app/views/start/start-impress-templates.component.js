@@ -177,7 +177,9 @@ class StartImpressTemplatesComponent extends React.Component {
 			}
 		}, 6000)
 	}
-
+	componentWillUnmount() {
+		// invoiz.off('updateNewsfeedCount');
+	}
 	onDeleteTemplateClicked(templateId, resources) {
 		ModalService.open(<div>{resources.impressTemplateDeleteConfirmText}</div>, {
 			width: 500,

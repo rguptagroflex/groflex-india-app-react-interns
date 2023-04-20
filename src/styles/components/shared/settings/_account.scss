@@ -38,3 +38,45 @@
 	opacity: 0;
 	z-index: -5;
 }
+.settings-account-wrapper {
+	.plan-type-toggle {
+		.radio_inputs {
+			display: inline-block;
+			flex-direction: row;
+			align-items: center;
+			padding: 16px;
+			height: 49px;
+			background: #FFFFFF;
+			border: 1px solid $color-primary;
+			margin-right: 15px;
+		}
+		.radio_label{
+			color: $color-primary;
+    		font-weight: 600;
+		}
+	}
+	.plan-price-text {
+		font-weight: 700;
+		font-size: 30px;
+		line-height: 53px;
+	}
+	.icon-check_circle::before {
+		color: $color-secondary;
+	}
+	.active.icon-check_circle::before {
+		color: $color-primary;
+	}
+	.text-next-payment{
+		font-weight: 600;
+		font-size: 14px;
+		line-height: 21px;
+		color: #272D30;
+	}
+	.text-start-date{
+		float: left;
+    	display: contents;
+	}
+	.text-end-date{
+		float: right;
+	}
+}

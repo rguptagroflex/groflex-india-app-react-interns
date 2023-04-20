@@ -51,7 +51,11 @@ class CancellationListComponent extends React.Component {
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_CREDIT_NOTE) || invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_DEBIT_NOTE)
 		};
 	}
-
+	componentDidMount () {
+		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
+			invoiz.user.logout(true);
+		}
+	}
 	componentWillUnmount() {
 		this.isUnmounted = true;
 	}
