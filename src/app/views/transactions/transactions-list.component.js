@@ -172,7 +172,7 @@ class TransactionsListComponent extends React.Component {
 					data: { ...moneyInData },
 				})
 				.then((res) => {
-					console.log("RSPOINSE FOR POST MONEY IN TRANSACTION", res);
+					// console.log("RSPOINSE FOR POST MONEY IN TRANSACTION", res);
 					this.setState({ ...this.state, refreshData: !this.state.refreshData });
 				});
 			ModalService.close();
@@ -199,7 +199,7 @@ class TransactionsListComponent extends React.Component {
 					data: { ...moneyOutData },
 				})
 				.then((res) => {
-					console.log("RSPOINSE FOR POST MONEY OUT TRANSACTION", res);
+					// console.log("RSPOINSE FOR POST MONEY OUT TRANSACTION", res);
 					this.setState({ ...this.state, refreshData: !this.state.refreshData });
 				});
 			ModalService.close();
@@ -233,11 +233,11 @@ class TransactionsListComponent extends React.Component {
 
 		switch (action) {
 			case "money-in":
-				console.log("Dropped down");
+				// console.log("Dropped down");
 				this.addTransactions();
 				break;
 			case "money-out":
-				console.log("Dropped down");
+				// console.log("Dropped down");
 				ModalService.open(<MoneyOutModalComponent onConfirm={() => {}} />, {
 					width: 630,
 				});
@@ -475,8 +475,8 @@ class TransactionsListComponent extends React.Component {
 								return [entries];
 							},
 							onPopupItemClicked: (itemData, popupEntry) => {
-								console.log(itemData, "itemdata");
-								console.log(popupEntry, "popupEntry");
+								// console.log(itemData, "itemdata");
+								// console.log(popupEntry, "popupEntry");
 								this.onActionCellPopupItemClick(itemData, popupEntry);
 							},
 						}}
