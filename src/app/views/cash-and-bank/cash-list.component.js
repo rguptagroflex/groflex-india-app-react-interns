@@ -7,6 +7,7 @@ import AddCashModalComponent from "./add-cash-modal.component";
 import EditCashModalComponent from "./edit-cash-modal.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import invoiz from "../../services/invoiz.service";
+import config from "../../../config";
 
 const CashListComponent = () => {
 	const [cashData, setCashData] = useState({});
@@ -15,21 +16,21 @@ const CashListComponent = () => {
 	}, []);
 
 	const getCashList = () => {
-		invoiz.request("https://dev.groflex.in/api/bank", { auth: true }).then((res) => {
-			console.log("CASH DATA RESPONSE :", { ...res.body.data.find((bank) => bank.type === "cash") });
+		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
+			// console.log("CASH DATA RESPONSE :", { ...res.body.data.find((bank) => bank.type === "cash") });
 			setCashData({ ...res.body.data.find((bank) => bank.type === "cash") });
 		});
 	};
 	const getCashDetails = (id) => {
-		return invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true });
+		return invoiz.request(`${config.resourceHost}bank/${id}`, { auth: true });
 	};
 
 	const openAddCashModal = () => {
 		const handleAddCash = (newCashData) => {
 			invoiz
-				.request("https://dev.groflex.in/api/bank", { auth: true, method: "POST", data: { ...newCashData } })
+				.request(`${config.resourceHost}bank`, { auth: true, method: "POST", data: { ...newCashData } })
 				.then((res) => {
-					console.log(res, "RESPONSE of ADD CASH");
+					// console.log(res, "RESPONSE of ADD CASH");
 					setCashData({ ...res.body.data });
 				});
 			ModalService.close();
@@ -43,13 +44,13 @@ const CashListComponent = () => {
 	const openEditCashModal = (id) => {
 		const handleEditCash = (editedCashData) => {
 			invoiz
-				.request(`https://dev.groflex.in/api/bank/${id}`, {
+				.request(`${config.resourceHost}bank/${id}`, {
 					auth: true,
 					method: "PUT",
 					data: { ...editedCashData },
 				})
 				.then((res) => {
-					console.log(res, "EDIT CASH KA RESPONSE");
+					// console.log(res, "EDIT CASH KA RESPONSE");
 					setCashData({ ...res.body.data });
 				});
 			ModalService.close();
@@ -63,7 +64,7 @@ const CashListComponent = () => {
 
 	const openDeleteCashBalance = (id) => {
 		const handleDeleteCash = () => {
-			invoiz.request(`https://dev.groflex.in/api/bank/${id}`, { auth: true, method: "DELETE" }).then((res) => {
+			invoiz.request(`${config.resourceHost}bank/${id}`, { auth: true, method: "DELETE" }).then((res) => {
 				setCashData({});
 			});
 			ModalService.close();

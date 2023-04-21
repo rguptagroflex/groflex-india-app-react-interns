@@ -96,7 +96,7 @@ class MenuBarComponent extends React.Component {
 	buildPermittedItems () {
 		const { canSeeEditGstReports, canViewImprezzOffer, canViewOffer, canViewExpenses, viewAccounting, canViewPurchaseOrder, canViewDashboard, noGST, menuItems } = this.state;
 		const permitteditems = [...config.menuItemsData];
-		console.log('permitteditems', permitteditems, invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE))
+		// console.log('permitteditems', permitteditems, invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE))
 		//  if (!canSeeEditGstReports && !canViewExpenses && !canViewDashboard) {
 		// 	return permitteditems.filter(item => item.name !== 'documentExport');
 		//  } 
@@ -106,7 +106,7 @@ class MenuBarComponent extends React.Component {
 		//  if (!canViewDashboard) {
 		// 	return permitteditems.filter(item => item.name !== 'dashboard');		  
 		//   }
-		console.log(invoiz.user, invoiz.user.rights, userPermissions.VIEW_EXPENSE) 
+		// console.log(invoiz.user, invoiz.user.rights, userPermissions.VIEW_EXPENSE) 
 		if (invoiz.user.rights != null && !canViewExpenses) {
 		  return permitteditems.filter(item => item.name !== 'expenditure');		  
 		}

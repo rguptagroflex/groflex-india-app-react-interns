@@ -89,6 +89,7 @@ import CancellationListWrapper from "views/cancellation/cancellation-list.wrappe
 import RedirectComponent from "views/redirect/redirect.component";
 import MarketplaceWrapper from "./app/views/marketplace/marketplace.wrapper";
 import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
+import TransactionsListWrapper from "./app/views/transactions/transactions-list-wrapper";
 // import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
 // import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
 // import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
@@ -987,7 +988,7 @@ const routes = [
 	},
 	// Cash and bank
 	{
-		path: "/cash-and-bank",
+		path: "/expenses/cash-and-bank",
 		type: RouteTypes.PRIVATE,
 		component: CashAndBankWrapper,
 		exact: true,
@@ -996,6 +997,31 @@ const routes = [
 		submenuItem: "cashAndBank",
 		pageClass: PageClassNames.ONLY_SIDE_MARGIN,
 		resourceKey: "cashAndBank",
+	},
+	// Transactions
+	{
+		path: "/expenses/transactions",
+		type: RouteTypes.PRIVATE,
+		component: TransactionsListWrapper,
+		exact: true,
+		title: "Transactions",
+		menuItem: "expenditure",
+		submenuItem: "transactions",
+		// pageClass: PageClassNames.ONLY_SIDE_MARGIN,
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "transactions",
+	},
+	{
+		path: "/expenses/transactions/:bankDetailId",
+		type: RouteTypes.PRIVATE,
+		component: TransactionsListWrapper,
+		exact: true,
+		title: "Transactions",
+		menuItem: "expenditure",
+		submenuItem: "transactions",
+		// pageClass: PageClassNames.ONLY_SIDE_MARGIN,
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "transactions",
 	},
 
 	// GST Export

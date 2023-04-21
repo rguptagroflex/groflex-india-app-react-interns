@@ -192,7 +192,7 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
             const articleExpenseByCategory = [];
             newArticleExpenseData.forEach(article => {
                 const existingIndex = articleExpenseByCategory.findIndex(articleItem => article.category === articleItem.category);
-                console.log('expenese by payee index', existingIndex)
+                // console.log('expenese by payee index', existingIndex)
                 if(existingIndex == -1) {
                     articleExpenseByCategory.push({...article, customerData: {name: article.category || 'N/A'}});
                     return;
@@ -232,7 +232,7 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
                 data: value,
                 name: article.customerData.name,
                 onClick: article => {
-                    console.log('article', article)
+                    // console.log('article', article)
                     AddAdvancedListComponentFilters({
                         webStorageKey: WebStorageKey.EXPENSE_LIST_SETTINGS, 
                         filterItems: {

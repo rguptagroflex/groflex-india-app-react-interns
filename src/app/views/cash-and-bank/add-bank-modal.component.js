@@ -24,7 +24,7 @@ const AddBankModalComponent = ({ onConfirm }) => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
-	});
+	}, []);
 
 	const [reEnteredAccountNumber, setReEnteredAccountNumber] = useState("");
 	const [newBankData, setNewBankData] = useState({
@@ -177,7 +177,7 @@ const AddBankModalComponent = ({ onConfirm }) => {
 		}
 	};
 
-	console.log("Form errors", formErrors);
+	// console.log("Form errors", formErrors);
 	return (
 		<div className="add-bank-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
