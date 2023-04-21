@@ -501,13 +501,15 @@ class TransactionsListComponent extends React.Component {
 							},
 						}}
 						onRowDataLoaded={(transactions) => {
-							if (this.props.bankDetailId) {
-								const bankName = transactions[0].bankDetail.bankName;
-								const accountNumber = transactions[0].bankDetail.accountNumber.slice(-4);
-								this.setState({
-									...this.state,
-									topbarHeading: `${bankName} - XXXX ${accountNumber}`,
-								});
+							if (transactions.length) {
+								if (this.props.bankDetailId) {
+									const bankName = transactions[0].bankDetail.bankName;
+									const accountNumber = transactions[0].bankDetail.accountNumber.slice(-4);
+									this.setState({
+										...this.state,
+										topbarHeading: `${bankName} - XXXX ${accountNumber}`,
+									});
+								}
 							}
 							if (!this.isUnmounted) {
 								this.setState({
