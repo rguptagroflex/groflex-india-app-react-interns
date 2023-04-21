@@ -738,9 +738,9 @@ class AccountSubscriptionComponent extends React.Component {
 			
 			subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.FREE_PLAN ? 
 				<div>
-					isLoading ? (
+					{isLoading ? (
 						<LoaderComponent text={"Loading..."} visible={isLoading} />
-					) : (null)
+					) : (null)}
 					<div className="box" style={{padding: "26px 32px"}}>
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
