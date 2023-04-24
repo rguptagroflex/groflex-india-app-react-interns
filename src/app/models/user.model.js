@@ -81,7 +81,7 @@ class User {
 			if (this.loggedIn) {
 				updatePlanPermissions();
 			}
-		}, 1000);
+		}, 10000);
 	}
 
 	checkToken() {
@@ -146,7 +146,8 @@ class User {
 
 	hasPermission(permission) {
 		if (isEmpty(this.rights)) {
-			this.logout();
+			// console.log('this.logout()', this.rights)
+			//this.logout();  // temprary commect to resolved the again login problem 
 		} else {
 			return this.rights[permission];
 		}

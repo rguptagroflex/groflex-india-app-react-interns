@@ -20,7 +20,7 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
     constructor(props) {
         super(props);
 
-        this.chartColors = ['F3BBF8', 'EF78F6', 'B577BA', 'CC73D2', '9F17A9', '6A1370'];
+        this.chartColors = ['FBC3B1', 'F78C6B', 'F5683D', 'E9400C', 'C2350A', '882507'];
         this.state = {
             isLoading: false,
             errorOccurred: false,
@@ -192,7 +192,7 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
             const articleExpenseByCategory = [];
             newArticleExpenseData.forEach(article => {
                 const existingIndex = articleExpenseByCategory.findIndex(articleItem => article.category === articleItem.category);
-                console.log('expenese by payee index', existingIndex)
+                // console.log('expenese by payee index', existingIndex)
                 if(existingIndex == -1) {
                     articleExpenseByCategory.push({...article, customerData: {name: article.category || 'N/A'}});
                     return;
@@ -232,7 +232,7 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
                 data: value,
                 name: article.customerData.name,
                 onClick: article => {
-                    console.log('article', article)
+                    // console.log('article', article)
                     AddAdvancedListComponentFilters({
                         webStorageKey: WebStorageKey.EXPENSE_LIST_SETTINGS, 
                         filterItems: {
@@ -315,6 +315,8 @@ class DashboardExpenseArticleStatsComponent extends React.Component {
                     selectedDateFilterType={selectedDateFilterType}
                     onDateChange={this.onDateChange.bind(this)}
                     tabs={tabs}
+                    demoButtonText={"Create Expense"}
+                    demoButtonLink={'/expense/new'}
                 />
             )
                 

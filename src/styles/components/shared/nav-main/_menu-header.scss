@@ -31,8 +31,8 @@
 		flex-direction: column;
 		justify-content: flex-start;
 		align-items: center;
-		@include rem(min-height, 150);
-		@include rem(padding-top, 25);
+		@include rem(min-height, 112);
+		@include rem(padding-top, 15);
 	}
 
 	// @include breakpoint-lg {

@@ -1,34 +1,34 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import lang from 'lang';
-import moment from 'moment';
-import config from 'config';
-import _ from 'lodash';
-import accounting from 'accounting';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import ListAdvancedComponent from 'shared/list-advanced/list-advanced.component';
-import ButtonComponent from 'shared/button/button.component';
-import WebStorageKey from 'enums/web-storage-key.enum';
-import WebStorageService from 'services/webstorage.service';
-import Article from 'models/article.model';
-import Inventory from 'models/inventory.model';
-import LoadingService from 'services/loading.service';
-import ModalService from 'services/modal.service';
-import ArticleDeleteComponent from 'shared/article-delete/article-delete.component';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import lang from "lang";
+import moment from "moment";
+import config from "config";
+import _ from "lodash";
+import accounting from "accounting";
+import TopbarComponent from "shared/topbar/topbar.component";
+import ListAdvancedComponent from "shared/list-advanced/list-advanced.component";
+import ButtonComponent from "shared/button/button.component";
+import WebStorageKey from "enums/web-storage-key.enum";
+import WebStorageService from "services/webstorage.service";
+import Article from "models/article.model";
+import Inventory from "models/inventory.model";
+import LoadingService from "services/loading.service";
+import ModalService from "services/modal.service";
+import ArticleDeleteComponent from "shared/article-delete/article-delete.component";
 
-import DeleteRowsModal from 'shared/modals/list-advanced/delete-rows-modal.component';
-import InventoryAddRemoveModal from 'shared/modals/inventory-add-remove-modal.component';
-import { ListAdvancedDefaultSettings, transactionTypes } from 'helpers/constants';
-import { localeCompare, localeCompareNumeric, dateCompare, dateCompareSort } from 'helpers/sortComparators';
-import { getScaledValue } from 'helpers/getScaledValue';
-import { formatCurrency } from 'helpers/formatCurrency';
+import DeleteRowsModal from "shared/modals/list-advanced/delete-rows-modal.component";
+import InventoryAddRemoveModal from "shared/modals/inventory-add-remove-modal.component";
+import { ListAdvancedDefaultSettings, transactionTypes } from "helpers/constants";
+import { localeCompare, localeCompareNumeric, dateCompare, dateCompareSort } from "helpers/sortComparators";
+import { getScaledValue } from "helpers/getScaledValue";
+import { formatCurrency } from "helpers/formatCurrency";
 
-import { updateStatusIconCellColumns } from 'helpers/list-advanced/updateStatusIconCellColumns';
-import { connect, Provider } from 'react-redux';
-import store from 'redux/store';
-import userPermissions from 'enums/user-permissions.enum';
-import planPermissions from 'enums/plan-permissions.enum';
-import { formatDate, formatApiDate } from 'helpers/formatDate';
+import { updateStatusIconCellColumns } from "helpers/list-advanced/updateStatusIconCellColumns";
+import { connect, Provider } from "react-redux";
+import store from "redux/store";
+import userPermissions from "enums/user-permissions.enum";
+import planPermissions from "enums/plan-permissions.enum";
+import { formatDate, formatApiDate } from "helpers/formatDate";
 
 class ArticleListNewComponent extends React.Component {
 	constructor(props) {
@@ -43,14 +43,13 @@ class ArticleListNewComponent extends React.Component {
 			canCreateArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_ARTICLE),
 			canUpdateArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_ARTICLE),
 			canDeleteArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_ARTICLE),
-			isInventoryNotAvailable: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),
+			isInventoryNotAvailable: true //invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),  open when we lunch inventory
 		};
 	}
 
 	componentWillUnmount() {
 		this.isUnmounted = true;
 	}
-
 
 	createTopbar() {
 		const { isLoading, selectedRows, canCreateArticle, canDeleteArticle } = this.state;
@@ -75,32 +74,32 @@ class ArticleListNewComponent extends React.Component {
 			// 			action: 'delete-invoices',
 			// 		});
 			// 	}
-            // }
-            if (selectedRows && selectedRows.length > 0) {
-                topbarButtons.push({
-                    type: 'danger',
-                    label: resources.str_clear,
-                    buttonIcon: 'icon-trashcan',
-					action: 'delete-articles',
-					disabled: !canDeleteArticle
-                });
-            }
-    
-         //   if (canCreateArticle) {
-                topbarButtons.push({
-                    type: 'primary',
-                    label: resources.createArticle,
-                    buttonIcon: 'icon-plus',
-					action: 'create',
-					//disabled: !canCreateArticle
-                });
-         //   }	
+			// }
+			if (selectedRows && selectedRows.length > 0) {
+				topbarButtons.push({
+					type: "danger",
+					label: resources.str_clear,
+					buttonIcon: "icon-trashcan",
+					action: "delete-articles",
+					disabled: !canDeleteArticle,
+				});
+			}
+
+			//   if (canCreateArticle) {
+			topbarButtons.push({
+				type: "primary",
+				label: resources.createArticle,
+				buttonIcon: "icon-plus",
+				action: "create",
+				//disabled: !canCreateArticle
+			});
+			//   }
 		}
 
 		const topbar = (
 			<TopbarComponent
-            title={resources.str_article}
-            viewIcon={`icon-article_outlined`}
+				title={resources.str_article}
+				viewIcon={`icon-article_outlined`}
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action, selectedRows)}
 				buttons={topbarButtons}
 			/>
@@ -197,35 +196,35 @@ class ArticleListNewComponent extends React.Component {
 	onActionCellPopupItemClick(article, entry) {
 		const { resources } = this.props;
 		switch (entry.action) {
-				case 'edit':
-					setTimeout(() => {
-                        invoiz.router.navigate(`/article/edit/${article.id}`);
-                    });
-					break;
+			case "edit":
+				setTimeout(() => {
+					invoiz.router.navigate(`/article/edit/${article.id}`);
+				});
+				break;
 
-			case 'delete':
+			case "delete":
 				ModalService.open(`${resources.articleDeleteConfirmText} ${resources.str_undoneMessage}`, {
 					width: 500,
 					headline: resources.articleDelete,
 					cancelLabel: resources.str_abortStop,
-					confirmIcon: 'icon-trashcan',
+					confirmIcon: "icon-trashcan",
 					confirmLabel: resources.str_clear,
-					confirmButtonType: 'secondary',
+					confirmButtonType: "secondary",
 					onConfirm: () => {
 						ModalService.close();
 						invoiz
-			.request(`${config.resourceHost}article/${article.id}`, {
-				auth: true,
-				method: 'DELETE'
-			})
-			.then(() => {
-                invoiz.page.showToast({ message: resources.articleDeleteSuccessMessage });
-				ModalService.close();
-						if (this.refs.listAdvanced) {
-						this.refs.listAdvanced.removeSelectedRows([article]);
-				    }
-			    });
-			}
+							.request(`${config.resourceHost}article/${article.id}`, {
+								auth: true,
+								method: "DELETE",
+							})
+							.then(() => {
+								invoiz.page.showToast({ message: resources.articleDeleteSuccessMessage });
+								ModalService.close();
+								if (this.refs.listAdvanced) {
+									this.refs.listAdvanced.removeSelectedRows([article]);
+								}
+							});
+					},
 				});
 				break;
 		}
@@ -234,14 +233,14 @@ class ArticleListNewComponent extends React.Component {
 	onTopbarButtonClick(action, selectedRows) {
 		const { resources } = this.props;
 		switch (action) {
-			case 'create':
-				invoiz.router.navigate('/article/new');
+			case "create":
+				invoiz.router.navigate("/article/new");
 				break;
-			case 'delete-articles':
+			case "delete-articles":
 				if (this.refs.listAdvanced) {
 					let selectedRowsData = this.refs.listAdvanced.getSelectedRows({
-						prop: 'number',
-						sort: 'asc',
+						prop: "number",
+						sort: "asc",
 					});
 
 					selectedRowsData = selectedRowsData.map((article) => {
@@ -252,7 +251,7 @@ class ArticleListNewComponent extends React.Component {
 						<DeleteRowsModal
 							deleteUrlPrefix={`${config.resourceHost}article/`}
 							text="Are you sure you would like to delete the following article(s)? This action cannot be undone!"
-							firstColLabelFunc={() => 'Article name'}
+							firstColLabelFunc={() => "Article name"}
 							secondColLabelFunc={(item) => item.title}
 							selectedItems={selectedRowsData}
 							onConfirm={() => {
@@ -265,7 +264,7 @@ class ArticleListNewComponent extends React.Component {
 						/>,
 						{
 							width: 500,
-							headline: 'Delete articles',
+							headline: "Delete articles",
 						}
 					);
 				}
@@ -276,27 +275,35 @@ class ArticleListNewComponent extends React.Component {
 
 	getBtnModalClicked(text, data, evt) {
 		const { resources } = this.props;
-		const {articleData} = this.state;
+		const { articleData } = this.state;
 		if (text === resources.str_trackInInventory) {
-			WebStorageService.setItem(WebStorageKey.TRACK_STOCK_SCROLL, {scrollTrack: true});
-			invoiz.router.navigate(`/article/edit/${data.id}`)
+			WebStorageService.setItem(WebStorageKey.TRACK_STOCK_SCROLL, { scrollTrack: true });
+			invoiz.router.navigate(`/article/edit/${data.id}`);
 		} else {
-			console.log(data)
-			ModalService.open(<InventoryAddRemoveModal resources={resources} actionType={text} btnSelectedRow={data} onConfirm={(response) => {
-				let updateddata = response.body.data;
-				if (this.refs.listAdvanced) {
-					this.refs.listAdvanced.updateRowStockData(evt.node.id, updateddata);
+			console.log(data);
+			ModalService.open(
+				<InventoryAddRemoveModal
+					resources={resources}
+					actionType={text}
+					btnSelectedRow={data}
+					onConfirm={(response) => {
+						let updateddata = response.body.data;
+						if (this.refs.listAdvanced) {
+							this.refs.listAdvanced.updateRowStockData(evt.node.id, updateddata);
+						}
+						invoiz.page.showToast({ message: `Successfully updated article stock!` });
+						ModalService.close();
+						invoiz.router.reload();
+					}}
+				/>,
+				{
+					headline: `${text} article stock`,
+					width: 520,
+					padding: 40,
+					noTransform: true,
+					isCloseableViaOverlay: false,
 				}
-					invoiz.page.showToast({ message: `Successfully updated article stock!` });
-					ModalService.close();
-					invoiz.router.reload();
-			}}/>, {
-				headline: `${text} article stock`,
-				width: 520,
-				padding: 40,
-				noTransform: true,
-				isCloseableViaOverlay: false
-			});
+			);
 		}
 	}
 
@@ -318,40 +325,40 @@ class ArticleListNewComponent extends React.Component {
 
 		let columnDefs = [
 			{
-				headerName: 'No.',
-				field: 'number',
+				headerName: "No.",
+				field: "number",
 				suppressMovable: true,
 				maxWidth: 100,
-				sort: 'desc',
+				sort: "desc",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				width: getScaledValue(86, window.innerWidth, 1600),
 				cellRenderer: (evt) => {
-					return evt.value === Infinity ? '' : evt.value;
+					return evt.value === Infinity ? "" : evt.value;
 				},
 				comparator: localeCompareNumeric,
 				cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
 				customProps: {
-					longName: 'Article number',
+					longName: "Article number",
 					convertNumberToTextFilterOnDemand: true,
 				},
 			},
 			{
-				headerName: 'Article name',
-				field: 'title',
+				headerName: "Article name",
+				field: "title",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				width: getScaledValue(86, window.innerWidth, 1600),
 				comparator: localeCompare,
 				...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 			},
 			{
-				headerName: 'MRP',
+				headerName: "MRP",
 				maxWidth: 250,
 				hide: false,
-				field: 'mrp',
+				field: "mrp",
 				//suppressMovable: true,
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				comparator: localeCompareNumeric,
@@ -359,7 +366,7 @@ class ArticleListNewComponent extends React.Component {
 				valueFormatter: (evt) => {
 					return formatCurrency(evt.value);
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
@@ -367,53 +374,61 @@ class ArticleListNewComponent extends React.Component {
 					calculateHeaderSum: true,
 				},
 				cellStyle: (evt) => {
-					return { textAlign: 'left' }
+					return { textAlign: "left" };
 				},
 			},
 			{
-				headerName: 'Current stock',
-				field: 'currentStock',
+				headerName: "Current stock",
+				field: "currentStock",
 				maxWidth: 200,
-				sort: 'desc',
+				sort: "desc",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				width: getScaledValue(86, window.innerWidth, 1600),
 				cellRenderer: (evt) => {
-					return evt.value === Infinity ? '' : evt.data.trackedInInventory && evt.data.currentStock !== null ? (`${evt.value} ${evt.data.unit}`) : (null);
+					return evt.value === Infinity
+						? ""
+						: evt.data.trackedInInventory && evt.data.currentStock !== null
+						? `${evt.value} ${evt.data.unit}`
+						: null;
 				},
 				comparator: localeCompareNumeric,
 				cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
 				cellStyle: (evt) => {
-						if (evt.data.trackedInInventory) {
-							if (evt.value < evt.data.minimumBalance) {
-								return {
-									color: 'red'
-								}
-							} else {
-								return null;
-							}
-						}			
+					if (evt.data.trackedInInventory) {
+						if (evt.value < evt.data.minimumBalance) {
+							return {
+								color: "red",
+							};
+						} else {
+							return null;
+						}
+					}
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
 				customProps: {
-					longName: 'Current stock',
+					longName: "Current stock",
 					convertNumberToTextFilterOnDemand: true,
 				},
 			},
 			{
-				headerName: 'Current stock value',
-				field: 'value',
+				headerName: "Current stock value",
+				field: "value",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				width: getScaledValue(86, window.innerWidth, 1600),
 				//hide: true,
 				comparator: localeCompareNumeric,
 				cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
 				valueFormatter: (evt) => {
-					return evt.value === Infinity ? '' : evt.data.trackedInInventory && evt.data.currentStock !== null ? (`${formatCurrency(parseFloat(evt.data.currentStock) * parseFloat(evt.data.avgPurchaseValue))}`) : ('');
+					return evt.value === Infinity
+						? ""
+						: evt.data.trackedInInventory && evt.data.currentStock !== null
+						? `${formatCurrency(parseFloat(evt.data.currentStock) * parseFloat(evt.data.avgPurchaseValue))}`
+						: "";
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
@@ -421,38 +436,42 @@ class ArticleListNewComponent extends React.Component {
 					calculateHeaderSum: true,
 				},
 				cellStyle: (evt) => {
-					return { textAlign: 'left' }
+					return { textAlign: "left" };
 				},
 			},
 			{
-				headerName: 'Category',
+				headerName: "Category",
 				hide: true,
-				field: 'category',
+				field: "category",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				comparator: localeCompare,
 				...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 			},
 			{
-				headerName: 'HSN/SAC code',
+				headerName: "HSN/SAC code",
 				hide: true,
 				maxWidth: 200,
-				field: 'hsnSacCode',
+				field: "hsnSacCode",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				comparator: localeCompare,
 				...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 			},
 			{
-				headerName: 'Avg. purchase price',
+				headerName: "Avg. purchase price",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				width: getScaledValue(86, window.innerWidth, 1600),
-				field: 'avgPurchaseValue',
+				field: "avgPurchaseValue",
 				//hide: true,
 				comparator: localeCompareNumeric,
 				cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
 				valueFormatter: (evt) => {
-					return evt.value === Infinity ? '' : evt.data.trackedInInventory ? (`${formatCurrency(evt.value)}`) : ('');
+					return evt.value === Infinity
+						? ""
+						: evt.data.trackedInInventory
+						? `${formatCurrency(evt.value)}`
+						: "";
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
@@ -460,36 +479,40 @@ class ArticleListNewComponent extends React.Component {
 				// 	calculateHeaderSum: true,
 				// },
 				cellStyle: (evt) => {
-					return { textAlign: 'left' }
+					return { textAlign: "left" };
 				},
 			},
 			{
-				headerName: 'Minimum stock',
-				field: 'minimumBalance',
+				headerName: "Minimum stock",
+				field: "minimumBalance",
 				maxWidth: 200,
-				sort: 'desc',
+				sort: "desc",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				width: getScaledValue(86, window.innerWidth, 1600),
 				cellRenderer: (evt) => {
-					return evt.value === Infinity ? '' : evt.data.trackedInInventory && evt.data.minimumBalance !== null ? (`${evt.value} ${evt.data.unit}`) : (null);
+					return evt.value === Infinity
+						? ""
+						: evt.data.trackedInInventory && evt.data.minimumBalance !== null
+						? `${evt.value} ${evt.data.unit}`
+						: null;
 				},
 				comparator: localeCompareNumeric,
 				cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
 				customProps: {
-					longName: 'Minimum Balance',
+					longName: "Minimum Balance",
 					convertNumberToTextFilterOnDemand: true,
 				},
 			},
 			{
-				headerName: 'Default purchase price',
+				headerName: "Default purchase price",
 				maxWidth: 250,
 				minWidth: 250,
 				hide: true,
-				field: 'purchasePrice',
+				field: "purchasePrice",
 				//suppressMovable: true,
 				//minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				comparator: localeCompareNumeric,
@@ -498,9 +521,9 @@ class ArticleListNewComponent extends React.Component {
 					return formatCurrency(evt.value);
 				},
 				cellStyle: (evt) => {
-					return { textAlign: 'left' }
+					return { textAlign: "left" };
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
@@ -509,9 +532,9 @@ class ArticleListNewComponent extends React.Component {
 				},
 			},
 			{
-				headerName: 'Default purchase price (gross)',
+				headerName: "Default purchase price (gross)",
 				maxWidth: 250,
-				field: 'purchasePriceGross',
+				field: "purchasePriceGross",
 				hide: true,
 				//suppressMovable: true,
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
@@ -521,9 +544,9 @@ class ArticleListNewComponent extends React.Component {
 					return formatCurrency(evt.value);
 				},
 				cellStyle: (evt) => {
-					return { textAlign: 'left' }
+					return { textAlign: "left" };
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
@@ -555,17 +578,17 @@ class ArticleListNewComponent extends React.Component {
 			// 	},
 			// },
 			{
-				headerName: 'Sales price (net)',
+				headerName: "Sales price (net)",
 				maxWidth: 250,
 				hide: true,
-				field: 'price',
+				field: "price",
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				comparator: localeCompareNumeric,
 				cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
 				valueFormatter: (evt) => {
 					return formatCurrency(evt.value);
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
@@ -573,14 +596,14 @@ class ArticleListNewComponent extends React.Component {
 					calculateHeaderSum: true,
 				},
 				cellStyle: (evt) => {
-					return { textAlign: 'left' }
+					return { textAlign: "left" };
 				},
 			},
 			{
-				headerName: 'Sales price (gross)',
+				headerName: "Sales price (gross)",
 				maxWidth: 250,
 				hide: true,
-				field: 'priceGross',
+				field: "priceGross",
 				//suppressMovable: true,
 				minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				comparator: localeCompareNumeric,
@@ -588,7 +611,7 @@ class ArticleListNewComponent extends React.Component {
 				valueFormatter: (evt) => {
 					return formatCurrency(evt.value);
 				},
-				filter: 'agNumberColumnFilter',
+				filter: "agNumberColumnFilter",
 				filterParams: {
 					suppressAndOrCondition: true,
 				},
@@ -596,36 +619,30 @@ class ArticleListNewComponent extends React.Component {
 					calculateHeaderSum: true,
 				},
 				cellStyle: (evt) => {
-					return { textAlign: 'left' }
+					return { textAlign: "left" };
 				},
 			},
 			{
-				headerName: 'Stock actions',
-				field: 'trackedInInventory',
+				headerName: "Stock actions",
+				field: "trackedInInventory",
 				filter: true,
 				minWidth: 120,
 				//minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 				width: getScaledValue(86, window.innerWidth, 1600),
 				suppressMovable: true,
-			//	enableHiding: false,
+				//	enableHiding: false,
 				suppressMenu: true,
-				cellRenderer: 'btnCellRenderer',
+				cellRenderer: "btnCellRenderer",
 				cellRendererParams: {
-					resources
-				}
-			}
+					resources,
+				},
+			},
 		];
 
-		const inventoryFields = [
-			'trackedInInventory',
-			'currentStock',
-			'value',
-			'minimumBalance',
+		const inventoryFields = ["trackedInInventory", "currentStock", "value", "minimumBalance"];
 
-		]
-
-		if(this.state.isInventoryNotAvailable) {
-			columnDefs = columnDefs.filter(column => !inventoryFields.includes(column.field))
+		if (this.state.isInventoryNotAvailable) {
+			columnDefs = columnDefs.filter((column) => !inventoryFields.includes(column.field));
 		}
 
 		return (
@@ -641,12 +658,12 @@ class ArticleListNewComponent extends React.Component {
 							this.getBtnModalClicked(text, data, evt);
 						}}
 						defaultSortModel={{
-							colId: 'number',
-							sort: 'desc',
+							colId: "number",
+							sort: "desc",
 						}}
 						emptyState={{
-							iconClass: 'icon-article_outlined',
-							headline: 'No articles created yet',
+							iconClass: "icon-article_outlined",
+							headline: "No articles created yet",
 							subHeadline: resources.createOrImportArticalText,
 							buttons: (
 								<React.Fragment>
@@ -654,34 +671,33 @@ class ArticleListNewComponent extends React.Component {
 										label={resources.createArticle}
 										buttonIcon="icon-plus"
 										dataQsId="empty-list-create-button"
-										callback={() => invoiz.router.navigate('/article/new')}
+										callback={() => invoiz.router.navigate("/article/new")}
 										disabled={!canCreateArticle}
 									/>
 								</React.Fragment>
 							),
 						}}
-                        fetchUrls={[
+						fetchUrls={[
 							`${config.resourceHost}article?offset=0&searchText=&limit=9999999&orderBy=number&desc=false`,
-							`${config.resourceHost}inventory?offset=0&searchText=&limit=9999999&orderBy=articleId&desc=false`
+							`${config.resourceHost}inventory?offset=0&searchText=&limit=9999999&orderBy=articleId&desc=false`,
 						]}
 						onMultiRowData={(responses) => {
-								responses = responses[0].map((article) => {
+							responses = responses[0].map((article) => {
 								article = new Article(article);
-								if (article['trackedInInventory']) {
+								if (article["trackedInInventory"]) {
 									responses[1].map((inventoryItem) => {
-										if (article['id'] === inventoryItem['articleId']) {
-											article['inventoryId'] = inventoryItem['id']
-											article['currentStock'] = inventoryItem['currentStock']
-											article['minimumBalance'] = inventoryItem['minimumBalance']
-											article['value'] = inventoryItem['value']
-											article['itemModifiedDate'] = inventoryItem['itemModifiedDate']
-											article['unit'] = inventoryItem['unit']
-											article['avgPurchaseValue'] = inventoryItem['avgPurchaseValue']
+										if (article["id"] === inventoryItem["articleId"]) {
+											article["inventoryId"] = inventoryItem["id"];
+											article["currentStock"] = inventoryItem["currentStock"];
+											article["minimumBalance"] = inventoryItem["minimumBalance"];
+											article["value"] = inventoryItem["value"];
+											article["itemModifiedDate"] = inventoryItem["itemModifiedDate"];
+											article["unit"] = inventoryItem["unit"];
+											article["avgPurchaseValue"] = inventoryItem["avgPurchaseValue"];
 										}
-									})
-
+									});
 								}
-								const numberBeginsWithZero = article.number.toString().substr(0, 1) === '0';
+								const numberBeginsWithZero = article.number.toString().substr(0, 1) === "0";
 
 								// const customerNumberBeginsWithZero =
 								// 	invoice.customerData.number.toString().substr(0, 1) === '0';
@@ -690,8 +706,8 @@ class ArticleListNewComponent extends React.Component {
 									article.number.toString().length === 0
 										? Infinity
 										: isNaN(Number(article.number)) || numberBeginsWithZero
-											? article.number
-											: Number(article.number);
+										? article.number
+										: Number(article.number);
 
 								// invoice.customerNumber = invoice.customerData
 								// 	? isNaN(Number(invoice.customerData.number)) || customerNumberBeginsWithZero
@@ -699,11 +715,11 @@ class ArticleListNewComponent extends React.Component {
 								// 		: Number(invoice.customerData.number)
 								// 	: '';
 
-								article.title = (article.title) || '';
+								article.title = article.title || "";
 
-								article.hsnSacCode = (article.hsnSacCode) || '';
+								article.hsnSacCode = article.hsnSacCode || "";
 
-                                article.category = (article.category) || '';
+								article.category = article.category || "";
 								return article;
 							});
 
@@ -736,9 +752,9 @@ class ArticleListNewComponent extends React.Component {
 						exportFilename={`Exported articles list ${moment().format(config.dateFormat.client)}`}
 						multiSelect={true}
 						usePagination={true}
-						searchFieldPlaceholder={'Articles'}
-						loadingRowsMessage={'Loading articles ...'}
-						noFilterResultsMessage={'No articles matched the filter'}
+						searchFieldPlaceholder={"Articles"}
+						loadingRowsMessage={"Loading articles ..."}
+						noFilterResultsMessage={"No articles matched the filter"}
 						webStorageKey={WebStorageKey.ARTICLE_LIST_SETTINGS}
 						actionCellPopup={{
 							popupEntriesFunc: (item) => {
@@ -748,28 +764,24 @@ class ArticleListNewComponent extends React.Component {
 								if (item) {
 									article = new Article(item);
 									if (canUpdateArticle && canDeleteArticle) {
-                                    entries.push(
-                                        {
-                                            dataQsId: `article-list-item-dropdown-entry-delete`,
-                                            label: resources.str_clear,
-                                            action: 'delete'
-                                        }
-                                    )
-                                    
-                                    entries.push(
-                                        {
-                                            dataQsId: `article-list-item-dropdown-entry-edit`,
-                                            label: resources.str_toEdit,
-                                            action: 'edit'
-                                        }
-                                    )
-									}	
+										entries.push({
+											dataQsId: `article-list-item-dropdown-entry-delete`,
+											label: resources.str_clear,
+											action: "delete",
+										});
+
+										entries.push({
+											dataQsId: `article-list-item-dropdown-entry-edit`,
+											label: resources.str_toEdit,
+											action: "edit",
+										});
+									}
 									if (entries.length === 0) {
 										entries.push({
-											label: 'No action available',
-											customEntryClass: 'popover-entry-disabled',
+											label: "No action available",
+											customEntryClass: "popover-entry-disabled",
 										});
-									}		
+									}
 								}
 
 								return [entries];
@@ -787,7 +799,7 @@ class ArticleListNewComponent extends React.Component {
 									dataQsId: "setting-list-item-dropdown-articlecategory",
 								});
 								entries.push({
-									label: "More settings",
+									label: "Article Units",
 									action: "moresettings",
 									dataQsId: "setting-list-item-dropdown-moresettings",
 								});
@@ -821,12 +833,11 @@ class ArticleListNewComponent extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	return {
-		resources
+		resources,
 	};
 };
 
 export default connect(mapStateToProps)(ArticleListNewComponent);
-

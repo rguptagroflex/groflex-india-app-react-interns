@@ -1,5 +1,5 @@
-import React from 'react';
-import IconButtonComponent from 'shared/button/icon-button.component';
+import React from "react";
+import IconButtonComponent from "shared/button/icon-button.component";
 
 const DetailViewHeadAdvancedComponent = (props) => {
 	const { actionCallback, actionElements, leftElements, rightElements, canvasWidth } = props;

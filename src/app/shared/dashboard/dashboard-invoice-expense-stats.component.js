@@ -2,7 +2,7 @@ import React from 'react';
 import config from 'config';
 import moment from 'moment';
 import { connect } from 'react-redux';
-
+import userPermissions from "enums/user-permissions.enum";
 import WidgetComponent from 'shared/dashboard/components/widget.component';
 import WidgetErrorComponent from 'shared/dashboard/components/widget-error.component';
 import invoiz from 'services/invoiz.service';
@@ -34,6 +34,7 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
             expenseChartData: {},
             activeTab: 0,
             selectedDateFilterType: DateFilterType.FISCAL_YEAR,
+            canViewExpense: false
         }
 
         this.invoiceStateMap = {
@@ -446,7 +447,7 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
 
     async fetchDataAndCreateChart() {
         await this.fetchInvoiceList();
-        // await this.fetchExpenseList();
+        await this.fetchExpenseList();
     }
 
     async onDateChange(type, dateRange) {
@@ -466,24 +467,38 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
         if(prevState.invoiceList !== this.state.invoiceList) {
             this.createInvoiceChartData();
         } 
-        // else if(prevState.expenseList !== this.state.expenseList) {
-        //     this.createExpenseChartData();
-        // }
+        else if(prevState.expenseList !== this.state.expenseList) {
+            this.createExpenseChartData();
+        }
     }
 
     componentDidMount() {
         this.fetchDataAndCreateChart();
+        this.setState({
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		});
     }
 
     render() {
-        const { isLoading, errorOccurred, selectedDateFilterType } = this.state;
+        const { isLoading, errorOccurred, selectedDateFilterType, canViewExpense } = this.state;
         const { resources } = this.props;
-
-
-        const tabs = [
+        let tabs = []
+        if(canViewExpense) {
+            tabs = [
             { name: 'Invoices', chartData: this.state.invoiceChartData, refresh: this.createInvoiceChartData.bind(this) },
-            // { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
+            { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
         ];
+        } else {
+            tabs = [
+                { name: 'Invoices', chartData: this.state.invoiceChartData, refresh: this.createInvoiceChartData.bind(this) },
+            ];
+        }
+        
+
+        // const tabs = [
+        //     { name: 'Invoices', chartData: this.state.invoiceChartData, refresh: this.createInvoiceChartData.bind(this) },
+        //     // { name: 'Expenses', chartData: this.state.expenseChartData, refresh: this.createExpenseChartData.bind(this) },
+        // ];
 
         const content = errorOccurred ? (
             <WidgetErrorComponent

@@ -46,11 +46,18 @@ class SettingsAccountComponent extends React.Component {
 		return (
 			<Provider store={store}>
 				<div className="settings-account-wrapper wrapper-has-topbar-with-margin">
-					<TopbarComponent title={'Account details'} viewIcon={`icon-user_outlined_black`} />
-					<div className="box">
+					<TopbarComponent title={
+						pathName === "/settings/account" ? 'Account details' : 
+						pathName === "/settings/account-setting" ? 'Setting' : 
+						pathName === "/settings/billing" ? 'Your Billing' : ''
+						} 
+						viewIcon={pathName === "/settings/account" ? `icon-user_outlined_black` : 
+						pathName === "/settings/account-setting" ? `icon-settings_outlined` : 
+						pathName === "/settings/billing" ? `icon-icon-credit_card` : `icon-user_outlined_black`} />
+					<div >
 						{/* <h1>{resources.str_account}</h1> */}
 						{pathName === "/settings/account" ? 
-							<div>
+							<div className="box">
 								<ChangeUserComponent account={account} resources={resources} /> 
 								<AccountComponent account={account} resources={resources} />
 								<AccountKycProgressComponent account={account} resources={resources} />
@@ -58,7 +65,7 @@ class SettingsAccountComponent extends React.Component {
 						: null}
 						
 						{pathName === "/settings/account-setting" ? 
-							<div>
+							<div className="box">
 								<ChangePasswordComponent resources={resources} />
 								<SenderEmailComponent account={account} resources={resources} />
 								{canModifyNotifications ? <NotificationsComponent account={account} resources={resources} /> : null }

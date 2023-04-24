@@ -56,21 +56,21 @@
 
 		<!-- Intercom -->
 		<!-- @@if (releaseStage === 'production') {
-			<script>const INTECOM_APP_ID = 'y1zi63l6';</script>
+			<script>const INTECOM_APP_ID = 'flyfsv5l';</script>
 		}
-		@@if (releaseStage === 'staging' || releaseStage === 'qa' || releaseStage === 'local') {
-			<script>const INTECOM_APP_ID = 'qrsrkmrh';</script>
+		@@if (releaseStage === 'staging' || releaseStage === 'qa' || releaseStage === 'local' || releaseStage === 'development') {
+				<script>const INTECOM_APP_ID = 'azrlzv5b';</script>
 		}
 		<script>
-			window.intercomSettings = {
-				app_id: INTECOM_APP_ID
-			};
-			(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + INTECOM_APP_ID;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
+				window.intercomSettings = {
+						app_id: INTECOM_APP_ID
+				};
+				(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/' + INTECOM_APP_ID;var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s, x);};if(document.readyState==='complete'){l();}else if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();
 		</script> -->
 		<!-- End of Intercom -->
 
-		<!-- Production -->
 
+		<!-- Production -->
 		@@if (releaseStage === 'production' || releaseStage === 'qa' ) {
 		<!-- Google Tag Manager -->
 		<script>
@@ -87,126 +87,11 @@
 		</noscript>
 		<!-- End of Taboola Pixel Code -->
 		}
-		@@if (releaseStage === 'local') {
-		<!-- Freshdesk Chat-->
-		<!-- <script type='text/javascript'>
-			var fc_JS=document.createElement('script');
-			fc_JS.type='text/javascript';
-			fc_JS.src='https://wchat.freshchat.com/js/widget.js?t='+Date.now();
-			(document.body?document.body:document.getElementsByTagName('head')[0]).appendChild(fc_JS);
-			window.fcSettings = { token:'82a09d04-737d-46c5-a881-84d5b3240d4b', host : 'https://wchat.freshchat.com'};
-		</script> -->
-		<!-- End of Freshdesk Chat-->
 
-		<!-- Freshdesk -->
-		<!-- <script type="text/javascript" src="https://s3.amazonaws.com/assets.freshdesk.com/widget/freshwidget.js"></script>
-		<script type="text/javascript">
-			FreshWidget.init("", {"queryString": "&widgetType=popup&formTitle=Imprezz+Support&captcha=yes&searchArea=no", "utf8": "✓", "widgetType": "popup", "buttonType": "text", "buttonText": "Support", "buttonColor": "white", "buttonBg": "#0079B3", "alignment": "2", "offset": "88%", "formHeight": "500px", "captcha": "yes", "url": "https://imprezz.freshdesk.com"} );
-		</script> -->
-		<!-- End of Freshdesk -->
-		<!-- Intercom Chat  Now it now into the app.componet-->
-		<!-- <script>
-			window.intercomSettings = {
-			  app_id: "y1zi63l6",
-			  name: "Test", // Full name
-			  email: "Test@gmail.com"
-			};
-		  </script>
-		  <script>(function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',w.intercomSettings);}else{var d=document;var i=function(){i.c(arguments);};i.q=[];i.c=function(args){i.q.push(args);};w.Intercom=i;var l=function(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/y1zi63l6';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);};if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script> -->
-		}
-		
-		
 		<!-- Iconfont -->
 
 		<!-- Amplitude -->
-		<!-- <script type="text/javascript">
-			(function (e, t) {
-				var n = e.amplitude || { _q: [], _iq: {} };
-				var r = t.createElement("script");
-				r.type = "text/javascript";
-				r.integrity = "sha384-tzcaaCH5+KXD4sGaDozev6oElQhsVfbJvdi3//c2YvbY02LrNlbpGdt3Wq4rWonS";
-				r.crossOrigin = "anonymous";
-				r.async = true;
-				r.src = "https://cdn.amplitude.com/libs/amplitude-8.5.0-min.gz.js";
-				r.onload = function () {
-					if (!e.amplitude.runQueuedFunctions) {
-						console.log("[Amplitude] Error: could not load SDK");
-					}
-				};
-				var i = t.getElementsByTagName("script")[0];
-				i.parentNode.insertBefore(r, i);
-				function s(e, t) {
-					e.prototype[t] = function () {
-						this._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
-						return this;
-					};
-				}
-				var o = function () {
-					this._q = [];
-					return this;
-				};
-				var a = ["add", "append", "clearAll", "prepend", "set", "setOnce", "unset", "preInsert", "postInsert", "remove"];
-				for (var c = 0; c < a.length; c++) {
-					s(o, a[c]);
-				}
-				n.Identify = o;
-				var u = function () {
-					this._q = [];
-					return this;
-				};
-				var l = ["setProductId", "setQuantity", "setPrice", "setRevenueType", "setEventProperties"];
-				for (var p = 0; p < l.length; p++) {
-					s(u, l[p]);
-				}
-				n.Revenue = u;
-				var d = [
-					"init",
-					"logEvent",
-					"logRevenue",
-					"setUserId",
-					"setUserProperties",
-					"setOptOut",
-					"setVersionName",
-					"setDomain",
-					"setDeviceId",
-					"enableTracking",
-					"setGlobalUserProperties",
-					"identify",
-					"clearUserProperties",
-					"setGroup",
-					"logRevenueV2",
-					"regenerateDeviceId",
-					"groupIdentify",
-					"onInit",
-					"logEventWithTimestamp",
-					"logEventWithGroups",
-					"setSessionId",
-					"resetSessionId",
-				];
-				function v(e) {
-					function t(t) {
-						e[t] = function () {
-							e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
-						};
-					}
-					for (var n = 0; n < d.length; n++) {
-						t(d[n]);
-					}
-				}
-				v(n);
-				n.getInstance = function (e) {
-					e = (!e || e.length === 0 ? "$default_instance" : e).toLowerCase();
-					if (!Object.prototype.hasOwnProperty.call(n._iq, e)) {
-						n._iq[e] = { _q: [] };
-						v(n._iq[e]);
-					}
-					return n._iq[e];
-				};
-				e.amplitude = n;
-			})(window, document);
-		
-			amplitude.getInstance().init("c8dc1e980ea6f4be042531c590577369");
-		</script> -->
+		@@if (releaseStage === 'production' || releaseStage === 'qa' || releaseStage === 'development' || releaseStage === 'local'  ) {
 		<script type="text/javascript">
 			(function(e,t){var n=e.amplitude||{_q:[],_iq:{}};var r=t.createElement("script")
 			;r.type="text/javascript"
@@ -234,63 +119,41 @@
 		  
 			amplitude.getInstance().init("eb8228344cf780e7c357b9dcd154d879");
 		  </script>
+		}
 		<!-- Amplitude -->
 		
 		@@if (releaseStage !== 'local') {
 		<link href="/css/iconfont.css" rel="stylesheet" />
 		}		
 		
-		<!-- <script type="text/javascript">
-			(function() {
-				document.tidioIdentify = {
-					distinct_id: "xyz@gmail.com", // Unique visitor ID in your system
-					email: "xyz@gmail.com", // visitor email
-					name: "sandy singh", // Visitor name
-					phone: "+44 2032897807" //Visitor phone
-				};
-			function onTidioChatApiReady() {
-				window.tidioChatApi.hide();
-			}
-
-			if (window.tidioChatApi) {
-				window.tidioChatApi.on("ready", onTidioChatApiReady);
-			}
-
-			document.querySelector(".chat-button").addEventListener("click", function() {
-				window.tidioChatApi.show();
-				window.tidioChatApi.open();
-			});
-			})();
-		</script> -->
-		<!-- Sendinblue Conversations {literal} -->
-		<!-- @@if (releaseStage === 'production') {
-			<script>const SENDINBLUE_PUBLIC_KEY = '634a6540af587e45c9546ad7';</script>
-		}
-		@@if (releaseStage === 'staging' || releaseStage === 'qa' || releaseStage === 'local') {
-			<script>const SENDINBLUE_PUBLIC_KEY = '634a6540af587e45c9546ad7';</script>
-		}
-		<script>
-			(function(d, w, c) {
-				w.SibConversationsID = SENDINBLUE_PUBLIC_KEY;
-				w[c] = w[c] || function() {
-					(w[c].q = w[c].q || []).push(arguments);
-				};
-				var s = d.createElement('script');
-				s.async = true;
-				s.src = 'https://conversations-widget.sendinblue.com/sib-conversations.js';
-				if (d.head) d.head.appendChild(s);
-			})(document, window, 'SibConversations');
-		</script> -->
-		<!-- /Sendinblue Conversations {/literal} -->
-
-		<!--sendpulse-->
-		@@if (releaseStage === 'production') {
-			<script src="//fbstore.sendpulse.com/loader.js" data-sp-widget-id="05005e5f-7bd9-4f44-8383-84dc3eec201c" async></script>
-		}
-		@@if (releaseStage === 'staging' || releaseStage === 'qa') {
-			<script src="//fbstore.sendpulse.com/loader.js" data-sp-widget-id="05005e5f-7bd9-4f44-8383-84dc3eec201c" async></script>
-		}
-		<!--sendpulse-->
+		<!-- Sendinblue -->
+			<script type="text/javascript">
+				(function() {
+					window.sib = {
+						equeue: [],
+						client_key: "0g3hqpvpknum1y5ip9cuk4nt"
+					};
+					/* OPTIONAL: email for identify request*/
+					// window.sib.email_id = 'example@domain.com';
+					window.sendinblue = {};
+					for (var j = ['track', 'identify', 'trackLink', 'page'], i = 0; i < j.length; i++) {
+					(function(k) {
+						window.sendinblue[k] = function() {
+							var arg = Array.prototype.slice.call(arguments);
+							(window.sib[k] || function() {
+									var t = {};
+									t[k] = arg;
+									window.sib.equeue.push(t);
+								})(arg[0], arg[1], arg[2], arg[3]);
+							};
+						})(j[i]);
+					}
+					var n = document.createElement("script"),
+						i = document.getElementsByTagName("script")[0];
+					n.type = "text/javascript", n.id = "sendinblue-js", n.async = !0, n.src = "https://sibautomation.com/sa.js?key=" + window.sib.client_key, i.parentNode.insertBefore(n, i), window.sendinblue.page();
+				})();
+			</script>
+		<!-- /Sendinblue -->
 	</head>
 
 	<body spellcheck="false">
@@ -311,6 +174,6 @@
 			</div>
 		</div>
 		<script src="/js/app.js"></script>
-		<div class="app-version" id="app-version" data-qs-id="app-version">1.0.6</div>		
+		<div class="app-version" id="app-version" data-qs-id="app-version">1.0.0</div>		
 	</body>
 </html>

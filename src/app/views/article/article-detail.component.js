@@ -1,17 +1,17 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import BarChartMonthsComponent from 'shared/charts/bar-chart-months.component';
-import config from 'config';
-import { formatCurrency } from 'helpers/formatCurrency';
-import LoaderComponent from 'shared/loader/loader.component';
-import NotesComponent from 'shared/notes/notes.component';
-import Article from 'models/article.model';
-import Inventory from 'models/inventory.model';
-import ListComponent from 'shared/list/list.component';
-import PaginationComponent from 'shared/pagination/pagination.component';
-import FilterComponent from 'shared/filter/filter.component';
-import ButtonComponent from 'shared/button/button.component';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import TopbarComponent from "shared/topbar/topbar.component";
+import BarChartMonthsComponent from "shared/charts/bar-chart-months.component";
+import config from "config";
+import { formatCurrency } from "helpers/formatCurrency";
+import LoaderComponent from "shared/loader/loader.component";
+import NotesComponent from "shared/notes/notes.component";
+import Article from "models/article.model";
+import Inventory from "models/inventory.model";
+import ListComponent from "shared/list/list.component";
+import PaginationComponent from "shared/pagination/pagination.component";
+import FilterComponent from "shared/filter/filter.component";
+import ButtonComponent from "shared/button/button.component";
 import {
 	fetchArticleHistoryList,
 	sortArticleHistoryList,
@@ -19,21 +19,21 @@ import {
 	filterArticleHistoryList,
 	fetchInventoryHistoryList,
 	paginateInventoryHistoryList,
-	sortInventoryHistoryList
-} from 'redux/ducks/article/articleHistoryList';
-import { connect } from 'react-redux';
-import userPermissions from 'enums/user-permissions.enum';
-import { formatApiDate, formatClientDate } from '../../helpers/formatDate';
-import WebStorageService from 'services/webstorage.service';
-import WebStorageKey from 'enums/web-storage-key.enum';
-import { format } from 'util';
-import Uploader from 'fine-uploader';
-import _ from 'lodash';
-import { handleTransactionFormErrors, handleImageError } from 'helpers/errors';
+	sortInventoryHistoryList,
+} from "redux/ducks/article/articleHistoryList";
+import { connect } from "react-redux";
+import userPermissions from "enums/user-permissions.enum";
+import { formatApiDate, formatClientDate } from "../../helpers/formatDate";
+import WebStorageService from "services/webstorage.service";
+import WebStorageKey from "enums/web-storage-key.enum";
+import { format } from "util";
+import Uploader from "fine-uploader";
+import _ from "lodash";
+import { handleTransactionFormErrors, handleImageError } from "helpers/errors";
 
 const TopbarActions = {
 	EDIT: 1,
-	CREATE_PURCHASE_ORDER: 2
+	CREATE_PURCHASE_ORDER: 2,
 };
 
 class ArticleDetailComponent extends React.Component {
@@ -53,6 +53,7 @@ class ArticleDetailComponent extends React.Component {
 			canUpdateArticle: null,
 			canViewArticleSalesOverview: null,
 			canViewOffer: null,
+			canViewExpense: false,
 			uploadedArticleImage: [],
 		};
 	}
@@ -66,15 +67,17 @@ class ArticleDetailComponent extends React.Component {
 		if (article.trackedInInventory) {
 			this.props.fetchInventoryHistoryList(this.state.inventory.id, true);
 		}
-		
+
 		this.setState({
 			canUpdateArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_ARTICLE),
-			canViewArticleSalesOverview: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ARTICLE_SALES_OVERVIEW),
-			canViewOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_OFFER)
+			canViewArticleSalesOverview:
+				invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ARTICLE_SALES_OVERVIEW),
+			canViewOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_OFFER),
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
 		});
 		setTimeout(() => {
 			this.initManualUploader();
-		})
+		});
 	}
 
 	createArticleHistoryTableRows(articleHistoryItems) {
@@ -90,8 +93,8 @@ class ArticleDetailComponent extends React.Component {
 						{ value: articleHistoryItem.displayNumber },
 						{ value: articleHistoryItem.customer },
 						{ value: articleHistoryItem.displayQuantity },
-						{ value: articleHistoryItem.displayPrice }
-					]
+						{ value: articleHistoryItem.displayPrice },
+					],
 				});
 			});
 		}
@@ -101,7 +104,7 @@ class ArticleDetailComponent extends React.Component {
 
 	createInventoryTableRows(inventoryHistoryItems) {
 		const rows = [];
-		
+
 		if (inventoryHistoryItems) {
 			inventoryHistoryItems.forEach((inventoryHistoryItem, index) => {
 				let sourceValues = null;
@@ -115,8 +118,15 @@ class ArticleDetailComponent extends React.Component {
 						{ value: inventoryHistoryItem.currentStock },
 						{ value: formatCurrency(inventoryHistoryItem.value) },
 						{ value: inventoryHistoryItem.action },
-						{ value: sourceValues[0] !== 'manual' ? sourceValues[0] === 'expense' || sourceValues[0] === 'invoice' ? sourceValues[0] + ' ' + sourceValues[1] : sourceValues[0]: sourceValues[0]}
-					]
+						{
+							value:
+								sourceValues[0] !== "manual"
+									? sourceValues[0] === "expense" || sourceValues[0] === "invoice"
+										? sourceValues[0] + " " + sourceValues[1]
+										: sourceValues[0]
+									: sourceValues[0],
+						},
+					],
 				});
 			});
 		}
@@ -129,26 +139,25 @@ class ArticleDetailComponent extends React.Component {
 			return;
 		}
 
-		_.each(files, file => {
+		_.each(files, (file) => {
 			this.manualUploader.addFiles([file]);
 		});
 	}
 
 	addSelectedFile(event) {
-
 		const file = event.target.files[0];
 		this.addFile([file]);
-		event.target.value = '';
+		event.target.value = "";
 	}
 
 	initDragAndDropUploader() {
 		Uploader.DragAndDrop({
-			dropZoneElements: [document.getElementById('expense-receipt-dropbox')],
+			dropZoneElements: [document.getElementById("expense-receipt-dropbox")],
 			callbacks: {
-				processingDroppedFilesComplete: files => {
+				processingDroppedFilesComplete: (files) => {
 					this.addFile(files);
-				}
-			}
+				},
+			},
 		});
 	}
 
@@ -161,13 +170,13 @@ class ArticleDetailComponent extends React.Component {
 				messages: {
 					// minSizeError: resources.expenseFileMinSizeError,
 					// sizeError: resources.expenseFileMaxSizeError,
-					typeError: resources.expenseFileTypeError
+					typeError: resources.expenseFileTypeError,
 				},
 				request: {
 					customHeaders: { authorization: `Bearer ${invoiz.user.token}` },
 					endpoint: `${config.article.endpoints.articleImageUrl}/${this.state.article.id}`,
-					inputName: 'image',
-					filenameParam: 'filename'
+					inputName: "image",
+					filenameParam: "filename",
 				},
 				callbacks: {
 					onComplete: (id, fileName, response) => {
@@ -184,7 +193,7 @@ class ArticleDetailComponent extends React.Component {
 						});
 
 						//if (!this.state.isModal) {
-							
+
 						//}
 					},
 					onError: (id, name, errorReason, xhr) => {
@@ -194,11 +203,11 @@ class ArticleDetailComponent extends React.Component {
 						}
 
 						invoiz.page.showToast({
-							type: 'error',
-							message: format(errorReason, name) || resources.expenseEditImageUploadError
+							type: "error",
+							message: format(errorReason, name) || resources.expenseEditImageUploadError,
 						});
-					}
-				}
+					},
+				},
 			})
 		);
 	}
@@ -208,7 +217,11 @@ class ArticleDetailComponent extends React.Component {
 		const { resources } = this.props;
 		//const imageUrl = article.imageUrl && article.imageUrl.includes('type=external') ?  `${config.imageResourceHost}${article.imageUrl}`;
 		//const imageUrl = `${config.imageResourceHost}${article.metaData.imageUrl}`;
-		const imageUrl = (!article.imageUrl) ? null :( article.imageUrl.includes('type=external') ? article.imageUrl :  `${config.imageResourceHost}${article.imageUrl}`)
+		const imageUrl = !article.imageUrl
+			? null
+			: article.imageUrl.includes("type=external")
+			? article.imageUrl
+			: `${config.imageResourceHost}${article.imageUrl}`;
 		return (
 			<div className="box wrapper-has-topbar-with-margin">
 				<div className="article-content_content row">
@@ -216,19 +229,25 @@ class ArticleDetailComponent extends React.Component {
 						<div className="articleImageContainer">
 							<img
 								className=""
-								style={!article.imageUrl ? {height: 100, textAlign: 'center', marginTop: 55} : null}
+								style={!article.imageUrl ? { height: 100, textAlign: "center", marginTop: 55 } : null}
 								src={!article.imageUrl ? "/assets/images/icons/article_img_placeholder.svg" : imageUrl}
-								alt={'Could not load image!'}
+								alt={"Could not load image!"}
 								onError={(e) => {
-										(e.target.style = "padding: 95px 57px 0 50px!important; font-size: 12px;");
+									e.target.style = "padding: 95px 57px 0 50px!important; font-size: 12px;";
 								}}
 							/>
-							{!article.imageUrl ? <span style={{textAlign: 'center', marginTop: 10, color: '#747474'}}>{`No image found`}</span> : null}
+							{!article.imageUrl ? (
+								<span
+									style={{ textAlign: "center", marginTop: 10, color: "#747474" }}
+								>{`No image found`}</span>
+							) : null}
 						</div>
 					</div>
 					<div className="article-col">
-						<div className="itemGroup" style={{marginBottom: 0}}>
-							<div className="text-h4 text-truncatewrap" style={{ height: 56, width: 232 }}>{article.title}</div>
+						<div className="itemGroup" style={{ marginBottom: 0 }}>
+							<div className="text-h4 text-truncatewrap" style={{ height: 56, width: 232 }}>
+								{article.title}
+							</div>
 							<div className="item text-truncatewrap" style={{ height: 56, paddingTop: 5 }}>
 								<div
 									className="item_text text-truncatewrap"
@@ -333,16 +352,17 @@ class ArticleDetailComponent extends React.Component {
 					) : null} */}
 					<div className="row">
 						<div className="article-image">
-								<label className="text-muted">
-									<p className="upload-image">
-										<span style={{color: "white"}}>{`Upload image`}</span>
-									</p>
-									<input
-										className="u_hidden"
-										type="file"
-										onChange={this.addSelectedFile.bind(this)}
-									/>
-								</label>
+							<label className="text-muted">
+								<p
+								// className="upload-image"
+								>
+									<span
+										className="button button-default button-rounded"
+										// style={{ color: "white" }}
+									>{`Upload image`}</span>
+								</p>
+								<input className="u_hidden" type="file" onChange={this.addSelectedFile.bind(this)} />
+							</label>
 						</div>
 					</div>
 				</div>
@@ -425,9 +445,7 @@ class ArticleDetailComponent extends React.Component {
 		);
 	}
 
-	onUploadImage() {
-		
-	}
+	onUploadImage() {}
 
 	onFilterList(filter) {
 		this.props.filterArticleHistoryList(this.state.article.id, filter);
@@ -463,10 +481,10 @@ class ArticleDetailComponent extends React.Component {
 		invoiz
 			.request(`${config.resourceHost}article/${article.id}`, {
 				auth: true,
-				method: 'PUT',
-				data: article
+				method: "PUT",
+				data: article,
 			})
-			.then(response => {
+			.then((response) => {
 				invoiz.page.showToast({ message: resources.articleUpdateSuccessMessage });
 				const articleUpdated = new Article(article);
 				this.setState({ article: articleUpdated });
@@ -497,14 +515,14 @@ class ArticleDetailComponent extends React.Component {
 				vatPercent: article.vatPercent,
 				description: article.description,
 				hsnSacCode: article.hsnSacCode,
-				trackedInInventory: inventory.trackedInInventory
+				trackedInInventory: inventory.trackedInInventory,
 			});
 			invoiz.router.navigate(`/purchase-order/new`);
 		}
 	}
 
 	render() {
-		const { article, inventoryHistory, canUpdateArticle, canViewArticleSalesOverview, canViewOffer } = this.state;
+		const { article, inventoryHistory, canUpdateArticle, canViewArticleSalesOverview, canViewOffer, canViewExpense } = this.state;
 		const {
 			isLoading,
 			errorOccurred,
@@ -521,45 +539,60 @@ class ArticleDetailComponent extends React.Component {
 		} = this.props;
 		let permittedfilterItems;
 		if (!canViewOffer) {
-			permittedfilterItems = filterItems.filter(item => item.key !== 'offer');
+			permittedfilterItems = filterItems.filter((item) => item.key !== "offer");
 		} else {
 			permittedfilterItems = filterItems;
 		}
+		if (!canViewExpense) {
+			permittedfilterItems = permittedfilterItems.filter((item) => item.key !== "expense" && item.key !== "purchaseOrder");
+		} 
 		return (
 			<div className="article-detail-wrapper wrapper-has-topbar">
-				{ canUpdateArticle ? <TopbarComponent
-					title={article.title}
-					backButtonRoute={`/articles`}
-					buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
-					buttons={[
-						// { type: 'primary', label: `Create purchase order`, buttonIcon: 'icon-plus', action: TopbarActions.CREATE_PURCHASE_ORDER },
-						{ type: 'primary', label: resources.str_toEdit, buttonIcon: 'icon-edit2', action: TopbarActions.EDIT }
-					]}
-				/> : <TopbarComponent
-					title={article.title}
-					backButtonRoute={`/articles`}
-					buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
-				/> }
+				{canUpdateArticle ? (
+					<TopbarComponent
+						title={article.title}
+						backButtonRoute={`/articles`}
+						buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
+						buttons={[
+							// { type: 'primary', label: `Create purchase order`, buttonIcon: 'icon-plus', action: TopbarActions.CREATE_PURCHASE_ORDER },
+							{
+								type: "primary",
+								label: resources.str_toEdit,
+								buttonIcon: "icon-edit2",
+								action: TopbarActions.EDIT,
+							},
+						]}
+					/>
+				) : (
+					<TopbarComponent
+						title={article.title}
+						backButtonRoute={`/articles`}
+						buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
+					/>
+				)}
 				{this.getBlock1Content()}
 
-				{ canViewArticleSalesOverview ? this.getBlock2Content() : null }
+				{canViewArticleSalesOverview ? this.getBlock2Content() : null}
 
 				{article.trackedInInventory ? (
-				<div className="box" style={{height: 699}}>
-					<div className="pagebox_heading text-h4">{`Stock movement`}</div>
-					<div className="pagebox_content articleHistory_container">
-						{errorOccurred ? (
-							<div className="article-history-error">
-								<div className="error-headline">
-									<h1>{resources.errorOccuredMessage}</h1>
+					<div className="box" style={{ height: 699 }}>
+						<div className="pagebox_heading text-h4">{`Stock movement`}</div>
+						<div className="pagebox_content articleHistory_container">
+							{errorOccurred ? (
+								<div className="article-history-error">
+									<div className="error-headline">
+										<h1>{resources.errorOccuredMessage}</h1>
+									</div>
+									<div>
+										<ButtonComponent
+											callback={() => invoiz.router.reload()}
+											label={resources.str_reload}
+										/>
+									</div>
 								</div>
+							) : (
 								<div>
-									<ButtonComponent callback={() => invoiz.router.reload()} label={resources.str_reload} />
-								</div>
-							</div>
-						) : (
-							<div>
-								{/* <div className="article-history-list-head-content">
+									{/* <div className="article-history-list-head-content">
 									{isLoading ? null : (
 										<FilterComponent
 											items={permittedfilterItems}
@@ -569,39 +602,41 @@ class ArticleDetailComponent extends React.Component {
 									)}
 								</div> */}
 
-								<div className="article">
-									{isLoading ? (
-										<LoaderComponent visible={true} />
-									) : (
-										<div>
-											<ListComponent
-												clickable={false}
-												//rowCallback={(id, row) => this.onRowClick(row)}
-												sortable={true}
-												columns={inventoryHistoryColumns}
-												rows={this.createInventoryTableRows(inventoryHistoryItems)}
-												columnCallback={column => this.onInventorySort(column)}
-												emptyFallbackElement={resources.str_noDocumentAvailable}
-												resources={resources}
-											/>
+									<div className="article">
+										{isLoading ? (
+											<LoaderComponent visible={true} />
+										) : (
+											<div>
+												<ListComponent
+													clickable={false}
+													//rowCallback={(id, row) => this.onRowClick(row)}
+													sortable={true}
+													columns={inventoryHistoryColumns}
+													rows={this.createInventoryTableRows(inventoryHistoryItems)}
+													columnCallback={(column) => this.onInventorySort(column)}
+													emptyFallbackElement={resources.str_noDocumentAvailable}
+													resources={resources}
+												/>
 
-											{inventoryTotalPages > 1 ? (
-												<div className="article-history-list-pagination">
-													<PaginationComponent
-														currentPage={inventoryCurrentPage}
-														totalPages={inventoryTotalPages}
-														onPaginate={page => {this.onInventoryPaginate(page)}}
-													/>
-												</div>
-											) : null}
-										</div>
-									)}
+												{inventoryTotalPages > 1 ? (
+													<div className="article-history-list-pagination">
+														<PaginationComponent
+															currentPage={inventoryCurrentPage}
+															totalPages={inventoryTotalPages}
+															onPaginate={(page) => {
+																this.onInventoryPaginate(page);
+															}}
+														/>
+													</div>
+												) : null}
+											</div>
+										)}
+									</div>
 								</div>
-							</div>
-						)}
+							)}
+						</div>
 					</div>
-				</div>
-				): null}
+				) : null}
 
 				<div className="box">
 					<div className="pagebox_heading text-h4">{resources.str_history}</div>
@@ -612,7 +647,10 @@ class ArticleDetailComponent extends React.Component {
 									<h1>{resources.errorOccuredMessage}</h1>
 								</div>
 								<div>
-									<ButtonComponent callback={() => invoiz.router.reload()} label={resources.str_reload} />
+									<ButtonComponent
+										callback={() => invoiz.router.reload()}
+										label={resources.str_reload}
+									/>
 								</div>
 							</div>
 						) : (
@@ -621,7 +659,7 @@ class ArticleDetailComponent extends React.Component {
 									{isLoading ? null : (
 										<FilterComponent
 											items={permittedfilterItems}
-											onChange={filter => this.onFilterList(filter)}
+											onChange={(filter) => this.onFilterList(filter)}
 											resources={resources}
 										/>
 									)}
@@ -638,7 +676,7 @@ class ArticleDetailComponent extends React.Component {
 												sortable={true}
 												columns={columns}
 												rows={this.createArticleHistoryTableRows(articleHistoryItems)}
-												columnCallback={column => this.onSort(column)}
+												columnCallback={(column) => this.onSort(column)}
 												emptyFallbackElement={resources.str_noDocumentAvailable}
 												resources={resources}
 											/>
@@ -648,7 +686,7 @@ class ArticleDetailComponent extends React.Component {
 													<PaginationComponent
 														currentPage={currentPage}
 														totalPages={totalPages}
-														onPaginate={page => this.onPaginate(page)}
+														onPaginate={(page) => this.onPaginate(page)}
 													/>
 												</div>
 											) : null}
@@ -676,7 +714,7 @@ class ArticleDetailComponent extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	const {
 		isLoading,
 		errorOccurred,
@@ -688,7 +726,7 @@ const mapStateToProps = state => {
 		inventoryHistoryColumns,
 		inventoryCurrentPage,
 		inventoryTotalPages,
-		filterItems
+		filterItems,
 	} = state.article.articleHistoryList;
 
 	const { resources } = state.language.lang;
@@ -709,7 +747,7 @@ const mapStateToProps = state => {
 	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchArticleHistoryList: (articleId, reset) => {
 			dispatch(fetchArticleHistoryList(articleId, reset));
@@ -731,11 +769,8 @@ const mapDispatchToProps = dispatch => {
 		},
 		filterArticleHistoryList: (articleId, filter) => {
 			dispatch(filterArticleHistoryList(articleId, filter));
-		}
+		},
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(ArticleDetailComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(ArticleDetailComponent);

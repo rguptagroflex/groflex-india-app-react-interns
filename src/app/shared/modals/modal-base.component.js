@@ -1,21 +1,21 @@
-import React from 'react';
-import _ from 'lodash';
-import ModalService from 'services/modal.service';
-import ButtonComponent from 'shared/button/button.component';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
+import React from "react";
+import _ from "lodash";
+import ModalService from "services/modal.service";
+import ButtonComponent from "shared/button/button.component";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
 
 const DEFAULT_OPTIONS = {
 	customHeadline: null,
 	customFooter: null,
-	confirmButtonType: 'primary',
-	confirmLabel: '',
-	confirmIcon: '',
-	cancelLabel: '',
+	confirmButtonType: "primary",
+	confirmLabel: "",
+	confirmIcon: "",
+	cancelLabel: "",
 	isCloseable: false,
 	isCloseableViaOverlay: false,
 	loadingOnConfirmUntilClose: false,
-	headline: '',
-	modalClass: '',
+	headline: "",
+	modalClass: "",
 	width: 500,
 	resizePopupOnWindowResize: false,
 	padding: null,
@@ -25,7 +25,7 @@ const DEFAULT_OPTIONS = {
 	},
 	afterOpen: () => {
 		return;
-	}
+	},
 };
 
 class ModalBaseComponent extends React.Component {
@@ -39,7 +39,7 @@ class ModalBaseComponent extends React.Component {
 			loading: false,
 			options: DEFAULT_OPTIONS,
 			viewportHeight: window.innerHeight,
-			inputFieldValue: ''
+			inputFieldValue: "",
 		};
 
 		this.debounceResize = null;
@@ -55,12 +55,12 @@ class ModalBaseComponent extends React.Component {
 		const { options, viewportHeight, inputFieldValue } = this.state;
 
 		const style = {
-			width: options.width || 'auto',
-			padding: options.padding
+			width: options.width || "auto",
+			padding: options.padding,
 		};
 
 		if (options.noTransform) {
-			style.transform = 'none';
+			style.transform = "none";
 		}
 
 		const footer = options.customFooter ? (
@@ -83,7 +83,7 @@ class ModalBaseComponent extends React.Component {
 				{options.cancelLabel ? (
 					<div className="modal-base-cancel">
 						<ButtonComponent
-							type="default"
+							type="cancel"
 							callback={() => ModalService.close(true)}
 							label={options.cancelLabel}
 							dataQsId="modal-btn-cancel"
@@ -93,19 +93,19 @@ class ModalBaseComponent extends React.Component {
 			</div>
 		) : null;
 
-		let modalWrapperClass = `modal-base ${options.modalClass} ${this.state.open ? 'modal-base-show' : ''} ${
-			!footer ? 'no-footer' : ''
+		let modalWrapperClass = `modal-base ${options.modalClass} ${this.state.open ? "modal-base-show" : ""} ${
+			!footer ? "no-footer" : ""
 		}`;
 
-		if ($('.modal-base-view')[0] && options.resizePopupOnWindowResize) {
-			const modalMarginTop = parseInt($('.modal-base-view').css('margin-top'));
-			const modalHeight = $('.modal-base-view').height();
+		if ($(".modal-base-view")[0] && options.resizePopupOnWindowResize) {
+			const modalMarginTop = parseInt($(".modal-base-view").css("margin-top"));
+			const modalHeight = $(".modal-base-view").height();
 
 			if (modalHeight >= viewportHeight - modalMarginTop - 100) {
-				modalWrapperClass += ' resized';
-				$('.modal-base-view').height(viewportHeight - modalMarginTop - 100);
+				modalWrapperClass += " resized";
+				$(".modal-base-view").height(viewportHeight - modalMarginTop - 100);
 			} else {
-				$('.modal-base-view').height('auto');
+				$(".modal-base-view").height("auto");
 			}
 		}
 
@@ -125,11 +125,11 @@ class ModalBaseComponent extends React.Component {
 						<div>
 							<TextInputExtendedComponent
 								value={inputFieldValue}
-								placeholder={options.inputFieldOptions.placeholder || ''}
-								onChange={val =>
+								placeholder={options.inputFieldOptions.placeholder || ""}
+								onChange={(val) =>
 									this.setState({
 										inputFieldValue: val,
-										confirmDisabled: !val || val.trim().length === 0
+										confirmDisabled: !val || val.trim().length === 0,
 									})
 								}
 							/>
@@ -167,7 +167,7 @@ class ModalBaseComponent extends React.Component {
 		const options = _.assign({}, DEFAULT_OPTIONS, opts || {});
 		let confirmDisabled = false;
 
-		window.addEventListener('resize', this.handleResize);
+		window.addEventListener("resize", this.handleResize);
 		this.handleResize();
 
 		if (options.inputFieldOptions) {
@@ -181,14 +181,14 @@ class ModalBaseComponent extends React.Component {
 						this.state.options.afterOpen();
 					}, 100);
 
-					$('.modal-base-view').scrollTop(0);
+					$(".modal-base-view").scrollTop(0);
 				});
 			}, 250);
 		});
 	}
 
 	close(isFromCancel) {
-		window.removeEventListener('resize', this.handleResize);
+		window.removeEventListener("resize", this.handleResize);
 		window.clearInterval(this.resizeInterval);
 
 		if (this.state.options.loadingOnConfirmUntilClose) {
@@ -199,7 +199,7 @@ class ModalBaseComponent extends React.Component {
 			this.state.options.afterClose(isFromCancel);
 
 			setTimeout(() => {
-				this.setState({ content: null, options: DEFAULT_OPTIONS, inputFieldValue: '' });
+				this.setState({ content: null, options: DEFAULT_OPTIONS, inputFieldValue: "" });
 			}, 250);
 		});
 	}
@@ -213,7 +213,7 @@ class ModalBaseComponent extends React.Component {
 			this.state.options.onConfirm(this.state.inputFieldValue);
 
 			setTimeout(() => {
-				this.setState({ inputFieldValue: '' });
+				this.setState({ inputFieldValue: "" });
 			}, 250);
 		}
 	}

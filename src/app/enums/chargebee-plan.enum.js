@@ -19,7 +19,10 @@ const ChargebeePlan = {
 	STANDARD_YEARLY_21: 'Std_Yly_21',
 	UNLIMITED_YEARLY_21: 'Utd_Yly_21',
 	UNLIMITED_INTERNAL: 'Utd_Internal',
-	FREE_PLAN_2021: 'Free_Plan_2021'
+	FREE_PLAN_2021: 'Free_Plan_2021',
+	FREE_PLAN: 'Free_Plan',
+	ACCOUNTING_MONTHLY_PLAN: 'Accounting_Monthly_Plan',
+	ACCOUNTING_YEARLY_PLAN: 'Accounting_Yearly_Plan',
 };
 
 export default Object.freeze(ChargebeePlan);

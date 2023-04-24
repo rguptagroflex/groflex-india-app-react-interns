@@ -1,47 +1,48 @@
-import invoiz from 'services/invoiz.service';
-import { Link } from 'react-router-dom';
-import React from 'react';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import DetailViewHeadComponent from 'shared/detail-view/detail-view-head.component';
-import config from 'config';
-import CancellationInvoiceAction from 'enums/cancellation-invoice/cancellation-invoice-action.enum';
-import DetailViewHeadPrintPopoverComponent from 'shared/detail-view/detail-view-head-print-popover.component';
-import DetailViewHeadPrintTooltipComponent from 'shared/detail-view/detail-view-head-print-tooltip.component';
-import TransactionPrintSetting from 'enums/transaction-print-setting.enum';
-import { printPdf } from 'helpers/printPdf';
-import { downloadPdf } from 'helpers/downloadPdf';
-import { formatCurrency } from 'helpers/formatCurrency';
-import { formatApiDate, formatClientDate } from 'helpers/formatDate';
+import invoiz from "services/invoiz.service";
+import { Link } from "react-router-dom";
+import React from "react";
+
+import TopbarComponent from "shared/topbar/topbar.component";
+import DetailViewHeadAdvancedComponent from "shared/detail-view/detail-view-head-advanced.component";
+import config from "config";
+import CancellationInvoiceAction from "enums/cancellation-invoice/cancellation-invoice-action.enum";
+import DetailViewHeadPrintPopoverComponent from "shared/detail-view/detail-view-head-print-popover.component";
+import DetailViewHeadPrintTooltipComponent from "shared/detail-view/detail-view-head-print-tooltip.component";
+import TransactionPrintSetting from "enums/transaction-print-setting.enum";
+import { printPdf } from "helpers/printPdf";
+import { downloadPdf } from "helpers/downloadPdf";
+import { formatCurrency } from "helpers/formatCurrency";
+import { formatApiDate, formatClientDate } from "helpers/formatDate";
 
 const createDetailViewHeadObjects = (cancellation, activeAction, resources) => {
 	const object = {
 		leftElements: [],
 		rightElements: [],
-		actionElements: []
+		actionElements: [],
 	};
 	object.actionElements.push(
 		{
 			name: resources.str_sendEmail,
-			icon: 'icon-mail',
+			icon: "icon-mail",
 			action: CancellationInvoiceAction.EMAIL,
-			dataQsId: 'cancellation-head-action-email'
+			dataQsId: "cancellation-head-action-email",
 		},
 		{
 			name: resources.str_pdf,
-			icon: 'icon-pdf',
+			icon: "icon-pfeil icon-rotate-180",
 			action: CancellationInvoiceAction.DOWNLOAD_PDF,
 			actionActive: activeAction === CancellationInvoiceAction.DOWNLOAD_PDF,
-			dataQsId: 'cancellation-head-action-downloadPdf'
+			dataQsId: "cancellation-head-action-downloadPdf",
 		},
 		{
 			name: resources.str_print,
-			icon: 'icon-print2',
+			icon: "icon-print2",
 			action: CancellationInvoiceAction.PRINT,
 			actionActive: activeAction === CancellationInvoiceAction.PRINT,
-			dataQsId: 'cancellation-head-action-print',
-			controlsItemClass: 'item-print',
-			id: 'detail-head-print-anchor'
-		},
+			dataQsId: "cancellation-head-action-print",
+			controlsItemClass: "item-print",
+			id: "detail-head-print-anchor",
+		}
 		// {
 		// 	name: '',
 		// 	icon: 'icon-arr_down',
@@ -54,47 +55,53 @@ const createDetailViewHeadObjects = (cancellation, activeAction, resources) => {
 
 	object.leftElements.push({
 		headline: cancellation.metaData.type === "invoice" ? resources.str_customer : `Payee`,
-		value: cancellation.displayCustomerNumber < 0 ? cancellation.displayName : <Link to={'/customer/' + cancellation.customerId}>{cancellation.displayName}</Link>,
+		value:
+			cancellation.displayCustomerNumber < 0 ? (
+				cancellation.displayName
+			) : (
+				<Link to={"/customer/" + cancellation.customerId}>{cancellation.displayName}</Link>
+			),
 	});
 
 	const amount = formatCurrency(cancellation.totalGross);
 	const amountCredited = formatCurrency(cancellation.paidAmount);
-	const refundType = cancellation.metaData.type === "invoice" ? cancellation.refundType === `credits` ? cancellation.paidAmount > 0 ? `Added to balance` : `Not added to credits` : `Refunded to source` : 
-	cancellation.refundType === `debits` ? cancellation.paidAmount > 0 ? `Added to balance` : `Not added to debit sum` : `Refunded to source`
-	if(cancellation.metaData.type === "invoice" )
-	object.rightElements.push(
-		{
-		headline: `Available amount`,
-		value: formatCurrency(cancellation.refundAvailable)
-		})
+	const refundType =
+		cancellation.metaData.type === "invoice"
+			? cancellation.refundType === `credits`
+				? cancellation.paidAmount > 0
+					? `Added to balance`
+					: `Not added to credits`
+				: `Refunded to source`
+			: cancellation.refundType === `debits`
+			? cancellation.paidAmount > 0
+				? `Added to balance`
+				: `Not added to debit sum`
+			: `Refunded to source`;
+	if (cancellation.metaData.type === "invoice")
+		object.rightElements.push({
+			headline: `Available amount`,
+			value: formatCurrency(cancellation.refundAvailable),
+		});
 
-
-	object.rightElements.push(
-		{
-			headline: `Amount paid`,
-			value: amountCredited
-		}
-		
-	);
-	cancellation.metaData.type === "invoice" 
-	? object.rightElements.push(
-		{
-			headline: `Refund type`,
-			value: refundType
-		},
-		// {
-		// 	headline: cancellation.metaData.type === "invoice" ? resources.invoiceDate : `Date of expense`,
-		// 	value: formatClientDate(cancellation.deliveryDate)
-		// }
-	)
-	:object.rightElements.push(
-		{
-		headline: cancellation.metaData.type === "invoice" ? resources.invoiceDate : `Date of expense`,
-		value: formatClientDate(cancellation.deliveryDate)
-		}
-	)
-
-
+	object.rightElements.push({
+		headline: `Amount paid`,
+		value: amountCredited,
+	});
+	cancellation.metaData.type === "invoice"
+		? object.rightElements.push(
+				{
+					headline: `Refund type`,
+					value: refundType,
+				}
+				// {
+				// 	headline: cancellation.metaData.type === "invoice" ? resources.invoiceDate : `Date of expense`,
+				// 	value: formatClientDate(cancellation.deliveryDate)
+				// }
+		  )
+		: object.rightElements.push({
+				headline: cancellation.metaData.type === "invoice" ? resources.invoiceDate : `Date of expense`,
+				value: formatClientDate(cancellation.deliveryDate),
+		  });
 
 	return object;
 };
@@ -112,43 +119,49 @@ class CancellationInvoiceDetailComponent extends React.Component {
 			printing: false,
 			letterPaperType: cancellation.printCustomDocument
 				? TransactionPrintSetting.CUSTOM_LETTER_PAPER
-				: TransactionPrintSetting.DEFAULT_LETTER_PAPER
+				: TransactionPrintSetting.DEFAULT_LETTER_PAPER,
 		};
+		this.pdfWrapper = React.createRef();
 	}
 
 	componentDidMount() {
 		const { cancellation } = this.state;
 		invoiz
-			.request(`${config.resourceHost}${cancellation.metaData.type === "invoice" ? 'cancellation/' : 'expenseCancellation/'}${parseInt(this.state.cancellation.id, 10)}/document`, {
-				auth: true,
-				method: 'POST',
-				data: {
-					isPrint: false
+			.request(
+				`${config.resourceHost}${
+					cancellation.metaData.type === "invoice" ? "cancellation/" : "expenseCancellation/"
+				}${parseInt(this.state.cancellation.id, 10)}/document`,
+				{
+					auth: true,
+					method: "POST",
+					data: {
+						isPrint: false,
+					},
 				}
-			})
-			.then(pdfPathResponse => {
+			)
+			.then((pdfPathResponse) => {
 				const { path } = pdfPathResponse.body.data;
 				cancellation.pdfPath = config.imageResourceHost + path;
 				fetch(cancellation.pdfPath, {
-					method: 'GET'
+					method: "GET",
 				})
-					.then(response => response.arrayBuffer())
-					.then(arrayBuffer => PDFJS.getDocument(arrayBuffer))
-					.then(pdf => {
+					.then((response) => response.arrayBuffer())
+					.then((arrayBuffer) => PDFJS.getDocument(arrayBuffer))
+					.then((pdf) => {
 						let currentPage = 1;
 						const numPages = pdf.numPages;
 						const myPDF = pdf;
-
-						const handlePages = page => {
-							const wrapper = document.getElementById('invoice-detail-pdf-wrapper');
-							const canvas = document.createElement('canvas');
-							canvas.width = '925';
-							const context = canvas.getContext('2d');
+						const wrapper = this.pdfWrapper && this.pdfWrapper.current;
+						const handlePages = (page) => {
+							const wrapper = document.getElementById("invoice-detail-pdf-wrapper");
+							const canvas = document.createElement("canvas");
+							canvas.width = wrapper.getBoundingClientRect().width;
+							const context = canvas.getContext("2d");
 							const viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
 							canvas.height = viewport.height;
 							page.render({
 								canvasContext: context,
-								viewport
+								viewport,
 							});
 							wrapper.appendChild(canvas);
 							currentPage++;
@@ -168,26 +181,34 @@ class CancellationInvoiceDetailComponent extends React.Component {
 		const activeAction = this.state.downloading
 			? CancellationInvoiceAction.DOWNLOAD_PDF
 			: this.state.printing
-				? CancellationInvoiceAction.PRINT
-				: null;
+			? CancellationInvoiceAction.PRINT
+			: null;
 		const { letterPaperType } = this.state;
 		const headContents = createDetailViewHeadObjects(this.state.cancellation, activeAction, resources);
 		const detailHeadContent = (
 			<div>
-				<DetailViewHeadComponent
-					controlActionCallback={action => this.onHeadControlClick(action)}
+				<DetailViewHeadAdvancedComponent
+					actionCallback={(action) => this.onHeadControlClick(action)}
 					actionElements={headContents.actionElements}
 					leftElements={headContents.leftElements}
 					rightElements={headContents.rightElements}
 				/>
-				<DetailViewHeadPrintTooltipComponent letterPaperType={letterPaperType} resources = {resources}/>
+				<DetailViewHeadPrintTooltipComponent letterPaperType={letterPaperType} resources={resources} />
 			</div>
 		);
 		const subtitle = (
 			<div>
-				({`For ${cancellation.metaData.type === "invoice" ? 'invoice' : 'expense'} number`}{' '}
-				<Link to={`${cancellation.metaData.type === "invoice" ? `/invoice/${this.state.cancellation.invoiceId}` : `/expense/edit/${this.state.cancellation.expenseId}`}`}>
-					{cancellation.metaData.type === "invoice" ? this.state.cancellation.metaData.invoiceNumber : this.state.cancellation.metaData.expenseNumber}
+				({`For ${cancellation.metaData.type === "invoice" ? "invoice" : "expense"} number`}{" "}
+				<Link
+					to={`${
+						cancellation.metaData.type === "invoice"
+							? `/invoice/${this.state.cancellation.invoiceId}`
+							: `/expense/edit/${this.state.cancellation.expenseId}`
+					}`}
+				>
+					{cancellation.metaData.type === "invoice"
+						? this.state.cancellation.metaData.invoiceNumber
+						: this.state.cancellation.metaData.expenseNumber}
 				</Link>
 				)
 			</div>
@@ -195,8 +216,8 @@ class CancellationInvoiceDetailComponent extends React.Component {
 
 		const images = [];
 		let count = 0;
-		this.state.cancellation.thumbnails.forEach(thumbnail => {
-			thumbnail.imageUrls.forEach(url => {
+		this.state.cancellation.thumbnails.forEach((thumbnail) => {
+			thumbnail.imageUrls.forEach((url) => {
 				count++;
 				images.push(<img key={`cancellation-invoice-image-${count}`} src={config.imageResourceHost + url} />);
 			});
@@ -205,41 +226,52 @@ class CancellationInvoiceDetailComponent extends React.Component {
 		return (
 			<div className="cancellation-invoice-detail-wrapper wrapper-has-topbar">
 				<TopbarComponent
-					title={`${cancellation.metaData.type === "invoice" ? resources.str_invoiceCancellation : `Debit note`} ${this.state.cancellation.number}`}
+					title={`${
+						cancellation.metaData.type === "invoice" ? resources.str_invoiceCancellation : `Debit note`
+					} ${this.state.cancellation.number}`}
 					subtitle={subtitle}
-					backButtonRoute={`${cancellation.refundType === `credits` ? `cancellations` : `expenses/cancellations`}`}
+					backButtonRoute={`${
+						cancellation.refundType === `credits` ? `cancellations` : `expenses/cancellations`
+					}`}
 				/>
-
-				<div className="detail-view-head-container">
-					<DetailViewHeadPrintPopoverComponent
-						printSettingUrl={`${config.resourceHost}cancellation/${
-							this.state.cancellation.id
-						}/print/setting`}
-						letterPaperType={letterPaperType}
-						letterPaperChangeCallback={letterPaperType => {
-							this.setState({ letterPaperType });
-						}}
-						ref="detail-head-print-settings-popover"
-						resources = {resources}
-					/>
-					{detailHeadContent}
+				<div className="detail-view-head-wrapper-new">
+					{/* <div className="detail-view-head-container"> */}
+						<DetailViewHeadPrintPopoverComponent
+							printSettingUrl={`${config.resourceHost}cancellation/${this.state.cancellation.id}/print/setting`}
+							letterPaperType={letterPaperType}
+							letterPaperChangeCallback={(letterPaperType) => {
+								this.setState({ letterPaperType });
+							}}
+							ref="detail-head-print-settings-popover"
+							resources={resources}
+						/>
+						{/* <div className="detail-view-background"></div> */}
+						{detailHeadContent}
+					{/* </div> */}
 				</div>
+				<div className="detail-view-content-wrapper">
+					<div className="detail-view-content-left">
+						<div className="detail-view-document-wrapper">
+							{/* {images} */}
 
-				<div className="detail-view-document">
-					{/* {images} */}
-					<img className="detail-view-preview" src="/assets/images/invoice-preview.png" />
-					<div id="invoice-detail-pdf-wrapper" />
-				</div>
+							<img className="detail-view-preview" src="/assets/images/invoice-preview.png" />
+							<div id="invoice-detail-pdf-wrapper" className="detail-view-pdf-wrapper" ref={this.pdfWrapper}/>
+						</div>
+					</div>
 
-				<div className="detail-view-box">
-					<div className="notes_heading text-h4">{resources.str_reversalReason}</div>
-					<p>{this.state.cancellation.notes}</p>
+					<div className="detail-view-content-right">
+						<div className="detail-view-box-new">
+							<div className="notes_heading text-h4">{resources.str_reversalReason}</div>
+							<p>{this.state.cancellation.notes}</p>
+						</div>
+					</div>
 				</div>
 			</div>
 		);
 	}
 
 	onHeadControlClick(action) {
+		console.log("function call");
 		const { resources } = this.props;
 		switch (action) {
 			case CancellationInvoiceAction.EMAIL:
@@ -251,21 +283,22 @@ class CancellationInvoiceDetailComponent extends React.Component {
 					invoiz
 						.request(`${config.resourceHost}cancellation/${this.state.cancellation.id}/document`, {
 							auth: true,
-							method: 'POST',
+							method: "POST",
 							data: {
-								isPrint: false
-							}
+								isPrint: false,
+							},
 						})
-						.then(response => {
+						.then((response) => {
 							const { path } = response.body.data;
 							const title = this.state.cancellation.number;
 							downloadPdf({
+								
 								pdfUrl: config.imageResourceHost + path,
 								title: `${resources.str_invoiceCancellation} ${title}`,
 								isPost: false,
 								callback: () => {
 									this.setState({ downloading: false });
-								}
+								},
 							});
 						});
 				});
@@ -276,26 +309,26 @@ class CancellationInvoiceDetailComponent extends React.Component {
 					invoiz
 						.request(`${config.resourceHost}cancellation/${this.state.cancellation.id}/document`, {
 							auth: true,
-							method: 'POST',
+							method: "POST",
 							data: {
-								isPrint: true
-							}
+								isPrint: true,
+							},
 						})
-						.then(response => {
+						.then((response) => {
 							const { path } = response.body.data;
 							printPdf({
 								pdfUrl: config.imageResourceHost + path,
 								isPost: false,
 								callback: () => {
 									this.setState({ printing: false });
-								}
+								},
 							});
 						});
 				});
 				break;
 
 			case CancellationInvoiceAction.SHOW_PRINT_SETTINGS_POPOVER:
-				this.refs['detail-head-print-settings-popover'].show();
+				this.refs["detail-head-print-settings-popover"].show();
 				break;
 		}
 	}

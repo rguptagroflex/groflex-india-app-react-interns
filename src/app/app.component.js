@@ -1,5 +1,5 @@
 import invoiz from 'services/invoiz.service';
-// import Intercom, { IntercomAPI } from 'services/intercom.service';
+import Intercom, { IntercomAPI } from 'services/intercom.service';
 import _, { first } from "lodash";
 import React from 'react';
 import routes from 'routes';
@@ -15,7 +15,6 @@ import { getBrowserLanguage } from 'helpers/getBrowserLanguage';
 import { fetchLanguageFile } from 'redux/ducks/language/lang';
 import LanguageComponent from 'shared/language/language.component';
 import RegistrationViewState from 'enums/account/registration-view-state.enum';
-// import Intercom, { IntercomAPI } from 'react-intercom';
 import config from 'config';
 import WebStorageService from 'services/webstorage.service';
 import WebStorageKey from 'enums/web-storage-key.enum';
@@ -41,7 +40,7 @@ class PageContainer extends React.Component {
 		};
 
 		this.isLoggedInOnce = false;
-		this.intercomAppID = config.releaseStage !== "production" ? `qrsrkmrh` : `y1zi63l6`;
+		//this.intercomAppID = config.releaseStage !== "production" ? 'azrlzv5b' : 'flyfsv5l'; //`qrsrkmrh` : `y1zi63l6`;
 
 		// invoiz.on('footerContentUpdated', (hasFooterContent) => {
 		// 	this.setState({
@@ -59,8 +58,35 @@ class PageContainer extends React.Component {
 	}
 
 	update() {
-		// this.setupIntercom()
-		// 	.then(() => IntercomAPI.update());
+		this.setupIntercom()
+		.then(() => {
+			//IntercomAPI.update()
+			// console.log(this.state.intercomUser);
+			let properties = {
+				'FIRSTNAME': this.state.intercomUser.firstName,
+				'LASTNAME': this.state.intercomUser.lastName,
+				'EMAIL': this.state.intercomUser.email,
+				'PLAN' : this.state.intercomUser.Plan,
+				'SMS' : `+91${this.state.intercomUser.phone}`,
+				'WHATSAPP_Number': `+91${this.state.intercomUser.phone}`,
+				'WHATSAPP': `+91${this.state.intercomUser.phone}`,
+				'LAST_LOGIN_TIME' : this.state.intercomUser.Last_Login_Time,
+				'REGISTERED_AT' : this.state.intercomUser.registeredat,
+				'USEDREFERRALCODES' : this.state.intercomUser.usedReferralCodes,
+				'UTM_CAMPAIGN' : this.state.intercomUser.utm_campaign,
+				'UTM_SOURCE' : this.state.intercomUser.utm_source,
+				'UTM_MEDIUM' : this.state.intercomUser.utm_medium,
+				'UTM_TERM' : this.state.intercomUser.utm_term,
+				'UTM_CONTENT' : this.state.intercomUser.utm_content
+			  }
+			// console.log(properties, 'isLoggedIn', this.isLoggedIn());
+			if(config.releaseStage == "production") {
+				window.sib.email_id = this.state.intercomUser.email
+				window.sendinblue.identify(this.state.intercomUser.email, properties)
+				IntercomAPI.update(this.state.intercomUser)
+			}
+			
+		});
 
 		this.setState(
 			{
@@ -109,7 +135,7 @@ class PageContainer extends React.Component {
 					}
 					await this.setState({intercomUser: {...this.state.intercomUser, phone: invoiz.user.mobile}})
 					// IntercomAPI('update');
-					// IntercomAPI.update();
+					 IntercomAPI.update(this.state.intercomUser);
 				}}
 				closeModal={() => {
 					ModalService.close(<UserWizardOnBoardingModalComponent store={store} />);
@@ -146,17 +172,23 @@ class PageContainer extends React.Component {
 				: "Undefined";
 			const lastLogin = moment(invoiz.user.lastLogin).utcOffset("+0530").format("DD-MM-YYYY h:mm:ss a");
 			const registeredTime = moment(invoiz.user.registeredAt).utcOffset("+0530").format("DD-MM-YYYY h:mm:ss a");
+			const lastLoginsendpulse = moment(invoiz.user.lastLogin).utcOffset("+0530").format("MM/DD/YYYY");
+			const registeredTimesendpulse = moment(invoiz.user.registeredAt).utcOffset("+0530").format("MM/DD/YYYY");
 			intercomUser = {
 				user_id: userEmail,
 				email: userEmail,
 				name: userName,
+				firstName: invoiz.user.companyAddress.firstName,
+				lastName: invoiz.user.companyAddress.lastName,
 				Plan: plan,
 				BusinessType: businessType,
 				BusinessCategory: businessCategory,
 				BusinessTurnover: businessTurnover,
 				Last_Login_Time: lastLogin,
 				Rererral_Codes: usedReferralCodes,
-				registeredat: registeredTime
+				registeredat: registeredTime,
+				lastLoginsendpulse,
+				registeredTimesendpulse
 			};
 			if (invoiz.user.mobile) {
 				intercomUser.phone = invoiz.user.mobile;
@@ -175,7 +207,7 @@ class PageContainer extends React.Component {
 			utmParams.utm_term ? (intercomUser.utm_term = utmParams.utm_term) : null;
 			utmParams.utm_content ? (intercomUser.utm_content = utmParams.utm_content) : null;
 		}
-
+		//console.log('intercomUser', intercomUser)
 		await this.setState({intercomUser: {...intercomUser}});
 		invoiz.on('userModelSubscriptionDataSet', this.update, this);
 	}
@@ -187,7 +219,7 @@ class PageContainer extends React.Component {
 	componentDidUpdate() {
 		invoiz.on('userModelSubscriptionDataSet', this.update, this);
 		// IntercomAPI('update');
-		// IntercomAPI.update();
+		IntercomAPI.update();
 	}
 
 	render() {
@@ -276,7 +308,7 @@ class AppComponent extends React.Component {
 
 	componentDidUpdate() {
 		// IntercomAPI('update');
-		// IntercomAPI.update();
+		IntercomAPI.update();
 	}
 
 	render() {

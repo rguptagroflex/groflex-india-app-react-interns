@@ -443,7 +443,7 @@ class DashboardQuotationsPurchaseOrderStatsComponent extends React.Component {
         const { resources } = this.props;
 
         const tabs = [
-            { name: 'Estimates', chartData: this.state.quotationChartData, refresh: this.createQuotationsChartData.bind(this) },
+            { name: 'Quotations', chartData: this.state.quotationChartData, refresh: this.createQuotationsChartData.bind(this) },
             // { name: 'Purchase Order', chartData: this.state.purchaseOrderChartData, refresh: this.createPurchaseOrderChartData.bind(this) },
         ];
 
@@ -459,7 +459,7 @@ class DashboardQuotationsPurchaseOrderStatsComponent extends React.Component {
                 selectedDateFilterType={selectedDateFilterType}
                 onDateChange={this.onDateChange.bind(this)}
                 tabs={tabs}
-                demoButtonText={"Create Estimates"}
+                demoButtonText={"Create Quotations"}
                 demoButtonLink={'/offer/new'}
             />
         )

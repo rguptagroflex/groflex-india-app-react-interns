@@ -40,7 +40,7 @@ class BarChartComponent extends React.Component {
 		let chartSeriesMonthLength = 0;
 		let seriesBarDistance = 10;
 
-		console.log('chartData.series', chartData.series)
+		// console.log('chartData.series', chartData.series)
 
 		if(!chartData.series) return;
 

@@ -16,6 +16,7 @@ import sidebarMorningIcon from 'assets/images/svg/15_million_freelancers.svg';
 import sidebarAfternoonIcon from 'assets/images/svg/160_countries.svg';
 import sidebarEveningIcon from 'assets/images/svg/gst.svg';
 import sidebarNightIcon from 'assets/images/svg/startups.svg';
+import landingImage from "assets/images/login/login.jpg";
 import OldBrowserModalComponent from 'shared/modals/old-browser-modal.component';
 import { isOutdatedBrowser } from 'helpers/isOutdatedBrowser';
 // import { errorCodesWithMessages } from 'helpers/constants';
@@ -27,6 +28,7 @@ import { connect } from 'react-redux';
 import { detectDevice } from 'helpers/detectDevice';
 import Carousel from 'shared/carousel/Carousel.component';
 import Invoiz from 'services/invoiz.service';
+
 class LoginComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -43,7 +45,7 @@ class LoginComponent extends React.Component {
 			activeSlide: 0,
 			hidePasswordField: true,
 		};
-		this.isMobile = detectDevice() === 'phone' || detectDevice() === 'tablet';
+		this.isMobile = detectDevice() === 'phone';// || detectDevice() === 'tablet';
 
 		this.handleSubmitFailure = this.handleSubmitFailure.bind(this);
 
@@ -289,7 +291,7 @@ class LoginComponent extends React.Component {
 			hidePasswordField ? this.onEmailSubmit() : this.onLoginSubmit()
 		}
 
-		this.setState({ emailError: false });
+		this.setState({ emailError: '' });
 	}
 
 	render() {
@@ -319,7 +321,9 @@ class LoginComponent extends React.Component {
 
 		return (
 			<div className="landing-wrapper login-wrapper">
-				<div className="landing-sidebar">
+
+				{!this.isMobile ? 
+					<div className="landing-sidebar">
 
 					<div className="imprezz-logo">
 						<Link to="/account/login">
@@ -333,7 +337,7 @@ class LoginComponent extends React.Component {
 						</Link>
 					</div> */}
 
-					<div className="landing-carousel-wrapper">
+					{/* <div className="landing-carousel-wrapper">
 						<Carousel 
 							className="landing-carousel"
 							activeSlide={activeSlide} 
@@ -419,7 +423,10 @@ class LoginComponent extends React.Component {
 								/>
 							</Carousel.PageIndicators>
 						</Carousel>
-					</div>
+					</div> */}
+					
+					
+					<img className='landing-image' src={landingImage}/>
 
 					<div className="media-coverage text-center">
 						<p className="media-coverage-title">National media that has covered us!</p>
@@ -439,8 +446,8 @@ class LoginComponent extends React.Component {
 					<div className="footer">
 						<hr></hr>
 						<div style={{display: 'flex'}}>
-							<p>For more details visit <a href={"https://groflex.in"}>www.groflex.in</a></p>
-							<a href="https://www.groflex.in/privacy-policy/" target="_blank">Terms & Privacy</a>
+							<p>For more details visit <a href={"https://groflex.in"} target="_blank">www.groflex.in</a></p>
+							<a href="https://groflex.in/terms-&-conditions" target="_blank">Terms & Conditions</a>
 						</div>
 					</div>
 
@@ -462,12 +469,14 @@ class LoginComponent extends React.Component {
 						</a>
 					</div> */}
 				</div>
+				: null}			
+			
 				<div className="landing-content">
-					{/* <div className="invoiz-logo">
+				{this.isMobile ? <div className="imprezz-logo">
 						<Link to="/account/login">
-							<img src="/assets/images/svg/imprezz.svg" />
+							<img src="/assets/images/svg/groflex.svg" />
 						</Link>
-					</div> */}
+					</div> : null }
 					<div className="landing-content-inner">
 						<div className="landing-content-inner-header">
 							{this.isMobile ? <div className="mobile-text-content">{resources.mobileDisplayText}</div> : null}
@@ -478,7 +487,7 @@ class LoginComponent extends React.Component {
 							<div className="landing-email-input-wrapper">
 								<div className="login-input-wrapper">
 									<TextInputComponent
-										autoComplete
+										// autoComplete
 										value={this.state.email}
 										label={resources.str_enterEmail}
 										id={'login-email'}
@@ -509,7 +518,7 @@ class LoginComponent extends React.Component {
 								{oauthLoginError ? <div className="google-error">{oauthLoginError}</div> : null}
 								
 								{ !hidePasswordField &&
-									<div className="left- text-right" style={{marginTop: '-15px'}}>
+									<div className="left- text-right" style={{marginTop: '0px'}}>
 										{/* {`${resources.str_forgotPassword}?`} {this.isMobile ? <br/> : null} */}
 										<Link to="/account/forgot_password">
 											{resources.str_forgotPassword}
@@ -550,7 +559,7 @@ class LoginComponent extends React.Component {
 							
 							<p className="terms-privacy-link">
 								By signing up you're agreeing to our 
-								<a href="https://www.groflex.in/privacy-policy/" target="_blank"> TERMS & PRIVACY</a>
+								<a href="https://groflex.in/terms-&-conditions" target="_blank">TERMS & CONDITIONS</a>
 							</p>
 						</div>
 					</div>

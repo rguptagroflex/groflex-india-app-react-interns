@@ -29,7 +29,7 @@ const MenuItemComponent = (props) => {
 			data-qs-id={`global-menu-item-${name}`}
 		>
 			{resources.menuItems[resourceKey]}
-			<span className="collapsed-title">{resources.menuItems[resourceKey]}</span>
+			{/* <span className="collapsed-title">{resources.menuItems[resourceKey]}</span> */}
 		</a>
 	);
 };

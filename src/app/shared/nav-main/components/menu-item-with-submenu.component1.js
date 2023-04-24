@@ -8,7 +8,8 @@ import planPermissions from 'enums/plan-permissions.enum';
 
 
 const buildSubmenuComponents = (permissions, canViewDunning, canViewTimesheet, noInventory, submenuItems, activeSubmenuItem, resources) => {
-	const { canImportArticle, canImportContact } = permissions;
+	const { canImportArticle, canImportContact, viewAccounting, canViewExpenses } = permissions;
+	// console.log('submenuItems', submenuItems)
 	if (!canImportArticle && !canImportContact) {
 		submenuItems = submenuItems.filter(item => item.name !== 'dataImport');
 	}
@@ -17,9 +18,14 @@ const buildSubmenuComponents = (permissions, canViewDunning, canViewTimesheet, n
 		submenuItems = submenuItems.filter(item => item.name !== 'dunning');
 	}
 
-	if (!canViewTimesheet) {
-		submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
+	if(!canViewExpenses) {
+		submenuItems = submenuItems.filter(item => item.name !== 'expenditure' && item.name !== 'chartOfAccounts' && item.name !== 'cashAndBank');
 	}
+	// In all case we need to show timesheet
+	// if (!canViewTimesheet) {
+	// 	submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
+	// }
+
 	if(noInventory) {
 		submenuItems = submenuItems.filter(item => item.name !== 'inventory');
 	}
@@ -166,7 +172,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass}`;
 
 		return isCollapsedState ? (
-			<li>
+			<li key={name}>
 				<div
 					ref="subMenuBarCollapsed"
 					onMouseEnter={() => this.showSubmenu()}
@@ -177,11 +183,11 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 					data-qs-id={`global-menu-item-${name}`}
 				>
 				{resources.menuItems[resourceKey]}
-				<span className="collapsed-title">
+				{/* <span className="collapsed-title">
 					{resources.menuItems[resourceKey]}
-				</span>				
+				</span>				 */}
 			</div>
-			<SubMenuBarComponent
+			<SubMenuBarComponent key={`sub-item-${name}`}
 					visible={submenuVisible}
 					title={title}
 					name={name}
@@ -194,7 +200,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			</li>
 			
 		) : (
-			<li>
+			<li key={name}>
 			<div
 				ref="subMenuBarNormal"
 				onClick={e => this.showSubmenu(e, true)}
@@ -204,13 +210,13 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			>
 				{/* {title} */}
 				{resources.menuItems[resourceKey]}
-				<span className="collapsed-title">
-					{/* {title} */}
+				{/* <span className="collapsed-title">
+					
 					{resources.menuItems[resourceKey]}
-				</span>
+				</span> */}
 				
 			</div>
-			<SubMenuBarComponent
+			<SubMenuBarComponent key={`sub-item-${name}`}
 					visible={submenuVisible}
 					title={title}
 					name={name}

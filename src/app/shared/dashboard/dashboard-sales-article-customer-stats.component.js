@@ -20,7 +20,7 @@ class DashboardSalesArticleCustomerStatsComponent extends React.Component {
     constructor(props) {
         super(props);
 
-        this.chartColors = ['DAF3FF', 'A5E2FE', '8EC5DE', '57B6E2', '1898D3', '0079B3'];
+        this.chartColors = ['FBC3B1', 'F78C6B', 'F5683D', 'E9400C', 'C2350A', '882507'];
         this.state = {
             isLoading: false,
             errorOccurred: false,
@@ -302,6 +302,8 @@ class DashboardSalesArticleCustomerStatsComponent extends React.Component {
                     selectedDateFilterType={selectedDateFilterType}
                     onDateChange={this.onDateChange.bind(this)}
                     tabs={tabs}
+                    demoButtonText={"Create Invoice"}
+                    demoButtonLink={'/invoice/new'}
                 />
             )
                 

@@ -38,7 +38,7 @@ class UpgradeSmallModalComponent extends React.Component {
 
 				<p className="claim">
 					With your success, there is no stopping you, but you have exceeded the turnover quota of your current plan. 
-					Upgrade to the new Free Plan to continue enjoying all the benefits of Imprezz!
+					Upgrade to the new Free Plan to continue enjoying all the benefits of Groflex!
 				</p>
 
 				{subClaim ? <p className="subclaim" dangerouslySetInnerHTML={{ __html: subClaim }} /> : null}

@@ -94,7 +94,7 @@ class MenuFooterComponent extends React.Component {
 		}
 
 		const iconClass = 'icon icon-logout_outlined';
-		const logoutClass = `menuItem ${iconClass} ${submenuVisible ? 'menuItem-notFocused' : ''}`;
+		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? 'menuItem-notFocused' : ''}`;
 		const notificationClass = `menuItem icon icon-bell`;
 
 		return (
@@ -108,7 +108,7 @@ class MenuFooterComponent extends React.Component {
 					<div className="menu-profile-popup">
 						<div className="menu-profile-popup-head">
 							<div className="icon icon-user_outlined"></div>
-							<div>{this.state.tenant.companyAddress.companyName || 'Business Name'}</div>
+							<div className="text-info">{this.state.tenant.companyAddress.companyName || 'Business Name'}</div>
 						</div>
 						<div className="menu-profile-popup-middle1">
 							<a 	className={`menuItem small icon icon-user_outlined_black ${activeSubmenuItem == 'account' ? 'menuItem-active' : ''}`}
@@ -148,9 +148,9 @@ class MenuFooterComponent extends React.Component {
 								{'Groflex Help Center'}
 							</a>
 							<a 	className="menuItem small icon icon-vpn_policy"
-								href="https://www.groflex.in/privacy-policy/" target="_blank"
+								href="https://groflex.in/privacy-policy" target="_blank"
 							>
-								{'Terms and policies'}
+								{'Terms & Conditions'}
 							</a>
 						</div>
 						<div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>

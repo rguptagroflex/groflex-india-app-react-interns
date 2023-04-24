@@ -17,6 +17,7 @@ import { detectDevice } from "helpers/detectDevice";
 import { format } from "util";
 import SelectStateInputComponent from "shared/select-state/select-state.component";
 import imprezzLogoSmall from "assets/images/impress_short_icon.png";
+import landingImage from "assets/images/login/login.jpg";
 
 import Carousel from "shared/carousel/Carousel.component";
 import OnboardTileWrapper from "shared/onboarding/onboardtile-wrapper.component";
@@ -245,7 +246,7 @@ class RegistrationComponent extends React.Component {
 					</div> */}
 					{/* {registrationFact} */}
 
-					<div className="landing-carousel-wrapper">
+					{/* <div className="landing-carousel-wrapper">
 						<Carousel
 							className="landing-carousel"
 							activeSlide={activeCarouselSlide}
@@ -350,7 +351,9 @@ class RegistrationComponent extends React.Component {
 								/>
 							</Carousel.PageIndicators>
 						</Carousel>
-					</div>
+					</div> */}
+					<img className='landing-image' src={landingImage}/>
+
 
 					<div className="media-coverage text-center">
 						<p className="media-coverage-title">National media that has covered us!</p>
@@ -371,10 +374,10 @@ class RegistrationComponent extends React.Component {
 						<hr></hr>
 						<div style={{ display: "flex" }}>
 							<p>
-								For more details visit <a href={"https://imprezz.in"}>www.imprezz.in</a>
+								For more details visit <a href={"https://groflex.in"} target="_blank">www.groflex.in</a>
 							</p>
-							<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
-								Terms & Privacy
+							<a href="https://groflex.in/terms-&-conditions" target="_blank">
+								Terms & Conditions
 							</a>
 						</div>
 					</div>
@@ -1288,7 +1291,7 @@ class RegistrationComponent extends React.Component {
 				const alertIcon = <span className={`icon icon-close`} />;
 				const passwordErrorElement = <div className="landing-password-error">{resources.passwordNotMatch}</div>;
 
-				headlineElement = this.isMobile ? resources.trailPeriodMessage : resources.createInvoizAccount;
+				headlineElement = resources.createInvoizAccount; //this.isMobile ? resources.trailPeriodMessage : resources.createInvoizAccount;
 				
 				headlineElement = (
 					<div>

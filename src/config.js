@@ -4,17 +4,17 @@ import WebStorageService from "services/webstorage.service";
 import WebStorageKey from "enums/web-storage-key.enum";
 
 const apiServers = {
-	local: "http://localhost:3000",
-	// local: 'https://qa.imprezz.in',
-	//local: 'https://dev.imprezz.in',
-	// local: 'https://app.imprezz.in',
-	development: "https://dev.groflex.io",
-	qa: "https://qa.groflex.io",
-	staging: "https://staging.groflex.io",
-	production: "https://app.groflex.io",
-	integration: "https://web-integration-invoiz.buhl.de",
-	admin: "https://invoiz-admin.buhl.de",
+	// local: "http://localhost:3000",
+	local: "https://dev.groflex.in",
+	development: "https://dev.groflex.in",
+	qa: "https://qa.groflex.in",
+	staging: "https://staging.groflex.in",
+	production: "https://app.groflex.in",
+	// integration: "https://web-integration-invoiz.buhl.de",
+	// admin: "https://invoiz-admin.buhl.de",
 };
+
+const byPassCors = true;
 
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
@@ -22,7 +22,7 @@ delete window.settings;
 let apiRoot = WebStorageService.getItem(WebStorageKey.API_ROOT) || apiServers[releaseStage];
 
 if (!apiRoot) {
-	apiRoot = "https://app.groflex.io";
+	apiRoot = "https://app.groflex.in";
 }
 
 const path = window.location.pathname;
@@ -69,7 +69,7 @@ const resourceUrls = {
 const config = {
 	apiRoot,
 	releaseStage,
-
+	byPassCors,
 	resourceHost,
 	imageResourceHost,
 	assetResourceHost,
@@ -196,7 +196,7 @@ const config = {
 		// 	]
 		// },
 		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
-		{ name: 'articles', icon: 'article_outlined', title: 'Artikel', url: '/articles', resourceKey: 'article' },
+		{ name: "articles", icon: "article_outlined", title: "Artikel", url: "/articles", resourceKey: "article" },
 		// {
 		// 	name: "articles",
 		// 	icon: "article",
@@ -234,39 +234,63 @@ const config = {
 		// 		},
 		// 	],
 		// },
-		// {
-		// 	name: "expenditure",
-		// 	icon: "expense",
-		// 	title: "Ausgaben",
-		// 	url: "",
-		// 	resourceKey: "expenditure",
-		// 	submenuItems: [
-		// 		{
-		// 			name: "expenditures",
-		// 			icon: "expense",
-		// 			title: "Ausgaben",
-		// 			url: "/expenses",
-		// 			mainSubmenuItem: "expenditure",
-		// 			resourceKey: "expenditures",
-		// 		},
-		// 		{
-		// 			name: "purchaseOrders",
-		// 			icon: "order",
-		// 			title: "Purchase Orders",
-		// 			url: "/purchase-orders",
-		// 			mainSubmenuItem: "expenditure",
-		// 			resourceKey: "purchaseOrder",
-		// 		},
-		// 		{
-		// 			name: "debitNotes",
-		// 			icon: "order",
-		// 			title: "Debit notes",
-		// 			url: "/expenses/cancellations",
-		// 			mainSubmenuItem: "expenditure",
-		// 			resourceKey: "debitNotes",
-		// 		},
-		// 	],
-		// },
+		{
+			name: "expenditure",
+			icon: "expense",
+			title: "Ausgaben",
+			url: "",
+			resourceKey: "accounting",
+			submenuItems: [
+				{
+					name: "expenditures",
+					icon: "expense",
+					title: "Ausgaben",
+					url: "/expenses",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "expenditures",
+				},
+				// {
+				// 	name: "purchaseOrders",
+				// 	icon: "order",
+				// 	title: "Purchase Orders",
+				// 	url: "/purchase-orders",
+				// 	mainSubmenuItem: "expenditure",
+				// 	resourceKey: "purchaseOrder",
+				// },
+				{
+					name: "debitNotes",
+					icon: "order",
+					title: "Debit notes",
+					url: "/expenses/cancellations",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "debitNotes",
+				},
+				{
+					name: "chartOfAccounts",
+					// icon: "order",
+					title: "Chart of accounts",
+					url: "/expenses/chart-of-accounts",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "chartOfAccounts",
+				},
+				{
+					name: "cashAndBank",
+					icon: "order",
+					title: "Cash and bank",
+					url: "/expenses/cash-and-bank",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "cashAndBank",
+				},
+				{
+					name: "transactions",
+					icon: "order",
+					title: "Transactions",
+					url: "/expenses/transactions",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "transactions",
+				},
+			],
+		},
 		// { name: 'expenses', icon: 'expense', title: 'Ausgaben', url: '/expenses', resourceKey: 'expense' },
 		// { name: 'purchaseOrders', icon: 'order', title: 'Purchase Orders', url: '/purchase-orders', resourceKey: 'purchaseOrder' },
 		// {
@@ -875,8 +899,9 @@ const config = {
 
 			// get subscription details endpoint
 			getSubscriptionDetails: `${resourceHost}subscription/detail`,
-			updateSubscription: `${resourceHost}chargebee/subscription`,
+			//updateSubscription: `${resourceHost}chargebee/subscription`,
 			// updateSubscription: `${resourceHost}zoho/subscription`,
+			updateSubscription: `${resourceHost}chargebeev2/subscription`,
 
 			// account endpoint
 			account: `${resourceUrls.settings}account`,

@@ -1,25 +1,25 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import _ from 'lodash';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import { Link } from "react-router-dom";
+import TopbarComponent from "shared/topbar/topbar.component";
+import _ from "lodash";
 // import moment from 'moment';
-import Uploader from 'fine-uploader';
-import Decimal from 'decimal.js';
-import accounting from 'accounting';
-import { format } from 'util';
-import config from 'config';
-import CheckboxInputComponent from 'shared/inputs/checkbox-input/checkbox-input.component';
-import CurrencyInputComponent from 'shared/inputs/currency-input/currency-input.component';
-import DateInputComponent from 'shared/inputs/date-input/date-input.component';
-import RadioInputComponent from 'shared/inputs/radio-input/radio-input.component';
-import SelectInputComponent from 'shared/inputs/select-input/select-input.component';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
-import PopoverComponent from 'shared/popover/popover.component';
-import { handleImageError } from 'helpers/errors';
-import ChangeDetection from 'helpers/changeDetection';
-import { formatApiDate } from 'helpers/formatDate';
-import userPermissions from 'enums/user-permissions.enum';
+import Uploader from "fine-uploader";
+import Decimal from "decimal.js";
+import accounting from "accounting";
+import { format } from "util";
+import config from "config";
+import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
+import CurrencyInputComponent from "shared/inputs/currency-input/currency-input.component";
+import DateInputComponent from "shared/inputs/date-input/date-input.component";
+import RadioInputComponent from "shared/inputs/radio-input/radio-input.component";
+import SelectInputComponent from "shared/inputs/select-input/select-input.component";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
+import PopoverComponent from "shared/popover/popover.component";
+import { handleImageError } from "helpers/errors";
+import ChangeDetection from "helpers/changeDetection";
+import { formatApiDate } from "helpers/formatDate";
+import userPermissions from "enums/user-permissions.enum";
 
 const changeDetection = new ChangeDetection();
 
@@ -43,25 +43,25 @@ class ExpenseEditComponent extends React.Component {
 
 		this.state = {
 			expense: this.props.expense || {},
-			isPaid: this.props.expense && this.props.expense.payKind !== 'open',
+			isPaid: this.props.expense && this.props.expense.payKind !== "open",
 			isModal: this.props.isModal,
 			uploadedReceipts: [],
-			amountInvalid: false
+			amountInvalid: false,
 		};
 
 		this.vatPercentOptions = {
 			loadOptions: (input, callback) => {
 				callback(null, {
 					options: invoiz.user.vatCodes,
-					complete: true
+					complete: true,
 				});
 			},
 			clearable: false,
 			backspaceRemoves: false,
-			labelKey: 'name',
-			valueKey: 'value',
-			matchProp: 'name',
-			handleChange: this.onVatPercentChange.bind(this)
+			labelKey: "name",
+			valueKey: "value",
+			matchProp: "name",
+			handleChange: this.onVatPercentChange.bind(this),
 		};
 
 		this.filesToDelete = [];
@@ -88,7 +88,7 @@ class ExpenseEditComponent extends React.Component {
 
 					return {
 						original: dataOriginal,
-						current: currentData
+						current: currentData,
 					};
 				});
 			}, 0);
@@ -104,39 +104,42 @@ class ExpenseEditComponent extends React.Component {
 		const { resources } = this.props;
 		const topbar = this.state.isModal ? null : (
 			<TopbarComponent
-				title={this.state.expense.id ? resources.str_editOutput : resources.str_createOutput }
+				title={this.state.expense.id ? resources.str_editOutput : resources.str_createOutput}
 				hasCancelButton={true}
 				cancelButtonCallback={() => this.onCancel()}
 				buttonCallback={(evt, button) => this.onTopbarButtonClick(button.action)}
 				buttons={[
 					{
-						type: 'default',
+						type: "default",
 						label: resources.expenseEditSaveAndCaptureButtonText,
-						buttonIcon: 'icon-check',
-						action: 'saveAndCreate',
-						dataQsId: 'expense-topbar-button-save-and-create'
+						buttonIcon: "icon-check",
+						action: "saveAndCreate",
+						dataQsId: "expense-topbar-button-save-and-create",
 					},
 					{
-						type: 'primary',
+						type: "primary",
 						label: resources.str_toSave,
-						buttonIcon: 'icon-check',
-						action: 'save',
-						dataQsId: 'expense-topbar-button-save'
-					}
+						buttonIcon: "icon-check",
+						action: "save",
+						dataQsId: "expense-topbar-button-save",
+					},
 				]}
 			/>
 		);
 
 		const isPaidElements =
-			this.state.expense.payKind !== 'open' ? (
+			this.state.expense.payKind !== "open" ? (
 				<div>
 					<div className="paykind-wrapper">
 						<label className="paykind-radio-label">{resources.str_payment}</label>
 
 						<RadioInputComponent
 							wrapperClass={`paykind-radio-wrapper`}
-							options={[{ label: resources.str_cash, value: 'cash' }, { label: resources.str_bank, value: 'bank' }]}
-							value={this.state.expense.payKind || 'cash'}
+							options={[
+								{ label: resources.str_cash, value: "cash" },
+								{ label: resources.str_bank, value: "bank" },
+							]}
+							value={this.state.expense.payKind || "cash"}
 							onChange={() => this.onPaykindChange()}
 							dataQsId="expense-edit-paykind"
 						/>
@@ -145,9 +148,9 @@ class ExpenseEditComponent extends React.Component {
 						<div className="dateInput dateInput_label-left">
 							<label className="dateInput_label">{resources.expenseEditPaymentDateLabel}</label>
 							<DateInputComponent
-								name={'expense-pay-date'}
+								name={"expense-pay-date"}
 								value={this.state.expense.displayPayDate}
-								required={this.state.expense.payKind === 'bank'}
+								required={this.state.expense.payKind === "bank"}
 								onChange={(name, value, date) => this.onDateChange(name, value, date)}
 								dataQsId="expense-edit-date"
 							/>
@@ -167,7 +170,7 @@ class ExpenseEditComponent extends React.Component {
 
 		let vatPercentElement = null;
 
-		const vatPercent = _.find(invoiz.user.vatCodes, vatPercent => {
+		const vatPercent = _.find(invoiz.user.vatCodes, (vatPercent) => {
 			return parseInt(vatPercent.value, 10) === this.state.expense.vatPercent;
 		});
 
@@ -190,16 +193,16 @@ class ExpenseEditComponent extends React.Component {
 				const popoverEntries = [
 					{
 						label: resources.str_clear,
-						action: 'delete',
-						dataQsId: `expense-upload-delete-${index}`
-					}
+						action: "delete",
+						dataQsId: `expense-upload-delete-${index}`,
+					},
 				];
 
 				if (receipt.url) {
 					popoverEntries.push({
 						label: resources.str_preview,
-						action: 'preview',
-						dataQsId: `expense-upload-preview-${index}`
+						action: "preview",
+						dataQsId: `expense-upload-preview-${index}`,
 					});
 				}
 
@@ -210,7 +213,7 @@ class ExpenseEditComponent extends React.Component {
 						{this.state.isModal ? (
 							<div
 								className="list_item list_control icon icon-close"
-								onClick={() => this.onUploadDropdownEntryClick(index, { action: 'delete' })}
+								onClick={() => this.onUploadDropdownEntryClick(index, { action: "delete" })}
 							/>
 						) : (
 							<div
@@ -225,7 +228,7 @@ class ExpenseEditComponent extends React.Component {
 									offsetTop={10}
 									arrowOffset={22}
 									ref={`expense-upload-popover-${index}`}
-									onClick={entry => this.onUploadDropdownEntryClick(index, entry)}
+									onClick={(entry) => this.onUploadDropdownEntryClick(index, entry)}
 								/>
 							</div>
 						)}
@@ -235,13 +238,13 @@ class ExpenseEditComponent extends React.Component {
 			receiptList = <div className="expense-receipt-list">{receipts}</div>;
 		}
 
-		const errorMessage = this.state.amountInvalid ? resources.errorCodesWithMessages['REQUIRED'] : null;
+		const errorMessage = this.state.amountInvalid ? resources.errorCodesWithMessages["REQUIRED"] : null;
 
 		return (
 			<div className="expense-edit-component-wrapper">
 				{topbar}
 
-				<div className={`${this.state.isModal ? '' : 'box wrapper-has-topbar-with-margin'}`}>
+				<div className={`${this.state.isModal ? "" : "box wrapper-has-topbar-with-margin"}`}>
 					<div className="row u_pb_40 u_pt_60">
 						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.str_details}</div>
 						<div className="col-xs-8">
@@ -249,7 +252,7 @@ class ExpenseEditComponent extends React.Component {
 								dataQsId="expense-edit-payee"
 								value={this.state.expense.payee}
 								label={resources.str_payee}
-								onChange={value => this.onPayeeChange(value)}
+								onChange={(value) => this.onPayeeChange(value)}
 							/>
 
 							<div className="textarea">
@@ -271,7 +274,7 @@ class ExpenseEditComponent extends React.Component {
 									<label className="dateInput_label">{resources.str_documentDate}</label>
 									<DateInputComponent
 										dataQsId="expense-edit-booking-date"
-										name={'expense-booking-date'}
+										name={"expense-booking-date"}
 										value={this.state.expense.displayDate}
 										required={true}
 										onChange={(name, value, date) => this.onDateChange(name, value, date)}
@@ -290,7 +293,7 @@ class ExpenseEditComponent extends React.Component {
 									dataQsId="expense-edit-pricenet"
 									errorMessage={errorMessage}
 									value={this.state.expense.price}
-									onBlur={value => this.onAmountBlur(value, true)}
+									onBlur={(value) => this.onAmountBlur(value, true)}
 									label={resources.expenseEditNetInputLabel}
 									required={true}
 									hasBorder={true}
@@ -303,7 +306,7 @@ class ExpenseEditComponent extends React.Component {
 									dataQsId="expense-edit-pricetotal"
 									errorMessage={errorMessage}
 									value={this.state.expense.priceTotal}
-									onBlur={value => this.onAmountBlur(value)}
+									onBlur={(value) => this.onAmountBlur(value)}
 									label={resources.expenseEditGrossInputLabel}
 									required={true}
 									hasBorder={true}
@@ -315,7 +318,7 @@ class ExpenseEditComponent extends React.Component {
 							<div className="u_pt_40">
 								<CheckboxInputComponent
 									dataQsId="expense-edit-ispaid"
-									name={'isPaid'}
+									name={"isPaid"}
 									label={resources.str_paid}
 									checked={this.state.isPaid}
 									onChange={() => this.onPaidChange()}
@@ -327,7 +330,9 @@ class ExpenseEditComponent extends React.Component {
 					</div>
 
 					<div className="row u_pb_40 u_pt_60">
-						<div className="col-xs-4 form_groupheader_edit text-h4">{resources.expenseEditDocumentHeading}</div>
+						<div className="col-xs-4 form_groupheader_edit text-h4">
+							{resources.expenseEditDocumentHeading}
+						</div>
 						<div className="col-xs-8">
 							{receiptList}
 
@@ -357,20 +362,28 @@ class ExpenseEditComponent extends React.Component {
 	onAmountBlur(value, isNet) {
 		const { expense } = this.state;
 
-		value = value.toString().replace(/-/gi, '');
+		value = value.toString().replace(/-/gi, "");
 
 		if (isNet) {
 			// expense.price = accounting.unformat(value, ',');
 			expense.price = accounting.unformat(value, config.currencyFormat.decimal);
 			// expense.priceTotal = calculateNetGrossPrice(accounting.unformat(value, ','), expense.vatPercent, true);
-			expense.priceTotal = calculateNetGrossPrice(accounting.unformat(value, config.currencyFormat.decimal), expense.vatPercent, true);
-			expense.calculationBase = 'net';
+			expense.priceTotal = calculateNetGrossPrice(
+				accounting.unformat(value, config.currencyFormat.decimal),
+				expense.vatPercent,
+				true
+			);
+			expense.calculationBase = "net";
 		} else {
 			// expense.priceTotal = accounting.unformat(value, ',');
 			expense.priceTotal = accounting.unformat(value, config.currencyFormat.decimal);
 			// expense.price = calculateNetGrossPrice(accounting.unformat(value, ','), expense.vatPercent, false);
-			expense.price = calculateNetGrossPrice(accounting.unformat(value, config.currencyFormat.decimal), expense.vatPercent, false);
-			expense.calculationBase = 'gross';
+			expense.price = calculateNetGrossPrice(
+				accounting.unformat(value, config.currencyFormat.decimal),
+				expense.vatPercent,
+				false
+			);
+			expense.calculationBase = "gross";
 		}
 
 		this.setState({ expense, amountInvalid: !value || value <= 0 });
@@ -381,21 +394,21 @@ class ExpenseEditComponent extends React.Component {
 	}
 
 	onUploadDropdownEntryClick(index, entry) {
-		if (entry.action === 'delete') {
+		if (entry.action === "delete") {
 			const receipts = this.state.expense.receipts.concat(this.state.uploadedReceipts);
 			this.filesToDelete.push(receipts[index].id);
 
 			const { expense } = this.state;
-			expense.receipts = this.state.expense.receipts.filter(receipt => {
+			expense.receipts = this.state.expense.receipts.filter((receipt) => {
 				return this.filesToDelete.indexOf(receipt.id) === -1;
 			});
 
-			const uploadedReceipts = this.state.uploadedReceipts.filter(receipt => {
+			const uploadedReceipts = this.state.uploadedReceipts.filter((receipt) => {
 				return this.filesToDelete.indexOf(receipt.id) === -1;
 			});
 
 			this.setState({ uploadedReceipts, expense });
-		} else if (entry.action === 'preview') {
+		} else if (entry.action === "preview") {
 			const url = `${config.resourceHost}${this.state.expense.receipts[index].url}`;
 			window.open(url);
 		}
@@ -408,11 +421,11 @@ class ExpenseEditComponent extends React.Component {
 		isPaid = !isPaid;
 
 		if (isPaid) {
-			expense.payKind = 'cash';
+			expense.payKind = "cash";
 			// expense.payDate = moment().format('YYYY-MM-DD');
 			expense.payDate = formatApiDate();
 		} else {
-			expense.payKind = 'open';
+			expense.payKind = "open";
 			expense.payDate = null;
 		}
 
@@ -422,11 +435,11 @@ class ExpenseEditComponent extends React.Component {
 	onDateChange(name, value, date) {
 		const { expense } = this.state;
 		switch (name) {
-			case 'expense-booking-date':
+			case "expense-booking-date":
 				// expense.date = moment(date).format('YYYY-MM-DD');
 				expense.date = formatApiDate(date);
 				break;
-			case 'expense-pay-date':
+			case "expense-pay-date":
 				// expense.payDate = moment(date).format('YYYY-MM-DD');
 				expense.payDate = formatApiDate(date);
 				break;
@@ -444,7 +457,7 @@ class ExpenseEditComponent extends React.Component {
 	onPaykindChange() {
 		const { expense } = this.state;
 
-		expense.payKind = expense.payKind === 'cash' ? 'bank' : 'cash';
+		expense.payKind = expense.payKind === "cash" ? "bank" : "cash";
 
 		this.setState({ expense });
 	}
@@ -460,18 +473,18 @@ class ExpenseEditComponent extends React.Component {
 		expense.priceTotal = calculateNetGrossPrice(expense.price, expense.vatPercent, true);
 
 		this.setState({
-			expense
+			expense,
 		});
 	}
 
 	onTextAreaChange() {
 		const { expense } = this.state;
-		const value = $('#expense-edit-textarea').val();
+		const value = $("#expense-edit-textarea").val();
 		const rows = Math.max(1 + (value.match(/\n/g) || []).length, 3);
 
 		expense.description = value && value.trim();
 
-		$('#expense-edit-textarea').attr('rows', rows);
+		$("#expense-edit-textarea").attr("rows", rows);
 
 		if (!this.isUnmounted) {
 			this.setState({ expense });
@@ -481,11 +494,11 @@ class ExpenseEditComponent extends React.Component {
 	onTopbarButtonClick(action) {
 		const { resources } = this.props;
 		switch (action) {
-			case 'save':
+			case "save":
 				this.save();
 				break;
 
-			case 'saveAndCreate':
+			case "saveAndCreate":
 				this.save(true);
 				invoiz.page.showToast({ message: resources.expenseSaveSuccessMessage });
 				break;
@@ -504,11 +517,11 @@ class ExpenseEditComponent extends React.Component {
 			const { expense } = this.state;
 			expense.receipts = this.state.uploadedReceipts;
 
-			if (expense.payKind === 'open') {
+			if (expense.payKind === "open") {
 				delete expense.payDate;
 			}
 			if (expense.payee === null) {
-				expense.payee = '';
+				expense.payee = "";
 			}
 
 			const expenseUrl = expense.id
@@ -518,8 +531,8 @@ class ExpenseEditComponent extends React.Component {
 			invoiz
 				.request(expenseUrl, {
 					auth: true,
-					method: expense.id ? 'PUT' : 'POST',
-					data: expense
+					method: expense.id ? "PUT" : "POST",
+					data: expense,
 				})
 				.then(() => {
 					if (!this.filesToDelete || this.filesToDelete.length === 0) {
@@ -527,10 +540,10 @@ class ExpenseEditComponent extends React.Component {
 						return;
 					}
 
-					const requests = this.filesToDelete.map(id => {
+					const requests = this.filesToDelete.map((id) => {
 						return invoiz.request(`${config.expense.endpoints.receiptUrl}/${id}`, {
 							auth: true,
-							method: 'DELETE'
+							method: "DELETE",
 						});
 					});
 
@@ -540,12 +553,12 @@ class ExpenseEditComponent extends React.Component {
 						})
 						.catch(() => {
 							reject(new Error());
-							invoiz.showNotification({ type: 'error', message: resources.str_saveErrorMessage });
+							invoiz.showNotification({ type: "error", message: resources.str_saveErrorMessage });
 						});
 				})
 				.catch(() => {
 					reject(new Error());
-					invoiz.showNotification({ type: 'error', message: resources.str_saveErrorMessage });
+					invoiz.showNotification({ type: "error", message: resources.str_saveErrorMessage });
 				});
 		});
 	}
@@ -560,64 +573,64 @@ class ExpenseEditComponent extends React.Component {
 		const { expense } = this.state;
 		expense.receipts = this.state.uploadedReceipts;
 
-		if (expense.payKind === 'open') {
+		if (expense.payKind === "open") {
 			delete expense.payDate;
 		}
 		if (expense.payee === null) {
-			expense.payee = '';
+			expense.payee = "";
 		}
 		const expenseUrl = expense.id ? `${config.expense.resourceUrl}/${expense.id}` : `${config.expense.resourceUrl}`;
 
 		invoiz
 			.request(expenseUrl, {
 				auth: true,
-				method: expense.id ? 'PUT' : 'POST',
-				data: expense
+				method: expense.id ? "PUT" : "POST",
+				data: expense,
 			})
 			.then(() => {
 				if (!this.filesToDelete || this.filesToDelete.length === 0) {
 					if (createNew) {
-						invoiz.router.navigate('/expense/new', true, true);
+						invoiz.router.navigate("/expense/new", true, true);
 					} else {
-						invoiz.router.navigate('/expenses');
+						invoiz.router.navigate("/expenses");
 					}
 				}
-				const requests = this.filesToDelete.map(id => {
+				const requests = this.filesToDelete.map((id) => {
 					return invoiz.request(`${config.expense.endpoints.receiptUrl}/${id}`, {
 						auth: true,
-						method: 'DELETE'
+						method: "DELETE",
 					});
 				});
 				Promise.all(requests)
 					.then(() => {
 						if (createNew) {
-							invoiz.router.navigate('/expense/new', true, true);
+							invoiz.router.navigate("/expense/new", true, true);
 						} else {
-							invoiz.router.navigate('/expenses');
+							invoiz.router.navigate("/expenses");
 						}
 					})
 					.catch(() => {
-						invoiz.showNotification({ type: 'error', message: resources.str_saveErrorMessage });
+						invoiz.showNotification({ type: "error", message: resources.str_saveErrorMessage });
 					});
 			})
 			.catch(() => {
-				invoiz.showNotification({ type: 'error', message: resources.str_saveErrorMessage });
+				invoiz.showNotification({ type: "error", message: resources.str_saveErrorMessage });
 			});
 	}
 
 	onCancel() {
 		if (this.state.uploadedReceipts.length > 0) {
-			const requests = this.state.uploadedReceipts.map(receipt => {
+			const requests = this.state.uploadedReceipts.map((receipt) => {
 				invoiz.request(`${config.expense.endpoints.receiptUrl}/${receipt.id}`, {
 					auth: true,
-					method: 'DELETE'
+					method: "DELETE",
 				});
 			});
 			Promise.all(requests).then(() => {
 				this.setState({ uploadedReceipts: [] });
 			});
 		}
-		invoiz.router.navigate('/expenses');
+		invoiz.router.navigate("/expenses");
 	}
 
 	addFile(files) {
@@ -625,7 +638,7 @@ class ExpenseEditComponent extends React.Component {
 			return;
 		}
 
-		_.each(files, file => {
+		_.each(files, (file) => {
 			this.manualUploader.addFiles([file]);
 		});
 	}
@@ -633,17 +646,17 @@ class ExpenseEditComponent extends React.Component {
 	addSelectedFile(event) {
 		const file = event.target.files[0];
 		this.addFile([file]);
-		event.target.value = '';
+		event.target.value = "";
 	}
 
 	initDragAndDropUploader() {
 		Uploader.DragAndDrop({
-			dropZoneElements: [document.getElementById('expense-receipt-dropbox')],
+			dropZoneElements: [document.getElementById("expense-receipt-dropbox")],
 			callbacks: {
-				processingDroppedFilesComplete: files => {
+				processingDroppedFilesComplete: (files) => {
 					this.addFile(files);
-				}
-			}
+				},
+			},
 		});
 	}
 
@@ -656,13 +669,13 @@ class ExpenseEditComponent extends React.Component {
 				messages: {
 					minSizeError: resources.expenseFileMinSizeError,
 					sizeError: resources.expenseFileMaxSizeError,
-					typeError: resources.expenseFileTypeError
+					typeError: resources.expenseFileTypeError,
 				},
 				request: {
 					customHeaders: { authorization: `Bearer ${invoiz.user.token}` },
 					endpoint: config.expense.endpoints.receiptUrl,
-					inputName: 'receipt',
-					filenameParam: 'filename'
+					inputName: "receipt",
+					filenameParam: "filename",
 				},
 				callbacks: {
 					onComplete: (id, fileName, response) => {
@@ -686,11 +699,11 @@ class ExpenseEditComponent extends React.Component {
 						}
 
 						invoiz.page.showToast({
-							type: 'error',
-							message: format(errorReason, name) || resources.expenseEditImageUploadError
+							type: "error",
+							message: format(errorReason, name) || resources.expenseEditImageUploadError,
 						});
-					}
-				}
+					},
+				},
 			})
 		);
 	}

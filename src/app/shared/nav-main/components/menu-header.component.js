@@ -87,11 +87,11 @@ class MenuHeaderComponent extends React.Component {
 					<Link className={`logo`} to="/">
 						<SVGInline width="138px" height="50px" svg={groflexLogo} />
 					</Link>
-					{/* <Link className={`logo`} to="/">
+					<Link className={`logo`} to="/">
 						<div className="imprezz-small-image-div">
 							<img className="imprezz-small-image" src={imprezzLogoSmall} />
 						</div>
-					</Link> */}
+					</Link>
 				</div>
 				<a className="menuHeader_search icon icon-search" onClick={this.onSearchClick.bind(this)} />
 				{/* <a className="menuHeader_newsfeed icon icon-bell" onClick={this.onNewsfeedClick.bind(this)}>
