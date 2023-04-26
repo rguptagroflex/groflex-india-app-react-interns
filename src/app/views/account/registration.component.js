@@ -987,7 +987,7 @@ class RegistrationComponent extends React.Component {
 							if (window && window.dataLayer) {
 								window.dataLayer.push({ event: "registration_completed" });
 							}
-							invoiz.router.navigate("/");
+							invoiz.router.navigate("/complete_registration");
 						}
 					}
 				})
@@ -1083,7 +1083,7 @@ class RegistrationComponent extends React.Component {
 								message: `${resources.str_accountSucessfullSetMessage} ${resources.str_haveFunWithInvoizMessage}`,
 							});
 
-							invoiz.router.navigate("/");
+							invoiz.router.navigate("/complete_registration");
 						}
 					}
 				})
