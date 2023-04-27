@@ -749,7 +749,8 @@ class AccountSubscriptionComponent extends React.Component {
 							</div>
 						</div>
 					</div>
-					<div className="box" style={{padding: "26px 32px"}}>
+					{/* Uncomment when accounting live */}
+					{/* <div className="box" style={{padding: "26px 32px"}}>
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_10">{"Accounting Module"}</div>
 							<div className="col-xs-12 text-h6 u_pb_20">{"Your one-stop solution for all your accounting needs ! Here’s what you will get in the accounting module. "}</div>
@@ -800,7 +801,7 @@ class AccountSubscriptionComponent extends React.Component {
 								/>
 							</div>
 						</div>
-					</div>
+					</div> */}
 				</div>
 			: 
 			(subscriptionDetail.planId && ( subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN )) ? 
