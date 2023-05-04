@@ -266,7 +266,7 @@ const config = {
 					resourceKey: "debitNotes",
 				},
 				{
-					name: "Chart of accounts",
+					name: "chartOfAccounts",
 					// icon: "order",
 					title: "Chart of accounts",
 					url: "/expenses/chart-of-accounts",
@@ -899,8 +899,9 @@ const config = {
 
 			// get subscription details endpoint
 			getSubscriptionDetails: `${resourceHost}subscription/detail`,
-			updateSubscription: `${resourceHost}chargebee/subscription`,
+			//updateSubscription: `${resourceHost}chargebee/subscription`,
 			// updateSubscription: `${resourceHost}zoho/subscription`,
+			updateSubscription: `${resourceHost}chargebeev2/subscription`,
 
 			// account endpoint
 			account: `${resourceUrls.settings}account`,

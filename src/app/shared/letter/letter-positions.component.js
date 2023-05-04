@@ -352,8 +352,8 @@ class LetterPositionsComponent extends React.Component {
 						}}
 					/>
 				) : null}
-
-				{showInventoryPopover && popoverInventoryElementId && isInvoice === true ? (
+				{/* open when we launch inventory */}
+				{/* {showInventoryPopover && popoverInventoryElementId && isInvoice === true ? (
 					<PopoverComponent
 						ref={`letter-positions-inventory-popover`}
 						offsetTop={14}
@@ -365,7 +365,7 @@ class LetterPositionsComponent extends React.Component {
 							this.setState({ showInventoryPopover: null, popoverInventoryElementId: null });
 						}}
 					/>
-				) : null}
+				) : null} */}
 				<div className="letter-positions-items" ref="letterPositionsItems">
 					{positionItems}
 				</div>

@@ -17,7 +17,7 @@ const CashListComponent = () => {
 
 	const getCashList = () => {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
-			console.log("CASH DATA RESPONSE :", { ...res.body.data.find((bank) => bank.type === "cash") });
+			// console.log("CASH DATA RESPONSE :", { ...res.body.data.find((bank) => bank.type === "cash") });
 			setCashData({ ...res.body.data.find((bank) => bank.type === "cash") });
 		});
 	};
@@ -30,7 +30,7 @@ const CashListComponent = () => {
 			invoiz
 				.request(`${config.resourceHost}bank`, { auth: true, method: "POST", data: { ...newCashData } })
 				.then((res) => {
-					console.log(res, "RESPONSE of ADD CASH");
+					// console.log(res, "RESPONSE of ADD CASH");
 					setCashData({ ...res.body.data });
 				});
 			ModalService.close();
@@ -50,7 +50,7 @@ const CashListComponent = () => {
 					data: { ...editedCashData },
 				})
 				.then((res) => {
-					console.log(res, "EDIT CASH KA RESPONSE");
+					// console.log(res, "EDIT CASH KA RESPONSE");
 					setCashData({ ...res.body.data });
 				});
 			ModalService.close();

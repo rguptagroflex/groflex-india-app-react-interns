@@ -18,7 +18,7 @@ const BankListComponent = () => {
 
 	const getBanksList = () => {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
-			console.log(res.body.data);
+			// console.log(res.body.data);
 			setBanksList([...res.body.data].filter((bank) => bank.type === "bank"));
 		});
 	};
@@ -50,7 +50,7 @@ const BankListComponent = () => {
 					data: { ...editedBankData },
 				})
 				.then((res) => {
-					console.log(res, "EDIT BANK KA RESPONSE new");
+					// console.log(res, "EDIT BANK KA RESPONSE new");
 					// let newBanksList = [...banksList];
 					// newBanksList[index] = { ...editedBankData };
 					// setBanksList([...newBanksList]);

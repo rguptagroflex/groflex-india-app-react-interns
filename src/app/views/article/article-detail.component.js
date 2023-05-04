@@ -53,6 +53,7 @@ class ArticleDetailComponent extends React.Component {
 			canUpdateArticle: null,
 			canViewArticleSalesOverview: null,
 			canViewOffer: null,
+			canViewExpense: false,
 			uploadedArticleImage: [],
 		};
 	}
@@ -72,6 +73,7 @@ class ArticleDetailComponent extends React.Component {
 			canViewArticleSalesOverview:
 				invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ARTICLE_SALES_OVERVIEW),
 			canViewOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_OFFER),
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
 		});
 		setTimeout(() => {
 			this.initManualUploader();
@@ -520,7 +522,7 @@ class ArticleDetailComponent extends React.Component {
 	}
 
 	render() {
-		const { article, inventoryHistory, canUpdateArticle, canViewArticleSalesOverview, canViewOffer } = this.state;
+		const { article, inventoryHistory, canUpdateArticle, canViewArticleSalesOverview, canViewOffer, canViewExpense } = this.state;
 		const {
 			isLoading,
 			errorOccurred,
@@ -541,6 +543,9 @@ class ArticleDetailComponent extends React.Component {
 		} else {
 			permittedfilterItems = filterItems;
 		}
+		if (!canViewExpense) {
+			permittedfilterItems = permittedfilterItems.filter((item) => item.key !== "expense" && item.key !== "purchaseOrder");
+		} 
 		return (
 			<div className="article-detail-wrapper wrapper-has-topbar">
 				{canUpdateArticle ? (

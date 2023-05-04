@@ -188,7 +188,7 @@ export const updateSubscriptionDetails = callback => {
 
 		callback && callback();
 
-		if (window.location.search.indexOf('reloadChargebee') !== -1) {
+		if (window.location.search.indexOf('state=succeeded') !== -1) {
 			invoiz.router.reload();
 		}
 	};
@@ -201,7 +201,7 @@ export const updateSubscriptionDetails = callback => {
 	const updateSubscriptionData = () => {
 		const deferred = q.defer();
 		const params = new URLSearchParams(window.location.search);
-		if (window.location.search.indexOf('reloadChargebee') !== -1) {
+		if (window.location.search.indexOf('state=succeeded') !== -1) {
 			const id = params.has('id') ? params.get('id') : '';
 			const state = params.has('state') ? params.get('state') : '';
 

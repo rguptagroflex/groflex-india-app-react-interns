@@ -7,7 +7,8 @@ const planPermissions = {
 	NO_EXPENDITURE: 'noExpenditure',
 	NO_DEBIT_NOTE: 'noDebitNote',
 	NO_GST_EXPORT: 'noGstExport',
-	NO_INVENTORY: 'noInventory'
+	NO_INVENTORY: 'noInventory',
+	NO_ACCOUNTING: 'noAccounting'
 };
 
 export default Object.freeze(planPermissions);

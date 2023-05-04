@@ -8,13 +8,13 @@
 
 	.subscription-quota-bar {
 		width: 100%;
-		height: 38px;
+		height: 15px;
 		margin: 5px 0 15px 0;
 		background: $color-bg-dark;
 
 		.subscription-quota-used {
 			height: 100%;
-			background: $color-primary-light;
+			background: $color-primary;
 		}
 	}
 

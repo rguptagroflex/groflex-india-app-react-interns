@@ -4,7 +4,7 @@ import {
     SortableElement
 } from "react-sortable-hoc";
 import SVGInline from 'react-svg-inline';
-
+import userPermissions from 'enums/user-permissions.enum';
 import config from 'config'
 import invoiz from 'services/invoiz.service';
 
@@ -62,7 +62,8 @@ class StartQuickLinksComponent extends Component {
         super(props);
         this.state = { 
             quickLinks: [],
-            quickLinksEditable: false
+            quickLinksEditable: false,
+            canViewExpense:false
         }
     }
 
@@ -83,7 +84,18 @@ class StartQuickLinksComponent extends Component {
     async fetchQuickLinks() {
         try {
             let links = (await invoiz.request(`${config.resourceHost}quick-links`, {auth: true})).body.data.links;
-            links = links.map(linkItem => {
+            
+            if(!this.state.canViewExpense) {
+                links = links.filter(x => x.linkId != 'create-purchase-orders' && x.linkId != 'add-expenses' && x.linkId != 'add-stocks' );
+            }
+
+            if(this.state.canViewExpense) {
+                if(!links.find(x => x.linkId == 'add-expenses')) {
+                    links.push({ name: 'Add Expense', linkId: 'add-expenses', link: '/expense/new' })
+                }
+            }
+            
+            links = links.map(linkItem => {                
                 const {name, link} = quickLinksMap.find(item => item.linkId === linkItem.linkId);
                 return {...linkItem, name, link}
             })
@@ -105,7 +117,10 @@ class StartQuickLinksComponent extends Component {
     }
 
     componentDidMount() {
-        this.fetchQuickLinks()
+        this.fetchQuickLinks();
+        this.setState({
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		});
     }
 
     render() { 

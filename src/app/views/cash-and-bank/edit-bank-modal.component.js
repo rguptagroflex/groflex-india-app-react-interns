@@ -137,8 +137,8 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 		}
 	};
 
-	console.log(editedBankData, "Edit bank data from edit modal");
-	console.log(reEnteredAccountNumber, "reintered acc number from edit bank modal");
+	// console.log(editedBankData, "Edit bank data from edit modal");
+	// console.log(reEnteredAccountNumber, "reintered acc number from edit bank modal");
 	return (
 		<div className="add-bank-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">

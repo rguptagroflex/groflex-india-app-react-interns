@@ -173,7 +173,7 @@ class TransactionsListComponent extends React.Component {
 					data: { ...moneyInData },
 				})
 				.then((res) => {
-					console.log("RSPOINSE FOR POST MONEY IN TRANSACTION", res);
+					// console.log("RSPOINSE FOR POST MONEY IN TRANSACTION", res);
 					this.setState({ ...this.state, refreshData: !this.state.refreshData });
 				});
 			ModalService.close();
@@ -200,7 +200,7 @@ class TransactionsListComponent extends React.Component {
 					data: { ...moneyOutData },
 				})
 				.then((res) => {
-					console.log("RSPOINSE FOR POST MONEY OUT TRANSACTION", res);
+					// console.log("RSPOINSE FOR POST MONEY OUT TRANSACTION", res);
 					this.setState({ ...this.state, refreshData: !this.state.refreshData });
 				});
 			ModalService.close();
@@ -240,11 +240,11 @@ class TransactionsListComponent extends React.Component {
 
 		switch (action) {
 			case "money-in":
-				console.log("Dropped down");
+				// console.log("Dropped down");
 				this.addTransactions();
 				break;
 			case "money-out":
-				console.log("Dropped down");
+				// console.log("Dropped down");
 				ModalService.open(<MoneyOutModalComponent onConfirm={() => {}} />, {
 					width: 630,
 				});
@@ -482,8 +482,8 @@ class TransactionsListComponent extends React.Component {
 								return [entries];
 							},
 							onPopupItemClicked: (itemData, popupEntry) => {
-								console.log(itemData, "itemdata");
-								console.log(popupEntry, "popupEntry");
+								// console.log(itemData, "itemdata");
+								// console.log(popupEntry, "popupEntry");
 								this.onActionCellPopupItemClick(itemData, popupEntry);
 							},
 						}}
@@ -509,14 +509,15 @@ class TransactionsListComponent extends React.Component {
 						}}
 						matchAndReconcile={() => this.openMatchAndReconcileModal()}
 						onRowDataLoaded={(transactions) => {
-							// console.log(transactions, "LOADED TRANSATION");
-							if (this.props.bankDetailId) {
-								const bankName = transactions[0].bankDetail.bankName;
-								const accountNumber = transactions[0].bankDetail.accountNumber.slice(-4);
-								this.setState({
-									...this.state,
-									topbarHeading: `${bankName} - XXXX ${accountNumber}`,
-								});
+							if (transactions.length) {
+								if (this.props.bankDetailId) {
+									const bankName = transactions[0].bankDetail.bankName;
+									const accountNumber = transactions[0].bankDetail.accountNumber.slice(-4);
+									this.setState({
+										...this.state,
+										topbarHeading: `${bankName} - XXXX ${accountNumber}`,
+									});
+								}
 							}
 							if (!this.isUnmounted) {
 								this.setState({

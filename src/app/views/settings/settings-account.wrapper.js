@@ -129,7 +129,7 @@ class SettingsAccountWrapper extends React.Component {
     render() {
 		const { preFetchData } = this.state;
 		const { resources, location } = this.props;
-		console.log('location', location)
+		// console.log('location', location)
 		return preFetchData ? (
 			<SettingsAccountComponent
 				account={preFetchData.account}

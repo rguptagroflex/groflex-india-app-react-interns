@@ -25,7 +25,7 @@ const EditCashModalComponent = ({ formData, onConfirm }) => {
 	const handleSave = () => {
 		onConfirm(cashData);
 	};
-	console.log(cashData, "edit modal cash data hai");
+	// console.log(cashData, "edit modal cash data hai");
 
 	return (
 		<div className="add-cash-modal-container" style={{ minHeight: "200px" }}>

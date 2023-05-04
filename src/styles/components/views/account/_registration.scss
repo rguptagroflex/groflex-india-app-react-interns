@@ -1047,17 +1047,20 @@
 }
 
 @media (max-width: 450px) {
-	.landing-email-input-wrapper {
-		width: 320px !important;
-		.button-component-wrapper {
-			.button-google {
-				.icon-google {
-					&:before {
-						vertical-align: top !important;
-					}
-				}
-			}
-		}
+	// .landing-email-input-wrapper {
+	// 	width: 320px !important;
+	// 	.button-component-wrapper {
+	// 		.button-google {
+	// 			.icon-google {
+	// 				&:before {
+	// 					vertical-align: top !important;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+	.landing-wrapper .landing-content {
+		width: 100%;
 	}
 
 	.landing-wrapper {

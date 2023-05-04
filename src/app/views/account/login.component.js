@@ -45,7 +45,7 @@ class LoginComponent extends React.Component {
 			activeSlide: 0,
 			hidePasswordField: true,
 		};
-		this.isMobile = detectDevice() === 'phone' || detectDevice() === 'tablet';
+		this.isMobile = detectDevice() === 'phone';// || detectDevice() === 'tablet';
 
 		this.handleSubmitFailure = this.handleSubmitFailure.bind(this);
 
@@ -321,7 +321,9 @@ class LoginComponent extends React.Component {
 
 		return (
 			<div className="landing-wrapper login-wrapper">
-				<div className="landing-sidebar">
+
+				{!this.isMobile ? 
+					<div className="landing-sidebar">
 
 					<div className="imprezz-logo">
 						<Link to="/account/login">
@@ -423,6 +425,7 @@ class LoginComponent extends React.Component {
 						</Carousel>
 					</div> */}
 					
+					
 					<img className='landing-image' src={landingImage}/>
 
 					<div className="media-coverage text-center">
@@ -466,12 +469,14 @@ class LoginComponent extends React.Component {
 						</a>
 					</div> */}
 				</div>
+				: null}			
+			
 				<div className="landing-content">
-					{/* <div className="invoiz-logo">
+				{this.isMobile ? <div className="imprezz-logo">
 						<Link to="/account/login">
-							<img src="/assets/images/svg/imprezz.svg" />
+							<img src="/assets/images/svg/groflex.svg" />
 						</Link>
-					</div> */}
+					</div> : null }
 					<div className="landing-content-inner">
 						<div className="landing-content-inner-header">
 							{this.isMobile ? <div className="mobile-text-content">{resources.mobileDisplayText}</div> : null}
@@ -541,7 +546,7 @@ class LoginComponent extends React.Component {
 						{/* <div className='landing-content-inner-middle'>{resources.str_loginBetweenLable}</div> */}
 						<div className="landing-content-inner-footer">
 							<hr></hr> 
-							{/* {oauthGoogleUrl ? (
+							{oauthGoogleUrl ? (
 								<ButtonComponent
 									callback={() => this.onGoogleLoginClicked()}
 									label={resources.googleLogin}
@@ -550,7 +555,7 @@ class LoginComponent extends React.Component {
 									disabled={isLogginIn}
 									dataQsId="login-btn-googleLogin"
 								/>
-							) : null} */}
+							) : null}
 							
 							<p className="terms-privacy-link">
 								By signing up you're agreeing to our 

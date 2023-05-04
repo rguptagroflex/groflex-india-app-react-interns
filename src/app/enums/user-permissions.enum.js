@@ -116,6 +116,8 @@ const userPermissions = {
 	DELETE_STOCK_MOVEMENT: "deleteStockMovement",
 	// GST Reports
 	CREATE_GST_EXPORTS: "createGstExports",
+	// Accounting
+	VIEW_ACCOUNTING: "viewAccounting"
 };
 
 export default Object.freeze(userPermissions);

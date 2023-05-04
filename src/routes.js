@@ -117,6 +117,18 @@ const routes = [
 		resourceKey: "startPage",
 	},
 
+	// Start With Complete Registration Popup
+	{
+		path: "/complete_registration",
+		type: RouteTypes.PRIVATE,
+		component: StartImpressTemplatesWrapper,
+		exact: true,
+		title: "IMPRESS-Vorlagen",
+		menuItem: "start",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "startPage",
+	},
+
 	// Account
 	{
 		path: "/account/login/:router?",

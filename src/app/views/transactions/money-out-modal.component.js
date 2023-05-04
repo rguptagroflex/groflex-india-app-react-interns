@@ -204,7 +204,7 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 	let paymentMethodOptions = bankList.filter((bank) => bank.type === "bank");
 	paymentMethodOptions = paymentMethodOptions.map((bank) => ({ label: bank.bankName, value: bank.id }));
 	const payeeOptions = customerList.map((bank) => ({ label: bank.name, value: bank.id }));
-	console.log("Form money out", moneyInData);
+	// console.log("Form money out", moneyInData);
 	// console.log("Money out Form errors", formErrors);
 	return (
 		<div className="money-out-modal-container" style={{ minHeight: "200px" }}>
