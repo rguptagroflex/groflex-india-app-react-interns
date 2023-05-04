@@ -33,6 +33,7 @@ import CustomButtonComponent from "./custom-button.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import { formatDate, formatApiDate, formateClientDateMonthYear } from "helpers/formatDate";
 import q from "q";
+import ReconcileModalComponent from "./reconcile-modal.component";
 
 const LABEL_COMPANY = "Company";
 const LABEL_PERSON = "Individual";
@@ -215,6 +216,12 @@ class TransactionsListComponent extends React.Component {
 				width: 630,
 			}
 		);
+	}
+
+	openMatchAndReconcileModal() {
+		ModalService.open(<ReconcileModalComponent onConfirm={() => {}} bankOptions={this.state.bankOptions} />, {
+			width: 1100,
+		});
 	}
 
 	openCreateTransactionDropdown() {
@@ -500,7 +507,9 @@ class TransactionsListComponent extends React.Component {
 								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
+						matchAndReconcile={() => this.openMatchAndReconcileModal()}
 						onRowDataLoaded={(transactions) => {
+							// console.log(transactions, "LOADED TRANSATION");
 							if (this.props.bankDetailId) {
 								const bankName = transactions[0].bankDetail.bankName;
 								const accountNumber = transactions[0].bankDetail.accountNumber.slice(-4);
