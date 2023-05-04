@@ -79,8 +79,8 @@ class PageContainer extends React.Component {
 				'UTM_TERM' : this.state.intercomUser.utm_term,
 				'UTM_CONTENT' : this.state.intercomUser.utm_content
 			  }
-			//   console.log(properties, 'isLoggedIn', this.isLoggedIn());
-			if(config.releaseStage == "production" || config.releaseStage == "development") {
+			// console.log(properties, 'isLoggedIn', this.isLoggedIn());
+			if(config.releaseStage == "production") {
 				window.sib.email_id = this.state.intercomUser.email
 				window.sendinblue.identify(this.state.intercomUser.email, properties)
 				IntercomAPI.update(this.state.intercomUser)
@@ -172,6 +172,8 @@ class PageContainer extends React.Component {
 				: "Undefined";
 			const lastLogin = moment(invoiz.user.lastLogin).utcOffset("+0530").format("DD-MM-YYYY h:mm:ss a");
 			const registeredTime = moment(invoiz.user.registeredAt).utcOffset("+0530").format("DD-MM-YYYY h:mm:ss a");
+			const lastLoginsendpulse = moment(invoiz.user.lastLogin).utcOffset("+0530").format("MM/DD/YYYY");
+			const registeredTimesendpulse = moment(invoiz.user.registeredAt).utcOffset("+0530").format("MM/DD/YYYY");
 			intercomUser = {
 				user_id: userEmail,
 				email: userEmail,
@@ -184,7 +186,9 @@ class PageContainer extends React.Component {
 				BusinessTurnover: businessTurnover,
 				Last_Login_Time: lastLogin,
 				Rererral_Codes: usedReferralCodes,
-				registeredat: registeredTime
+				registeredat: registeredTime,
+				lastLoginsendpulse,
+				registeredTimesendpulse
 			};
 			if (invoiz.user.mobile) {
 				intercomUser.phone = invoiz.user.mobile;

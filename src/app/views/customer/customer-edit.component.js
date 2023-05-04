@@ -28,9 +28,9 @@ import CurrencyInputComponent from "shared/inputs/currency-input/currency-input.
 import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
 import { getConvertRate } from "helpers/getSettingsData";
 import planPermissions from "enums/plan-permissions.enum";
-import userPermissions from 'enums/user-permissions.enum';
-import SVGInline from 'react-svg-inline';
-import AccessLock from 'assets/images/svg/access_lock.svg';
+import userPermissions from "enums/user-permissions.enum";
+import SVGInline from "react-svg-inline";
+import AccessLock from "assets/images/svg/access_lock.svg";
 import UpgradeModalComponent from "shared/modals/upgrade-modal.component";
 
 const changeDetection = new ChangeDetection();
@@ -83,7 +83,7 @@ class CustomerEditComponent extends React.Component {
 			handleChange: this.onCurrencyChange.bind(this),
 		};
 	}
-	
+
 	componentDidMount() {
 		const { customer } = this.state;
 		setTimeout(() => {
@@ -103,8 +103,8 @@ class CustomerEditComponent extends React.Component {
 		}, 0);
 
 		if (customer.openingBalance > 0 || customer.balance < 0) {
-			this.setState({ isOpeningDisabled: true })
-		} 
+			this.setState({ isOpeningDisabled: true });
+		}
 
 		if (customer && customer.id !== undefined && customer.address && customer.address.countryIso !== "IN") {
 			this.refreshRates(false);
@@ -182,7 +182,7 @@ class CustomerEditComponent extends React.Component {
 			toggledOpeningBalance,
 			openingBalanceLabel,
 			canChangeAccountData,
-			planRestricted
+			planRestricted,
 		} = this.state; // cityOptions
 
 		const salutationOptions = salutations.map((title) => {
@@ -226,7 +226,7 @@ class CustomerEditComponent extends React.Component {
 
 		const restrictedContent = (
 			<div className="row restricted-content">
-				<SVGInline svg={AccessLock} height="20px" width="40px" className="access-lock"/>
+				<SVGInline svg={AccessLock} height="20px" width="40px" className="access-lock" />
 				<span className="text-medium text-muted upgrade-text">Upgrade your plan to use Multicurrency</span>
 				<ButtonComponent
 					buttonIcon={"icon-visible"}
@@ -244,58 +244,59 @@ class CustomerEditComponent extends React.Component {
 					disabled={!canChangeAccountData}
 				/>
 			</div>
-		)
+		);
 
-		const multiCurrencyContent = customer.address.countryIso !== "IN" ? (
-			<React.Fragment>
-			<div className="row">
-				<div className="col-xs-5">
-					<SelectInputComponent
-						title={`Currency`}
-						ref="baseCurrency"
-						name="baseCurrency"
-						label={`Currency`}
-						allowCreate={false}
-						notAsync={true}
-						options={this.currencySelectOptions}
-						value={customer.baseCurrency}
-						loadedOptions={currencyOptions}
-						//onBlur={this.onInputBlur}
-						onChange={this.onCurrencyChange.bind(this)}
-						placeholder={`Select currency`}
-						errorMessage={currencyErrorMessage}
-					/>
-				</div>
-				<div>
-					<span className="currencyEqual col-xs-2">=</span>
-				</div>
-				<div className="col-xs-5">
-					<div className="customer-edit-exchange-rate">
-						<CurrencyInputComponent
-							willReceiveNewValueProps={true}
-							name="exchangeRate"
-							value={parseFloat(customer.exchangeRate)}
-							onBlur={(value) => this.onExchangeRateChange(value, "exchangeRate")}
-							currencyType={"code"}
-							label={`Exchange rate`}
-							onFocus={() => {
-								this.setState({ defaultExchangeRateToggle: false });
-							}}
+		const multiCurrencyContent =
+			customer.address.countryIso !== "IN" ? (
+				<React.Fragment>
+					<div className="row">
+						<div className="col-xs-5">
+							<SelectInputComponent
+								title={`Currency`}
+								ref="baseCurrency"
+								name="baseCurrency"
+								label={`Currency`}
+								allowCreate={false}
+								notAsync={true}
+								options={this.currencySelectOptions}
+								value={customer.baseCurrency}
+								loadedOptions={currencyOptions}
+								//onBlur={this.onInputBlur}
+								onChange={this.onCurrencyChange.bind(this)}
+								placeholder={`Select currency`}
+								errorMessage={currencyErrorMessage}
+							/>
+						</div>
+						<div>
+							<span className="currencyEqual col-xs-2">=</span>
+						</div>
+						<div className="col-xs-5">
+							<div className="customer-edit-exchange-rate">
+								<CurrencyInputComponent
+									willReceiveNewValueProps={true}
+									name="exchangeRate"
+									value={parseFloat(customer.exchangeRate)}
+									onBlur={(value) => this.onExchangeRateChange(value, "exchangeRate")}
+									currencyType={"code"}
+									label={`Exchange rate`}
+									onFocus={() => {
+										this.setState({ defaultExchangeRateToggle: false });
+									}}
+								/>
+							</div>
+						</div>
+						<span className="icon icon-refresh_large" onClick={() => this.refreshRates(true)} />
+					</div>
+					<div className="row col-xs-12">
+						<CheckboxInputComponent
+							name={"defaultExchangeRateToggle"}
+							label={`Set exchange rate as default`}
+							checked={this.state.defaultExchangeRateToggle || false}
+							onChange={() => this.onDefaultExchangeRateToggle()}
 						/>
 					</div>
-				</div>
-				<span className="icon icon-refresh_large" onClick={() => this.refreshRates(true)} />
-			</div>
-			<div className="row col-xs-12">
-				<CheckboxInputComponent
-					name={"defaultExchangeRateToggle"}
-					label={`Set exchange rate as default`}
-					checked={this.state.defaultExchangeRateToggle || false}
-					onChange={() => this.onDefaultExchangeRateToggle()}
-				/>
-			</div>
-		</React.Fragment>
-		) : null
+				</React.Fragment>
+			) : null;
 
 		const companyElements = (
 			<div>
@@ -458,7 +459,9 @@ class CustomerEditComponent extends React.Component {
 				{topbar}
 
 				<div className={`box wrapper-has-topbar-with-margin`}>
-					<div className="row "> {/*u_pt_60 u_pb_40 */}
+					<div className="row ">
+						{" "}
+						{/*u_pt_60 u_pb_40 */}
 						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_details}</div>
 						<div className="col-xs-12">
 							<div className="row">
@@ -606,42 +609,43 @@ class CustomerEditComponent extends React.Component {
 							{customer.kind === CUSTOMER_KIND.COMPANY && customer.address.countryIso === "IN" ? (
 								<div className="row">
 									<div className="col-xs-6">
-										    <div>
-												<SelectInputComponent
-													// title= "GST Type"
-													name="gstType"
-													// ref ="customer-edit-text-input-company-gstType"
-													value={customer.address.gstType}
-													allowCreate={true}
-													notAsync={true}
-													// required={true}
-													options={{
-														placeholder: resources.str_gstType,
-														clearable: false,
-														backspaceRemoves: false,
-														labelKey: "label",
-														valueKey: "value",
-														matchProp: "label",
-														handleChange: (option) => this.onGSTTypeFieldChange("gstType", option.value)
-													}}
-													// errorMessage={gstTypeErrorMessage}
-													loadedOptions={gstTypeOptions}
-												/>
-											</div>
-									</div> 
-									{customer.address.gstType !== "Unregistered" ? (
-									<div className="col-xs-6">
-										<TextInputExtendedComponent
-											name="gstNumber"
-											ref="customer-edit-text-input-company-gstNumber"
-											dataQsId="customer-edit-address-gstNumber"
-											value={customer.address.gstNumber || ""}
-											label={resources.str_gstNumber}
-											errorMessage={gstErrorMessage}
-											// onBlur={ev => this.onGstFieldBlur(ev)}
-											onChange={(value) => this.onGSTFieldChange("gstNumber", value)}
-										/>
+										<div>
+											<SelectInputComponent
+												// title= "GST Type"
+												name="gstType"
+												// ref ="customer-edit-text-input-company-gstType"
+												value={customer.address.gstType}
+												allowCreate={true}
+												notAsync={true}
+												// required={true}
+												options={{
+													placeholder: resources.str_gstType,
+													clearable: false,
+													backspaceRemoves: false,
+													labelKey: "label",
+													valueKey: "value",
+													matchProp: "label",
+													handleChange: (option) =>
+														this.onGSTTypeFieldChange("gstType", option.value),
+												}}
+												// errorMessage={gstTypeErrorMessage}
+												loadedOptions={gstTypeOptions}
+											/>
+										</div>
 									</div>
+									{customer.address.gstType !== "Unregistered" ? (
+										<div className="col-xs-6">
+											<TextInputExtendedComponent
+												name="gstNumber"
+												ref="customer-edit-text-input-company-gstNumber"
+												dataQsId="customer-edit-address-gstNumber"
+												value={customer.address.gstNumber || ""}
+												label={resources.str_gstNumber}
+												errorMessage={gstErrorMessage}
+												// onBlur={ev => this.onGstFieldBlur(ev)}
+												onChange={(value) => this.onGSTFieldChange("gstNumber", value)}
+											/>
+										</div>
 									) : null}
 
 									<div className="col-xs-6">
@@ -658,20 +662,24 @@ class CustomerEditComponent extends React.Component {
 									</div>
 								</div>
 							) : null}
-							{
-								(customer.address.countryIso !== "IN" && customer.address.countryIso) ? planRestricted ? (restrictedContent) : multiCurrencyContent : multiCurrencyContent
-							}
+							{customer.address.countryIso !== "IN" && customer.address.countryIso
+								? planRestricted
+									? restrictedContent
+									: multiCurrencyContent
+								: multiCurrencyContent}
 						</div>
 					</div>
 					{customer.type === `customer` || customer.type === undefined ? (
-						<div className="row "> {/*u_pb_30 u_pt_30 */}
+						<div className="row ">
+							{" "}
+							{/*u_pb_30 u_pt_30 */}
 							<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{`Opening balance`}</div>
 							<div className="col-xs-12">
 								<div className="row">
 									<div className="col-xs-6 recipientFormOpeningToggleRadio">
 										<RadioInputComponent
 											wrapperClass=""
-											// disabled={(customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0)) 
+											// disabled={(customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0))
 											// 	|| (this.state.isOpeningDisabled) ? true : false}
 											key="toggleOpeningBalanceType"
 											options={[
@@ -685,7 +693,9 @@ class CustomerEditComponent extends React.Component {
 									<div className="col-xs-6">
 										<CurrencyInputComponent
 											value={
-												toggledOpeningBalance === DUES ? customer.openingBalance : customer.balance
+												toggledOpeningBalance === DUES
+													? customer.openingBalance
+													: customer.balance
 											}
 											//name="openingBalance"
 											onBlur={this.onBalanceChange.bind(this)}
@@ -807,54 +817,54 @@ class CustomerEditComponent extends React.Component {
 					</div>
 					<div className="row">
 						<div className="col-xs-6 text-h4 u_pb_20">
-						<div className="row">
-						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactCategory}</div>
-						<div className="col-xs-12">
 							<div className="row">
+								<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactCategory}</div>
 								<div className="col-xs-12">
-									<SelectInputComponent
-										name="customerCategory"
-										notAsync={true}
-										options={{
-											clearable: false,
-											searchable: false,
-											labelKey: "name",
-											valueKey: "value",
-											handleChange: (option) =>
-												this.onCustomerFieldChange("category", option.value),
-										}}
-										value={customer.category}
-										loadedOptions={customerCategories.map((cat) => {
-											return { name: cat, value: cat === resources.str_noInformation ? "" : cat };
-										})}
-										dataQsId="customer-edit-customerCategory"
+									<div className="row">
+										<div className="col-xs-12">
+											<SelectInputComponent
+												name="customerCategory"
+												notAsync={true}
+												options={{
+													clearable: false,
+													searchable: false,
+													labelKey: "name",
+													valueKey: "value",
+													handleChange: (option) =>
+														this.onCustomerFieldChange("category", option.value),
+												}}
+												value={customer.category}
+												loadedOptions={customerCategories.map((cat) => {
+													return {
+														name: cat,
+														value: cat === resources.str_noInformation ? "" : cat,
+													};
+												})}
+												dataQsId="customer-edit-customerCategory"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div className="col-xs-6 text-h4 u_pb_20">
+							<div className="row">
+								<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactPerson}</div>
+								<div className="col-xs-12">
+									{contactPersonRows.length > 0 ? (
+										<div className="customer-edit-contactpersons">{contactPersonRows}</div>
+									) : null}
+
+									<ButtonComponent
+										buttonIcon="icon-plus"
+										label={resources.str_contactPerson}
+										callback={() => this.onAddContactPerson()}
+										type="default"
 									/>
 								</div>
 							</div>
 						</div>
 					</div>
-						</div>
-						<div className="col-xs-6 text-h4 u_pb_20">
-						<div className="row">
-						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactPerson}</div>
-						<div className="col-xs-12">
-							{contactPersonRows.length > 0 ? (
-								<div className="customer-edit-contactpersons">{contactPersonRows}</div>
-							) : null}
-
-							<ButtonComponent
-								buttonIcon="icon-plus"
-								label={resources.str_contactPerson}
-								callback={() => this.onAddContactPerson()}
-								type="default"
-							/>
-						</div>
-					</div>
-						</div>
-					</div>				
-					
-
-				
 
 					<div className="row">
 						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_conditions}</div>
@@ -1155,7 +1165,7 @@ class CustomerEditComponent extends React.Component {
 		// } else {
 		// 	cinErrorMessage = '';
 		// }
-		this.setState({ cinErrorMessage, customer });
+		this.setState({ cinErrorMessrefreshRatesage, customer });
 	}
 
 	onStreetFieldChange(key, event) {
@@ -1341,7 +1351,11 @@ class CustomerEditComponent extends React.Component {
 			return;
 		}
 
-		if (customer.address.countryIso !== "IN" && (customer.baseCurrency === "" || !customer.baseCurrency) && planRestricted) {
+		if (
+			customer.address.countryIso !== "IN" &&
+			(customer.baseCurrency === "" || !customer.baseCurrency) &&
+			planRestricted
+		) {
 			invoiz.page.showToast({
 				type: "error",
 				message: `Please upgrade your Groflex plan to use Multicurrency!`,
@@ -1356,7 +1370,11 @@ class CustomerEditComponent extends React.Component {
 			});
 			return;
 		}
-		if (customer.kind === CUSTOMER_KIND.COMPANY && !customer.address.gstType && customer.address.countryIso === "IN") {
+		if (
+			customer.kind === CUSTOMER_KIND.COMPANY &&
+			!customer.address.gstType &&
+			customer.address.countryIso === "IN"
+		) {
 			invoiz.page.showToast({
 				type: "error",
 				message: `Please select GST Type`,
@@ -1364,17 +1382,21 @@ class CustomerEditComponent extends React.Component {
 			return;
 		}
 
-		if (customer.kind === CUSTOMER_KIND.COMPANY && customer.address.gstType && customer.address.countryIso === "IN" ) {
-			if(customer.address.gstType !== "Unregistered") {
+		if (
+			customer.kind === CUSTOMER_KIND.COMPANY &&
+			customer.address.gstType &&
+			customer.address.countryIso === "IN"
+		) {
+			if (customer.address.gstType !== "Unregistered") {
 				this.setState({
-					gstErrorMessage: resources.gstFieldValidation
+					gstErrorMessage: resources.gstFieldValidation,
 				});
-				this.refs['customer-edit-text-input-company-gstNumber'] &&
-					this.refs['customer-edit-text-input-company-gstNumber'].validateAndSetValue();
+				this.refs["customer-edit-text-input-company-gstNumber"] &&
+					this.refs["customer-edit-text-input-company-gstNumber"].validateAndSetValue();
 				// return;
-			}else {
+			} else {
 				this.setState({
-					gstErrorMessage: ""
+					gstErrorMessage: "",
 				});
 			}
 		}
@@ -1436,7 +1458,7 @@ class CustomerEditComponent extends React.Component {
 						data: { id },
 					},
 				} = response;
-				amplitude.getInstance().logEvent('created_customer');
+				amplitude.getInstance().logEvent("created_customer");
 				invoiz.router.navigate(`/customer/${id}`);
 			})
 			.catch((error) => {

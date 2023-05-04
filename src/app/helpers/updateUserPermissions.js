@@ -6,9 +6,25 @@ export const updateUserPermissions = (callback) => {
 	invoiz
 		.request(config.account.endpoints.getUserPermissions, { auth: true })
 		.then(({ body: { data } }) => {
-			// console.log(data);
+			//console.log(data);
 			if (invoiz.user) {
 				invoiz.user.rights = data.features;
+				// expense 
+				//invoiz.user.rights.viewDashboardSalesAndExpenseStatistics = false;
+				if(invoiz.user.rights.viewAccounting) {
+					invoiz.user.rights.createExpense = true;
+					invoiz.user.rights.convertPurchaseOrderToExpense = true;
+					invoiz.user.rights.deleteExpense = true;
+					invoiz.user.rights.updateExpense = true;
+					invoiz.user.rights.viewExpense = true;
+				} else {
+					invoiz.user.rights.createExpense = false;
+					invoiz.user.rights.convertPurchaseOrderToExpense = false;
+					invoiz.user.rights.deleteExpense = false;
+					invoiz.user.rights.updateExpense = false;
+					invoiz.user.rights.viewExpense = false;
+				}
+				
 				callback && callback();
 			}
 		})

@@ -2,7 +2,7 @@ import invoiz from 'services/invoiz.service';
 import React from 'react';
 
 import LoaderComponent from 'shared/loader/loader.component';
-
+import userPermissions from "enums/user-permissions.enum";
 import ButtonComponent from 'shared/button/button.component';
 import ListComponent from 'shared/list/list.component';
 import PaginationComponent from 'shared/pagination/pagination.component';
@@ -23,7 +23,8 @@ class CustomerDocumentListComponent extends React.Component {
 
 		this.state = {
 			isLoading: true,
-			customer: props.customer
+			customer: props.customer,
+			canViewExpense: false
 		};
 	}
 
@@ -32,6 +33,9 @@ class CustomerDocumentListComponent extends React.Component {
 			this.props.fetchCustomerDocumentList(this.props.customer.id, true);
 			this.props.updateFilterItems(this.props.customer.type);
 		}
+		this.setState({
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		});
 	}
 
 	createCustomerDocumentTableRows(customerDocumentItems) {
@@ -95,6 +99,13 @@ class CustomerDocumentListComponent extends React.Component {
 			customerDocumentListData: { customerDocumentItems },
 			resources
 		} = this.props;
+		const { canViewExpense } = this.state;
+		let permittedfilterItems;
+		if (!canViewExpense) {
+			permittedfilterItems = filterItems.filter((item) => item.key !== "expense" && item.key !== "purchaseOrder");
+		} else {
+			permittedfilterItems = filterItems;
+		}
 		return (
 			<div className="box box-rounded customer-document-wrapper">
 				<div className="pagebox_content customerDocument_container">
@@ -113,7 +124,7 @@ class CustomerDocumentListComponent extends React.Component {
 								<div className=" pagebox_heading text-h4">Documents</div>
 								{isLoading ? null : (
 									<FilterComponent
-										items={filterItems}
+										items={permittedfilterItems}
 										onChange={filter => this.onFilterDocumentList(filter)}
 										resources={resources}
 									/>

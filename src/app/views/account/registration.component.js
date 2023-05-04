@@ -415,7 +415,7 @@ class RegistrationComponent extends React.Component {
 							{footer}
 						</div>
 						<div className="landing-content-inner-footer">
-							{/* {oauthGoogleUrl ? (
+							{oauthGoogleUrl ? (
 								<hr></hr>
 							) : null}
 							
@@ -428,7 +428,7 @@ class RegistrationComponent extends React.Component {
 									// disabled={isLogginIn}
 									dataQsId="login-btn-googleLogin"
 								/>
-							) : null} */}
+							) : null}
 							{/* <p className="terms-privacy-link">
 								By signing up you're agreeing to our
 								<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
@@ -987,7 +987,7 @@ class RegistrationComponent extends React.Component {
 							if (window && window.dataLayer) {
 								window.dataLayer.push({ event: "registration_completed" });
 							}
-							invoiz.router.navigate("/");
+							invoiz.router.navigate("/complete_registration");
 						}
 					}
 				})
@@ -1083,7 +1083,7 @@ class RegistrationComponent extends React.Component {
 								message: `${resources.str_accountSucessfullSetMessage} ${resources.str_haveFunWithInvoizMessage}`,
 							});
 
-							invoiz.router.navigate("/");
+							invoiz.router.navigate("/complete_registration");
 						}
 					}
 				})

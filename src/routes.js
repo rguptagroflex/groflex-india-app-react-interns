@@ -58,6 +58,8 @@ import PurchaseOrderSendMailWrapper from "views/purchase-order/purchase-order-se
 // import BankingFinanceCockpitWrapper from "views/banking/banking-financecockpit.wrapper";
 // import BankingEmptyStateWrapper from "views/banking/banking-empty-state.wrapper";
 // import BankingTransactionsWrapper from "views/banking/banking-transactions.wrapper";
+
+import ChartofaccountListWrapper from "views/chartofaccounts/chartofaccount-list.wrapper";
 import CustomerListWrapper from "views/customer/customer-list.wrapper";
 import CustomerDetailWrapper from "views/customer/customer-detail.wrapper";
 import CustomerEditWrapper from "views/customer/customer-edit.wrapper";
@@ -87,10 +89,15 @@ import ReportsListComponent from "./app/views/reports/reports-list-component";
 
 import RedirectComponent from "views/redirect/redirect.component";
 import MarketplaceWrapper from "./app/views/marketplace/marketplace.wrapper";
+
 import ReportBalanceSheet from "./app/views/reports/reports-balance-sheet-component";
 import ReportsProfitAndLoss from "./app/views/reports/reports-profit-and-loss-component";
 import ReportsCashFlowStatement from "./app/views/reports/reports-cash-flow-statement-component";
 import ReportsGeneralLedger from "./app/views/reports/reports-general-ledger-component";
+
+
+import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
+import TransactionsListWrapper from "./app/views/transactions/transactions-list-wrapper";
 
 // import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
 // import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
@@ -110,6 +117,18 @@ const routes = [
 	// Start
 	{
 		path: "/",
+		type: RouteTypes.PRIVATE,
+		component: StartImpressTemplatesWrapper,
+		exact: true,
+		title: "IMPRESS-Vorlagen",
+		menuItem: "start",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "startPage",
+	},
+
+	// Start With Complete Registration Popup
+	{
+		path: "/complete_registration",
 		type: RouteTypes.PRIVATE,
 		component: StartImpressTemplatesWrapper,
 		exact: true,
@@ -1030,6 +1049,55 @@ const routes = [
 		menuItem: "expenditure",
 		submenuItem: "expenses",
 		resourceKey: "expenseEdit",
+	},
+	// chart of accounts
+	{
+		path: "/expenses/chart-of-accounts",
+		type: RouteTypes.PRIVATE,
+		component: ChartofaccountListWrapper,
+		exact: true,
+		title: "Ausgabe ",
+		menuItem: "expenditure",
+		submenuItem: "chartOfAccounts",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "chartOfAccounts",
+	},
+	// Cash and bank
+	{
+		path: "/expenses/cash-and-bank",
+		type: RouteTypes.PRIVATE,
+		component: CashAndBankWrapper,
+		exact: true,
+		title: "Cash and Bank",
+		menuItem: "expenditure",
+		submenuItem: "cashAndBank",
+		pageClass: PageClassNames.ONLY_SIDE_MARGIN,
+		resourceKey: "cashAndBank",
+	},
+	// Transactions
+	{
+		path: "/expenses/transactions",
+		type: RouteTypes.PRIVATE,
+		component: TransactionsListWrapper,
+		exact: true,
+		title: "Transactions",
+		menuItem: "expenditure",
+		submenuItem: "transactions",
+		// pageClass: PageClassNames.ONLY_SIDE_MARGIN,
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "transactions",
+	},
+	{
+		path: "/expenses/transactions/:bankDetailId",
+		type: RouteTypes.PRIVATE,
+		component: TransactionsListWrapper,
+		exact: true,
+		title: "Transactions",
+		menuItem: "expenditure",
+		submenuItem: "transactions",
+		// pageClass: PageClassNames.ONLY_SIDE_MARGIN,
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "transactions",
 	},
 
 	// GST Export

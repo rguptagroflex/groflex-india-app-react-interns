@@ -54,7 +54,7 @@ class MenuFooterComponent extends React.Component {
 	// }
 
 	componentWillUnmount() {
-		// invoiz.off('updateNewsfeedCount');
+		invoiz.off('updateNewsfeedCount');
 	}
 
 	onLogoutClick() {

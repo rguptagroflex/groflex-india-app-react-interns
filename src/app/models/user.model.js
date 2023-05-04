@@ -81,7 +81,7 @@ class User {
 			if (this.loggedIn) {
 				updatePlanPermissions();
 			}
-		}, 1000);
+		}, 10000);
 	}
 
 	checkToken() {

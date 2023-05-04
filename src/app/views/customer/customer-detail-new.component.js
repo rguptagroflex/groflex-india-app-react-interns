@@ -22,7 +22,7 @@ import CustomerContactPersonsComponent from "shared/customer-detail/customer-con
 
 import WebStorageService from "services/webstorage.service";
 import WebStorageKey from "enums/web-storage-key.enum";
-
+import userPermissions from "enums/user-permissions.enum";
 import BulkPaymentModalComponent from "shared/modals/bulk-payment-modal.component";
 import BulkRefundModalComponent from "shared/modals/bulk-refund-modal.component";
 
@@ -59,6 +59,7 @@ class CustomerDetailNewComponent extends React.Component {
 			emailStatus: props.emailStatus,
 			fetchingEmails: false,
 			activityCategories: props.activityCategories,
+			canViewExpense: false,
 		};
 
 		this.toggleForceReloadState = this.toggleForceReloadState.bind(this);
@@ -130,6 +131,9 @@ class CustomerDetailNewComponent extends React.Component {
 
 	componentDidMount() {
 		$(".layout-wrapper").addClass("is-scrollable");
+		this.setState({
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		});
 	}
 
 	setActiveTab(tab) {
@@ -780,7 +784,7 @@ class CustomerDetailNewComponent extends React.Component {
 	}
 
 	render() {
-		const { customer, activeTab, forceReloadChild, activityOptions, activityCategories } = this.state;
+		const { customer, activeTab, forceReloadChild, activityOptions, activityCategories, canViewExpense } = this.state;
 		const { resources } = this.props;
 		const topbarButtons = this.createTopbarButtons();
 		return (
@@ -805,17 +809,12 @@ class CustomerDetailNewComponent extends React.Component {
 						<div className="row">
 							<CustomerContactInformationComponent customer={customer} />
 						</div>
-						<div
-							style={
-								customer.type === "customer"
-									? { opacity: "0.3", pointerEvents: "none", userSelect: "none" }
-									: {}
-							}
-							className="row"
+						<div className={`row ${
+											canViewExpense && customer.type === "customer" ? '':'opacityLedger' 
+										}`}							
 						>
 							{
-								(console.log("CUSTOMER TYPE: ", customer.type),
-								(
+								((
 									<div className="box box-rounded col-no-gutter-bottom customer-statements">
 										{false && <div className="customer-statements-container-blank"></div>}
 										<LedgerComponent customerId={customer.id} resources={resources} />

@@ -1,50 +1,50 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import config from 'config';
-import moment from 'moment';
-import _ from 'lodash';
-import q from 'q';
-import lang from 'lang';
-import { AgGridReact } from '@ag-grid-community/react';
-import { AllModules, LicenseManager } from '@ag-grid-enterprise/all-modules';
-import LoaderComponent from 'shared/loader/loader.component';
-import PopoverComponent from 'shared/popover/popover.component';
-import ListAdvancedSearchComponent from 'shared/list-advanced/list-advanced-search.component';
-import ListAdvancedPaginationComponent from 'shared/list-advanced/list-advanced-pagination.component';
-import ActionPopupCellRendererComponent from 'shared/list-advanced/cell-renderers/action-popup-cell-renderer.component';
-import InlineActionCellRendererComponent from 'shared/list-advanced/cell-renderers/inline-action-cell-renderer.component';
-import ListAdvancedDatePickerComponent from 'shared/list-advanced/list-advanced-datepicker.component';
-import ListAdvancedCustomHeaderComponent from 'shared/list-advanced/list-advanced-custom-header.component';
-import InvoiceListViewswitchComponent from 'shared/invoice-list-viewswitch/invoice-list-viewswitch.component';
-import ModalService from 'services/modal.service';
-import ColumnsSettingsModal from 'shared/modals/list-advanced/columns-settings-modal.component';
-import WebStorageService from 'services/webstorage.service';
-import { ListAdvancedDefaultSettings } from 'helpers/constants';
-import { parsePxToNumber } from 'helpers/parsePxToNumber';
-import { normalizeHttpUrl } from 'helpers/normalizeHttpUrl';
-import { sortObjectArrayByOtherArray } from 'helpers/sortObjectArrayByOtherArray';
-import { updateStatusIconCellColumns } from 'helpers/list-advanced/updateStatusIconCellColumns';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import config from "config";
+import moment from "moment";
+import _ from "lodash";
+import q from "q";
+import lang from "lang";
+import { AgGridReact } from "@ag-grid-community/react";
+import { AllModules, LicenseManager } from "@ag-grid-enterprise/all-modules";
+import LoaderComponent from "shared/loader/loader.component";
+import PopoverComponent from "shared/popover/popover.component";
+import ListAdvancedSearchComponent from "shared/list-advanced/list-advanced-search.component";
+import ListAdvancedPaginationComponent from "shared/list-advanced/list-advanced-pagination.component";
+import ActionPopupCellRendererComponent from "shared/list-advanced/cell-renderers/action-popup-cell-renderer.component";
+import InlineActionCellRendererComponent from "shared/list-advanced/cell-renderers/inline-action-cell-renderer.component";
+import ListAdvancedDatePickerComponent from "shared/list-advanced/list-advanced-datepicker.component";
+import ListAdvancedCustomHeaderComponent from "shared/list-advanced/list-advanced-custom-header.component";
+import InvoiceListViewswitchComponent from "shared/invoice-list-viewswitch/invoice-list-viewswitch.component";
+import ModalService from "services/modal.service";
+import ColumnsSettingsModal from "shared/modals/list-advanced/columns-settings-modal.component";
+import WebStorageService from "services/webstorage.service";
+import { ListAdvancedDefaultSettings } from "helpers/constants";
+import { parsePxToNumber } from "helpers/parsePxToNumber";
+import { normalizeHttpUrl } from "helpers/normalizeHttpUrl";
+import { sortObjectArrayByOtherArray } from "helpers/sortObjectArrayByOtherArray";
+import { updateStatusIconCellColumns } from "helpers/list-advanced/updateStatusIconCellColumns";
 
-import BtnCellRendererComponent from 'shared/list-advanced/cell-renderers/button-cell-renderer.component';
-import SelectCellRendererComponent from 'shared/list-advanced/cell-renderers/dropdown-cell-renderer.component';
+import BtnCellRendererComponent from "shared/list-advanced/cell-renderers/button-cell-renderer.component";
+import SelectCellRendererComponent from "shared/list-advanced/cell-renderers/dropdown-cell-renderer.component";
 
-const ACTION_POPUP_CELL_CLASS = 'action-popup-cell';
-const FIELD_ACTION_POPUP_CELL = 'actionPopupCell';
-const FIELD_CHECKBOX_CELL = 'checkboxCell';
-const INLINE_ACTION_CELL_CLASS = 'ag-inline-action-btn';
-const INLINE_BUTTON_CELL_CLASS = 'stock-buttons';
+const ACTION_POPUP_CELL_CLASS = "action-popup-cell";
+const FIELD_ACTION_POPUP_CELL = "actionPopupCell";
+const FIELD_CHECKBOX_CELL = "checkboxCell";
+const INLINE_ACTION_CELL_CLASS = "ag-inline-action-btn";
+const INLINE_BUTTON_CELL_CLASS = "stock-buttons";
 
 const ListExportTypes = {
-	EXCEL: 'excel',
+	EXCEL: "excel",
 };
 
 const ColumnSystemCells = {
 	checkboxCell: {
-		headerName: '',
+		headerName: "",
 		field: FIELD_CHECKBOX_CELL,
 		width: 40,
-		headerClass: 'left-pinned-checkbox-cell',
-		cellClass: 'left-pinned-checkbox-cell',
+		headerClass: "left-pinned-checkbox-cell",
+		cellClass: "left-pinned-checkbox-cell",
 		filter: false,
 		resizable: false,
 		sortable: false,
@@ -53,12 +53,12 @@ const ColumnSystemCells = {
 		headerCheckboxSelection: true,
 		headerCheckboxSelectionFilteredOnly: true,
 		checkboxSelection: true,
-		pinned: 'left',
+		pinned: "left",
 		lockPinned: true,
 		lockPosition: true,
 	},
 	actionPopupCell: {
-		headerName: '',
+		headerName: "",
 		field: FIELD_ACTION_POPUP_CELL,
 		headerClass: ACTION_POPUP_CELL_CLASS,
 		cellClass: ACTION_POPUP_CELL_CLASS,
@@ -68,9 +68,9 @@ const ColumnSystemCells = {
 		sortable: false,
 		suppressMenu: true,
 		suppressSizeToFit: true,
-		pinned: 'right',
+		pinned: "right",
 		lockPosition: true,
-		cellRenderer: 'actionPopupCellRenderer',
+		cellRenderer: "actionPopupCellRenderer",
 	},
 };
 
@@ -79,7 +79,7 @@ class ListAdvancedComponent extends React.Component {
 		super(props);
 
 		LicenseManager.setLicenseKey(
-			'CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd'
+			"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
 		);
 
 		const columnDefs = props.columnDefs;
@@ -88,13 +88,13 @@ class ListAdvancedComponent extends React.Component {
 			columnDefs.forEach((columnDef) => {
 				const filterParams = columnDef.filterParams;
 
-				columnDef.menuTabs = ['filterMenuTab'];
+				columnDef.menuTabs = ["filterMenuTab"];
 
 				columnDef.filterParams = {
 					applyButton: true,
 					closeOnApply: true,
 					resetButton: true,
-					cancelButton: true
+					cancelButton: true,
 				};
 
 				if (filterParams) {
@@ -115,13 +115,12 @@ class ListAdvancedComponent extends React.Component {
 			}
 		}
 
-		invoiz.off('historyNavigateBack', this.getPaginationRestoreState);
-		invoiz.on('historyNavigateBack', this.getPaginationRestoreState, this);
+		invoiz.off("historyNavigateBack", this.getPaginationRestoreState);
+		invoiz.on("historyNavigateBack", this.getPaginationRestoreState, this);
 
 		this.getPaginationRestoreState();
 
-		const loadingRowsMessage = props.loadingRowsMessage || 'Loading data...';
-		
+		const loadingRowsMessage = props.loadingRowsMessage || "Loading data...";
 
 		const gridOptions = {
 			columnDefs,
@@ -141,8 +140,8 @@ class ListAdvancedComponent extends React.Component {
 						'    <span ref="eSortAsc" class="ag-header-icon ag-sort-ascending-icon"></span>' +
 						'    <span ref="eSortDesc" class="ag-header-icon ag-sort-descending-icon"></span>' +
 						'    <span ref="eSortNone" class="ag-header-icon ag-sort-none-icon"></span>' +
-						' </div>' +
-						'</div>',
+						" </div>" +
+						"</div>",
 				},
 			},
 			icons: {
@@ -151,43 +150,44 @@ class ListAdvancedComponent extends React.Component {
 			},
 			localeText: {
 				// Context menu
-				copy: 'Copy',
-				ctrlC: ' ',
+				copy: "Copy",
+				ctrlC: " ",
 
 				// Filter
-				selectAll: 'Select all',
-				blanks: 'Blank',
-				applyFilter: 'Apply',
-				resetFilter: 'Clear filter',
-				searchOoo: 'Filter term',
-				dateFormatOoo: 'DD-MM-YYYY',
+				selectAll: "Select all",
+				blanks: "Blank",
+				applyFilter: "Apply",
+				resetFilter: "Clear filter",
+				searchOoo: "Filter term",
+				dateFormatOoo: "DD-MM-YYYY",
 				// CSS selector (placeholder="Suchen") is used to display the search icon
-				filterOoo: 'Filter term',
-				equals: 'Equal to =',
-				notEqual: 'Not equal to !=',
-				lessThan: 'Less than <',
-				greaterThan: 'Greater than >',
-				lessThanOrEqual: 'Less than or equal <=',
-				greaterThanOrEqual: 'Greater than or equal >=',
-				inRange: 'From... to',
-				inRangeStart: 'From',
-				inRangeEnd: 'To',
-				contains: 'Contains',
-				notContains: 'Does not contain',
-				startsWith: 'Starts with',
-				endsWith: 'Ends with',
+				filterOoo: "Filter term",
+				equals: "Equal to =",
+				notEqual: "Not equal to !=",
+				lessThan: "Less than <",
+				greaterThan: "Greater than >",
+				lessThanOrEqual: "Less than or equal <=",
+				greaterThanOrEqual: "Greater than or equal >=",
+				inRange: "From... to",
+				inRangeStart: "From",
+				inRangeEnd: "To",
+				contains: "Contains",
+				notContains: "Does not contain",
+				startsWith: "Starts with",
+				endsWith: "Ends with",
 
 				// Common
 				loadingOoo: loadingRowsMessage,
-				noRowsToShow: props.noFilterResultsMessage || 'No data available',
+				noRowsToShow: props.noFilterResultsMessage || "No data available",
 			},
 			animateRows: true,
 			rowData: null,
 			rowDeselection: true,
-			rowSelection: 'multiple',
-			sortingOrder: ['asc', 'desc'],
+			rowSelection: "multiple",
+			sortingOrder: ["asc", "desc"],
 			suppressCopyRowsToClipboard: true,
 			suppressPaginationPanel: true,
+			suppressPropertyNamesCheck: true,
 			suppressRowClickSelection: false,
 			overlayLoadingTemplate:
 				'<span class="ag-overlay-loading-center">' +
@@ -195,42 +195,42 @@ class ListAdvancedComponent extends React.Component {
 				'    <div class="loader_content">' +
 				'      <div class="loader_spinner"></div>' +
 				`      <span class="loader_text">${loadingRowsMessage}</span>` +
-				'    </div>' +
-				'  </div>' +
-				'</span>',
+				"    </div>" +
+				"  </div>" +
+				"</span>",
 			excelStyles: [
 				{
-					id: 'header',
+					id: "header",
 					interior: {
-						color: '#eeeeee',
-						pattern: 'Solid',
+						color: "#eeeeee",
+						pattern: "Solid",
 					},
 					borders: {
 						borderBottom: {
-							color: '#bdbdbd',
-							lineStyle: 'Continuous',
+							color: "#bdbdbd",
+							lineStyle: "Continuous",
 							weight: 1,
 						},
 						borderRight: {
-							color: '#bdbdbd',
-							lineStyle: 'Continuous',
+							color: "#bdbdbd",
+							lineStyle: "Continuous",
 							weight: 1,
 						},
 					},
 				},
 				{
 					id: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
-					dataType: 'number',
-					numberFormat: { format: '₹ #,##0.00' },
+					dataType: "number",
+					numberFormat: { format: "₹ #,##0.00" },
 				},
 				{
 					id: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Percentage,
-					dataType: 'number',
-					numberFormat: { format: '#,##0.00 \\%' },
+					dataType: "number",
+					numberFormat: { format: "#,##0.00 \\%" },
 				},
 				{
 					id: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-					dataType: 'string',
+					dataType: "string",
 				},
 			],
 			getContextMenuItems: (evt) => {
@@ -240,16 +240,16 @@ class ListAdvancedComponent extends React.Component {
 					evt.column.userProvidedColDef.customProps &&
 					evt.column.userProvidedColDef.customProps.disableContextMenuCopyItem;
 
-				return evt.value && !disableContextMenuCopyItem ? ['copy'] : [];
+				return evt.value && !disableContextMenuCopyItem ? ["copy"] : [];
 			},
 			postProcessPopup: (evt) => {
-				if (evt.type !== 'columnMenu') {
+				if (evt.type !== "columnMenu") {
 					return;
 				}
 
 				const popupOffsetLeft = 20;
 				const sourceElm = $(evt.eventSource);
-				const sourceElmLeft = sourceElm.offset().left - $('.ag-root-wrapper').offset().left;
+				const sourceElmLeft = sourceElm.offset().left - $(".ag-root-wrapper").offset().left;
 				const popupElm = evt.ePopup;
 				const popupElmLeft = parsePxToNumber(popupElm.style.left);
 
@@ -259,23 +259,22 @@ class ListAdvancedComponent extends React.Component {
 					evt.column.userProvidedColDef.customProps &&
 					evt.column.userProvidedColDef.customProps.isFilterBodyOnly
 				) {
-					$(evt.ePopup).addClass('ag-menu-filter-body-only');
+					$(evt.ePopup).addClass("ag-menu-filter-body-only");
 				}
 
-				popupElm.style.top = parsePxToNumber(popupElm.style.top) + 35 + 'px';
-				popupElm.style.left = popupElmLeft - popupOffsetLeft + 'px';
+				popupElm.style.top = parsePxToNumber(popupElm.style.top) + 35 + "px";
+				popupElm.style.left = popupElmLeft - popupOffsetLeft + "px";
 
 				$(popupElm)
-					.find('.ag-tabs-arrow')
-					.css('left', sourceElmLeft + 2 - popupElmLeft + popupOffsetLeft);
+					.find(".ag-tabs-arrow")
+					.css("left", sourceElmLeft + 2 - popupElmLeft + popupOffsetLeft);
 			},
 			onCellFocused: (e) => {
-				const disableClickSelectionRenderers = ['btnCellRenderer'];
+				const disableClickSelectionRenderers = ["btnCellRenderer"];
 				if (e.column && disableClickSelectionRenderers.includes(e.column.colDef.cellRenderer)) {
 					e.api.gridOptionsWrapper.gridOptions.suppressRowClickSelection = true;
 					//gridOptions.api.onFilterChanged();
-				}
-				else {
+				} else {
 					e.api.gridOptionsWrapper.gridOptions.suppressRowClickSelection = false;
 				}
 			},
@@ -289,23 +288,23 @@ class ListAdvancedComponent extends React.Component {
 					evt.column.userProvidedColDef.customProps.disableContextMenuCopyItem;
 
 				if (evt.value && !disableContextMenuCopyItem) {
-					rowHoverElm = $(evt.event.target).closest('.ag-row');
+					rowHoverElm = $(evt.event.target).closest(".ag-row");
 
 					this.showPopoverOverlay();
 
 					if (rowHoverElm.length > 0) {
-						$(evt.event.target).closest('.ag-cell').addClass('ag-cell-overlay-open');
+						$(evt.event.target).closest(".ag-cell").addClass("ag-cell-overlay-open");
 
 						$(rowHoverElm)
-							.add(`.ag-row[row-index="${rowHoverElm.attr('row-index')}"]`)
-							.addClass('ag-row-hover-overlay-open');
+							.add(`.ag-row[row-index="${rowHoverElm.attr("row-index")}"]`)
+							.addClass("ag-row-hover-overlay-open");
 					}
 				}
 			},
 			onCellContextMenuClosed: (evt) => {
 				this.showPopoverOverlay(true);
-				$('.ag-row-hover-overlay-open').removeClass('ag-row-hover-overlay-open');
-				$('.ag-cell-overlay-open').removeClass('ag-cell-overlay-open');
+				$(".ag-row-hover-overlay-open").removeClass("ag-row-hover-overlay-open");
+				$(".ag-cell-overlay-open").removeClass("ag-cell-overlay-open");
 			},
 			onCellMouseDown: (evt) => {
 				const isInlineActionCellClicked =
@@ -319,7 +318,9 @@ class ListAdvancedComponent extends React.Component {
 
 				let googleMapsAddress;
 
-				evt.api.setSuppressRowClickSelection(isInlineActionCellClicked || isActionPopupCellClicked || isButtonClicked);
+				evt.api.setSuppressRowClickSelection(
+					isInlineActionCellClicked || isActionPopupCellClicked || isButtonClicked
+				);
 
 				if (evt.event.button > 0) {
 					return;
@@ -328,16 +329,16 @@ class ListAdvancedComponent extends React.Component {
 				if (isInlineActionCellClicked && inlineActionType) {
 					switch (inlineActionType) {
 						case ListAdvancedDefaultSettings.CellInlineActionType.MAIL:
-							window.open(`mailto:${evt.data.email}`, '_self');
+							window.open(`mailto:${evt.data.email}`, "_self");
 							break;
 
 						case ListAdvancedDefaultSettings.CellInlineActionType.MAPS:
 							googleMapsAddress = `${evt.data.address.street},${evt.data.address.zipCode} ${evt.data.address.city}`;
-							window.open(`http://www.google.com/maps/search/${googleMapsAddress}`, '_blank');
+							window.open(`http://www.google.com/maps/search/${googleMapsAddress}`, "_blank");
 							break;
 
 						case ListAdvancedDefaultSettings.CellInlineActionType.WEBSITE:
-							window.open(normalizeHttpUrl(evt.data.website), '_blank');
+							window.open(normalizeHttpUrl(evt.data.website), "_blank");
 							break;
 
 						case ListAdvancedDefaultSettings.CellInlineActionType.VIEW:
@@ -355,7 +356,7 @@ class ListAdvancedComponent extends React.Component {
 				}
 			},
 			onColumnResized: (evt) => {
-				if (evt.type === 'columnResized') {
+				if (evt.type === "columnResized") {
 					if (
 						evt.column &&
 						evt.column.userProvidedColDef.customProps &&
@@ -364,7 +365,7 @@ class ListAdvancedComponent extends React.Component {
 						evt.column.userProvidedColDef.customProps.onColumnResized(evt);
 					}
 
-					if (evt.finished === true && evt.source !== 'sizeColumnsToFit') {
+					if (evt.finished === true && evt.source !== "sizeColumnsToFit") {
 						this.updateGridColumnsRowsAppearance();
 					}
 				}
@@ -428,7 +429,7 @@ class ListAdvancedComponent extends React.Component {
 				}
 
 				if (actionCellColumn) {
-					actionCellColumn.addEventListener('leftChanged', () => {
+					actionCellColumn.addEventListener("leftChanged", () => {
 						evt.columnApi.moveColumn(
 							FIELD_ACTION_POPUP_CELL,
 							evt.columnApi.getAllDisplayedColumns().length - 1
@@ -441,7 +442,7 @@ class ListAdvancedComponent extends React.Component {
 				}
 
 				evt.columnApi.getAllColumns().forEach((col) => {
-					col.addEventListener('menuVisibleChanged', (evt) => {
+					col.addEventListener("menuVisibleChanged", (evt) => {
 						this.showPopoverOverlay(!evt.column.menuVisible);
 					});
 				});
@@ -482,7 +483,7 @@ class ListAdvancedComponent extends React.Component {
 				const isActionPopupCellClicked = $(evt.event.target).closest(`.${ACTION_POPUP_CELL_CLASS}`).length > 0;
 				const isInlineActionCellClicked =
 					$(evt.event.target).closest(`.${INLINE_ACTION_CELL_CLASS}`).length > 0;
-				
+
 				const isButtonClicked = $(evt.event.target).closest(`.${INLINE_BUTTON_CELL_CLASS}`).length > 0;
 				evt.api.setSuppressRowClickSelection(isButtonClicked);
 
@@ -505,7 +506,7 @@ class ListAdvancedComponent extends React.Component {
 					}
 				} else if (isButtonClicked) {
 					evt.api.setSuppressRowClickSelection(true);
-				} else if (evt.type && evt.type === 'rowClicked') {
+				} else if (evt.type && evt.type === "rowClicked") {
 					this.writePaginationRestoreState();
 					props.onRowClicked && props.onRowClicked(evt.data);
 				}
@@ -558,7 +559,7 @@ class ListAdvancedComponent extends React.Component {
 				inlineActionCellRenderer: InlineActionCellRendererComponent,
 				actionPopupCellRenderer: ActionPopupCellRendererComponent,
 				btnCellRenderer: BtnCellRendererComponent,
-				selectCellRenderer: SelectCellRendererComponent
+				selectCellRenderer: SelectCellRendererComponent,
 			},
 			gridOptions,
 			hasNoRowData: false,
@@ -569,7 +570,7 @@ class ListAdvancedComponent extends React.Component {
 			rowCount: -1,
 			rowCountMax: -1,
 			rowsSelected: [],
-			searchText: '',
+			searchText: "",
 			tabbedFilterItems: [],
 			usePagination: props.usePagination || false,
 		};
@@ -581,9 +582,16 @@ class ListAdvancedComponent extends React.Component {
 		}
 	}
 
+	componentDidUpdate(prevProps, prevState) {
+		if (this.props.refreshData !== prevProps.refreshData) {
+			console.log("UPDATE HUA LIST ADVANCED COMPONENT");
+			this.fetchRows();
+		}
+	}
+
 	componentWillUnmount() {
 		this.isUnmounted = true;
-		invoiz.off('historyNavigateBack', this.getPaginationRestoreState);
+		invoiz.off("historyNavigateBack", this.getPaginationRestoreState);
 	}
 
 	clearSelectedRows() {
@@ -646,12 +654,12 @@ class ListAdvancedComponent extends React.Component {
 					this.getAllRows().forEach((row) => {
 						if (row.hasOwnProperty(columnDef.field) && !wasStringNumberFound) {
 							wasStringNumberFound =
-								typeof row[columnDef.field] === 'string' && row[columnDef.field].length > 0;
+								typeof row[columnDef.field] === "string" && row[columnDef.field].length > 0;
 						}
 					});
 
 					if (wasStringNumberFound) {
-						columnDef.filter = 'agTextColumnFilter';
+						columnDef.filter = "agTextColumnFilter";
 					}
 
 					if (Object.keys(filterModel).length > 0 && Object.keys(filterModel).indexOf(columnField) !== -1) {
@@ -661,10 +669,10 @@ class ListAdvancedComponent extends React.Component {
 							if (
 								filterKey !== columnField ||
 								(filterKey === columnField &&
-									filterModel[filterKey].filterType === 'text' &&
+									filterModel[filterKey].filterType === "text" &&
 									wasStringNumberFound) ||
 								(filterKey === columnField &&
-									filterModel[filterKey].filterType !== 'text' &&
+									filterModel[filterKey].filterType !== "text" &&
 									!wasStringNumberFound)
 							) {
 								filterModelUpdated[filterKey] = filterModel[filterKey];
@@ -731,8 +739,8 @@ class ListAdvancedComponent extends React.Component {
 					setTimeout(() => {
 						invoiz.showNotification({
 							message: onlySelected
-								? 'The selected rows were successfully exported'
-								: 'All rows were successfully exported',
+								? "The selected rows were successfully exported"
+								: "All rows were successfully exported",
 						});
 					}, 300);
 				}
@@ -750,12 +758,11 @@ class ListAdvancedComponent extends React.Component {
 			} else {
 				this.setState({ hasNoRowData: true, isLoading: false, refreshGrid: false });
 			}
-			
 		};
 
 		const onFetchError = () => {
-			invoiz.router.navigate('/');
-			invoiz.showNotification({ message: 'Sorry, an error ocurred!', type: 'error' });
+			invoiz.router.navigate("/");
+			invoiz.showNotification({ message: "Sorry, an error ocurred!", type: "error" });
 		};
 
 		const proceed = (...args) => {
@@ -823,7 +830,7 @@ class ListAdvancedComponent extends React.Component {
 			if (orderBy && orderBy.prop) {
 				displayedRows = _.sortBy(displayedRows, (item) => item[orderBy.prop]);
 
-				if (orderBy.sort === 'desc') {
+				if (orderBy.sort === "desc") {
 					displayedRows = displayedRows.reverse();
 				}
 			}
@@ -876,7 +883,7 @@ class ListAdvancedComponent extends React.Component {
 					columnState={gridOptions.columnApi.getColumnState()}
 					onSave={(columnState, resetColumnSorting) => {
 						const updatedColumnState = resetColumnSorting
-							? sortObjectArrayByOtherArray(columnState, columnDefs, 'colId', 'field')
+							? sortObjectArrayByOtherArray(columnState, columnDefs, "colId", "field")
 							: columnState;
 
 						if (resetColumnSorting && gridOptions.columnDefs) {
@@ -899,7 +906,7 @@ class ListAdvancedComponent extends React.Component {
 				/>,
 				{
 					width: columnsSettingsModalWidth || 560,
-					padding: '15px 40px 110px 40px',
+					padding: "15px 40px 110px 40px",
 				}
 			);
 		}
@@ -924,9 +931,9 @@ class ListAdvancedComponent extends React.Component {
 		};
 
 		if (gridOptions && gridOptions.api && filterItem.filter) {
-			if (filterItem.filter.filterType === 'date') {
+			if (filterItem.filter.filterType === "date") {
 				filterObject = {
-					filterType: 'date',
+					filterType: "date",
 					type: filterItem.filter.type,
 					dateFrom: filterItem.filter.dateFrom,
 					dateTo: filterItem.filter.dateTo,
@@ -962,12 +969,11 @@ class ListAdvancedComponent extends React.Component {
 		const { gridOptions } = this.state;
 		var itemsToUpdate = [];
 		gridOptions.api.forEachNodeAfterFilterAndSort(function (rowNode, index) {
-
 			if (rowId !== rowNode.id) {
 				return;
 			}
-	  
-		  var data = rowNode.data;
+
+			var data = rowNode.data;
 			//let newData = Object.assign(data, ...updatedData)
 			data.trackedInInventory = true;
 			data.currentStock = updatedData.currentStock;
@@ -983,10 +989,10 @@ class ListAdvancedComponent extends React.Component {
 			data.minimumBalance = updatedData.minimumBalance;
 			data.avgPurchaseValue = updatedData.avgPurchaseValue;
 			data.itemModifiedDate = updatedData.itemModifiedDate;
-		  itemsToUpdate.push(data);
+			itemsToUpdate.push(data);
 		});
 
-	 	gridOptions.api.updateRowData({ update: itemsToUpdate});
+		gridOptions.api.updateRowData({ update: itemsToUpdate });
 	}
 
 	removeSelectedRows(selectedRow) {
@@ -1051,10 +1057,10 @@ class ListAdvancedComponent extends React.Component {
 		let overlay;
 
 		if (hide) {
-			$('.popover-overlay').remove();
+			$(".popover-overlay").remove();
 		} else {
-			overlay = $('<div/>', { class: 'popover-overlay' });
-			overlay.appendTo('body');
+			overlay = $("<div/>", { class: "popover-overlay" });
+			overlay.appendTo("body");
 		}
 	}
 
@@ -1126,7 +1132,7 @@ class ListAdvancedComponent extends React.Component {
 
 				// if (webStorageSettings.filter.hasOwnProperty('date') || webStorageSettings.filter.hasOwnProperty('dueToDate')) {
 				// 	WebStorageService.removeItem(webStorageKey);
-				
+
 				// }
 
 				if (!this.isUnmounted && !webStorageSettings && gridOptions && gridOptions.columnApi) {
@@ -1186,7 +1192,7 @@ class ListAdvancedComponent extends React.Component {
 				tabbedFilterItems.forEach((tabbedFilterItem) => {
 					if (
 						currentFilterModel.hasOwnProperty(tabbedFilterItem.filter.field) &&
-						tabbedFilterItem.filter.filterType !== 'date'
+						tabbedFilterItem.filter.filterType !== "date"
 					) {
 						if (
 							currentFilterModel[tabbedFilterItem.filter.field].values &&
@@ -1206,8 +1212,8 @@ class ListAdvancedComponent extends React.Component {
 						}
 					} else if (
 						currentFilterModel.hasOwnProperty(tabbedFilterItem.filter.field) &&
-						tabbedFilterItem.filter.filterType === 'date' &&
-						tabbedFilterItem.filter.specificType === 'next30days'
+						tabbedFilterItem.filter.filterType === "date" &&
+						tabbedFilterItem.filter.specificType === "next30days"
 					) {
 						if (
 							currentFilterModel[tabbedFilterItem.filter.field].dateFrom &&
@@ -1215,7 +1221,7 @@ class ListAdvancedComponent extends React.Component {
 							tabbedFilterItem.filter.dateFrom &&
 							tabbedFilterItem.filter.dateTo &&
 							tabbedFilterItem.filter.dateFrom === moment().format(config.dateFormat.api) &&
-							tabbedFilterItem.filter.dateTo === moment().add(30, 'days').format(config.dateFormat.api)
+							tabbedFilterItem.filter.dateTo === moment().add(30, "days").format(config.dateFormat.api)
 						) {
 							tabbedFilterItem.active = true;
 						}
@@ -1280,7 +1286,7 @@ class ListAdvancedComponent extends React.Component {
 			showDisabledOverlay,
 			resources,
 			hasFirstHeadBar,
-			settingPopup
+			settingPopup,
 		} = this.props;
 
 		const hasNoFilterResults = rowCount === 0;
@@ -1307,29 +1313,25 @@ class ListAdvancedComponent extends React.Component {
 						<div>Settings</div>
 						<div className="icon icon-arr_down"></div>
 					</div>
-				) : null }
+				) : null}
 				{settingPopup &&
 				(settingPopup.settingPopupEntries || settingPopup.settingPopupEntriesFunc) &&
 				settingPopup.onSettingPopupItemClicked ? (
-					
 					<PopoverComponent
 						showOnClick={true}
 						contentClass={`list-advanced-setting-dropdown-content`}
-						elementId={'list-advanced-setting-btn'}
-						entries={
-							settingPopup.settingPopupEntries ||
-							settingPopup.settingPopupEntriesFunc()
-						}
+						elementId={"list-advanced-setting-btn"}
+						entries={settingPopup.settingPopupEntries || settingPopup.settingPopupEntriesFunc()}
 						onClick={(entry) => {
 							settingPopup.onSettingPopupItemClicked(entry);
 						}}
 						offsetLeft={7}
 						offsetTop={7}
 						useOverlay={true}
-					/> 
+					/>
 				) : null}
 
-				<div className={`icon-btn ${hasFilter ? '' : 'disabled'}`} onClick={() => this.onFilterClearClick()}>
+				<div className={`icon-btn ${hasFilter ? "" : "disabled"}`} onClick={() => this.onFilterClearClick()}>
 					<div className="icon icon-filter_reset"></div>
 					<div className="icon-label">Clear filters</div>
 				</div>
@@ -1349,7 +1351,7 @@ class ListAdvancedComponent extends React.Component {
 					<div className="icon icon-download2"></div>
 					<div className="icon-label">Export columns</div>
 				</div>
-				
+
 				{/* <PopoverComponent
 					showOnClick={true}
 					contentClass={`list-advanced-setting-dropdown-content`}
@@ -1415,11 +1417,13 @@ class ListAdvancedComponent extends React.Component {
 					</div>
 				) : null}
 
-				{ !firstHeadBarControlsInSecondHeadBar ? <ListAdvancedSearchComponent
-					value={searchText}
-					placeholder={`Search`}
-					onChange={(val) => this.onSearch(val)}
-				/> : null}
+				{!firstHeadBarControlsInSecondHeadBar ? (
+					<ListAdvancedSearchComponent
+						value={searchText}
+						placeholder={`Search`}
+						onChange={(val) => this.onSearch(val)}
+					/>
+				) : null}
 			</React.Fragment>
 		);
 
@@ -1429,14 +1433,18 @@ class ListAdvancedComponent extends React.Component {
 			emptyListContent
 		) : (
 			<div
-				className={`${!hasFirstHeadBar ? (`list-advanced-component ag-theme-alpine ${usePagination ? '' : 'no-pagination'} ${
-					hasSecondHeadBar ? 'has-second-head-bar' : ''
-				} ${searchFieldInSecondHeadBar ? 'search-field-in-second-head-bar' : ''}`) : (`list-advanced-component-manual-entry ag-theme-alpine no-pagination`)}`}
+				className={`${
+					!hasFirstHeadBar
+						? `list-advanced-component ag-theme-alpine ${usePagination ? "" : "no-pagination"} ${
+								hasSecondHeadBar ? "has-second-head-bar" : ""
+						  } ${searchFieldInSecondHeadBar ? "search-field-in-second-head-bar" : ""}`
+						: `list-advanced-component-manual-entry ag-theme-alpine no-pagination`
+				}`}
 			>
 				<div className="checkbox-images-preload"></div>
 				<div className="list-advanced-head">
-					{
-						!hasFirstHeadBar ? (<div className="head-first-bar">
+					{!hasFirstHeadBar ? (
+						<div className="head-first-bar">
 							{firstHeadBarControlsInSecondHeadBar ? null : headBarControls}
 
 							<div className="left-col">
@@ -1446,9 +1454,8 @@ class ListAdvancedComponent extends React.Component {
 										: searchContent
 									: searchContent}
 							</div>
-						
-					</div>) : null
-					}
+						</div>
+					) : null}
 					{hasSecondHeadBar ? (
 						<div className="head-second-bar">
 							{searchFieldInSecondHeadBar ? <div className="search-content">{searchContent}</div> : null}
@@ -1459,7 +1466,7 @@ class ListAdvancedComponent extends React.Component {
 										return (
 											<div
 												key={index}
-												className={`tabbed-filter-item ${filterItem.active ? 'active' : ''}`}
+												className={`tabbed-filter-item ${filterItem.active ? "active" : ""}`}
 												onClick={() => this.onTabbedFilterItemClick(filterItem)}
 											>
 												<div>
@@ -1489,7 +1496,7 @@ class ListAdvancedComponent extends React.Component {
 				(actionCellPopup.popupEntries || actionCellPopup.popupEntriesFunc) &&
 				actionCellPopup.onPopupItemClicked ? (
 					<PopoverComponent
-						ref={'actionCellPopup'}
+						ref={"actionCellPopup"}
 						contentClass={`customer-list-cell-dropdown-content`}
 						elementId={currentActionCellPopupId}
 						entries={
@@ -1505,7 +1512,7 @@ class ListAdvancedComponent extends React.Component {
 					/>
 				) : null}
 
-				<div className={`ag-grid-container ${showDisabledOverlay ? 'disabled' : ''}`}>
+				<div className={`ag-grid-container ${showDisabledOverlay ? "disabled" : ""}`}>
 					<AgGridReact
 						gridOptions={gridOptions}
 						rowData={rowData}

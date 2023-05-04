@@ -46,7 +46,8 @@ class MenuBarComponent extends React.Component {
 			canViewPurchaseOrder: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_PURCHASE_ORDER),
 			canViewDashboard: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_DASHBOARD),
 			canViewStockMovement: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_STOCK_MOVEMENT),
-			noGST: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_GST_EXPORT)
+			noGST: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_GST_EXPORT),
+			viewAccounting: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING),
 		});
 	}
 
@@ -86,33 +87,39 @@ class MenuBarComponent extends React.Component {
 		}
 
 		this.setState(newState);
+		this.setState({
+			canViewExpenses: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+			viewAccounting: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING),
+		});
 	}
 
 	buildPermittedItems () {
-		const { canSeeEditGstReports, canViewImprezzOffer, canViewOffer, canViewExpenses, canViewPurchaseOrder, canViewDashboard, noGST, menuItems } = this.state;
+		const { canSeeEditGstReports, canViewImprezzOffer, canViewOffer, canViewExpenses, viewAccounting, canViewPurchaseOrder, canViewDashboard, noGST, menuItems } = this.state;
 		const permitteditems = [...config.menuItemsData];
-		 if (!canSeeEditGstReports && !canViewExpenses && !canViewDashboard) {
-			return permitteditems.filter(item => item.name !== 'expenses' && item.name !== 'documentExport' && item.name !== 'dashboard');
-		 } 
-		 if (!canViewOffer && !canViewImprezzOffer && !canViewPurchaseOrder) {
-			return permitteditems.filter(item => item.name !== 'offers' && item.name !== 'purchaseOrders');
-		 } 
-		 if (!canViewDashboard) {
-			return permitteditems.filter(item => item.name !== 'dashboard');		  
-		  } 
-		 if (!canViewExpenses) {
-		  return permitteditems.filter(item => item.name !== 'expenses');		  
-		} 
-		if (!canSeeEditGstReports) {
-			return permitteditems.filter(item => item.name !== 'documentExport');			
+		// console.log('permitteditems', permitteditems, invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE))
+		//  if (!canSeeEditGstReports && !canViewExpenses && !canViewDashboard) {
+		// 	return permitteditems.filter(item => item.name !== 'documentExport');
+		//  } 
+		//  if (!canViewOffer && !canViewImprezzOffer && !canViewPurchaseOrder) {
+		// 	return permitteditems.filter(item => item.name !== 'offers' && item.name !== 'purchaseOrders');
+		//  } 
+		//  if (!canViewDashboard) {
+		// 	return permitteditems.filter(item => item.name !== 'dashboard');		  
+		//   }
+		// console.log(invoiz.user, invoiz.user.rights, userPermissions.VIEW_EXPENSE) 
+		if (invoiz.user.rights != null && !canViewExpenses) {
+		  return permitteditems.filter(item => item.name !== 'expenditure');		  
 		}
-		if (!canViewPurchaseOrder) {
-			return permitteditems.filter(item => item.name !== 'purchaseOrders');
-		}
-		if(noGST) {
-			return permitteditems.filter(item => item.name !== 'documentExport');
-		}
-		
+		// if (!canSeeEditGstReports) {
+		// 	return permitteditems.filter(item => item.name !== 'documentExport');			
+		// }
+		// if (!canViewPurchaseOrder) {
+		// 	return permitteditems.filter(item => item.name !== 'purchaseOrders');
+		// }
+		// if(noGST) {
+		// 	return permitteditems.filter(item => item.name !== 'documentExport');
+		// }
+		// console.log('permitteditems2', permitteditems)
 		return permitteditems;
 	}
 
@@ -129,7 +136,7 @@ class MenuBarComponent extends React.Component {
 		if (invoiz.user.isAdmin) {
 			items.push({ name: 'admin-panel', icon: 'settings', title: 'Admin Panel', url: '/admin-panel', resourceKey: 'adminpanel' });
 		}
-
+		
 		return items.map(menuItemData => {
 			const { name, submenuItems } = menuItemData;
 			const active = name === activeItem;
@@ -153,15 +160,16 @@ class MenuBarComponent extends React.Component {
 	}
 
 	buildMenuItems2 (items) {
-		const { activeItem, activeSubmenuItem, canImportArticle, canImportContact, canViewDunning, canViewExpenses } = this.state;
+		const { activeItem, activeSubmenuItem, canImportArticle, canImportContact, canViewDunning, canViewExpenses, viewAccounting } = this.state;
 		const { submenuVisible, onSubmenuChanged, resources } = this.props;
 		const permissions = {
 			canImportArticle,
 			canImportContact,
 			canViewDunning,
-			canViewExpenses
+			canViewExpenses,
+			viewAccounting
 			};
-		 //const items = [...config.menuItemsData];
+		 //const items = [...config.menuItemsData];		 
 		if (invoiz.user.isAdmin) {
 			items.push({ name: 'admin-panel', icon: 'settings', title: 'Admin Panel', url: '/admin-panel', resourceKey: 'adminpanel' });
 		}

@@ -5,7 +5,7 @@ import WebStorageKey from "enums/web-storage-key.enum";
 
 const apiServers = {
 	// local: "http://localhost:3000",
-	local: 'https://dev.groflex.in',
+	local: "https://dev.groflex.in",
 	development: "https://dev.groflex.in",
 	qa: "https://qa.groflex.in",
 	staging: "https://staging.groflex.in",
@@ -14,7 +14,7 @@ const apiServers = {
 	// admin: "https://invoiz-admin.buhl.de",
 };
 
-const byPassCors = true
+const byPassCors = true;
 
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
@@ -196,7 +196,7 @@ const config = {
 		// 	]
 		// },
 		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
-		{ name: 'articles', icon: 'article_outlined', title: 'Artikel', url: '/articles', resourceKey: 'article' },
+		{ name: "articles", icon: "article_outlined", title: "Artikel", url: "/articles", resourceKey: "article" },
 		// {
 		// 	name: "articles",
 		// 	icon: "article",
@@ -266,12 +266,37 @@ const config = {
 					resourceKey: "debitNotes",
 				},
 				{
+
 					name: "reports",
 					// icon: "order",
 					title: "Reports",
 					url: "/expenses/reports",
 					mainSubmenuItem: "expenditure",
 					resourceKey: "reports",
+
+					name: "chartOfAccounts",
+					// icon: "order",
+					title: "Chart of accounts",
+					url: "/expenses/chart-of-accounts",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "chartOfAccounts",
+				},
+				{
+					name: "cashAndBank",
+					icon: "order",
+					title: "Cash and bank",
+					url: "/expenses/cash-and-bank",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "cashAndBank",
+				},
+				{
+					name: "transactions",
+					icon: "order",
+					title: "Transactions",
+					url: "/expenses/transactions",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "transactions",
+
 				},
 			],
 		},
@@ -883,8 +908,9 @@ const config = {
 
 			// get subscription details endpoint
 			getSubscriptionDetails: `${resourceHost}subscription/detail`,
-			updateSubscription: `${resourceHost}chargebee/subscription`,
+			//updateSubscription: `${resourceHost}chargebee/subscription`,
 			// updateSubscription: `${resourceHost}zoho/subscription`,
+			updateSubscription: `${resourceHost}chargebeev2/subscription`,
 
 			// account endpoint
 			account: `${resourceUrls.settings}account`,
