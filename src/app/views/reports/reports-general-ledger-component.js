@@ -1,11 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import moment from "../../../../node_modules/moment/moment";
+import ModalService from "../../services/modal.service";
 import TopbarComponent from "../../shared/topbar/topbar.component";
 import SelectInputComponent from "../../shared/inputs/select-input/select-input.component";
 import OfferState from "enums/offer/offer-state.enum";
 import OfferAction from "enums/offer/offer-action.enum";
 import CalenderIcon from "../../../assets/images/icons/calender.svg";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
+import ListAdvancedComponent from "../../shared/list-advanced/list-advanced.component";
+import GeneralLedgerSendEmail from "./general-ledger-send-email";
 
 import { printPdf } from "../../helpers/printPdf";
 import DetailViewHeadAdvancedComponent from "../../shared/detail-view/detail-view-head-advanced.component";
@@ -203,8 +206,44 @@ import config from "../../../config";
 //     // JSX code for rendering the component using the headContents object
 //   );
 // };
+const ListExportTypes = {
+	EXCEL: "excel",
+};
+
 function ReportsGeneralLedger(props) {
+	// const [gridOptions, setGridOptions] = useState({
+	// 	api: null,
+	// 	columnApi: null,
+	// });
+	const { gridOptions } = useState({ api: null, columnApi: null })[0];
+	console.log(gridOptions);
+	const exportList = (type) => {
+		const { exportExcelCallbacks, exportFilename } = props;
+		// const { gridOptions } = useState({ api: null, columnApi: null })[0];
+		const onlySelected = gridOptions.api && gridOptions.api.getSelectedRows().length > 0;
+
+		const excelOptions = {
+			fileName: `${exportFilename}.xlsx`,
+			sheetName: exportFilename,
+			onlySelected,
+			columnKeys: gridOptions.columnApi
+				.getAllDisplayedColumns()
+				.filter(
+					(columnDef) =>
+						columnDef.colId !== FIELD_CHECKBOX_CELL && columnDef.colId !== FIELD_ACTION_POPUP_CELL
+				)
+				.map((columnDef) => columnDef.colId),
+		};
+
+		// Call the exportExcelCallbacks function with excelOptions object
+		exportExcelCallbacks(excelOptions);
+	};
 	const [general, setGeneral] = useState([]);
+	const [liability, setLiability] = useState([]);
+	const [assets, setAssets] = useState([]);
+	const [expenses, setExpenses] = useState([]);
+	const [revenue, setRevenue] = useState([]);
+	const [equity, setEquity] = useState([]);
 	useEffect(() => {
 		getGeneralLedger();
 	}, []);
@@ -212,11 +251,17 @@ function ReportsGeneralLedger(props) {
 		invoiz
 			.request(
 				"https://dev.groflex.in/api/bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true",
+
 				{ auth: true }
 			)
 			.then((res) => {
 				console.log(res.body.data);
-				setGeneral([...res.body.data]);
+				setGeneral([...res.body.data.filter((item) => item.accountType === "income")]);
+				setLiability([...res.body.data.filter((item) => item.accountType === "liability")]);
+				setAssets([...res.body.data.filter((item) => item.accountType === "assets")]);
+				setExpenses([...res.body.data.filter((item) => item.accountType === "expenses")]);
+				setRevenue([...res.body.data.filter((item) => item.accountType === "revenue")]);
+				setEquity([...res.body.data.filter((item) => item.accountType === "equity")]);
 			});
 	};
 	// const { resources } = props;
@@ -246,9 +291,29 @@ function ReportsGeneralLedger(props) {
 	// const [demoText, setDemoText] = useState(props.demoText || '');
 	// const [demoButtonLink, setDemoButtonLink] = useState(props.demoButtonLink || '');
 	const [isExpanded, setIsExpanded] = useState(false);
-
+	const [isLiability, setIsLiabilityExpanded] = useState(false);
+	const [isRevenue, setIsRevenueExpanded] = useState(false);
+	const [isAssets, setIsAssetsExpanded] = useState(false);
+	const [isEquity, setIsEquityExpanded] = useState(false);
+	const [isExpenses, setIsExpensesExpanded] = useState(false);
 	const handleToggleExpand = () => {
 		setIsExpanded(!isExpanded);
+	};
+	const libalityToggleExpand = () => {
+		setIsLiabilityExpanded(!isLiability);
+	};
+
+	const revenueToggleExpand = () => {
+		setIsRevenueExpanded(!isRevenue);
+	};
+	const assetsToggleExpand = () => {
+		setIsAssetsExpanded(!isAssets);
+	};
+	const equityToggleExpand = () => {
+		setIsEquityExpanded(!isEquity);
+	};
+	const expensesToggleExpand = () => {
+		setIsExpensesExpanded(!isExpenses);
 	};
 
 	const [currentMonthName, setCurrentMonthName] = useState(moment().format("MMMM"));
@@ -360,6 +425,12 @@ function ReportsGeneralLedger(props) {
 	// 			break;
 	// 	}
 	// };
+	const sendEmail = () => {
+		ModalService.open(<GeneralLedgerSendEmail />, {
+			modalClass: "edit-contact-person-modal-component",
+			width: 630,
+		});
+	};
 
 	const updateSelectedDate = (option) => {
 		onDateChange(option.value);
@@ -383,42 +454,84 @@ function ReportsGeneralLedger(props) {
 					window.history.back();
 				}}
 			/>
-			<div
-				className="general-ledger-component"
-				style={{
-					marginTop: "90px",
-					marginLeft: "50px",
-					// marginRight: "50px",
-					width: "200px",
-					// height: "50px",
-					// border: "1px solid white",
-					// borderRadius: "30px",
-					// borderColor: "black",
-					// display: "flex",
-					display: "inline-block",
-				}}
-			>
-				{/* {showCategoryFilter && ( */}
-				<div className="time-period-select">
-					<SelectInputComponent
-						allowCreate={false}
-						notAsync={true}
-						loadedOptions={dateOptions}
-						value={dateFilterValue}
-						icon={CalenderIcon}
-						containerClass="date-input"
-						options={{
-							clearable: false,
-							noResultsText: false,
-							labelKey: "label",
-							valueKey: "value",
-							matchProp: "label",
-							placeholder: "This month",
-							handleChange: (option) => {
-								this.updateSelectedDate(option);
-							},
+			<div>
+				<div
+					className="general-ledger-component"
+					style={{
+						marginTop: "90px",
+						marginLeft: "50px",
+						// marginRight: "50px",
+						width: "200px",
+						// height: "50px",
+						// border: "1px solid white",
+						// borderRadius: "30px",
+						// borderColor: "black",
+						// display: "flex",
+						display: "inline-block",
+					}}
+				>
+					{/* {showCategoryFilter && ( */}
+					<div className="time-period-select">
+						<SelectInputComponent
+							allowCreate={false}
+							notAsync={true}
+							loadedOptions={dateOptions}
+							value={dateFilterValue}
+							icon={CalenderIcon}
+							containerClass="date-input"
+							options={{
+								clearable: false,
+								noResultsText: false,
+								labelKey: "label",
+								valueKey: "value",
+								matchProp: "label",
+								placeholder: "This month",
+								handleChange: (option) => {
+									this.updateSelectedDate(option);
+								},
+							}}
+						/>
+					</div>
+				</div>
+				<div
+					style={{
+						display: "flex",
+						marginTop: "0px",
+						marginLeft: "1200px",
+						// marginRight: "50px",
+						width: "600px",
+						// height: "50px",
+						// border: "1px solid white",
+						// borderRadius: "30px",
+						// borderColor: "black",
+						// display: "flex",
+						// display: "inline-block",
+					}}
+				>
+					{/* <button onClick={sendEmail}> */}
+					<div className="icon-mail" style={{ marginRight: "10px" }} onClick={sendEmail}>
+						<span className="pdf_mail"></span>
+						<span className="icon-text">Send email</span>
+					</div>
+					{/* </button> */}
+					<div className="icon-print" style={{ marginRight: "10px" }}>
+						<span className="pdf_print"></span>
+						<span className="icon-text">Print</span>
+					</div>
+					<div className="icon-download" style={{ marginRight: "10px" }}>
+						<span className="download"></span>
+						<span className="icon-text">Export</span>
+					</div>
+					{/* <div
+						id="list-advanced-export-btn"
+						className="icon-btn"
+						onClick={() => {
+							exportList(ListExportTypes.EXCEL);
 						}}
-					/>
+					>
+						<div className="icon icon-download2"></div>
+						<div className="icon-label">Export</div>
+					</div> */}
 				</div>
 			</div>
 			{showDateFilter && (
@@ -539,27 +652,8 @@ function ReportsGeneralLedger(props) {
 							// gridTemplateColumns: "2fr 3fr 2fr 2fr 2fr ",
 						}}
 					>
-						{/* <SelectInputComponent
-							allowCreate={false}
-							notAsync={true}
-							// loadedOptions={accountOptions}
-							name="Assets"
-							// value={chartData.accountType}
-							options={{
-								clearable: false,
-								noResultsText: false,
-								labelKey: "label",
-								valueKey: "value",
-								matchProp: "label",
-								placeholder: "Assets",
-								// handleChange: handleAccountTypeChange,
-							}}
-							// style={{ marginLeft: "-15px" }}
-							// aria-invalid={accountTypeError}
-							// aria-describedby={accountTypeError ? "accountTypeError" : null}
-						/> */}
 						<div className="container" style={{ width: "100%" }}>
-							<div className="toggle-button" onClick={handleToggleExpand}>
+							<div className="toggle-button" onClick={expensesToggleExpand}>
 								<div
 									style={{
 										display: "flex",
@@ -567,7 +661,7 @@ function ReportsGeneralLedger(props) {
 										backgroundColor: "#E3E3E3",
 									}}
 								>
-									{isExpanded ? (
+									{isExpenses ? (
 										<div
 											className="icon icon-arr_down"
 											style={{ margin: "5px", color: "#272D30" }}
@@ -578,17 +672,23 @@ function ReportsGeneralLedger(props) {
 											style={{ margin: "5px", color: "#272D30" }}
 										></div>
 									)}
-									<span style={{ color: "#272D30" }}>Assets</span>
+									{/* <span style={{ color: "#272D30" }}>{general[0].accountType}</span> */}
+									{expenses && expenses.length > 0 && (
+										<span style={{ color: "#272D30" }}>
+											{expenses[0].accountType.charAt(0).toUpperCase() +
+												expenses[0].accountType.slice(1)}
+										</span>
+									)}
 								</div>
 							</div>
-							{isExpanded && (
+							{isExpenses && (
 								<div
 									className="dropdown-content expanded"
 									style={{
 										backgroundColor: "#FFFFFF",
 									}}
 								>
-									<div
+									{/* <div
 										className="box"
 										style={{
 											// boxShadow: "0px 10px 10px 0px #cccccc",
@@ -606,7 +706,150 @@ function ReportsGeneralLedger(props) {
 										<p>{general.accountSubType}</p>
 										<p>{general.debits}</p>
 										<p>{general.credits}</p>
-										<p>{general.reconcileStatus}</p>
+										<p>{general.bankDetailId}</p>
+										{/* /////// */}
+									{/* <p>{general.bankName}</p>
+										<p>{general.accountNumber}</p>
+										<p>{general.accountName}</p>
+										<p>{general.IFSCCode}</p>
+										<p>{general.openingBalance}</p> */}
+									{/* </div> */}
+									<div className="box" style={{ padding: 0, margin: 0 }}>
+										{expenses.map((item, index) => (
+											<div
+												key={index}
+												style={{
+													display: "grid",
+													gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+													textAlign: "left",
+													borderBottom: "1px solid #E3E3E3",
+												}}
+											>
+												<p style={{ paddingLeft: "15px" }}>
+													{new Date(item.date).toLocaleDateString()}
+												</p>
+												<p>{item.accountSubType}</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.debits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.credits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.balance)}
+												</p>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
+						</div>
+						<div className="container" style={{ width: "100%" }}>
+							<div className="toggle-button" onClick={equityToggleExpand}>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										backgroundColor: "#E3E3E3",
+									}}
+								>
+									{isEquity ? (
+										<div
+											className="icon icon-arr_down"
+											style={{ margin: "5px", color: "#272D30" }}
+										></div>
+									) : (
+										<div
+											className="icon icon-arr_right"
+											style={{ margin: "5px", color: "#272D30" }}
+										></div>
+									)}
+									{/* <span style={{ color: "#272D30" }}>{general[0].accountType}</span> */}
+									{equity && equity.length > 0 && (
+										<span style={{ color: "#272D30" }}>
+											{equity[0].accountType.charAt(0).toUpperCase() +
+												equity[0].accountType.slice(1)}
+										</span>
+									)}
+								</div>
+							</div>
+							{isEquity && (
+								<div
+									className="dropdown-content expanded"
+									style={{
+										backgroundColor: "#FFFFFF",
+									}}
+								>
+									{/* <div
+										className="box"
+										style={{
+											// boxShadow: "0px 10px 10px 0px #cccccc",
+											padding: 0,
+											margin: 0,
+											paddingLeft: "20px",
+											display: "grid",
+											gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+											textAlign: "left",
+											borderBottom: "1px solid #E3E3E3",
+											// borderTop: "1px solid #C6C6C6",
+										}}
+									>
+										<p>{general.date}</p>
+										<p>{general.accountSubType}</p>
+										<p>{general.debits}</p>
+										<p>{general.credits}</p>
+										<p>{general.bankDetailId}</p>
+										{/* /////// */}
+									{/* <p>{general.bankName}</p>
+										<p>{general.accountNumber}</p>
+										<p>{general.accountName}</p>
+										<p>{general.IFSCCode}</p>
+										<p>{general.openingBalance}</p> */}
+									{/* </div> */}
+									<div className="box" style={{ padding: 0, margin: 0 }}>
+										{equity.map((item, index) => (
+											<div
+												key={index}
+												style={{
+													display: "grid",
+													gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+													textAlign: "left",
+													borderBottom: "1px solid #E3E3E3",
+												}}
+											>
+												<p style={{ paddingLeft: "15px" }}>
+													{new Date(item.date).toLocaleDateString()}
+												</p>
+												<p>{item.accountSubType}</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.debits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.credits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.balance)}
+												</p>
+											</div>
+										))}
 									</div>
 								</div>
 							)}
@@ -631,7 +874,13 @@ function ReportsGeneralLedger(props) {
 											style={{ margin: "5px", color: "#272D30" }}
 										></div>
 									)}
-									<span style={{ color: "#272D30" }}>Revenue</span>
+									{/* <span style={{ color: "#272D30" }}>{general[0].accountType}</span> */}
+									{general && general.length > 0 && (
+										<span style={{ color: "#272D30" }}>
+											{general[0].accountType.charAt(0).toUpperCase() +
+												general[0].accountType.slice(1)}
+										</span>
+									)}
 								</div>
 							</div>
 							{isExpanded && (
@@ -641,7 +890,7 @@ function ReportsGeneralLedger(props) {
 										backgroundColor: "#FFFFFF",
 									}}
 								>
-									<div
+									{/* <div
 										className="box"
 										style={{
 											// boxShadow: "0px 10px 10px 0px #cccccc",
@@ -655,17 +904,59 @@ function ReportsGeneralLedger(props) {
 											// borderTop: "1px solid #C6C6C6",
 										}}
 									>
-										<p>01/03/2023</p>
-										<p>Cash</p>
-										<p>25,000</p>
-										<p>-</p>
-										<p>25,000</p>
+										<p>{general.date}</p>
+										<p>{general.accountSubType}</p>
+										<p>{general.debits}</p>
+										<p>{general.credits}</p>
+										<p>{general.bankDetailId}</p>
+										{/* /////// */}
+									{/* <p>{general.bankName}</p>
+										<p>{general.accountNumber}</p>
+										<p>{general.accountName}</p>
+										<p>{general.IFSCCode}</p>
+										<p>{general.openingBalance}</p> */}
+									{/* </div> */}
+									<div className="box" style={{ padding: 0, margin: 0 }}>
+										{general.map((item, index) => (
+											<div
+												key={index}
+												style={{
+													display: "grid",
+													gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+													textAlign: "left",
+													borderBottom: "1px solid #E3E3E3",
+												}}
+											>
+												<p style={{ paddingLeft: "15px" }}>
+													{new Date(item.date).toLocaleDateString()}
+												</p>
+												<p>{item.accountSubType}</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.debits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.credits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.balance)}
+												</p>
+											</div>
+										))}
 									</div>
 								</div>
 							)}
 						</div>
 						<div className="container" style={{ width: "100%" }}>
-							<div className="toggle-button" onClick={handleToggleExpand}>
+							<div className="toggle-button" onClick={libalityToggleExpand}>
 								<div
 									style={{
 										display: "flex",
@@ -673,7 +964,7 @@ function ReportsGeneralLedger(props) {
 										backgroundColor: "#E3E3E3",
 									}}
 								>
-									{isExpanded ? (
+									{isLiability ? (
 										<div
 											className="icon icon-arr_down"
 											style={{ margin: "5px", color: "#272D30" }}
@@ -684,41 +975,63 @@ function ReportsGeneralLedger(props) {
 											style={{ margin: "5px", color: "#272D30" }}
 										></div>
 									)}
-									<span style={{ color: "#272D30" }}>Liabilities</span>
+
+									{liability && liability.length > 0 && (
+										<span style={{ color: "#272D30" }}>
+											{liability[0].accountType.charAt(0).toUpperCase() +
+												liability[0].accountType.slice(1)}
+										</span>
+									)}
 								</div>
 							</div>
-							{isExpanded && (
+							{isLiability && (
 								<div
 									className="dropdown-content expanded"
 									style={{
 										backgroundColor: "#FFFFFF",
 									}}
 								>
-									<div
-										className="box"
-										style={{
-											// boxShadow: "0px 10px 10px 0px #cccccc",
-											padding: 0,
-											margin: 0,
-											paddingLeft: "20px",
-											display: "grid",
-											gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
-											textAlign: "left",
-											borderBottom: "1px solid #E3E3E3",
-											// borderTop: "1px solid #C6C6C6",
-										}}
-									>
-										<p>01/03/2023</p>
-										<p>Cash</p>
-										<p>25,000</p>
-										<p>-</p>
-										<p>25,000</p>
+									<div className="box" style={{ padding: 0, margin: 0 }}>
+										{liability.map((item, index) => (
+											<div
+												key={index}
+												style={{
+													display: "grid",
+													gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+													textAlign: "left",
+													borderBottom: "1px solid #E3E3E3",
+												}}
+											>
+												<p style={{ paddingLeft: "15px" }}>
+													{new Date(item.date).toLocaleDateString()}
+												</p>
+												<p>{item.accountSubType}</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.debits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.credits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.balance)}
+												</p>
+											</div>
+										))}
 									</div>
 								</div>
 							)}
 						</div>
 						<div className="container" style={{ width: "100%" }}>
-							<div className="toggle-button" onClick={handleToggleExpand}>
+							<div className="toggle-button" onClick={revenueToggleExpand}>
 								<div
 									style={{
 										display: "flex",
@@ -726,7 +1039,7 @@ function ReportsGeneralLedger(props) {
 										backgroundColor: "#E3E3E3",
 									}}
 								>
-									{isExpanded ? (
+									{isRevenue ? (
 										<div
 											className="icon icon-arr_down"
 											style={{ margin: "5px", color: "#272D30" }}
@@ -737,17 +1050,23 @@ function ReportsGeneralLedger(props) {
 											style={{ margin: "5px", color: "#272D30" }}
 										></div>
 									)}
-									<span style={{ color: "#272D30" }}>Expenses</span>
+									{/* <span style={{ color: "#272D30" }}>{general[0].accountType}</span> */}
+									{revenue && revenue.length > 0 && (
+										<span style={{ color: "#272D30" }}>
+											{revenue[0].accountType.charAt(0).toUpperCase() +
+												revenue[0].accountType.slice(1)}
+										</span>
+									)}
 								</div>
 							</div>
-							{isExpanded && (
+							{isRevenue && (
 								<div
 									className="dropdown-content expanded"
 									style={{
 										backgroundColor: "#FFFFFF",
 									}}
 								>
-									<div
+									{/* <div
 										className="box"
 										style={{
 											// boxShadow: "0px 10px 10px 0px #cccccc",
@@ -761,17 +1080,59 @@ function ReportsGeneralLedger(props) {
 											// borderTop: "1px solid #C6C6C6",
 										}}
 									>
-										<p>01/03/2023</p>
-										<p>Cash</p>
-										<p>25,000</p>
-										<p>-</p>
-										<p>25,000</p>
+										<p>{general.date}</p>
+										<p>{general.accountSubType}</p>
+										<p>{general.debits}</p>
+										<p>{general.credits}</p>
+										<p>{general.bankDetailId}</p>
+										{/* /////// */}
+									{/* <p>{general.bankName}</p>
+										<p>{general.accountNumber}</p>
+										<p>{general.accountName}</p>
+										<p>{general.IFSCCode}</p>
+										<p>{general.openingBalance}</p> */}
+									{/* </div> */}
+									<div className="box" style={{ padding: 0, margin: 0 }}>
+										{revenue.map((item, index) => (
+											<div
+												key={index}
+												style={{
+													display: "grid",
+													gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+													textAlign: "left",
+													borderBottom: "1px solid #E3E3E3",
+												}}
+											>
+												<p style={{ paddingLeft: "15px" }}>
+													{new Date(item.date).toLocaleDateString()}
+												</p>
+												<p>{item.accountSubType}</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.debits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.credits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.balance)}
+												</p>
+											</div>
+										))}
 									</div>
 								</div>
 							)}
 						</div>
 						<div className="container" style={{ width: "100%" }}>
-							<div className="toggle-button" onClick={handleToggleExpand}>
+							<div className="toggle-button" onClick={assetsToggleExpand}>
 								<div
 									style={{
 										display: "flex",
@@ -779,7 +1140,7 @@ function ReportsGeneralLedger(props) {
 										backgroundColor: "#E3E3E3",
 									}}
 								>
-									{isExpanded ? (
+									{isAssets ? (
 										<div
 											className="icon icon-arr_down"
 											style={{ margin: "5px", color: "#272D30" }}
@@ -790,35 +1151,57 @@ function ReportsGeneralLedger(props) {
 											style={{ margin: "5px", color: "#272D30" }}
 										></div>
 									)}
-									<span style={{ color: "#272D30" }}>Equity</span>
+									{/* <span style={{ color: "#272D30" }}>{general[0].accountType}</span> */}
+									{assets && assets.length > 0 && (
+										<span style={{ color: "#272D30" }}>
+											{assets[0].accountType.charAt(0).toUpperCase() +
+												assets[0].accountType.slice(1)}
+										</span>
+									)}
 								</div>
 							</div>
-							{isExpanded && (
+							{isAssets && (
 								<div
 									className="dropdown-content expanded"
 									style={{
 										backgroundColor: "#FFFFFF",
 									}}
 								>
-									<div
-										className="box"
-										style={{
-											// boxShadow: "0px 10px 10px 0px #cccccc",
-											padding: 0,
-											margin: 0,
-											paddingLeft: "20px",
-											display: "grid",
-											gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
-											textAlign: "left",
-											borderBottom: "1px solid #E3E3E3",
-											// borderTop: "1px solid #C6C6C6",
-										}}
-									>
-										<p>01/03/2023</p>
-										<p>Cash</p>
-										<p>25,000</p>
-										<p>-</p>
-										<p>25,000</p>
+									<div className="box" style={{ padding: 0, margin: 0 }}>
+										{assets.map((item, index) => (
+											<div
+												key={index}
+												style={{
+													display: "grid",
+													gridTemplateColumns: "2fr 2fr 2fr 2fr 2fr",
+													textAlign: "left",
+													borderBottom: "1px solid #E3E3E3",
+												}}
+											>
+												<p style={{ paddingLeft: "15px" }}>
+													{new Date(item.date).toLocaleDateString()}
+												</p>
+												<p>{item.accountSubType}</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.debits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.credits)}
+												</p>
+												<p>
+													{new Intl.NumberFormat("hi-IN", {
+														style: "currency",
+														currency: "INR",
+													}).format(item.balance)}
+												</p>
+											</div>
+										))}
 									</div>
 								</div>
 							)}

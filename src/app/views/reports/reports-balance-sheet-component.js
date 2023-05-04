@@ -205,7 +205,27 @@ function ReportBalanceSheet() {
 												borderBottom: "1px solid #E3E3E3",
 											}}
 										>
-											<p style={{ justifySelf: "start" }}>Cash and Cash equivalents</p>
+											<p style={{ justifySelf: "start" }}>
+												Account payable
+											</p>
+											<p> 25,000</p>
+										</div>
+										<div
+											className="box"
+											style={{
+												// boxShadow: "0px 10px 10px 0px #cccccc",
+												padding: 0,
+												margin: 0,
+												paddingLeft: "20px",
+												display: "grid",
+												gridTemplateColumns: "8fr 2fr",
+												textAlign: "left",
+												borderBottom: "1px solid #E3E3E3",
+											}}
+										>
+											<p style={{ justifySelf: "start"}}>
+												Current Liabilities
+											</p>
 											<p> 25,000</p>
 										</div>
 									</div>
