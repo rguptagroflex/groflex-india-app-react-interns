@@ -230,17 +230,21 @@ const BankListComponent = () => {
 			>
 				<p style={{ margin: "21px 0" }} className="text-h4">
 					Bank Details
-					<span style={{ fontSize: 12, fontWeight: 400, display: "block" }}> (Max 3 banks allowed) </span>
+					{/* <span style={{ fontSize: 12, fontWeight: 400, display: "block" }}> (Max 3 banks allowed) </span> */}
 				</p>
 				<p
-					onClick={banksList.length < 3 ? openAddBankModal : null}
+					// onClick={banksList.length < 3 ? openAddBankModal : null}
+					onClick={openAddBankModal}
 					// className="add-bank-button"
 					style={{
 						margin: "auto 0",
 						fontWeight: "600",
-						color: banksList.length < 3 ? "#00A353" : "#C6C6C6",
-						cursor: banksList.length < 3 ? "pointer" : "default",
-						border: `1px solid ${banksList.length < 3 ? "#00A353" : "#C6C6C6"}`,
+						// border: `1px solid ${banksList.length < 3 ? "#00A353" : "#C6C6C6"}`,
+						// color: banksList.length < 3 ? "#00A353" : "#C6C6C6",
+						// cursor: banksList.length < 3 ? "pointer" : "default",
+						border: "1px solid #00A353",
+						color: "#00A353",
+						cursor: "pointer",
 						padding: "8px 25px",
 						borderRadius: "4px",
 					}}
@@ -249,7 +253,8 @@ const BankListComponent = () => {
 						width="14px"
 						height="14px"
 						svg={plusIcon}
-						fill={banksList.length < 3 ? "#00A353" : "#C6C6C6"}
+						// fill={banksList.length < 3 ? "#00A353" : "#C6C6C6"}
+						fill={"#00A353"}
 					/>
 					<span style={{ marginLeft: "7px" }}> Add new bank</span>
 				</p>
