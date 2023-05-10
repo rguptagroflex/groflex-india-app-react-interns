@@ -2,6 +2,12 @@ import React, { useEffect, useState } from "react";
 import ModalService from "../../services/modal.service";
 import ButtonComponent from "../../shared/button/button.component";
 import NumberInputComponent from "../../shared/inputs/number-input/number-input.component";
+import SelectInput from "../../shared/inputs/select-input/select-input.component";
+
+const cashTypeList = [
+	{ label: "Cash", value: "cash" },
+	{ label: "Petty Cash", value: "pettyCash" },
+];
 
 const AddCashModalComponent = ({ onConfirm }) => {
 	useEffect(() => {
@@ -24,6 +30,16 @@ const AddCashModalComponent = ({ onConfirm }) => {
 		customerId: "",
 		notes: "",
 	});
+	const [cashType, setCashType] = useState("");
+
+	const handleCashTypeChange = (option) => {
+		if (!option) {
+			return;
+		}
+		setCashType(option.value);
+		// setFormErrors({ ...formErrors, bankNameError: "" });
+	};
+
 	const handleOpeningBalanceChange = (value) => {
 		if (!value) {
 			setNewCashData({ ...newCashData, openingBalance: 0 });
@@ -46,9 +62,23 @@ const AddCashModalComponent = ({ onConfirm }) => {
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
 				Add opening balance
 			</div>
-
 			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="add-cash-modal-body-container">
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="add-cash-modal-body">
+					<SelectInput
+						allowCreate={false}
+						notAsync={true}
+						loadedOptions={cashTypeList}
+						value={cashType}
+						options={{
+							clearable: false,
+							noResultsText: false,
+							labelKey: "label",
+							valueKey: "value",
+							matchProp: "label",
+							placeholder: "Select Bank",
+							handleChange: handleCashTypeChange,
+						}}
+					/>
 					<NumberInputComponent
 						defaultNonZero
 						onChange={handleOpeningBalanceChange}
@@ -76,7 +106,7 @@ const AddCashModalComponent = ({ onConfirm }) => {
 				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent
-						disabled={!newCashData.openingBalance}
+						disabled={!newCashData.openingBalance || !cashType}
 						buttonIcon="icon-check"
 						callback={handleSave}
 						label={"Save"}

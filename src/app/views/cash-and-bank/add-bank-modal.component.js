@@ -48,11 +48,11 @@ const AddBankModalComponent = ({ onConfirm }) => {
 		openingBalanceError: "",
 	});
 
-	const handleBankNameChange = (option) => {
-		if (!option) {
-			return;
-		}
-		setNewBankData({ ...newBankData, bankName: option.value });
+	const handleBankNameChange = (event) => {
+		// if (!option) {
+		// 	return;
+		// }
+		setNewBankData({ ...newBankData, bankName: event.target.value });
 		setFormErrors({ ...formErrors, bankNameError: "" });
 	};
 
@@ -62,11 +62,11 @@ const AddBankModalComponent = ({ onConfirm }) => {
 			setNewBankData({ ...newBankData, accountNumber: "" });
 			return;
 		}
-		enteredAccountNumber = enteredAccountNumber
-			.split("-")
-			.join("")
-			.match(/.{1,4}/g)
-			.join("-");
+		// enteredAccountNumber = enteredAccountNumber
+		// 	.split("-")
+		// 	.join("")
+		// 	.match(/.{1,4}/g)
+		// 	.join("-");
 		setNewBankData({ ...newBankData, accountNumber: enteredAccountNumber });
 		setFormErrors({ ...formErrors, accountNumberError: "" });
 		if (enteredAccountNumber === reEnteredAccountNumber) {
@@ -80,11 +80,11 @@ const AddBankModalComponent = ({ onConfirm }) => {
 			setReEnteredAccountNumber("");
 			return;
 		}
-		reEnteredAccountNumber = reEnteredAccountNumber
-			.split("-")
-			.join("")
-			.match(/.{1,4}/g)
-			.join("-");
+		// reEnteredAccountNumber = reEnteredAccountNumber
+		// 	.split("-")
+		// 	.join("")
+		// 	.match(/.{1,4}/g)
+		// 	.join("-");
 		setReEnteredAccountNumber(reEnteredAccountNumber);
 		if (reEnteredAccountNumber === newBankData.accountNumber) {
 			setFormErrors({ ...formErrors, reEnterAccountNumberError: "" });
@@ -177,7 +177,8 @@ const AddBankModalComponent = ({ onConfirm }) => {
 		}
 	};
 
-	// console.log("Form errors", formErrors);
+	console.log("Add bank Form data", newBankData);
+	console.log("Add bank Form errors", formErrors);
 	return (
 		<div className="add-bank-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
@@ -187,7 +188,7 @@ const AddBankModalComponent = ({ onConfirm }) => {
 			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="add-bank-modal-body-container">
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="add-bank-modal-body">
 					<div style={{ marginBottom: "20px" }}>
-						<SelectInput
+						{/* <SelectInput
 							allowCreate={false}
 							notAsync={true}
 							loadedOptions={bankNamesList}
@@ -201,6 +202,12 @@ const AddBankModalComponent = ({ onConfirm }) => {
 								placeholder: "Select Bank*",
 								handleChange: handleBankNameChange,
 							}}
+						/> */}
+						<TextInputComponent
+							errorMessage={formErrors.accountNameError}
+							label="Bank name*"
+							value={newBankData.bankName}
+							onChange={handleBankNameChange}
 						/>
 						<div style={{ marginTop: "18px" }}>
 							<TextInputErrorComponent

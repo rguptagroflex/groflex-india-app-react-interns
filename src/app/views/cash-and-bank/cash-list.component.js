@@ -225,7 +225,7 @@ const CashListComponent = () => {
 						svg={plusIcon}
 						fill={cashData.openingBalance ? "#C6C6C6" : "#00A353"}
 					/>
-					<span style={{ marginLeft: "9px" }}>Add opening balance</span>
+					<span style={{ marginLeft: "9px" }}>Add cash type</span>
 				</p>
 			</div>
 			{cashData.openingBalance ? (
