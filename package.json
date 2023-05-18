@@ -4,8 +4,8 @@
 	"author": "Satish Verma",
 	"contributors": [
 		{
-		"name": "Sandy Singh",
-		"email": "sandy@groflex.io"
+			"name": "Sandy Singh",
+			"email": "sandy@groflex.io"
 		}
 	],
 	"scripts": {
@@ -26,6 +26,7 @@
 		"deploy:admin": "npm run build && gulp build --env=production && gulp deploy:local --env=admin"
 	},
 	"dependencies": {
+		"@ag-grid-community/client-side-row-model": "^29.3.4",
 		"@ag-grid-community/core": "^23.1.0",
 		"@ag-grid-community/react": "^23.1.0",
 		"@ag-grid-enterprise/all-modules": "^23.1.0",

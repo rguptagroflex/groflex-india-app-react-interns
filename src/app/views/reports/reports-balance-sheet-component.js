@@ -1,12 +1,177 @@
-import React, { useState } from "react";
-import TopbarComponent from "../../shared/topbar/topbar-start-page.component";
+import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
+import { AgGridReact } from "@ag-grid-community/react";
+import { AllModules, LicenseManager } from "@ag-grid-enterprise/all-modules";
+import TopbarComponent from "../../shared/topbar/topbar.component";
 import SelectInputComponent from "../../shared/inputs/select-input/select-input.component";
+import calenderIcon from "../../../assets/images/icons/calender.svg";
+import invoiz from "../../services/invoiz.service";
+import OfferSendMailWrapper from "../offer/offer-send-mail.wrapper";
+import GeneralLedgerSendEmail from "./general-ledger-send-email";
+import config from "../../../config";
+import ModalService from "../../services/modal.service";
+import OfferAction from "enums/offer/offer-action.enum";
+import moment from "moment";
+// import calenderIcon from "../../../assets/images/icons/calender.svg";
+import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 
 function ReportBalanceSheet() {
-	const [isExpanded, setIsExpanded] = useState(false);
+	LicenseManager.setLicenseKey(
+		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
+	);
+	const gridRef = useRef();
+	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
+	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
+	const [rowData, setRowData] = useState();
+	const [columnDefs, setColumnDefs] = useState([
+		// { field: "country", rowGroup: true, hide: true },
+		{ field: "accountType", rowGroup: true, enableRowGroup: true, hide: true },
+		{ field: "accountType", enableRowGroup: true },
+		// { field: "date", filter: false },
+		// { field: "accountSubType", filter: false },
+		// { field: "debits", filter: false },
+		// { field: "credits", filter: false },
+		{ field: "balance", filter: false },
+	]);
+	const onBtExport = useCallback(() => {
+		gridRef.current.api.exportDataAsExcel();
+	}, []);
+	const onFirstDataRendered = useCallback(() => {
+		if (gridRef.current) {
+			gridRef.current.api.expandAll();
+		}
+	}, []);
+	const setPrinterFriendly = useCallback((api) => {
+		const eGridDiv = document.querySelector("#myGrid");
+		if (eGridDiv) {
+			eGridDiv.style.width = "";
+			eGridDiv.style.height = "";
+			api.setDomLayout("print");
+		}
+	}, []);
+	const setNormal = useCallback((api) => {
+		const eGridDiv = document.querySelector("#myGrid");
+		if (eGridDiv) {
+			eGridDiv.style.width = "700px";
+			eGridDiv.style.height = "200px";
+			api.setDomLayout();
+		}
+	}, []);
 
-	const handleToggleExpand = () => {
-		setIsExpanded(!isExpanded);
+	const onBtPrint = useCallback(() => {
+		if (gridRef.current) {
+			const api = gridRef.current.api;
+			setPrinterFriendly(api);
+			setTimeout(function () {
+				print();
+				setNormal(api);
+			}, 2000);
+		}
+	}, []);
+	useEffect(() => {
+		const eGridDiv = document.querySelector("#myGrid");
+		if (eGridDiv) {
+			// Code to initialize the grid and set data
+		}
+	}, []);
+
+	const defaultColDef = useMemo(() => {
+		return {
+			flex: 1,
+			minWidth: 100,
+			sortable: true,
+			resizable: true,
+			filter: true,
+			floatingFilter: true,
+		};
+	}, []);
+	const autoGroupColumnDef = useMemo(() => {
+		return {
+			minWidth: 200,
+			// filter: 'agGroupColumnFilter',
+		};
+	}, []);
+
+	const onGridReady = useCallback((params) => {
+		invoiz
+			.request(
+				"https://dev.groflex.in/api/bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true",
+				{ auth: true }
+			)
+			.then((res) => {
+				console.log("response of data :", res.body.data);
+				setRowData(res.body.data);
+			});
+	}, []);
+	const sendEmail = () => {
+		ModalService.open(<GeneralLedgerSendEmail />, {
+			modalClass: "edit-contact-person-modal-component",
+			width: 630,
+		});
+	};
+	const activeAction = OfferAction.PRINT;
+	const DateFilterType = {
+		FISCAL_YEAR: "fiscalYear",
+	};
+	const [selectedDate, setSelectedDate] = useState(null);
+
+	const [dateData, setDateData] = useState({
+		currentMonthName: moment().format("MMMM"),
+		lastMonthName: moment().subtract(1, "months").format("MMMM"),
+		secondLastMonth: moment().subtract(2, "months").format("MMMM"),
+		currQuarter: moment().startOf("quarter").format("Q/YYYY"),
+		lastQuarter: moment().subtract(3, "months").startOf("quarter").format("Q/YYYY"),
+		secondLastQuarter: moment().subtract(6, "months").startOf("quarter").format("Q/YYYY"),
+		customStartDate: moment().subtract(1, "months"),
+		customEndDate: moment(),
+		showCustomDateRangeSelector: false,
+		dateFilterValue: DateFilterType.FISCAL_YEAR,
+		categoryFilterValue: "",
+		activeChartData: { series: [] },
+		selectedDateFilterType: DateFilterType.FISCAL_YEAR,
+	});
+	const dateOptions = [
+		{ label: dateData.currentMonthName, value: "currMonth", group: "month" },
+		{ label: dateData.lastMonthName, value: "lastMonth", group: "month" },
+		{ label: dateData.secondLastMonth, value: "secondLastMonth", group: "month" },
+		{ label: `Quarter ${dateData.currQuarter}`, value: "currQuarter", group: "quarter" },
+		{ label: `Quarter ${dateData.lastQuarter}`, value: "lastQuarter", group: "quarter" },
+		{ label: `Quarter ${dateData.secondLastQuarter}`, value: "secondLastQuarter", group: "quarter" },
+		{ label: "Fiscal Year", value: DateFilterType.FISCAL_YEAR, group: "year" },
+		{ label: "Custom", value: "custom", group: "custom" },
+	];
+
+	const updateSelectedDate = (option) => {
+		if (!option) {
+			setSelectedDate(null);
+			// setProcessStationStatus({ ...processStationStatus, timePeriod: "active" });
+			return;
+		}
+
+		switch (option.value) {
+			case "custom":
+				// this.props.onDateChange(option.value, [dateData.customStartDate, dateData.customEndDate]);
+				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
+				setSelectedDate(
+					`${dateData.customStartDate.format("DD-MM-YYYY")} - ${dateData.customEndDate.format("DD-MM-YYYY")}`
+				);
+				break;
+			default:
+				// this.props.onDateChange(option.value);
+				setSelectedDate(option.label);
+				setDateData({ ...dateData, showCustomDateRangeSelector: false, dateFilterValue: option.value });
+				break;
+		}
+	};
+	const handleStartDateChange = (name, value) => {
+		const startDate = moment(value, "DD-MM-YYYY");
+		setDateData({ ...dateData, customStartDate: startDate });
+		// updateSelectedDate({ value: "custom" });
+	};
+
+	const handleEndDateChange = (name, value) => {
+		const endDate = moment(value, "DD-MM-YYYY");
+		setDateData({ ...dateData, customEndDate: endDate });
+		// updateSelectedDate({ value: "custom" });
 	};
 	return (
 		<div>
@@ -32,38 +197,131 @@ function ReportBalanceSheet() {
 					display: "inline-block",
 				}}
 			>
-				<div></div>
-				{/* {showCategoryFilter && ( */}
-				{/* <div className="time-period-select"> */}
-				{/* <SelectInputComponent
-					allowCreate={false}
-					notAsync={true}
-					loadedOptions={dateOptions}
-					value={dateFilterValue}
-					icon={CalenderIcon}
-					containerClass="date-input"
-					options={{
-						clearable: false,
-						noResultsText: false,
-						labelKey: "label",
-						valueKey: "value",
-						matchProp: "label",
-						placeholder: "This month",
-						// handleChange: (option) => {
-						// 	this.updateSelectedDate(option);
-						// },
+				<div
+					className="time-period-select-container"
+					style={{ width: "100%", display: "flex", justifyContent: "space-between" }}
+				>
+					{/* <Label
+    label="Select time period"
+    sublabel="Please select a time period for viewing transactions."
+    style={{ flex: "1", marginRight: "10px" }}
+  /> */}
+					{/* {showCategoryFilter && ( */}
+					<div style={{ flex: "1.5" }} className="time-period-select">
+						<SelectInputComponent
+							allowCreate={false}
+							notAsync={true}
+							loadedOptions={dateOptions}
+							value={dateData.dateFilterValue}
+							icon={calenderIcon}
+							containerClass="date-input"
+							options={{
+								clearable: false,
+								noResultsText: false,
+								labelKey: "label",
+								valueKey: "value",
+								matchProp: "label",
+								placeholder: "Select Date",
+								handleChange: (option) => {
+									updateSelectedDate(option);
+								},
+							}}
+						/>
+						{dateData.showCustomDateRangeSelector && (
+							<div
+								id="general-ledger-date-picker-container"
+								className="start-end-date-selector-group"
+								style={{ display: "flex" }}
+							>
+								<DateInputComponent
+									name={"startDate"}
+									value={dateData.customStartDate.format("DD-MM-YYYY")}
+									required={true}
+									label={"Start Date"}
+									noBorder={true}
+									// onChange={(name, value) => {
+									// 	console.log("setting custom start date", value, moment(value, "DD-MM-YYYY"));
+									// 	setDateData({
+									// 		...dateData,
+									// 		customStartDate: moment(value, "DD-MM-YYYY"),
+									// 	});
+									// 	updateSelectedDate({ value: "custom" });
+									// }}
+									onChange={handleStartDateChange}
+									dateFormat="DD-MM-YYYY"
+								/>
+								<DateInputComponent
+									name={"endDate"}
+									value={dateData.customEndDate.format("DD-MM-YYYY")}
+									required={true}
+									label={"End Date"}
+									noBorder={true}
+									// onChange={(name, value) => {
+									// 	console.log("setting custom end date", value, moment(value, "DD-MM-YYYY"));
+									// 	setDateData({
+									// 		...dateData,
+									// 		customEndDate: moment(value, "DD-MM-YYYY"),
+									// 	});
+									// 	updateSelectedDate({ value: "custom" });
+									// }}
+									onChange={handleEndDateChange}
+									dateFormat="DD-MM-YYYY"
+								/>
+							</div>
+						)}
+					</div>
+				</div>
+
+				<div
+					style={{
+						display: "flex",
+						// marginTop: "110px",
+						marginLeft: "1200px",
+						// marginRight: "50px",
+						width: "600px",
+						// height: "20px",
+						// border: "1px solid white",
+						// borderRadius: "30px",
+						// borderColor: "black",
+						// display: "flex",
+						// display: "inline-block",
 					}}
-				/> */}
+				>
+					{/* <button onClick={sendEmail}> */}
+					<div className="icon-mail" style={{ marginRight: "10px" }} onClick={sendEmail}>
+						<span className="pdf_mail"></span>
+						<span className="icon-text">Send email</span>
+					</div>
+					{/* </button> */}
+					<div className="icon-print2" onClick={onBtPrint} style={{ marginRight: "10px" }}>
+						<span className="pdf_print"></span>
+						<span className="icon-text">Print</span>
+					</div>
+					<div className="icon-download" style={{ marginRight: "10px" }} onClick={onBtExport}>
+						<span className="download"></span>
+						<span className="icon-text">Export</span>
+					</div>
+					{/* <div
+						id="list-advanced-export-btn"
+						className="icon-btn"
+						onClick={() => {
+							exportList(ListExportTypes.EXCEL);
+						}}
+					>
+						<div className="icon icon-download2"></div>
+						<div className="icon-label">Export</div>
+					</div> */}
+				</div>
 			</div>
 			<div
 				style={{
 					// position: "absolute",
 					width: "80vw",
-					height: "1032px",
+					height: "500px",
 					// top: "180px",
 					// left: "334px",
 					backgroundColor: "#fff",
-					marginTop: "20px",
+					marginTop: "30px",
 					marginLeft: "50px",
 					marginRight: "50px",
 					fontWeight: "600",
@@ -71,323 +329,28 @@ function ReportBalanceSheet() {
 			>
 				<div className="general-heading" style={{ width: "80vw", padding: "20px" }}>
 					<div>
-						<h3>AK Enterprises Balance Sheet</h3>
+						<h3>AK Enterprises General Ledger</h3>
 					</div>
-					<p style={{ color: "#C6C6C6" }}>As 24 Mar 2023</p>
+					{/* <p style={{ color: "#C6C6C6" }}>From 01 Mar 2023 to 31 Mar 2023</p> */}
+					{selectedDate && <p> {selectedDate}</p>}
 				</div>
-				<div
-					style={{
-						borderTop: "1px solid #C6C6C6",
-						backgroundColor: "red",
-						borderRadius: "4px",
-						height: "0.5px",
-					}}
-					className="report-row-divider"
-				>
-					<div
-						className="box"
-						style={{
-							// boxShadow: "0px 10px 10px 0px #cccccc",
-							padding: 0,
-							margin: 0,
-							paddingLeft: "20px",
-							display: "grid",
-							gridTemplateColumns: "8fr 2fr",
-							textAlign: "left",
-							borderTop: "1px solid #C6C6C6",
-						}}
-					>
-						<p style={{ justifySelf: "start" }}>Account</p>
-						<p>Total</p>
-					</div>
-					<div
-						style={{
-							borderTop: "1px solid #C6C6C6",
-							background: "#C6C6C6",
-							// padding: 0,
-							// margin: 0,
-							// display: "grid",
-							// gridTemplateColumns: "2fr 3fr 2fr 2fr 2fr ",
-						}}
-					>
-						<div>
-							<div className="container" style={{ width: "100%" }}>
-								<div className="toggle-button" onClick={handleToggleExpand}>
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											backgroundColor: "#E3E3E3",
-										}}
-									>
-										{isExpanded ? (
-											<div
-												className="icon icon-arr_down"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										) : (
-											<div
-												className="icon icon-arr_right"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										)}
-										<span style={{ color: "#272D30" }}>Assets</span>
-									</div>
-								</div>
-								{isExpanded && (
-									<div
-										className="dropdown-content expanded"
-										style={{
-											backgroundColor: "#FFFFFF",
-										}}
-									>
-										<div
-											className="box"
-											style={{
-												// boxShadow: "0px 10px 10px 0px #cccccc",
-												padding: 0,
-												margin: 0,
-												paddingLeft: "20px",
-												display: "grid",
-												gridTemplateColumns: "8fr 2fr",
-												textAlign: "left",
-												borderBottom: "1px solid #E3E3E3",
-											}}
-										>
-											<p style={{ justifySelf: "start" }}>Cash and Cash equivalents</p>
-											<p> 25,000</p>
-										</div>
-									</div>
-								)}
-							</div>
-						</div>
-						<div>
-							<div className="container" style={{ width: "100%" }}>
-								<div className="toggle-button" onClick={handleToggleExpand}>
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											backgroundColor: "#E3E3E3",
-										}}
-									>
-										{isExpanded ? (
-											<div
-												className="icon icon-arr_down"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										) : (
-											<div
-												className="icon icon-arr_right"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										)}
-										<span style={{ color: "#272D30" }}>Liabilities</span>
-									</div>
-								</div>
-								{isExpanded && (
-									<div
-										className="dropdown-content expanded"
-										style={{
-											backgroundColor: "#FFFFFF",
-										}}
-									>
-										<div
-											className="box"
-											style={{
-												// boxShadow: "0px 10px 10px 0px #cccccc",
-												padding: 0,
-												margin: 0,
-												paddingLeft: "20px",
-												display: "grid",
-												gridTemplateColumns: "8fr 2fr",
-												textAlign: "left",
-												borderBottom: "1px solid #E3E3E3",
-											}}
-										>
-											<p style={{ justifySelf: "start" }}>
-												Account payable
-											</p>
-											<p> 25,000</p>
-										</div>
-										<div
-											className="box"
-											style={{
-												// boxShadow: "0px 10px 10px 0px #cccccc",
-												padding: 0,
-												margin: 0,
-												paddingLeft: "20px",
-												display: "grid",
-												gridTemplateColumns: "8fr 2fr",
-												textAlign: "left",
-												borderBottom: "1px solid #E3E3E3",
-											}}
-										>
-											<p style={{ justifySelf: "start"}}>
-												Current Liabilities
-											</p>
-											<p> 25,000</p>
-										</div>
-									</div>
-								)}
-							</div>
-						</div>
-						<div>
-							<div className="container" style={{ width: "100%" }}>
-								<div className="toggle-button" onClick={handleToggleExpand}>
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											backgroundColor: "#E3E3E3",
-										}}
-									>
-										{isExpanded ? (
-											<div
-												className="icon icon-arr_down"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										) : (
-											<div
-												className="icon icon-arr_right"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										)}
-										<span style={{ color: "#272D30" }}>Equity</span>
-									</div>
-								</div>
-								{isExpanded && (
-									<div
-										className="dropdown-content expanded"
-										style={{
-											backgroundColor: "#FFFFFF",
-										}}
-									>
-										<div
-											className="box"
-											style={{
-												// boxShadow: "0px 10px 10px 0px #cccccc",
-												padding: 0,
-												margin: 0,
-												paddingLeft: "20px",
-												display: "grid",
-												gridTemplateColumns: "8fr 2fr",
-												textAlign: "left",
-												borderBottom: "1px solid #E3E3E3",
-											}}
-										>
-											<p style={{ justifySelf: "start" }}>Cash and Cash equivalents</p>
-											<p> 25,000</p>
-										</div>
-									</div>
-								)}
-							</div>
-						</div>
-						<div>
-							<div className="container" style={{ width: "100%" }}>
-								<div className="toggle-button" onClick={handleToggleExpand}>
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											backgroundColor: "#E3E3E3",
-										}}
-									>
-										{isExpanded ? (
-											<div
-												className="icon icon-arr_down"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										) : (
-											<div
-												className="icon icon-arr_right"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										)}
-										<span style={{ color: "#272D30" }}>Revenue</span>
-									</div>
-								</div>
-								{isExpanded && (
-									<div
-										className="dropdown-content expanded"
-										style={{
-											backgroundColor: "#FFFFFF",
-										}}
-									>
-										<div
-											className="box"
-											style={{
-												// boxShadow: "0px 10px 10px 0px #cccccc",
-												padding: 0,
-												margin: 0,
-												paddingLeft: "20px",
-												display: "grid",
-												gridTemplateColumns: "8fr 2fr",
-												textAlign: "left",
-												borderBottom: "1px solid #E3E3E3",
-											}}
-										>
-											<p style={{ justifySelf: "start" }}>Cash and Cash equivalents</p>
-											<p> 25,000</p>
-										</div>
-									</div>
-								)}
-							</div>
-						</div>
-						<div>
-							<div className="container" style={{ width: "100%" }}>
-								<div className="toggle-button" onClick={handleToggleExpand}>
-									<div
-										style={{
-											display: "flex",
-											alignItems: "center",
-											backgroundColor: "#E3E3E3",
-										}}
-									>
-										{isExpanded ? (
-											<div
-												className="icon icon-arr_down"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										) : (
-											<div
-												className="icon icon-arr_right"
-												style={{ margin: "5px", color: "#272D30" }}
-											></div>
-										)}
-										<span style={{ color: "#272D30" }}>Expenses</span>
-									</div>
-								</div>
-								{isExpanded && (
-									<div
-										className="dropdown-content expanded"
-										style={{
-											backgroundColor: "#FFFFFF",
-										}}
-									>
-										<div
-											className="box"
-											style={{
-												// boxShadow: "0px 10px 10px 0px #cccccc",
-												padding: 0,
-												margin: 0,
-												paddingLeft: "20px",
-												display: "grid",
-												gridTemplateColumns: "8fr 2fr",
-												textAlign: "left",
-												borderBottom: "1px solid #E3E3E3",
-											}}
-										>
-											<p style={{ justifySelf: "start" }}>Cash and Cash equivalents</p>
-											<p> 25,000</p>
-										</div>
-									</div>
-								)}
-							</div>
-						</div>
-					</div>
+
+				<div style={gridStyle} className="ag-theme-alpine">
+					<AgGridReact
+						ref={gridRef}
+						rowData={rowData}
+						columnDefs={columnDefs}
+						defaultColDef={defaultColDef}
+						autoGroupColumnDef={autoGroupColumnDef}
+						animateRows={true}
+						onGridReady={onGridReady}
+						modules={AllModules}
+						// groupDisplayType={"groupRows"}
+						onFirstDataRendered={onFirstDataRendered}
+						// gridOptions={gridOptions}
+					></AgGridReact>
 				</div>
-			</div>
+			</div>{" "}
 		</div>
 	);
 }

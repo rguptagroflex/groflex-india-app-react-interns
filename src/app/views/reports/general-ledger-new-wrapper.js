@@ -7,8 +7,10 @@ import TransactionEmail from 'models/transaction-email.model';
 import EmailViewComponent from 'shared/email-view/email-view.component';
 import LoaderComponent from 'shared/loader/loader.component';
 import { connect } from 'react-redux';
+import generalLedgerSendEmail from './general-ledger-send-email';
 
-class OfferSendMailWrapper extends React.Component {
+
+class GeneralLedgerNewWrapper extends React.Component {
     constructor(props) {
 		super(props);
 		
@@ -89,7 +91,7 @@ class OfferSendMailWrapper extends React.Component {
 		const { resources } = this.props;
 
 		return preFetchData ? (
-			<EmailViewComponent
+			<generalLedgerSendEmail
 				model={preFetchData.model}
 				customerId={preFetchData.customerId}
 				emailText={preFetchData.emailText}
@@ -108,4 +110,4 @@ const mapStateToProps = state => {
 	return { resources };
 };
 
-export default connect(mapStateToProps)(OfferSendMailWrapper);
+export default connect(mapStateToProps)(GeneralLedgerNewWrapper);
