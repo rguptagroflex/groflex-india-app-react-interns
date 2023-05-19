@@ -25,7 +25,84 @@ import lang from "../../../lang";
 import transactionsExcel from "assets/Transactions_Import_Template.xlsx";
 import NotificationService from "../../services/notification.service";
 import * as XLSX from "xlsx";
+import q from "q";
+import { capitalize } from "lodash";
 
+const areArraysWithObjectsEqual = (arr1, arr2) => {
+	// Check if both arrays have the same length
+	if (arr1.length !== arr2.length) {
+		return false;
+	}
+
+	// Iterate over each object in the first array
+	for (let i = 0; i < arr1.length; i++) {
+		const obj1 = arr1[i];
+		let found = false;
+
+		// Check if the current object in arr1 exists in arr2
+		for (let j = 0; j < arr2.length; j++) {
+			const obj2 = arr2[j];
+
+			// Check if the objects have the same number of properties
+			if (Object.keys(obj1).length !== Object.keys(obj2).length) {
+				continue;
+			}
+
+			// Check if the properties of the objects are equal
+			let equal = true;
+			for (let key in obj1) {
+				if (obj1[key] !== obj2[key]) {
+					equal = false;
+					break;
+				}
+			}
+
+			if (equal) {
+				found = true;
+				break;
+			}
+		}
+
+		// If the current object in arr1 does not exist in arr2, arrays are not equal
+		if (!found) {
+			return false;
+		}
+	}
+
+	// If all objects in arr1 exist in arr2, arrays are equal
+	return true;
+};
+const areTwoSetsEqual = (set1, set2) => {
+	return [...set1].every((i) => set2.has(i));
+};
+const areSimpleArraysEqual = (arr1, arr2) => {
+	let N = arr1.length;
+	let M = arr2.length;
+
+	if (N != M) return false;
+
+	let map = new Map();
+	let count = 0;
+	for (let i = 0; i < N; i++) {
+		if (map.get(arr1[i]) == null) map.set(arr1[i], 1);
+		else {
+			count = map.get(arr1[i]);
+			count++;
+			map.set(arr1[i], count);
+		}
+	}
+	for (let i = 0; i < N; i++) {
+		if (!map.has(arr2[i])) return false;
+		if (map.get(arr2[i]) == 0) return false;
+		count = map.get(arr2[i]);
+		--count;
+		map.set(arr2[i], count);
+	}
+	return true;
+};
+const cleanText = (str) => {
+	return str.replace(/[^a-zA-Z]/g, "").toLowerCase();
+};
 const ExcelDateToJSDate = (serial) => {
 	const utc_days = Math.floor(serial - 25569);
 	const utc_value = utc_days * 86400;
@@ -36,9 +113,6 @@ const ExcelDateToJSDate = (serial) => {
 	return `${day}/${month}/${year}`;
 };
 
-const capitaliseText = (string) => {
-	return string.charAt(0).toUpperCase() + string.slice(1);
-};
 const Label = ({ label, style, sublabel = "" }) => {
 	return (
 		<label style={{ fontSize: "16px", color: "#272D30", fontWeight: "600", ...style }} className="textarea_label">
@@ -109,7 +183,7 @@ const ProcessStation = ({ number = 1, text = "", status = "active", line = false
 };
 
 //Main Component-------------------------------------------------------------
-const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
+const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 	const [bankId, setBankId] = useState("");
 	const [processStationStatus, setProcessStationStatus] = useState({
 		bank: "active",
@@ -133,73 +207,22 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 		selectedDateFilterType: DateFilterType.FISCAL_YEAR,
 	});
 	const [bankStatementFile, setBankStatementFile] = useState();
-	const [bankStatementArray, setBankStatementArray] = useState([]);
-	const [selectedBankStatementTransactions, setSelectedBankStatementTransactions] = useState({});
+	// Main arrays
 	const [transactionsList, setTransactionsList] = useState([]);
-	const [selectedTransactions, setSelectedTransactions] = useState({});
+	const [bankStatementList, setBankStatementList] = useState([]);
+	const [selectedTransactionsList, setSelectedTransactionsList] = useState([]);
+	const [selectedBankStatementList, setSelectedBankStatementList] = useState([]);
 	const [formError, setFormError] = useState("");
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+		document.getElementsByClassName("modal-base")[0].style.userSelect = "auto";
 		return () => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
+			document.getElementsByClassName("modal-base")[0].style.userSelect = "none";
 		};
 	}, []);
-
-	const handleBankStatementFileChange = (e) => {
-		setBankStatementFile(e.target.files[0]);
-	};
-
-	const handleImportClick = (e) => {
-		e.preventDefault();
-		if (bankStatementFile) {
-			makeBankStatementArray();
-			setProcessStationStatus({
-				...processStationStatus,
-				import: "done",
-				matchAndReconcile: "active",
-			});
-		}
-	};
-
-	const makeBankStatementArray = () => {
-		const file = bankStatementFile;
-		const regex = /^([a-zA-Z0-9\s_\\.\-\(\):])+(.csv|.xlsx|.xls)$/;
-
-		if (regex.test(file.name.toLowerCase())) {
-			const reader = new FileReader();
-			reader.readAsArrayBuffer(file);
-			const fromRow = 3;
-			reader.onload = (event) => {
-				const arrayString = new Uint8Array(event.target.result);
-				const workBook = XLSX.read(arrayString, { type: "array" });
-				const workSheetName = workBook.SheetNames[0];
-				const workSheet = workBook.Sheets[workSheetName];
-				const data = XLSX.utils.sheet_to_json(workSheet, { header: 1 });
-				const dataAfetrRemoveHeader = data.splice(fromRow, data.length - 1);
-				// console.log(dataAfetrRemoveHeader, "bank statement without header uploaded");
-				const newBankStatementArray = dataAfetrRemoveHeader.map((row, index) => {
-					return {
-						date: row[0],
-						description: row[1],
-						debits: row[2] ? row[2] : null,
-						credits: row[3] ? row[3] : null,
-						id: index.toString(),
-					};
-				});
-				setBankStatementArray([...newBankStatementArray]);
-				if (dataAfetrRemoveHeader.length <= 0) {
-					return NotificationService.show({ message: "No data to import", type: "error" });
-				}
-			};
-		} else {
-			NotificationService.show({
-				message: "Please upload a valid EXCEL or CSV file.",
-				type: "error",
-			});
-		}
-	};
 
 	const handleBankChange = (option) => {
 		if (!option) {
@@ -209,24 +232,6 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 		}
 		setBankId(option.value);
 		setProcessStationStatus({ ...processStationStatus, bank: "done", timePeriod: "active" });
-	};
-
-	const updateSelectedDate = (option) => {
-		if (!option) {
-			// setProcessStationStatus({ ...processStationStatus, timePeriod: "active" });
-			return;
-		}
-
-		switch (option.value) {
-			case "custom":
-				// this.props.onDateChange(option.value, [dateData.customStartDate, dateData.customEndDate]);
-				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
-				break;
-			default:
-				// this.props.onDateChange(option.value);
-				setDateData({ ...dateData, showCustomDateRangeSelector: false, dateFilterValue: option.value });
-				break;
-		}
 	};
 
 	const addDateQueryParam = () => {
@@ -289,6 +294,24 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 		return query;
 	};
 
+	const updateSelectedDate = (option) => {
+		if (!option) {
+			// setProcessStationStatus({ ...processStationStatus, timePeriod: "active" });
+			return;
+		}
+
+		switch (option.value) {
+			case "custom":
+				// this.props.onDateChange(option.value, [dateData.customStartDate, dateData.customEndDate]);
+				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
+				break;
+			default:
+				// this.props.onDateChange(option.value);
+				setDateData({ ...dateData, showCustomDateRangeSelector: false, dateFilterValue: option.value });
+				break;
+		}
+	};
+
 	const handleSaveAndShowTransactions = () => {
 		const endpoint = `${
 			config.resourceHost
@@ -308,45 +331,196 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 		});
 	};
 
+	const handleBankStatementFileChange = (e) => {
+		setBankStatementFile(e.target.files[0]);
+		setBankStatementList([]);
+		setSelectedBankStatementList([]);
+	};
+
+	const handleImportClick = (e) => {
+		e.preventDefault();
+		if (bankStatementFile) {
+			makeBankStatementArray();
+			setProcessStationStatus({
+				...processStationStatus,
+				import: "done",
+				matchAndReconcile: "active",
+			});
+		}
+	};
+
 	const handleDownloadSampleFile = () => {
 		window.open(transactionsExcel, "_self");
 	};
 
+	const makeBankStatementArray = () => {
+		const file = bankStatementFile;
+		const regex = /^([a-zA-Z0-9\s_\\.\-\(\):])+(.csv|.xlsx|.xls)$/;
+
+		if (regex.test(file.name.toLowerCase())) {
+			const reader = new FileReader();
+			reader.readAsArrayBuffer(file);
+			const fromRow = 4;
+			reader.onload = (event) => {
+				const arrayString = new Uint8Array(event.target.result);
+				const workBook = XLSX.read(arrayString, { type: "array" });
+				const workSheetName = workBook.SheetNames[0];
+				const workSheet = workBook.Sheets[workSheetName];
+				const data = XLSX.utils.sheet_to_json(workSheet, { header: 1 });
+				const dataAfetrRemoveHeader = data.splice(fromRow, data.length - 1);
+				// console.log(dataAfetrRemoveHeader, "bank statement without header uploaded");
+				const newBankStatementArray = dataAfetrRemoveHeader.map((row, index) => {
+					return {
+						date: row[0],
+						description: row[1],
+						debits: row[2] ? row[2] : 0,
+						credits: row[3] ? row[3] : 0,
+						id: index.toString(),
+					};
+				});
+				setBankStatementList([...newBankStatementArray]);
+				if (dataAfetrRemoveHeader.length <= 0) {
+					return NotificationService.show({ message: "No data to import", type: "error" });
+				}
+			};
+		} else {
+			NotificationService.show({
+				message: "Please upload a valid EXCEL or CSV file.",
+				type: "error",
+			});
+		}
+	};
+
 	const handleMatchAndReconcile = () => {
-		const transactionAmount = selectedTransactions.debits
-			? selectedTransactions.debits
-			: selectedTransactions.credits;
-		const bankStatementAmount = selectedBankStatementTransactions.debits
-			? selectedBankStatementTransactions.debits
-			: selectedBankStatementTransactions.credits;
+		setFormError("");
+		const transactionsObjectBasedOnNames = {};
+		const statementObjectBasedOnNames = {};
+		selectedTransactionsList.forEach((transaction) => {
+			const name = cleanText(transaction.chartOfAccount.accountName);
+			if (transactionsObjectBasedOnNames[name]) {
+				transactionsObjectBasedOnNames[name].debits += transaction.debits ? transaction.debits : 0;
+				transactionsObjectBasedOnNames[name].credits += transaction.credits ? transaction.credits : 0;
+			} else {
+				transactionsObjectBasedOnNames[name] = {
+					debits: transaction.debits ? transaction.debits : 0,
+					credits: transaction.credits ? transaction.credits : 0,
+				};
+			}
+		});
+		selectedBankStatementList.forEach((transaction) => {
+			const name = cleanText(transaction.description);
+			if (statementObjectBasedOnNames[name]) {
+				statementObjectBasedOnNames[name].debits += transaction.debits ? transaction.debits : 0;
+				statementObjectBasedOnNames[name].credits += transaction.credits ? transaction.credits : 0;
+			} else {
+				statementObjectBasedOnNames[name] = {
+					debits: transaction.debits ? transaction.debits : 0,
+					credits: transaction.credits ? transaction.credits : 0,
+				};
+			}
+		});
+		console.log(transactionsObjectBasedOnNames, "Transaction based of names");
+		console.log(statementObjectBasedOnNames, "Bank statement based of names");
 
-		console.log(transactionAmount, bankStatementAmount);
+		// Check for exact names are matching or not
+		if (
+			!areSimpleArraysEqual(Object.keys(transactionsObjectBasedOnNames), Object.keys(statementObjectBasedOnNames))
+		) {
+			setFormError("Names of selected transactions and bank statement transactions do not match");
+			return;
+		}
 
-		if (transactionAmount === bankStatementAmount) {
-			setFormError("");
-			console.log(selectedTransactions.id, "Transaction ID");
-			invoiz
-				.request(`${config.resourceHost}bankTransaction/reconcile/${selectedTransactions.id}`, {
+		// check for amount types validity
+		let allValid = true;
+		Object.keys(transactionsObjectBasedOnNames).every((name) => {
+			if (
+				transactionsObjectBasedOnNames[name].debits !== statementObjectBasedOnNames[name].debits ||
+				transactionsObjectBasedOnNames[name].credits !== statementObjectBasedOnNames[name].credits
+			) {
+				allValid = false;
+				return false;
+			}
+			return true;
+		});
+
+		const reconcileTransactions = () => {
+			const fetchUrls = selectedTransactionsList.map((transaction) => {
+				return `${config.resourceHost}bankTransaction/reconcile/${transaction.id}`;
+			});
+			const requests = fetchUrls.map((url) =>
+				invoiz.request(url, {
 					auth: true,
 					method: "PUT",
 					data: { reconcileStatus: true },
 				})
-				.then((res) => {
-					console.log(res, "Reconcile ka response");
-					NotificationService.show({
-						message: "Transaction reconciled successfully",
-						type: "success",
-					});
-				});
+			);
+			return q.all(requests);
+		};
+		const proceed = (...args) => {
+			console.log(args, "Reconcile ka response");
+			NotificationService.show({
+				message: "Transactions reconciled successfully",
+				type: "success",
+			});
+			refreshTable();
 			ModalService.close();
+		};
+		if (allValid) {
+			console.log("All valid");
+			q.fcall(reconcileTransactions).spread(proceed).done();
 		} else {
-			setFormError("Transaction amount and bank statement amount do not match");
+			setFormError("Amounts of selected transactions and bank statement transactions do not match");
 		}
 	};
 
-	const TransactionsListComponent = () => {
-		const keys = Object.keys(transactionsList[0]);
+	//Transasctions and statement select logic
+	const handleTransactionSelect = (transaction, index) => {
+		const foundSelectedTransaction = selectedTransactionsList.find((selectedTransaction) => {
+			return selectedTransaction.id === transaction.id;
+		});
 
+		let newTransactionList = transactionsList;
+		if (!foundSelectedTransaction) {
+			newTransactionList[index].checked = true;
+			setTransactionsList([...newTransactionList]);
+			setSelectedTransactionsList([...selectedTransactionsList, transaction]);
+			// console.log(foundSelectedTransaction, "Nahi mila so checked and added");
+		} else {
+			newTransactionList[index].checked = false;
+			const newSelectedTransactions = selectedTransactionsList.filter((selectedTransaction) => {
+				return selectedTransaction.id !== transaction.id;
+			});
+			setTransactionsList([...newTransactionList]);
+			setSelectedTransactionsList([...newSelectedTransactions]);
+			// console.log(foundSelectedTransaction, "Mila so unchecked and removed");
+		}
+		// console.log(selectedTransactionsList, "Selected transactions list");
+	};
+
+	const handleBankStatementSelect = (transaction, index) => {
+		const foundSelectedBankTransaction = selectedBankStatementList.find((selectedTransaction) => {
+			return selectedTransaction.id === transaction.id;
+		});
+
+		let newBankStatementList = bankStatementList;
+		if (!foundSelectedBankTransaction) {
+			newBankStatementList[index].checked = true;
+			setBankStatementList([...newBankStatementList]);
+			setSelectedBankStatementList([...selectedBankStatementList, transaction]);
+			// console.log(foundSelectedBankTransaction, "Nahi mila so checked and added");
+		} else {
+			newBankStatementList[index].checked = false;
+			const newSelectedBankStatementList = selectedBankStatementList.filter((selectedTransaction) => {
+				return selectedTransaction.id !== transaction.id;
+			});
+			setBankStatementList([...newBankStatementList]);
+			setSelectedBankStatementList([...newSelectedBankStatementList]);
+			// console.log(foundSelectedBankTransaction, "Mila so unchecked and removed");
+		}
+		// console.log(selectedBankStatementList, "Selected bank statement list");
+	};
+
+	const TransactionsListComponent = () => {
 		return (
 			<div className="box csv-list">
 				<Label label="Your Transactions" />
@@ -367,22 +541,15 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 							<input style={{ accentColor: "#00A353", display: "none" }} type="checkbox" />
 						</p>
 						<p>Date</p>
-						<p>Name</p>
+						<p>Account name</p>
 						<p>Debit</p>
 						<p>Credit</p>
 					</div>
 					{transactionsList.map((transaction, index) => {
 						const lastElement = transactionsList.length === index + 1;
-						let disabledCheckbox = false;
-						if (Object.keys(selectedTransactions).length) {
-							if (selectedTransactions.id === transaction.id) {
-								disabledCheckbox = false;
-							} else {
-								disabledCheckbox = true;
-							}
-						}
 						return (
 							<div
+								onClick={() => handleTransactionSelect(transaction, index)}
 								key={index.toString()}
 								style={{
 									padding: 0,
@@ -397,21 +564,14 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 							>
 								<p>
 									<input
-										disabled={disabledCheckbox}
-										checked={selectedTransactions.id === transaction.id ? true : false}
-										onChange={() => {
-											if (Object.keys(selectedTransactions).length) {
-												setSelectedTransactions({});
-											} else {
-												setSelectedTransactions({ ...transaction });
-											}
-										}}
+										checked={transaction.checked ? true : false}
+										onChange={() => handleTransactionSelect(transaction, index)}
 										style={{ accentColor: "#00A353" }}
 										type="checkbox"
 									/>
 								</p>
 								<p>{formatDate(transaction.date)}</p>
-								<p>{transaction.customer.name}</p>
+								<p>{capitalize(transaction.chartOfAccount.accountName)}</p>
 								<p>{transaction.debits ? formatCurrency(transaction.debits) : "-"}</p>
 								<p>{transaction.credits ? formatCurrency(transaction.credits) : "-"}</p>
 							</div>
@@ -423,8 +583,6 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 	};
 
 	const BankStatementListComponent = () => {
-		console.log("slected tranasction", selectedTransactions);
-		console.log("slected bank statement", selectedBankStatementTransactions);
 		return (
 			<div className="box csv-list">
 				<Label label="Your bank statement" />
@@ -449,18 +607,11 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 						<p>Debit</p>
 						<p>Credit</p>
 					</div>
-					{bankStatementArray.map((row, index) => {
-						const lastElement = bankStatementArray.length === index + 1;
-						let disabledCheckbox = false;
-						if (Object.keys(selectedBankStatementTransactions).length) {
-							if (selectedBankStatementTransactions.id === row.id) {
-								disabledCheckbox = false;
-							} else {
-								disabledCheckbox = true;
-							}
-						}
+					{bankStatementList.map((bankStatementRow, index) => {
+						const lastElement = bankStatementList.length === index + 1;
 						return (
 							<div
+								onClick={() => handleBankStatementSelect(bankStatementRow, index)}
 								key={index.toString()}
 								style={{
 									padding: 0,
@@ -475,23 +626,16 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 							>
 								<p>
 									<input
-										disabled={disabledCheckbox}
-										checked={selectedBankStatementTransactions.id === row.id ? true : false}
-										onChange={() => {
-											if (Object.keys(selectedBankStatementTransactions).length) {
-												setSelectedBankStatementTransactions({});
-											} else {
-												setSelectedBankStatementTransactions({ ...row });
-											}
-										}}
+										checked={bankStatementRow.checked ? true : false}
+										onChange={() => handleBankStatementSelect(bankStatementRow, index)}
 										style={{ accentColor: "#00A353" }}
 										type="checkbox"
 									/>
 								</p>
-								<p>{ExcelDateToJSDate(row.date)}</p>
-								<p>{row.description}</p>
-								<p>{row.debits ? formatCurrency(row.debits) : "-"}</p>
-								<p>{row.credits ? formatCurrency(row.credits) : "-"}</p>
+								<p>{ExcelDateToJSDate(bankStatementRow.date)}</p>
+								<p>{bankStatementRow.description}</p>
+								<p>{bankStatementRow.debits ? formatCurrency(bankStatementRow.debits) : "-"}</p>
+								<p>{bankStatementRow.credits ? formatCurrency(bankStatementRow.credits) : "-"}</p>
 							</div>
 						);
 					})}
@@ -510,9 +654,13 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 		{ label: "Fiscal Year", value: "fiscalYear", group: "year" },
 		{ label: "Custom", value: "custom", group: "custom" },
 	];
-	let bankNameList = bankOptions.filter((bank) => bank.type === "bank");
-	bankNameList = bankNameList.map((bank) => ({ label: bank.bankName, value: bank.id }));
+	let bankNameList = bankOptions.map((bank) => ({ label: capitalize(bank.bankName), value: bank.id }));
+	console.log(bankOptions, "Bank options from reconcile modal");
 	console.log(transactionsList, "Transactions list");
+	// console.log(bankStatementList, "bank statement list");
+	// console.log(selectedTransactionsList, "Selected Transactions list");
+	// console.log(selectedBankStatementList, "Selected bank transactions list");
+
 	return (
 		<div className="match-and-reconcile-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
@@ -588,10 +736,6 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 										sublabel="Please select a time period for viewing transactions."
 										style={{ flex: "1", marginRight: "10px" }}
 									/>
-									{/* <div
-										className="time-period-container"
-										style={{ display: "flex", justifyContent: "space-between", height: "63%" }}
-									> */}
 									<div style={{ flex: "1.5" }} className="time-period-select">
 										<SelectInput
 											allowCreate={false}
@@ -657,7 +801,6 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 												/>
 											</div>
 										)}
-										{/* </div> */}
 									</div>
 								</div>
 
@@ -697,8 +840,6 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 												<SvgInline svg={checkCircleIcon} width="16px" fill="#0BA84A" />
 											</p>
 											<p>
-												{/* <span>{csvFile.name.slice(0, -4)}</span>
-												<span style={{ fontWeight: "700" }}>{csvFile.name.slice(-4)}</span> */}
 												<span>{bankStatementFile.name}</span>
 											</p>
 											<p
@@ -782,7 +923,7 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 							)}
 						</div>
 						<div className="col-xs-6 csv-table">
-							{bankStatementArray.length ? (
+							{bankStatementList.length ? (
 								<BankStatementListComponent />
 							) : (
 								<div
@@ -813,12 +954,7 @@ const ReconcileModalComponent = ({ onConfirm, bankOptions }) => {
 					<ButtonComponent
 						label={"Match and reconcile"}
 						callback={handleMatchAndReconcile}
-						disabled={
-							!(
-								Object.keys(selectedTransactions).length &&
-								Object.keys(selectedBankStatementTransactions).length
-							)
-						}
+						disabled={!(selectedTransactionsList.length && selectedBankStatementList.length)}
 					/>
 				</div>
 			</div>

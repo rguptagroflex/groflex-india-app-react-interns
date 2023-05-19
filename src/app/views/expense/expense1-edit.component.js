@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import TopbarComponent from "shared/topbar/topbar.component";
 import TabInputComponent from "shared/inputs/tab-input/tab-input.component";
 
-import _ from "lodash";
+import _, { capitalize } from "lodash";
 // import moment from 'moment';
 import Uploader from "fine-uploader";
 import Decimal from "decimal.js";
@@ -33,6 +33,7 @@ import CancelExpenseModalComponent from "shared/modals/cancel-expense-modal.comp
 import ChangeDetection from "helpers/changeDetection";
 import { formatApiDate } from "helpers/formatDate";
 import userPermissions from "enums/user-permissions.enum";
+import SelectInput from "../../shared/inputs/select-input/select-input.component";
 const changeDetection = new ChangeDetection();
 
 const expanseTypes = { EXPENSE_TYPE: "expense", PURCHASE_TYPE: "purchase" };
@@ -50,6 +51,8 @@ class ExpenseEditComponent extends React.Component {
 			activeComponent: "none",
 			saving: false,
 			errorMessageReceiptNo: "",
+			paymentMethodOptions: [],
+			paymentMethod: "",
 		};
 		this.onDocumentClick = this.onDocumentClick.bind(this);
 		this.createCustomer = false;
@@ -57,6 +60,29 @@ class ExpenseEditComponent extends React.Component {
 		this.activeComponentHandler = this.activeComponentHandler.bind(this);
 
 		this.filesToDelete = [];
+	}
+
+	getBanksList() {
+		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
+			// console.log(res.body.data, "GET BANKS LIST");
+			this.setState({
+				...this.state,
+				paymentMethodOptions: [...res.body.data].map((bank) => ({
+					label: capitalize(bank.bankName),
+					value: bank.id,
+				})),
+			});
+		});
+	}
+
+	getExpenseType() {
+		const routeType = location.pathname.split("/").slice(-1)[0];
+		// console.log(routeType, "ROUTETYPE");
+		if (routeType === "new-expense") {
+			this.setState({ ...this.state, expense: { ...this.state.expense, type: "expense" }, hideRadio: true });
+		} else if (routeType === "new-purchase") {
+			this.setState({ ...this.state, expense: { ...this.state.expense, type: "purchase" }, hideRadio: true });
+		}
 	}
 
 	componentDidMount() {
@@ -106,6 +132,9 @@ class ExpenseEditComponent extends React.Component {
 			};
 			this.setState({ expense: Object.assign({}, this.state.expense, newData) });
 		}
+
+		this.getBanksList();
+		this.getExpenseType();
 	}
 
 	componentWillUnmount() {
@@ -114,10 +143,16 @@ class ExpenseEditComponent extends React.Component {
 		changeDetection.unbindEventListeners();
 	}
 
+	handlePaymentMethodChange(option) {
+		this.setState({ ...this.state, paymentMethod: option.value });
+	}
+
 	render() {
 		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo } = this.state;
 		let title = expense.receiptNumber ? `Expenditure ${expense.receiptNumber}` : `Create expenditure`;
 		let subtitle;
+		// console.log(this.state.expense.type, ": EXPENSE type");
+
 		if (expense.metaData && expense.metaData.expenseCancellation) {
 			subtitle = (
 				<div>
@@ -176,9 +211,9 @@ class ExpenseEditComponent extends React.Component {
 		const isPaidElements =
 			this.state.expense.payKind !== "open" ? (
 				<div className="row u_pb_40 u_pt_60">
-					<div className="col-xs-6 paykind-wrapper">
-						<label className="paykind-radio-label">{resources.str_payment}</label>
-						<RadioInputComponent
+					<div style={{ paddingTop: "12.5px" }} className="col-xs-6 paykind-wrapper">
+						{/* <label className="paykind-radio-label">{resources.str_payment}</label> */}
+						{/* <RadioInputComponent
 							wrapperClass={`paykind-radio-wrapper`}
 							options={[
 								{ label: resources.str_cash, value: "cash" },
@@ -187,6 +222,21 @@ class ExpenseEditComponent extends React.Component {
 							value={this.state.expense.payKind || "cash"}
 							onChange={() => this.onPaykindChange()}
 							dataQsId="expense-edit-paykind"
+						/> */}
+						<SelectInput
+							allowCreate={false}
+							notAsync={true}
+							loadedOptions={this.state.paymentMethodOptions}
+							value={this.state.paymentMethod}
+							options={{
+								clearable: false,
+								noResultsText: false,
+								labelKey: "label",
+								valueKey: "value",
+								matchProp: "label",
+								placeholder: "Payment method",
+								handleChange: (option) => this.handlePaymentMethodChange(option),
+							}}
 						/>
 					</div>
 					<div className="col-xs-6 payment-date">
@@ -300,20 +350,24 @@ class ExpenseEditComponent extends React.Component {
 					<div className="row">
 						<div className="col-xs-6">
 							<div className={`letter-positions-total-content`}>
-								<div className="letter-positions-radio">
-									<RadioInputComponent
-										// useCustomStyle={true}
-										key="toggleExpensePurchase"
-										options={[
-											{ label: "Expense", value: "expense" },
-											{ label: "Purchase", value: "purchase" },
-										]}
-										value={this.state.expense.type}
-										onChange={(e) => {
-											this.onExpenseTypeChage(e);
-										}}
-										dataQsId="dashboard-topSalesStats-tabs-yearMonth"
-									/>
+								<div className="text-h4 letter-positions-radio">
+									{this.state.hideRadio ? (
+										capitalize(this.state.expense.type)
+									) : (
+										<RadioInputComponent
+											// useCustomStyle={true}
+											key="toggleExpensePurchase"
+											options={[
+												{ label: "Expense", value: "expense" },
+												{ label: "Purchase", value: "purchase" },
+											]}
+											value={this.state.expense.type}
+											onChange={(e) => {
+												this.onExpenseTypeChage(e);
+											}}
+											dataQsId="dashboard-topSalesStats-tabs-yearMonth"
+										/>
+									)}
 								</div>
 							</div>
 						</div>
@@ -549,17 +603,17 @@ class ExpenseEditComponent extends React.Component {
 		if (selectedOption) {
 			const { customerData } = selectedOption;
 
-			if (customerData.notesAlert) {
-				ModalService.open(<div dangerouslySetInnerHTML={{ __html: customerData.notes }} />, {
-					headline: resources.str_cutomerNote,
-					cancelLabel: resources.str_shutdown,
-					confirmLabel: resources.str_ok,
-					confirmIcon: "icon-check",
-					onConfirm: () => {
-						ModalService.close();
-					},
-				});
-			}
+			// if (customerData.notesAlert) {
+			// 	ModalService.open(<div dangerouslySetInnerHTML={{ __html: customerData.notes }} />, {
+			// 		headline: resources.str_cutomerNote,
+			// 		cancelLabel: resources.str_shutdown,
+			// 		confirmLabel: resources.str_ok,
+			// 		confirmIcon: "icon-check",
+			// 		onConfirm: () => {
+			// 			ModalService.close();
+			// 		},
+			// 	});
+			// }
 
 			const newExpense = new Expense(expense);
 			if (customerData.countryIso !== "IN") {

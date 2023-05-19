@@ -22,11 +22,12 @@ const AddCashModalComponent = ({ onConfirm }) => {
 	const [newCashData, setNewCashData] = useState({
 		type: "cash",
 		openingBalance: 0,
-		bankName: "cash",
-		accountNumber: "cash",
-		accountName: "cash",
+		bankName: "",
+		accountNumber: "",
+		// accountName: "cash",
+		accountType: "savings",
 		IFSCCode: "cash",
-		branch: "",
+		branch: "cash",
 		customerId: "",
 		notes: "",
 	});
@@ -37,6 +38,8 @@ const AddCashModalComponent = ({ onConfirm }) => {
 			return;
 		}
 		setCashType(option.value);
+		setNewCashData({ ...newCashData, accountNumber: option.value, bankName: option.label });
+
 		// setFormErrors({ ...formErrors, bankNameError: "" });
 	};
 
@@ -53,9 +56,9 @@ const AddCashModalComponent = ({ onConfirm }) => {
 	};
 
 	const handleSave = () => {
-		onConfirm(newCashData);
+		onConfirm({ ...newCashData, cashType });
 	};
-	// console.log(newCashData, "add modal cash data hai");
+	console.log(newCashData, "add modal cash data hai");
 
 	return (
 		<div className="add-cash-modal-container" style={{ minHeight: "200px" }}>
@@ -75,7 +78,7 @@ const AddCashModalComponent = ({ onConfirm }) => {
 							labelKey: "label",
 							valueKey: "value",
 							matchProp: "label",
-							placeholder: "Select Bank",
+							placeholder: "Cash type",
 							handleChange: handleCashTypeChange,
 						}}
 					/>

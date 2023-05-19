@@ -11,70 +11,7 @@ import invoiz from "../../services/invoiz.service";
 import TextInputLabelComponent from "../../shared/inputs/text-input/text-input-label.component";
 import TextInputHintComponent from "../../shared/inputs/text-input/text-input-hint.component";
 import { formatApiDate } from "../../helpers/formatDate";
-
-const accountTypes = [
-	{ label: "Assets", value: "assets" },
-	{ label: "Liability", value: "liability" },
-	{ label: "Equity", value: "equity" },
-	{ label: "Income", value: "income" },
-	{ label: "Expenses", value: "expenses" },
-];
-
-const accountSubtypes = {
-	assets: [
-		{ label: "Account receivable", value: "accountReceivable" },
-		{ label: "Customer deposits", value: "customerDeposits" },
-		{ label: "Inventory", value: "inventory" },
-		{ label: "Vendor credits", value: "vendorCredits" },
-		{ label: "Deposits", value: "deposits" },
-		{ label: "Prepaid expenses", value: "prepaidExpenses" },
-		{
-			label: "Property, plant and equipment",
-			value: "propertyPlantAndEquipment",
-		},
-	],
-	liability: [
-		{ label: "Sales taxes", value: "salesTaxes" },
-		{ label: "Customer credits", value: "customerCredits" },
-		{ label: "Account payable", value: "accountPayable" },
-		{ label: "Unearned revenue", value: "unearnedRevenue" },
-	],
-	equity: [
-		{
-			label: "Owner investment/drawings",
-			value: "ownerInvestmentDrawings",
-		},
-		{ label: "Opening balance", value: "openingBalance" },
-		{ label: "Retained earnings", value: "retainedEarnings" },
-	],
-	income: [
-		{ label: "Sales", value: "sales" },
-		{ label: "Discounts", value: "discounts" },
-		{ label: "Other Incomes", value: "otherIncomes" },
-	],
-	expenses: [
-		{ label: "Cost of goods sold", value: "costOfGoodsSold" },
-		{ label: "Operating expenses", value: "operatingExpenses" },
-		{ label: "Payroll expenses", value: "payrollExpenses" },
-		{ label: "Sales taxes payment", value: "salesTaxesPayment" },
-		{ label: "Utilies", value: "utilies" },
-		{ label: "Advertising", value: "advertising" },
-		{ label: "Transport expenses", value: "transportExpenses" },
-		{ label: "Employee benefits", value: "employeeBenefits" },
-		{ label: "Office expenses", value: "officeExpenses" },
-		{ label: "Uncategorized expenses", value: "uncategorizedExpenses" },
-	],
-};
-
-// const payeeOptions = [
-// 	{ label: "Joe Black", value: 591 },
-// 	{ label: "Michael Doe", value: 586 },
-// ];
-
-// const paymentMethodOptions = [
-// 	{ label: "Bank 1", value: 19 },
-// 	{ label: "Bank 2", value: 25 },
-// ];
+import { capitalize } from "lodash";
 
 const Label = ({ label, style, sublabel = "" }) => {
 	return (
@@ -85,7 +22,7 @@ const Label = ({ label, style, sublabel = "" }) => {
 	);
 };
 
-const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
+const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
@@ -95,95 +32,66 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 		};
 	}, []);
 
-	const [moneyInData, setMoneyInData] = useState({
-		accountType: "",
-		accountSubType: "",
+	const [moneyOutData, setMoneyOutData] = useState({
 		reconcileStatus: false,
 		type: "out",
 		notes: "",
-		date: new Date().toLocaleString("en-GB").split(",")[0].replaceAll("/", "-"),
+		date: "",
 		credits: 0,
-		debits: 0, //debits will be edited  in this modal
-		customerId: 0,
-		bankDetailId: 0,
+		debits: 0, //debits will be edited in this modal
+		bankDetailId: null,
+		chartOfAccountId: null,
 	});
 	const [formErrors, setFormErrors] = useState({
-		accountTypeError: "",
-		accountSubTypeError: "",
 		dateError: "",
 		debitsError: "",
-		customerIdError: "",
 		bankDetailIdError: "",
+		chartOfAccountIdError: "",
 	});
 
-	const handleAccountTypeChange = (option) => {
+	const handleAccountNameChange = (option) => {
 		if (!option) {
-			setMoneyInData({ ...moneyInData, accountType: "" });
+			setMoneyOutData({ ...moneyOutData, chartOfAccountId: null });
+			setFormErrors({ ...formErrors, chartOfAccountIdError: "" });
 			return;
 		}
-		setMoneyInData({ ...moneyInData, accountType: option.value });
-		setFormErrors({ ...formErrors, accountTypeError: "" });
+		setMoneyOutData({ ...moneyOutData, chartOfAccountId: option.value });
+		setFormErrors({ ...formErrors, chartOfAccountIdError: "" });
 	};
-	const handleAccountSubTypeChange = (option) => {
-		if (!option) {
-			setMoneyInData({ ...moneyInData, accountSubType: "" });
-			return;
-		}
-		setMoneyInData({ ...moneyInData, accountSubType: option.value });
-		setFormErrors({ ...formErrors, accountSubTypeError: "" });
-	};
-	const handleCustomerChange = (option) => {
-		if (!option) {
-			setMoneyInData({ ...moneyInData, customerId: "" });
-			return;
-		}
-		setMoneyInData({ ...moneyInData, customerId: option.value });
-		setFormErrors({ ...formErrors, customerIdError: "" });
-	};
-	const handleDateChange = (name, value, date) => {
-		const formatedDate = formatApiDate(date);
-	};
+
 	const handlePaymentMethodChange = (option) => {
 		if (!option) {
-			setMoneyInData({ ...moneyInData, bankDetailId: "" });
+			setMoneyOutData({ ...moneyOutData, bankDetailId: "" });
 			return;
 		}
-		setMoneyInData({ ...moneyInData, bankDetailId: option.value });
+		setMoneyOutData({ ...moneyOutData, bankDetailId: option.value });
 		setFormErrors({ ...formErrors, bankDetailIdError: "" });
 	};
-	const handleAmountChange = (value) => {
+	const handleDebitsChange = (value) => {
 		if (!value) {
-			setMoneyInData({ ...moneyInData, debits: 0 });
+			setMoneyOutData({ ...moneyOutData, debits: 0 });
 			setFormErrors({ ...formErrors, debitsError: "Amount can not be 0" });
 			return;
 		}
-		setMoneyInData({ ...moneyInData, debits: value });
+		setMoneyOutData({ ...moneyOutData, debits: value });
 		setFormErrors({ ...formErrors, debitsError: "" });
 	};
 	const handleNotesChange = (event) => {
-		setMoneyInData({ ...moneyInData, notes: event.target.value });
+		setMoneyOutData({ ...moneyOutData, notes: event.target.value });
 	};
 
 	// Extra Form validation function
 	const checkForEmptyFields = () => {
 		let emptyFlag = false;
-		if (!moneyInData.accountType) {
-			setFormErrors({ ...formErrors, accountTypeError: "This is a mandatory field" });
+		if (!moneyOutData.chartOfAccountId) {
+			setFormErrors({ ...formErrors, chartOfAccountIdError: "This is a mandatory field" });
 			emptyFlag = true;
 		}
-		if (!moneyInData.accountSubType) {
-			setFormErrors({ ...formErrors, accountSubTypeError: "This is a mandatory field" });
-			emptyFlag = true;
-		}
-		if (!moneyInData.customerId) {
-			setFormErrors({ ...formErrors, customerIdError: "This is a mandatory field" });
-			emptyFlag = true;
-		}
-		if (!moneyInData.bankDetailId) {
+		if (!moneyOutData.bankDetailId) {
 			setFormErrors({ ...formErrors, bankDetailIdError: "This is a mandatory field" });
 			emptyFlag = true;
 		}
-		if (!moneyInData.debits) {
+		if (!moneyOutData.debits) {
 			setFormErrors({ ...formErrors, debitsError: "This is a mandatory field" });
 			emptyFlag = true;
 		}
@@ -197,72 +105,51 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 
 		//Finally submitting if no errors of any type
 		if (Object.values(formErrors).every((error) => error === "")) {
-			onConfirm(moneyInData);
+			onConfirm({ ...moneyOutData });
 		}
 	};
 
-	let paymentMethodOptions = bankList.filter((bank) => bank.type === "bank");
-	paymentMethodOptions = paymentMethodOptions.map((bank) => ({ label: bank.bankName, value: bank.id }));
-	const payeeOptions = customerList.map((bank) => ({ label: bank.name, value: bank.id }));
-	// console.log("Form money out", moneyInData);
-	// console.log("Money out Form errors", formErrors);
+	const paymentMethodOptions = [...bankList].map((bank) => ({
+		label: capitalize(bank.bankName),
+		value: bank.id,
+	}));
+	const chartofaccountOptions = chartOfAccounts.map((account) => ({
+		label: capitalize(account.accountName),
+		value: account.id,
+	}));
+	console.log(chartofaccountOptions, "COA options from modal");
+	console.log(moneyOutData, "Money out data from modal");
+
 	return (
-		<div className="money-out-modal-container" style={{ minHeight: "200px" }}>
+		<div className="money-in-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">
 				Money Out
 			</div>
 
-			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="money-out-modal-body-container">
-				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="money-out-modal-body">
-					<div style={{ marginBottom: "20px" }}>
-						{/* <Label label={moneyInData.accountType ? "Account type*" : ""} /> */}
+			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="money-in-modal-body-container">
+				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="money-in-modal-body">
+					<div
+						style={{ marginBottom: "20px", backgroundColor: !moneyOutData.accountType ? "#f9f9f9" : null }}
+					>
 						<SelectInput
 							allowCreate={false}
 							notAsync={true}
-							loadedOptions={accountTypes}
-							value={moneyInData.accountType}
+							loadedOptions={chartofaccountOptions}
+							value={moneyOutData.chartOfAccountId}
 							options={{
 								clearable: false,
 								noResultsText: false,
 								labelKey: "label",
 								valueKey: "value",
 								matchProp: "label",
-								placeholder: "Account type",
-								handleChange: handleAccountTypeChange,
+								placeholder: "Account name",
+								handleChange: handleAccountNameChange,
 							}}
 						/>
 						<div style={{ marginTop: "18px" }}>
 							<TextInputErrorComponent
-								errorMessage={formErrors.accountTypeError}
-								visible={!!formErrors.accountTypeError}
-							/>
-						</div>
-					</div>
-					<div style={{ marginBottom: "20px", backgroundColor: !moneyInData.accountType ? "#f9f9f9" : null }}>
-						{/* <Label
-							label={moneyInData.accountSubtype ? "Account subtype*" : ""}
-							style={{ color: "#747474" }}
-						/> */}
-						<SelectInput
-							disabled={!moneyInData.accountType}
-							allowCreate={false}
-							notAsync={true}
-							loadedOptions={moneyInData.accountType ? accountSubtypes[moneyInData.accountType] : null}
-							value={moneyInData.accountSubType}
-							options={{
-								clearable: false,
-								noResultsText: false,
-								labelKey: "label",
-								valueKey: "value",
-								matchProp: "label",
-								placeholder: "Account subtype",
-								handleChange: handleAccountSubTypeChange,
-							}}
-						/>
-						<div style={{ marginTop: "18px" }}>
-							<TextInputErrorComponent
-								errorMessage={formErrors.accountSubTypeError}
-								visible={!!formErrors.accountSubTypeError}
+								errorMessage={formErrors.chartOfAccountIdError}
+								visible={!!formErrors.chartOfAccountIdError}
 							/>
 						</div>
 					</div>
@@ -275,61 +162,27 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 							}}
 							className="col_xs_6"
 						>
-							{/* <Label label={moneyInData.date ? "Date*" : ""} style={{ marginBottom: "16px" }} /> */}
 							<DateInputComponent
 								name={"date"}
-								value={moneyInData.date}
+								value={moneyOutData.date}
 								required={true}
 								label={"Date"}
 								noBorder={true}
 								onChange={(name, value, date) => {
-									setMoneyInData({ ...moneyInData, date: moment(value, "DD-MM-YYYY") });
-									// handleDateChange(name, value, date);
-									// setMoneyInData({ ...moneyInData, date: `${value} ${currentTimeString()}` });
-									// setMoneyInData({ ...moneyInData, date: value });
+									// setMoneyOutData({ ...moneyOutData, date: moment(value, "DD-MM-YYYY") });
+									setMoneyOutData({ ...moneyOutData, date: formatApiDate(value, "DD-MM-YYYY") });
 								}}
 							/>
-							<div style={{ width: "%100", borderTop: "1px solid #C6C6C6" }} />
-						</div>
-						<div style={{ width: "100%", marginLeft: "15px", paddingTop: "13px" }} className="col_xs_6">
-							{/* <Label
-								label={moneyInData.customer ? "Customer*" : ""}
-								style={{ marginBottom: "8px" }}
-							/> */}
-							<SelectInput
-								allowCreate={false}
-								notAsync={true}
-								loadedOptions={payeeOptions}
-								value={moneyInData.customerId}
-								options={{
-									clearable: false,
-									noResultsText: false,
-									labelKey: "label",
-									valueKey: "value",
-									matchProp: "label",
-									placeholder: "Payee",
-									handleChange: handleCustomerChange,
-								}}
-							/>
-							<div style={{ marginTop: "18px" }}>
-								<TextInputErrorComponent
-									errorMessage={formErrors.customerIdError}
-									visible={!!formErrors.customerIdError}
-								/>
-							</div>
+							<div style={{ width: "100%", borderTop: "1px solid #C6C6C6", marginBottom: "18px" }} />
 						</div>
 					</div>
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px", paddingTop: "11px" }} className="col_xs_6">
-							{/* <Label
-								label={moneyInData.paymentMethod  ? "Payment method*" : ""}
-								style={{ marginBottom: "8px" }}
-							/> */}
 							<SelectInput
 								allowCreate={false}
 								notAsync={true}
 								loadedOptions={paymentMethodOptions}
-								value={moneyInData.bankDetailId}
+								value={moneyOutData.bankDetailId}
 								options={{
 									clearable: false,
 									noResultsText: false,
@@ -349,20 +202,14 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 						</div>
 
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
-							{/* <Label label={moneyInData.debits ? "Amount*" : ""} style={{ marginBottom: "8px" }} /> */}
 							<NumberInputComponent
 								defaultNonZero
 								errorMessage={formErrors.debitsError}
 								label="Amount"
-								value={moneyInData.debits}
-								onChange={handleAmountChange}
+								value={moneyOutData.debits}
+								onChange={handleDebitsChange}
 							/>
-							<div style={{ marginTop: "18px" }}>
-								{/* <TextInputErrorComponent
-									errorMessage={formErrors.debitsError}
-									visible={!!formErrors.debitsError}
-								/> */}
-							</div>
+							<div style={{ marginTop: "18px" }}></div>
 						</div>
 					</div>
 					<div style={{ paddingTop: "10px" }} className="textarea">
@@ -371,7 +218,7 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, customerList }) => {
 							className="textarea_input"
 							rows="4"
 							onChange={handleNotesChange}
-							value={moneyInData.notes}
+							value={moneyOutData.notes}
 						/>
 						<span className="textarea_bar" />
 					</div>
