@@ -17,17 +17,72 @@ const ReportsGeneralLedger = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
 	);
-	
+	// const { account } = props;
+
+	// const [account, setAccount] = useState(null);
+
+	// useEffect(() => {
+	//   // Fetch the account data here and set it using setAccount
+	//   const fetchAccountData = async () => {
+	//     try {
+	//       const response = await fetch('API_ENDPOINT/account');
+	//       const accountData = await response.json();
+	//       setAccount(accountData);
+	//     } catch (error) {
+	//       console.error('Error fetching account data:', error);
+	//     }
+	//   };
+
+	//   fetchAccountData();
+	// }, []);
+
+	// if (!account) {
+	//   // Display a loading message or spinner while account data is being fetched
+	//   return null;
+	// }
+	// console.log("Account:", account);
+	// // console.log("Company Name:", account?.companyAddress?.companyName);
+	// const companyName = account?.companyAddress?.companyName || '';
+
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState();
 	const [columnDefs, setColumnDefs] = useState([
 		// { field: "country", rowGroup: true, hide: true },
-		{ field: "accountType", rowGroup: true, enableRowGroup: true, hide: true },
-		{ field: "accountType", enableRowGroup: true },
-		{ field: "date", filter: false },
-		{ field: "accountSubType", filter: false },
+		{
+			field: "chartOfAccount.accountTypeId",
+			rowGroup: true,
+			enableRowGroup: true,
+			hide: true,
+			valueFormatter: function (params) {
+				var value = params.value;
+				return value.charAt(0).toUpperCase() + value.slice(1);
+			},
+		},
+		{ field: "chartOfAccount.accountTypeId" },
+		{
+			field: "date",
+			filter: false,
+			valueFormatter: function (params) {
+				var value = params.value;
+				var date = new Date(value);
+
+				if (!isNaN(date.getTime())) {
+					var day = date.getDate();
+					var month = date.getMonth() + 1;
+					var year = date.getFullYear();
+
+					day = day < 10 ? "0" + day : day;
+					month = month < 10 ? "0" + month : month;
+
+					return day + "/" + month + "/" + year;
+				} else {
+					return "";
+				}
+			},
+		},
+		{ field: "chartOfAccount.accountSubTypeId", filter: false },
 		{ field: "debits", filter: false },
 		{ field: "credits", filter: false },
 		{ field: "balance", filter: false },
@@ -67,11 +122,12 @@ const ReportsGeneralLedger = (props) => {
 			}, 2000);
 		}
 	}, []);
+	const getDefaultDateOption = () => {
+		return dateOptions.find((option) => option.value === dateData.dateFilterValue);
+	};
+
 	useEffect(() => {
-		const eGridDiv = document.querySelector("#myGrid");
-		if (eGridDiv) {
-			// Code to initialize the grid and set data
-		}
+		updateSelectedDate(getDefaultDateOption());
 	}, []);
 
 	const defaultColDef = useMemo(() => {
@@ -152,7 +208,9 @@ const ReportsGeneralLedger = (props) => {
 				// this.props.onDateChange(option.value, [dateData.customStartDate, dateData.customEndDate]);
 				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
 				setSelectedDate(
-					`${dateData.customStartDate.format("DD-MM-YYYY")} - ${dateData.customEndDate.format("DD-MM-YYYY")}`
+					`From ${dateData.customStartDate.format("DD MMMM YYYY")} to ${dateData.customEndDate.format(
+						"DD MMMM YYYY"
+					)}`
 				);
 				break;
 			default:
@@ -330,7 +388,11 @@ const ReportsGeneralLedger = (props) => {
 			>
 				<div className="general-heading" style={{ width: "80vw", padding: "20px" }}>
 					<div>
-						<h3>AK Enterprises General Ledger</h3>
+						<h3>
+							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
+								invoiz.user.companyAddress.companyName.slice(1)}{" "}
+							General Ledger
+						</h3>
 					</div>
 					{/* <p style={{ color: "#C6C6C6" }}>From 01 Mar 2023 to 31 Mar 2023</p> */}
 					{selectedDate && <p> {selectedDate}</p>}
@@ -356,5 +418,3 @@ const ReportsGeneralLedger = (props) => {
 	);
 };
 export default ReportsGeneralLedger;
-
-

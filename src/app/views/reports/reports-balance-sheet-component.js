@@ -6,7 +6,7 @@ import SelectInputComponent from "../../shared/inputs/select-input/select-input.
 import calenderIcon from "../../../assets/images/icons/calender.svg";
 import invoiz from "../../services/invoiz.service";
 import OfferSendMailWrapper from "../offer/offer-send-mail.wrapper";
-import GeneralLedgerSendEmail from "./general-ledger-send-email";
+import BalanceSheetSendEmail from "./balance-sheet-send-email";
 import config from "../../../config";
 import ModalService from "../../services/modal.service";
 import OfferAction from "enums/offer/offer-action.enum";
@@ -24,8 +24,17 @@ function ReportBalanceSheet() {
 	const [rowData, setRowData] = useState();
 	const [columnDefs, setColumnDefs] = useState([
 		// { field: "country", rowGroup: true, hide: true },
-		{ field: "accountType", rowGroup: true, enableRowGroup: true, hide: true },
-		{ field: "accountType", enableRowGroup: true },
+		{
+			field: "chartOfAccount.accountTypeId",
+			rowGroup: true,
+			enableRowGroup: true,
+			hide: true,
+			valueFormatter: function (params) {
+				var value = params.value;
+				return value.charAt(0).toUpperCase() + value.slice(1);
+			},
+		},
+		{ field: "chartOfAccount.accountTypeId", enableRowGroup: true },
 		// { field: "date", filter: false },
 		// { field: "accountSubType", filter: false },
 		// { field: "debits", filter: false },
@@ -90,6 +99,11 @@ function ReportBalanceSheet() {
 			// filter: 'agGroupColumnFilter',
 		};
 	}, []);
+	const companyName = invoiz.user.companyAddress.companyName;
+	const capitalizedCompanyName = companyName
+		.split(" ")
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(" ");
 
 	const onGridReady = useCallback((params) => {
 		invoiz
@@ -103,7 +117,7 @@ function ReportBalanceSheet() {
 			});
 	}, []);
 	const sendEmail = () => {
-		ModalService.open(<GeneralLedgerSendEmail />, {
+		ModalService.open(<BalanceSheetSendEmail />, {
 			modalClass: "edit-contact-person-modal-component",
 			width: 630,
 		});
@@ -152,7 +166,9 @@ function ReportBalanceSheet() {
 				// this.props.onDateChange(option.value, [dateData.customStartDate, dateData.customEndDate]);
 				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
 				setSelectedDate(
-					`${dateData.customStartDate.format("DD-MM-YYYY")} - ${dateData.customEndDate.format("DD-MM-YYYY")}`
+					`From ${dateData.customStartDate.format("DD MMMM YYYY")} to ${dateData.customEndDate.format(
+						"DD MMMM YYYY"
+					)}`
 				);
 				break;
 			default:
@@ -329,7 +345,11 @@ function ReportBalanceSheet() {
 			>
 				<div className="general-heading" style={{ width: "80vw", padding: "20px" }}>
 					<div>
-						<h3>AK Enterprises General Ledger</h3>
+						<h3>
+							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
+								invoiz.user.companyAddress.companyName.slice(1)}{" "}
+							Balance Sheet
+						</h3>
 					</div>
 					{/* <p style={{ color: "#C6C6C6" }}>From 01 Mar 2023 to 31 Mar 2023</p> */}
 					{selectedDate && <p> {selectedDate}</p>}
