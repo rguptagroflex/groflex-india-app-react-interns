@@ -556,7 +556,10 @@ class TransactionsListComponent extends React.Component {
 									const accountNumber = transactions[0].bankDetail.accountNumber.slice(-4);
 									this.setState({
 										...this.state,
-										topbarHeading: `${bankName} - XXXX ${accountNumber}`,
+										topbarHeading:
+											transactions[0].bankDetail.type === "cash"
+												? `${capitalize(bankName)}`
+												: `${bankName} - XXXX ${accountNumber}`,
 									});
 								}
 							}

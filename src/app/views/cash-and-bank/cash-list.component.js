@@ -10,6 +10,7 @@ import invoiz from "../../services/invoiz.service";
 import config from "../../../config";
 import { formatCurrency } from "../../helpers/formatCurrency";
 import { capitalize } from "lodash";
+import { Link } from "react-router-dom";
 
 const CashListComponent = () => {
 	const [cashDataList, setCashDataList] = useState([]);
@@ -146,9 +147,12 @@ const CashListComponent = () => {
 							justifyContent: "right",
 						}}
 					>
-						<span style={{ color: "#00A353", fontWeight: "600", cursor: "pointer" }}>
+						<Link
+							to={`/expenses/transactions/${cashData.id}`}
+							style={{ color: "#00A353", fontWeight: "600", cursor: "pointer" }}
+						>
 							View Transactions
-						</span>
+						</Link>
 						<OnClickOutside onClickOutside={() => setMenuOptionVisible(false)}>
 							<span
 								onClick={() => setMenuOptionVisible(!menuOptionVisible)}

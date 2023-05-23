@@ -1957,12 +1957,11 @@
 		"expenditures": "Expenditure",
 		"expense": "Expenses",
 		"creditNotes": "Credit notes",
-		"debitNotes": "Debit notes",
-		"reports":"Reports",
+		"debitNotes": "Credit & Debit Notes",
+		"reports": "Reports",
 		"cashAndBank": "Cash and bank",
 		"transactions": "Transactions",
-		"chartOfAccounts": "Chart of accounts"
-
+		"chartOfAccounts": "Chart of Accounts"
 	},
 	"routesTitle": {
 		"login": "Login",
@@ -2034,11 +2033,10 @@
 		"marketplace": " App Store",
 		"startPage": "Start page",
 		"dashboard": "Dashboard",
-		"balanceSheet":"Balance sheet",
-		"profitAndLoss":"Profit and loss",
-		"generalLedger":"General ledger",
-		"cashFlowStatement":"Cash flow statement"
-
+		"balanceSheet": "Balance sheet",
+		"profitAndLoss": "Profit and loss",
+		"generalLedger": "General ledger",
+		"cashFlowStatement": "Cash flow statement"
 	},
 	"monthNames": [
 		"January",
