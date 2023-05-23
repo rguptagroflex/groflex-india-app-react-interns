@@ -6,55 +6,8 @@ import DualToggleComponent from "../../shared/oval-toggle/dual-toggle.component"
 import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 import SelectInput from "../../shared/inputs/select-input/select-input.component";
 import OvalToggleComponent from "../../shared/oval-toggle/oval-toggle.component";
-
-const accountOptions = [
-	{ label: "Assets", value: "assets" },
-	{ label: "Liability", value: "liability" },
-	{ label: "Equity", value: "equity" },
-	{ label: "Income", value: "income" },
-	{ label: "Expenses", value: "expenses" },
-];
-const assets = [
-	{ value: "inventory", label: "Inventory" },
-	{ value: "accountReceivable", label: "Account receivable" },
-	{ value: "customerDeposits", label: "Customer deposits" },
-	{ value: "prepaidExpenses", label: "Prepaid expenses" },
-	{ value: "vendorCredits", label: "Vendor credits" },
-	{ value: "propertyPlantAndEquipment", label: "Property plant and equipment" },
-	{ value: "deposits", label: "deposits" },
-];
-
-const liabilities = [
-	{ value: "salesTaxes", label: "Sales taxes" },
-	{ value: "customerCredits", label: "Customer credits" },
-	{ value: "accountPayable", label: "Account payable" },
-	{ value: "unearnedRevenue", label: "Unearned revenue" },
-];
-
-const equity = [
-	{ value: "ownerInvestmentDrawings", label: "Owner investment drawings" },
-	{ value: "openingBalance", label: "Opening balance" },
-	{ value: "retainedEarnings", label: "Retained earnings" },
-];
-
-const income = [
-	{ value: "sales", label: "Sales" },
-	{ value: "discounts", label: "Discounts" },
-	{ value: "otherIncomes", label: "Other Incomes" },
-];
-
-const expenses = [
-	{ value: "costOfGoodsSold", label: "Cost of goods sold" },
-	{ value: "operatingExpenses", label: "Operating expenses" },
-	{ value: "payrollExpenses", label: "Payroll expenses" },
-	{ value: "salesTaxesPayment", label: "Sales taxes payment" },
-	{ value: "utilies", label: "Utilies" },
-	{ value: "advertising", label: "Advertising" },
-	{ value: "transportExpenses", label: "Transport expenses" },
-	{ value: "employeeBenefits", label: "Employee benefits" },
-	{ value: "officeExpenses", label: "Office expenses" },
-	{ value: "uncategorizedExpenses", label: "Uncategorized expenses" },
-];
+import config from "../../../config";
+import invoiz from "../../services/invoiz.service";
 
 function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	useEffect(() => {
@@ -67,21 +20,67 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	});
 
 	const [active, setActive] = useState(false);
+	const [accountType, setAccountType] = useState("");
+	const [accountSubType, setAccountSubType] = useState("");
 	const [chartData, setChartData] = useState({
-		accountType: "",
-		accountSubType: "",
-		status: "inactive",
+		accountTypeId: "",
+		accountSubTypeId: "",
+		status: "",
 		accountCode: "",
 		accountName: "",
 		description: "",
 	});
 	const [accountNameError, setAccountNameError] = useState(false);
 	const [accountTypeError, setAccountTypeError] = useState(false);
-
 	const handleDescriptionChange = (event) => {
 		setChartData({ ...chartData, description: event.target.value });
 	};
 
+	const [allAccountSubTypeOptions, setAllAccountSubTypeOptions] = useState({});
+	const [requiredSubtypeOptions, setRequiredSubtypeOptions] = useState({});
+	const [accountTypeOptions, setAccountTypeOptions] = useState([]);
+	useEffect(() => {
+		getAccoutTyeAndSubtypes();
+	}, []);
+	useEffect(() => {
+		setChartData((prevChartData) => ({
+			...prevChartData,
+			accountCode: generateRandomNumber(),
+		}));
+	}, []);
+	const generateRandomNumber = () => {
+		const randomNumber = Math.floor(Math.random() * 9000000) + 1000000;
+		return randomNumber.toString();
+	};
+
+	const getAccoutTyeAndSubtypes = () => {
+		invoiz
+			.request(`${config.resourceHost}accountType?offset=0&searchText=&limit=9999999&orderBy=name&desc=false`, {
+				auth: true,
+			})
+			.then((res) => {
+				console.log(res.body.data, "Response for acc type get");
+				const accSubtypeObject = {};
+				const accountTypeList = res.body.data.map((accType) => {
+					return {
+						value: accType.id,
+						label: accType.name,
+					};
+				});
+				setAccountTypeOptions([...accountTypeList]);
+				res.body.data.forEach((accType) => {
+					accSubtypeObject[accType.id] = accType.accountSubType.map((subType) => {
+						return {
+							value: subType.id,
+							label: subType.name,
+						};
+					});
+				});
+				setAllAccountSubTypeOptions({ ...accSubtypeObject });
+			});
+	};
+
+	
 	const handleAccountCodeChange = (value) => {
 		setChartData({ ...chartData, accountCode: value });
 	};
@@ -100,31 +99,30 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 		});
 	};
 
+
 	const handleAccountTypeChange = (option) => {
-		if (!option) {
-			return;
-		}
-		setChartData({ ...chartData, accountType: option.value });
+		setAccountType(option.value);
+		setRequiredSubtypeOptions(allAccountSubTypeOptions[option.value]);
 	};
 
-	const handleAccountSubTypeChange = (types) => {
-		if (!types) {
-			return;
-		}
-		setChartData({ ...chartData, accountSubType: types.value });
+	const handleAccountSubTypeChange = (option) => {
+		setAccountSubType(option.value);
 	};
 
 	const handleSave = () => {
-		if (!chartData.accountName || !chartData.accountType) {
-			setAccountNameError(!chartData.accountName);
-			setAccountTypeError(!chartData.accountType);
-			return;
-		}
-		setAccountNameError(false);
-		setAccountTypeError(false);
-		onConfirm(chartData);
+	
+		const accountData = {
+			...chartData,
+			accountTypeId: accountType,
+			accountSubTypeId: accountSubType,
+		};
+		console.log(accountData, "accountdata");
+		onConfirm(accountData);
 		ModalService.close();
 	};
+	console.log(accountTypeOptions, "Acc type options");
+	console.log(allAccountSubTypeOptions, "All subtype options");
+	console.log(requiredSubtypeOptions, "required subtype options");
 	return (
 		<div className="add-chart-modal-container" style={{ minHeight: "200px" }}>
 			<div
@@ -140,12 +138,11 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }}>
 					<div>
 						<SelectInput
-							// style={{ marginLeft: "0px" }}
 							allowCreate={false}
 							notAsync={true}
-							loadedOptions={accountOptions}
+							loadedOptions={accountTypeOptions}
 							name="accountType"
-							value={chartData.accountType}
+							value={accountType}
 							options={{
 								clearable: false,
 								noResultsText: false,
@@ -166,61 +163,37 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 							)}
 						</div>
 					</div>
-					<div style={{ margin: 0 }}>
-						<SelectInput
-							style={{ margin: "0px" }}
-							allowCreate={false}
-							notAsync={true}
-							name="accountSubType"
-							loadedOptions={
-								chartData.accountType === "assets"
-									? assets
-									: chartData.accountType === "liability"
-									? liabilities
-									: chartData.accountType === "equity"
-									? equity
-									: chartData.accountType === "income"
-									? income
-									: chartData.accountType === "expenses"
-									? expenses
-									: []
-							}
-							value={
-								chartData.accountSubType && chartData.accountType === "assets"
-									? assets.find((option) => option.value === chartData.accountSubType)
-									: chartData.accountSubType && chartData.accountType === "liability"
-									? liabilities.find((option) => option.value === chartData.accountSubType)
-									: chartData.accountSubType && chartData.accountType === "equity"
-									? equity.find((option) => option.value === chartData.accountSubType)
-									: chartData.accountSubType && chartData.accountType === "income"
-									? income.find((option) => option.value === chartData.accountSubType)
-									: chartData.accountSubType && chartData.accountType === "expenses"
-									? expenses.find((option) => option.value === chartData.accountSubType)
-									: null
-							}
-							filterOption={(option, searchText) =>
-								option.label.toLowerCase().startsWith(searchText.toLowerCase())
-							}
-							options={{
-								clearable: false,
-								noResultsText: false,
-								labelKey: "label",
-								valueKey: "value",
-								matchProp: "label",
-								placeholder: "Account sub type",
-								handleChange: handleAccountSubTypeChange,
-							}}
-							aria-invalid={accountTypeError}
-							aria-describedby={accountTypeError ? "accountTypeError" : null}
-						/>
-						<div style={{ marginTop: "10px" }}>
-							{accountTypeError && (
-								<span id="accountTypeError" style={{ color: "red" }}>
-									This is a mandatory field.
-								</span>
-							)}
+					{requiredSubtypeOptions.length ? (
+						<div style={{ margin: 0 }}>
+							<SelectInput
+								style={{ margin: "0px" }}
+								allowCreate={false}
+								notAsync={true}
+								name="accountSubType"
+								loadedOptions={requiredSubtypeOptions}
+								value={accountSubType ? accountSubType : ""}
+								options={{
+									clearable: false,
+									noResultsText: false,
+									labelKey: "label",
+									valueKey: "value",
+									matchProp: "label",
+									placeholder: "Account sub type",
+									handleChange: handleAccountSubTypeChange,
+								}}
+								//aria-invalid={accountTypeError}
+								//aria-describedby={accountTypeError ? "accountTypeError" : null}
+							/>
+							<div style={{ marginTop: "10px" }}>
+								{accountTypeError && (
+									<span id="accountTypeError" style={{ color: "red" }}>
+										This is a mandatory field.
+									</span>
+								)}
+							</div>
 						</div>
-					</div>
+					) : null}
+
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px" }} className="col-xs-6 ">
 							<TextInputComponent
@@ -246,6 +219,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 								name="accountCode"
 								value={chartData.accountCode}
 								onChange={handleAccountCodeChange}
+								disabled
 								label="Account code"
 							/>
 						</div>

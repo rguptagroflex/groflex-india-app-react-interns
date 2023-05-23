@@ -266,6 +266,14 @@ const config = {
 					resourceKey: "debitNotes",
 				},
 				{
+					name: "reports",
+					// icon: "order",
+					title: "Reports",
+					url: "/expenses/reports",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "reports",
+				},
+				{
 					name: "chartOfAccounts",
 					// icon: "order",
 					title: "Chart of accounts",

@@ -39,11 +39,12 @@ class ChartofaccountNewComponent extends React.Component {
 			canDeleteCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_CUSTOMER),
 		};
 	}
-	componentDidMount () {
+	componentDidMount() {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
 			invoiz.user.logout(true);
 		}
 	}
+
 	componentWillUnmount() {
 		this.isUnmounted = true;
 	}
@@ -192,62 +193,62 @@ class ChartofaccountNewComponent extends React.Component {
 				this.onAddNewAccounts();
 				break;
 
-			// case "import":
-			// 	this.onCustomerImportClick();
-			// 	break;
+				// case "import":
+				// 	this.onCustomerImportClick();
+				// 	break;
 
-			// case "delete-customers":
-			// 	if (this.refs.listAdvanced) {
-			// 		allRowsData = this.refs.listAdvanced.getAllRows();
+				// case "delete-customers":
+				// 	if (this.refs.listAdvanced) {
+				// 		allRowsData = this.refs.listAdvanced.getAllRows();
 
-			// 		selectedRowsData = this.refs.listAdvanced.getSelectedRows({
-			// 			prop: "number",
-			// 			sort: "asc",
-			// 		});
+				// 		selectedRowsData = this.refs.listAdvanced.getSelectedRows({
+				// 			prop: "number",
+				// 			sort: "asc",
+				// 		});
 
-			// 		selectedRowsData = _.uniq(selectedRowsData, "id");
-			// 		selectedRowsData.sort((a, b) => localeCompareNumeric(a.number, b.number));
+				// 		selectedRowsData = _.uniq(selectedRowsData, "id");
+				// 		selectedRowsData.sort((a, b) => localeCompareNumeric(a.number, b.number));
 
-			// 		selectedRowsData.forEach((selectedColData, index) => {
-			// 			let relatedCompanyObject = null;
+				// 		selectedRowsData.forEach((selectedColData, index) => {
+				// 			let relatedCompanyObject = null;
 
-			// 			if (selectedColData.kind === ListAdvancedDefaultSettings.CUSTOMER_TYPE_CONTACTPERSON) {
-			// 				relatedCompanyObject = allRowsData.find(
-			// 					(colData) => colData.kind === customerTypes.COMPANY && colData.id === selectedColData.id
-			// 				);
+				// 			if (selectedColData.kind === ListAdvancedDefaultSettings.CUSTOMER_TYPE_CONTACTPERSON) {
+				// 				relatedCompanyObject = allRowsData.find(
+				// 					(colData) => colData.kind === customerTypes.COMPANY && colData.id === selectedColData.id
+				// 				);
 
-			// 				if (relatedCompanyObject) {
-			// 					selectedRowsData[index] = relatedCompanyObject;
-			// 				}
-			// 			}
-			// 		});
+				// 				if (relatedCompanyObject) {
+				// 					selectedRowsData[index] = relatedCompanyObject;
+				// 				}
+				// 			}
+				// 		});
 
-			// 		ModalService.open(
-			// 			<DeleteRowsModal
-			// 				deleteUrlPrefix={`${config.resourceHost}customer/`}
-			// 				text="Do you really want to delete the following contact(s)? This action cannot be undone!"
-			// 				firstColLabelFunc={(item) => item.number}
-			// 				secondColLabelFunc={(item) => item.name}
-			// 				selectedItems={selectedRowsData}
-			// 				getErrorMessage={(errors) => {
-			// 					const { body } = errors;
+				// 		ModalService.open(
+				// 			<DeleteRowsModal
+				// 				deleteUrlPrefix={`${config.resourceHost}customer/`}
+				// 				text="Do you really want to delete the following contact(s)? This action cannot be undone!"
+				// 				firstColLabelFunc={(item) => item.number}
+				// 				secondColLabelFunc={(item) => item.name}
+				// 				selectedItems={selectedRowsData}
+				// 				getErrorMessage={(errors) => {
+				// 					const { body } = errors;
 
-			// 					return body.meta.id && body.meta.id[0].code === "NOT_ALLOWED"
-			// 						? resources.customersDeleteNotAllowedMessage
-			// 						: resources.defaultErrorMessage;
-			// 				}}
-			// 				onConfirm={() => {
-			// 					invoiz.router.reload();
+				// 					return body.meta.id && body.meta.id[0].code === "NOT_ALLOWED"
+				// 						? resources.customersDeleteNotAllowedMessage
+				// 						: resources.defaultErrorMessage;
+				// 				}}
+				// 				onConfirm={() => {
+				// 					invoiz.router.reload();
 
-			// 					ModalService.close();
-			// 				}}
-			// 			/>,
-			// 			{
-			// 				width: 500,
-			// 				headline: "Delete contact(s)",
-			// 			}
-			// 		);
-			// 	}
+				// 					ModalService.close();
+				// 				}}
+				// 			/>,
+				// 			{
+				// 				width: 500,
+				// 				headline: "Delete contact(s)",
+				// 			}
+				// 		);
+				// 	}
 
 				break;
 		}
@@ -295,7 +296,7 @@ class ChartofaccountNewComponent extends React.Component {
 							},
 							{
 								headerName: "Account Type",
-								field: "accountType",
+								field: "accountTypeId",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								width: getScaledValue(210, window.innerWidth, 1600),
 								filterParams: {
@@ -315,7 +316,7 @@ class ChartofaccountNewComponent extends React.Component {
 
 							{
 								headerName: "Account Sub Type",
-								field: "accountSubType",
+								field: "accountSubTypeId",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								width: getScaledValue(210, window.innerWidth, 1600),
 								filterParams: {
@@ -504,7 +505,7 @@ class ChartofaccountNewComponent extends React.Component {
 							}
 						}}
 						onRowClicked={(chartofaccount) => {
-							this.onActionCellPopupItemClick(chartofaccount, {action: "edit"});
+							this.onActionCellPopupItemClick(chartofaccount, { action: "edit" });
 							//invoiz.router.navigate(`/chartofaccount/${chartofaccount.id}`);
 						}}
 						onRowSelectionChanged={(selectedRows) => {

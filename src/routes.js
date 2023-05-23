@@ -85,11 +85,20 @@ import SettingsMoreSettingsWrapper from "views/settings/settings-more-settings.w
 import StartImpressTemplatesWrapper from "views/start/start-impress-templates.wrapper";
 import InventoryListWrapper from "views/inventory/inventory-list.wrapper";
 import CancellationListWrapper from "views/cancellation/cancellation-list.wrapper";
+import ReportsListComponent from "./app/views/reports/reports-list-component";
 
 import RedirectComponent from "views/redirect/redirect.component";
 import MarketplaceWrapper from "./app/views/marketplace/marketplace.wrapper";
+
+import ReportBalanceSheet from "./app/views/reports/reports-balance-sheet-component";
+import ReportsProfitAndLoss from "./app/views/reports/reports-profit-and-loss-component";
+import ReportsCashFlowStatement from "./app/views/reports/reports-cash-flow-statement-component";
+import ReportsGeneralLedger from "./app/views/reports/reports-general-ledger-component";
+
+
 import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
 import TransactionsListWrapper from "./app/views/transactions/transactions-list-wrapper";
+
 // import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
 // import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
 // import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
@@ -944,6 +953,61 @@ const routes = [
 		submenuItem: "debitNotes",
 		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
 		resourceKey: "",
+	},
+	{
+		path: "/expenses/reports",
+		type: RouteTypes.PRIVATE,
+		component: ReportsListComponent,
+		exact: true,
+		title: "Ausgaben",
+		menuItem: "expenditure",
+		submenuItem: "reports",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "reports",
+	},
+	{
+		path: "/expenses/reports/balance-sheet",
+		type: RouteTypes.PRIVATE,
+		component: ReportBalanceSheet,
+		exact: true,
+		title: "Ausgaben",
+		menuItem: "expenditure",
+		submenuItem: "reports",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "balanceSheet",
+	},
+	{
+		path: "/expenses/reports/profit-and-loss",
+		type: RouteTypes.PRIVATE,
+		component: ReportsProfitAndLoss,
+		exact: true,
+		title: "Ausgaben",
+		menuItem: "expenditure",
+		submenuItem: "reports",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "profitAndLoss",
+	},
+	{
+		path: "/expenses/reports/general-ledger",
+		type: RouteTypes.PRIVATE,
+		component: ReportsGeneralLedger,
+		exact: true,
+		title: "Ausgaben",
+		menuItem: "expenditure",
+		submenuItem: "reports",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "generalLedger",
+	},
+	{
+		path: "/expenses/reports/cash-flow-statement",
+		type: RouteTypes.PRIVATE,
+		component: ReportsCashFlowStatement,
+		exact: true,
+		title: "Ausgaben",
+		menuItem: "expenditure",
+		submenuItem: "reports",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "cashFlowStatement",
 	},
 	{
 		path: "/expenses/cancellation/:id",
