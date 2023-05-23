@@ -27,6 +27,8 @@ import { updateStatusIconCellColumns } from "helpers/list-advanced/updateStatusI
 
 import BtnCellRendererComponent from "shared/list-advanced/cell-renderers/button-cell-renderer.component";
 import SelectCellRendererComponent from "shared/list-advanced/cell-renderers/dropdown-cell-renderer.component";
+const parallelLinesIcon = require("assets/images/icons/parallelLines.svg");
+import SvgInline from "react-svg-inline";
 
 const ACTION_POPUP_CELL_CLASS = "action-popup-cell";
 const FIELD_ACTION_POPUP_CELL = "actionPopupCell";
@@ -1351,6 +1353,22 @@ class ListAdvancedComponent extends React.Component {
 					<div className="icon icon-download2"></div>
 					<div className="icon-label">Export columns</div>
 				</div>
+				{this.props.matchAndReconcile ? (
+					<div
+						className="icon-btn"
+						onClick={() => {
+							this.props.matchAndReconcile();
+						}}
+					>
+						<SvgInline
+							className="icon"
+							svg={parallelLinesIcon}
+							width="16px"
+							// fill="#0BA84A"
+						/>
+						<div className="icon-label">Match and reconcile</div>
+					</div>
+				) : null}
 
 				{/* <PopoverComponent
 					showOnClick={true}

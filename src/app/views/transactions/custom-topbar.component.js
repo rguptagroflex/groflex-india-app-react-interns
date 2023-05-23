@@ -201,8 +201,55 @@ class CustomTopbarComponent extends React.Component {
 										<div
 											onClick={() => {
 												this.closeTopbarDropdown();
-												// this.props.onDropDownClick("money-out");
 												this.props.openMoneyOutModal();
+											}}
+											className="drop-down-opt"
+											style={{
+												cursor: "pointer",
+												margin: 0,
+												lineHeight: "25px",
+												borderBottom: "1px solid #C6C6C6",
+												padding: "7px 0 7px 15px",
+												color: "#747474",
+											}}
+										>
+											Money Out
+										</div>
+										<div
+											onClick={() => {
+												invoiz.router.navigate("/invoices");
+											}}
+											className="drop-down-opt"
+											style={{
+												cursor: "pointer",
+												margin: 0,
+												lineHeight: "25px",
+												borderBottom: "1px solid #C6C6C6",
+												padding: "7px 0 7px 15px",
+												color: "#747474",
+											}}
+										>
+											Sales Income
+										</div>
+										<div
+											onClick={() => {
+												invoiz.router.navigate("/expense/new-purchase");
+											}}
+											className="drop-down-opt"
+											style={{
+												cursor: "pointer",
+												margin: 0,
+												lineHeight: "25px",
+												borderBottom: "1px solid #C6C6C6",
+												padding: "7px 0 7px 15px",
+												color: "#747474",
+											}}
+										>
+											Purchase
+										</div>
+										<div
+											onClick={() => {
+												invoiz.router.navigate("/expense/new-expense");
 											}}
 											className="drop-down-opt"
 											style={{
@@ -213,7 +260,7 @@ class CustomTopbarComponent extends React.Component {
 												color: "#747474",
 											}}
 										>
-											Money Out
+											Expenses
 										</div>
 									</div>
 								</OnClickOutside>

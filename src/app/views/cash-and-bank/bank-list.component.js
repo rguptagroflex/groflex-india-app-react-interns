@@ -9,6 +9,8 @@ import EditBankModalComponent from "./edit-bank-modal.component";
 import invoiz from "../../services/invoiz.service";
 import config from "../../../config";
 import { Link } from "react-router-dom";
+import { formatCurrency } from "../../helpers/formatCurrency";
+import { capitalize } from "lodash";
 
 const BankListComponent = () => {
 	const [banksList, setBanksList] = useState([]);
@@ -32,7 +34,7 @@ const BankListComponent = () => {
 			invoiz
 				.request(`${config.resourceHost}bank`, { auth: true, method: "POST", data: { ...newBankData } })
 				.then((res) => {
-					setBanksList([...banksList, { ...res.body.data }]);
+					getBanksList();
 				});
 			ModalService.close();
 		};
@@ -50,10 +52,6 @@ const BankListComponent = () => {
 					data: { ...editedBankData },
 				})
 				.then((res) => {
-					// console.log(res, "EDIT BANK KA RESPONSE new");
-					// let newBanksList = [...banksList];
-					// newBanksList[index] = { ...editedBankData };
-					// setBanksList([...newBanksList]);
 					getBanksList();
 				});
 
@@ -110,7 +108,7 @@ const BankListComponent = () => {
 				>
 					<p>Bank name</p>
 					<p>Account number</p>
-					<p>Account name</p>
+					<p>Account type</p>
 					<p>IFSC code</p>
 					<p>Balance</p>
 					<p />
@@ -119,11 +117,11 @@ const BankListComponent = () => {
 		);
 	};
 
-	const BankListRowItem = ({ bank, lastItem, index }) => {
+	const BankListRowItem = ({ id, bank, lastItem, index }) => {
 		const [menuOptionVisible, setMenuOptionVisible] = useState(false);
 
 		return (
-			<div className="bank-row">
+			<div key={id} className="bank-row">
 				<div
 					style={{ borderTop: "1px solid #C6C6C6", borderRadius: "4px", height: "0.5px" }}
 					className="bank-row-divider"
@@ -141,15 +139,9 @@ const BankListComponent = () => {
 				>
 					<p style={{ padding: "0 5px" }}>{bank.bankName}</p>
 					<p style={{ padding: "0 5px" }}>{bank.accountNumber}</p>
-					<p style={{ padding: "0 5px" }}>{bank.accountName}</p>
+					<p style={{ padding: "0 5px" }}>{capitalize(bank.accountType)}</p>
 					<p style={{ padding: "0 5px" }}>{bank.IFSCCode.toUpperCase()}</p>
-					<p style={{ padding: "0 5px" }}>
-						₹
-						{Number(bank.openingBalance).toLocaleString("en", {
-							minimumFractionDigits: 2,
-							maximumFractionDigits: 2,
-						})}
-					</p>
+					<p style={{ padding: "0 5px" }}>{formatCurrency(bank.openingBalance)}</p>
 					<div
 						style={{
 							color: "#00A353",
@@ -230,17 +222,21 @@ const BankListComponent = () => {
 			>
 				<p style={{ margin: "21px 0" }} className="text-h4">
 					Bank Details
-					<span style={{ fontSize: 12, fontWeight: 400, display: "block" }}> (Max 3 banks allowed) </span>
+					{/* <span style={{ fontSize: 12, fontWeight: 400, display: "block" }}> (Max 3 banks allowed) </span> */}
 				</p>
 				<p
-					onClick={banksList.length < 3 ? openAddBankModal : null}
+					// onClick={banksList.length < 3 ? openAddBankModal : null}
+					onClick={openAddBankModal}
 					// className="add-bank-button"
 					style={{
 						margin: "auto 0",
 						fontWeight: "600",
-						color: banksList.length < 3 ? "#00A353" : "#C6C6C6",
-						cursor: banksList.length < 3 ? "pointer" : "default",
-						border: `1px solid ${banksList.length < 3 ? "#00A353" : "#C6C6C6"}`,
+						// border: `1px solid ${banksList.length < 3 ? "#00A353" : "#C6C6C6"}`,
+						// color: banksList.length < 3 ? "#00A353" : "#C6C6C6",
+						// cursor: banksList.length < 3 ? "pointer" : "default",
+						border: "1px solid #00A353",
+						color: "#00A353",
+						cursor: "pointer",
 						padding: "8px 25px",
 						borderRadius: "4px",
 					}}
@@ -249,7 +245,8 @@ const BankListComponent = () => {
 						width="14px"
 						height="14px"
 						svg={plusIcon}
-						fill={banksList.length < 3 ? "#00A353" : "#C6C6C6"}
+						// fill={banksList.length < 3 ? "#00A353" : "#C6C6C6"}
+						fill={"#00A353"}
 					/>
 					<span style={{ marginLeft: "7px" }}> Add new bank</span>
 				</p>
@@ -261,6 +258,7 @@ const BankListComponent = () => {
 						return (
 							<BankListRowItem
 								key={item.accountNumber}
+								id={item.accountNumber}
 								lastItem={banksList.length === index + 1}
 								index={index}
 								bank={item}

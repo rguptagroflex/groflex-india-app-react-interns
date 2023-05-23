@@ -8,19 +8,25 @@ import EditCashModalComponent from "./edit-cash-modal.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import invoiz from "../../services/invoiz.service";
 import config from "../../../config";
+import { formatCurrency } from "../../helpers/formatCurrency";
+import { capitalize } from "lodash";
 
 const CashListComponent = () => {
-	const [cashData, setCashData] = useState({});
+	const [cashDataList, setCashDataList] = useState([]);
 	useEffect(() => {
 		getCashList();
 	}, []);
 
 	const getCashList = () => {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
-			// console.log("CASH DATA RESPONSE :", { ...res.body.data.find((bank) => bank.type === "cash") });
-			setCashData({ ...res.body.data.find((bank) => bank.type === "cash") });
+			console.log(
+				"CASH DATA RESPONSE :",
+				res.body.data.filter((bank) => bank.type === "cash")
+			);
+			setCashDataList([...res.body.data.filter((bank) => bank.type === "cash")]);
 		});
 	};
+
 	const getCashDetails = (id) => {
 		return invoiz.request(`${config.resourceHost}bank/${id}`, { auth: true });
 	};
@@ -30,8 +36,9 @@ const CashListComponent = () => {
 			invoiz
 				.request(`${config.resourceHost}bank`, { auth: true, method: "POST", data: { ...newCashData } })
 				.then((res) => {
-					// console.log(res, "RESPONSE of ADD CASH");
-					setCashData({ ...res.body.data });
+					console.log(res, "RESPONSE of ADD CASH");
+					// setCashDataList([...cashDataList, res.body.data]);
+					getCashList();
 				});
 			ModalService.close();
 		};
@@ -51,7 +58,8 @@ const CashListComponent = () => {
 				})
 				.then((res) => {
 					// console.log(res, "EDIT CASH KA RESPONSE");
-					setCashData({ ...res.body.data });
+					// setCashDataList([...cashDataList, res.body.data]);
+					getCashList();
 				});
 			ModalService.close();
 		};
@@ -65,7 +73,7 @@ const CashListComponent = () => {
 	const openDeleteCashBalance = (id) => {
 		const handleDeleteCash = () => {
 			invoiz.request(`${config.resourceHost}bank/${id}`, { auth: true, method: "DELETE" }).then((res) => {
-				setCashData({});
+				getCashList();
 			});
 			ModalService.close();
 		};
@@ -79,6 +87,7 @@ const CashListComponent = () => {
 			onConfirm: () => handleDeleteCash(),
 		});
 	};
+
 	const CashListColumnHeadings = () => {
 		return (
 			<div style={{ fontWeight: "600" }} className="cash-row column-headings">
@@ -93,11 +102,12 @@ const CashListComponent = () => {
 						padding: 0,
 						margin: 0,
 						display: "grid",
-						gridTemplateColumns: "1fr 9fr",
+						gridTemplateColumns: "1fr 1fr 5fr",
 						textAlign: "center",
 					}}
 				>
 					<p style={{ fontWeight: "600", textAlign: "left", padding: "0 0 0 2.2em" }}>Balance</p>
+					<p style={{ fontWeight: "600", textAlign: "center" }}>Cash type</p>
 					<p />
 				</div>
 			</div>
@@ -120,16 +130,13 @@ const CashListComponent = () => {
 						padding: 0,
 						margin: 0,
 						display: "grid",
-						gridTemplateColumns: "1fr 9fr",
+						gridTemplateColumns: "1fr 1fr 5fr",
 						textAlign: "center",
 					}}
 				>
-					<p style={{ textAlign: "left", padding: "0 0 0 2em" }}>
-						₹
-						{Number(cashData.openingBalance).toLocaleString("en", {
-							minimumFractionDigits: 2,
-							maximumFractionDigits: 2,
-						})}
+					<p style={{ textAlign: "left", padding: "0 0 0 2em" }}>{formatCurrency(cashData.openingBalance)}</p>
+					<p style={{ textAlign: "center" }}>
+						{cashData.cashType === "pettyCash" ? "Petty cash" : capitalize(cashData.cashType)}
 					</p>
 					<div
 						style={{
@@ -197,6 +204,8 @@ const CashListComponent = () => {
 		);
 	};
 
+	console.log(cashDataList, "cash data list");
+
 	return (
 		<div style={{ padding: 0 }} className="box cash-list-wrapper">
 			<div
@@ -207,14 +216,14 @@ const CashListComponent = () => {
 					Cash
 				</p>
 				<p
-					onClick={cashData.openingBalance ? null : openAddCashModal}
+					onClick={cashDataList.length < 2 ? openAddCashModal : null}
 					// className="add-cash-button
 					style={{
 						margin: "auto 0",
 						fontWeight: "600",
-						color: cashData.openingBalance ? "#C6C6C6" : "#00A353",
-						cursor: cashData.openingBalance ? "default" : "pointer",
-						border: `1px solid ${cashData.openingBalance ? "#C6C6C6" : "#00A353"}`,
+						color: cashDataList.length < 2 ? "#00A353" : "#C6C6C6",
+						cursor: cashDataList.length < 2 ? "pointer" : "default",
+						border: `1px solid ${cashDataList.length < 2 ? "#00A353" : "#C6C6C6"}`,
 						padding: "8px 25px",
 						borderRadius: "4px",
 					}}
@@ -223,15 +232,17 @@ const CashListComponent = () => {
 						width="14px"
 						height="14px"
 						svg={plusIcon}
-						fill={cashData.openingBalance ? "#C6C6C6" : "#00A353"}
+						fill={cashDataList.length < 2 ? "#00A353" : "#C6C6C6"}
 					/>
-					<span style={{ marginLeft: "9px" }}>Add opening balance</span>
+					<span style={{ marginLeft: "9px" }}>Add cash type</span>
 				</p>
 			</div>
-			{cashData.openingBalance ? (
+			{cashDataList.length ? (
 				<div className="cash-list">
 					<CashListColumnHeadings />
-					<CashRow cashData={cashData} />
+					{cashDataList.map((cashData, index) => (
+						<CashRow key={index.toString()} cashData={cashData} />
+					))}
 				</div>
 			) : null}
 		</div>

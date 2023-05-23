@@ -2,7 +2,7 @@ import React from "react";
 import invoiz from "services/invoiz.service";
 import lang from "lang";
 import moment from "moment";
-import _ from "lodash";
+import _, { capitalize } from "lodash";
 import config from "config";
 import { getLabelForCountry } from "helpers/getCountries";
 // import TopbarComponent from "shared/topbar/topbar.component";
@@ -33,6 +33,7 @@ import CustomButtonComponent from "./custom-button.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import { formatDate, formatApiDate, formateClientDateMonthYear } from "helpers/formatDate";
 import q from "q";
+import ReconcileModalComponent from "./reconcile-modal.component";
 
 const LABEL_COMPANY = "Company";
 const LABEL_PERSON = "Individual";
@@ -44,6 +45,7 @@ class TransactionsListComponent extends React.Component {
 		this.state = {
 			bankOptions: [],
 			customersOptions: [],
+			chartOfAccountOptions: [],
 			topbarHeading: "",
 			createTransactionDropdown: false,
 			refreshData: false,
@@ -58,11 +60,12 @@ class TransactionsListComponent extends React.Component {
 
 	componentDidMount() {
 		let banks = [];
-		let customers = [];
+		let chartOfAccountOptions = [];
 		const fetchBankAndCustomers = () => {
 			const fetchUrls = [
 				`${config.resourceHost}bank`,
-				`${config.resourceHost}customer?offset=0&searchText=&limit=9999999&orderBy=name&desc=false`,
+				`${config.resourceHost}chartofaccount?offset=0&searchText=&limit=9999999&orderBy=accountName&desc=false`,
+				// `${config.resourceHost}customer?offset=0&searchText=&limit=9999999&orderBy=name&desc=false`,
 			];
 			const requests = fetchUrls.map((url) => invoiz.request(url, { auth: true }));
 			return q.all(requests);
@@ -70,8 +73,13 @@ class TransactionsListComponent extends React.Component {
 		const proceed = (...args) => {
 			// console.log(args, "ARGS");
 			banks = args[0];
-			customers = args[1];
-			this.setState({ ...this.state, bankOptions: banks.body.data, customersOptions: customers.body.data });
+			chartOfAccountOptions = args[1];
+			// customers = args[1];
+			this.setState({
+				...this.state,
+				bankOptions: banks.body.data,
+				chartOfAccountOptions: chartOfAccountOptions.body.data,
+			});
 		};
 		q.fcall(fetchBankAndCustomers).spread(proceed).done();
 	}
@@ -99,11 +107,8 @@ class TransactionsListComponent extends React.Component {
 
 		const topbar = (
 			<CustomTopbarComponent
-				// onDropDownClick={this.onTopbarButtonClick}
 				title={this.state.topbarHeading ? this.state.topbarHeading : "Transactions"}
 				viewIcon={`icon-coins`}
-				// buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
-				// buttonCallback={this.onTopbarButtonClick}
 				buttons={topbarButtons}
 				openMoneyInModal={() => this.openMoneyInModal()}
 				openMoneyOutModal={() => this.openMoneyOutModal()}
@@ -181,7 +186,7 @@ class TransactionsListComponent extends React.Component {
 		ModalService.open(
 			<MoneyInModalComponent
 				bankList={this.state.bankOptions}
-				customerList={this.state.customersOptions}
+				chartOfAccounts={this.state.chartOfAccountOptions}
 				onConfirm={handleAddTransaction}
 			/>,
 			{
@@ -208,11 +213,25 @@ class TransactionsListComponent extends React.Component {
 		ModalService.open(
 			<MoneyOutModalComponent
 				bankList={this.state.bankOptions}
-				customerList={this.state.customersOptions}
+				chartOfAccounts={this.state.chartOfAccountOptions}
 				onConfirm={handleAddTransaction}
 			/>,
 			{
 				width: 630,
+			}
+		);
+	}
+
+	openMatchAndReconcileModal() {
+		ModalService.open(
+			<ReconcileModalComponent
+				refreshTable={() => {
+					this.setState({ ...this.state, refreshData: !this.state.refreshData });
+				}}
+				bankOptions={this.state.bankOptions}
+			/>,
+			{
+				width: 1100,
 			}
 		);
 	}
@@ -223,26 +242,6 @@ class TransactionsListComponent extends React.Component {
 
 	closeCreateTransactionDropdown() {
 		this.setState({ ...this.state, createTransactionDropdown: false });
-	}
-
-	onTopbarButtonClick(action) {
-		// const { resources } = this.props;
-		// const { canCreateCustomer, canDeleteCustomer, canUpdateCustomer } = this.state;
-		// let selectedRowsData = null;
-		// let allRowsData = null;
-
-		switch (action) {
-			case "money-in":
-				// console.log("Dropped down");
-				this.addTransactions();
-				break;
-			case "money-out":
-				// console.log("Dropped down");
-				ModalService.open(<MoneyOutModalComponent onConfirm={() => {}} />, {
-					width: 630,
-				});
-				break;
-		}
 	}
 
 	render() {
@@ -266,37 +265,40 @@ class TransactionsListComponent extends React.Component {
 									return formatDate(evt.value);
 								},
 								...ListAdvancedDefaultSettings.DATE_FILTER_PARAMS_OPTIONS,
-								// filterParams: {
-								// 	suppressAndOrCondition: true,
-								// },
 							},
 							{
-								headerName: "Name",
-								field: "customer.name",
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								comparator: localeCompare,
-								filter: "agSetColumnFilter",
-								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-							},
-							{
-								headerName: "Account type",
-								field: "accountType",
+								headerName: "Account name",
+								field: "chartOfAccount.accountName",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompare,
 								filter: "agSetColumnFilter",
 								cellRenderer: (evt) => {
-									const str = evt.value;
-									return str.charAt(0).toUpperCase() + str.slice(1);
+									return capitalize(evt.value);
 								},
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 							},
+							// {
+							// 	headerName: "Account type",
+							// 	field: "accountType",
+							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+							// 	comparator: localeCompare,
+							// 	filter: "agSetColumnFilter",
+							// 	cellRenderer: (evt) => {
+							// 		const str = evt.value;
+							// 		return str.charAt(0).toUpperCase() + str.slice(1);
+							// 	},
+							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
+							// },
 							{
-								headerName: "Payment",
+								headerName: "Payment method",
 								field: "bankDetail.bankName",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompare,
 								filter: "agSetColumnFilter",
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
+								cellRenderer: (evt) => {
+									return capitalize(evt.value);
+								},
 							},
 							{
 								headerName: "Debit",
@@ -333,20 +335,17 @@ class TransactionsListComponent extends React.Component {
 								},
 							},
 							{
-								headerName: "Balance",
-								field: "balance",
+								headerName: "Reconcile status",
+								field: "reconcileStatus",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								comparator: localeCompareNumeric,
-								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
+								comparator: localeCompare,
+								filter: "agSetColumnFilter",
+								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 								cellRenderer: (evt) => {
 									if (evt.value) {
-										return formatCurrency(evt.value);
+										return "Reconciled";
 									}
-									return "-";
-								},
-								filter: "agNumberColumnFilter",
-								filterParams: {
-									suppressAndOrCondition: true,
+									return "Not reconciled";
 								},
 							},
 						]}
@@ -373,6 +372,7 @@ class TransactionsListComponent extends React.Component {
 										/>
 										{this.state.createTransactionDropdown ? (
 											<OnClickOutside
+												style={{ margin: "0 10px" }}
 												onClickOutside={() => this.closeCreateTransactionDropdown()}
 											>
 												<div
@@ -410,11 +410,59 @@ class TransactionsListComponent extends React.Component {
 															cursor: "pointer",
 															margin: 0,
 															lineHeight: "25px",
+															borderBottom: "1px solid #C6C6C6",
 															padding: "7px 0 7px 15px",
 															color: "#747474",
 														}}
 													>
 														Money Out
+													</div>
+													<div
+														onClick={() => {
+															invoiz.router.navigate("/invoices");
+														}}
+														className="drop-down-opt"
+														style={{
+															cursor: "pointer",
+															margin: 0,
+															lineHeight: "25px",
+															borderBottom: "1px solid #C6C6C6",
+															padding: "7px 0 7px 15px",
+															color: "#747474",
+														}}
+													>
+														Sales Income
+													</div>
+													<div
+														onClick={() => {
+															invoiz.router.navigate("/expense/new-purchase");
+														}}
+														className="drop-down-opt"
+														style={{
+															cursor: "pointer",
+															margin: 0,
+															lineHeight: "25px",
+															borderBottom: "1px solid #C6C6C6",
+															padding: "7px 0 7px 15px",
+															color: "#747474",
+														}}
+													>
+														Purchase
+													</div>
+													<div
+														onClick={() => {
+															invoiz.router.navigate("/expense/new-expense");
+														}}
+														className="drop-down-opt"
+														style={{
+															cursor: "pointer",
+															margin: 0,
+															lineHeight: "25px",
+															padding: "7px 0 7px 15px",
+															color: "#747474",
+														}}
+													>
+														Expenses
 													</div>
 												</div>
 											</OnClickOutside>
@@ -500,6 +548,7 @@ class TransactionsListComponent extends React.Component {
 								this.onActionSettingPopupItemClick(popupEntry);
 							},
 						}}
+						matchAndReconcile={() => this.openMatchAndReconcileModal()}
 						onRowDataLoaded={(transactions) => {
 							if (transactions.length) {
 								if (this.props.bankDetailId) {

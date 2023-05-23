@@ -11,70 +11,7 @@ import invoiz from "../../services/invoiz.service";
 import TextInputLabelComponent from "../../shared/inputs/text-input/text-input-label.component";
 import TextInputHintComponent from "../../shared/inputs/text-input/text-input-hint.component";
 import { formatApiDate } from "../../helpers/formatDate";
-
-const accountTypes = [
-	{ label: "Assets", value: "assets" },
-	{ label: "Liability", value: "liability" },
-	{ label: "Equity", value: "equity" },
-	{ label: "Income", value: "income" },
-	{ label: "Expenses", value: "expenses" },
-];
-
-const accountSubtypes = {
-	assets: [
-		{ label: "Account receivable", value: "accountReceivable" },
-		{ label: "Customer deposits", value: "customerDeposits" },
-		{ label: "Inventory", value: "inventory" },
-		{ label: "Vendor credits", value: "vendorCredits" },
-		{ label: "Deposits", value: "deposits" },
-		{ label: "Prepaid expenses", value: "prepaidExpenses" },
-		{
-			label: "Property, plant and equipment",
-			value: "propertyPlantAndEquipment",
-		},
-	],
-	liability: [
-		{ label: "Sales taxes", value: "salesTaxes" },
-		{ label: "Customer credits", value: "customerCredits" },
-		{ label: "Account payable", value: "accountPayable" },
-		{ label: "Unearned revenue", value: "unearnedRevenue" },
-	],
-	equity: [
-		{
-			label: "Owner investment/drawings",
-			value: "ownerInvestmentDrawings",
-		},
-		{ label: "Opening balance", value: "openingBalance" },
-		{ label: "Retained earnings", value: "retainedEarnings" },
-	],
-	income: [
-		{ label: "Sales", value: "sales" },
-		{ label: "Discounts", value: "discounts" },
-		{ label: "Other Incomes", value: "otherIncomes" },
-	],
-	expenses: [
-		{ label: "Cost of goods sold", value: "costOfGoodsSold" },
-		{ label: "Operating expenses", value: "operatingExpenses" },
-		{ label: "Payroll expenses", value: "payrollExpenses" },
-		{ label: "Sales taxes payment", value: "salesTaxesPayment" },
-		{ label: "Utilies", value: "utilies" },
-		{ label: "Advertising", value: "advertising" },
-		{ label: "Transport expenses", value: "transportExpenses" },
-		{ label: "Employee benefits", value: "employeeBenefits" },
-		{ label: "Office expenses", value: "officeExpenses" },
-		{ label: "Uncategorized expenses", value: "uncategorizedExpenses" },
-	],
-};
-
-// const customerOptions = [
-// 	{ label: "Joe Black", value: 591 },
-// 	{ label: "Michael Doe", value: 586 },
-// ];
-
-// const paymentMethodOptions = [
-// 	{ label: "Bank 1", value: 19 },
-// 	{ label: "Bank 2", value: 25 },
-// ];
+import { capitalize } from "lodash";
 
 const Label = ({ label, style, sublabel = "" }) => {
 	return (
@@ -85,7 +22,7 @@ const Label = ({ label, style, sublabel = "" }) => {
 	);
 };
 
-const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
+const MoneyInModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
@@ -96,53 +33,31 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 	}, []);
 
 	const [moneyInData, setMoneyInData] = useState({
-		accountType: "",
-		accountSubType: "",
 		reconcileStatus: false,
 		type: "in",
 		notes: "",
-		date: new Date().toLocaleString("en-GB").split(",")[0].replaceAll("/", "-"),
-		credits: 0, //credits will be edited  in this modal
+		date: "",
+		credits: 0, //credits will be edited in this modal
 		debits: 0,
-		customerId: 0,
-		bankDetailId: 0,
+		bankDetailId: null,
+		chartOfAccountId: null,
 	});
 	const [formErrors, setFormErrors] = useState({
-		accountTypeError: "",
-		accountSubTypeError: "",
 		dateError: "",
 		creditsError: "",
-		customerIdError: "",
 		bankDetailIdError: "",
+		chartOfAccountIdError: "",
 	});
 
-	const handleAccountTypeChange = (option) => {
+	const handleAccountNameChange = (option) => {
 		if (!option) {
-			setMoneyInData({ ...moneyInData, accountType: "" });
+			setMoneyInData({ ...moneyInData, chartOfAccountId: null });
 			return;
 		}
-		setMoneyInData({ ...moneyInData, accountType: option.value });
-		setFormErrors({ ...formErrors, accountTypeError: "" });
+		setMoneyInData({ ...moneyInData, chartOfAccountId: option.value });
+		setFormErrors({ ...formErrors, chartOfAccountIdError: "" });
 	};
-	const handleAccountSubTypeChange = (option) => {
-		if (!option) {
-			setMoneyInData({ ...moneyInData, accountSubType: "" });
-			return;
-		}
-		setMoneyInData({ ...moneyInData, accountSubType: option.value });
-		setFormErrors({ ...formErrors, accountSubTypeError: "" });
-	};
-	const handleCustomerChange = (option) => {
-		if (!option) {
-			setMoneyInData({ ...moneyInData, customerId: "" });
-			return;
-		}
-		setMoneyInData({ ...moneyInData, customerId: option.value });
-		setFormErrors({ ...formErrors, customerIdError: "" });
-	};
-	const handleDateChange = (name, value, date) => {
-		const formatedDate = formatApiDate(date);
-	};
+
 	const handlePaymentMethodChange = (option) => {
 		if (!option) {
 			setMoneyInData({ ...moneyInData, bankDetailId: "" });
@@ -151,7 +66,7 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 		setMoneyInData({ ...moneyInData, bankDetailId: option.value });
 		setFormErrors({ ...formErrors, bankDetailIdError: "" });
 	};
-	const handleAmountChange = (value) => {
+	const handleCreditsChange = (value) => {
 		if (!value) {
 			setMoneyInData({ ...moneyInData, credits: 0 });
 			setFormErrors({ ...formErrors, creditsError: "Amount can not be 0" });
@@ -167,16 +82,8 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 	// Extra Form validation function
 	const checkForEmptyFields = () => {
 		let emptyFlag = false;
-		if (!moneyInData.accountType) {
-			setFormErrors({ ...formErrors, accountTypeError: "This is a mandatory field" });
-			emptyFlag = true;
-		}
-		if (!moneyInData.accountSubType) {
-			setFormErrors({ ...formErrors, accountSubTypeError: "This is a mandatory field" });
-			emptyFlag = true;
-		}
-		if (!moneyInData.customerId) {
-			setFormErrors({ ...formErrors, customerIdError: "This is a mandatory field" });
+		if (!moneyInData.chartOfAccountId) {
+			setFormErrors({ ...formErrors, chartOfAccountIdError: "This is a mandatory field" });
 			emptyFlag = true;
 		}
 		if (!moneyInData.bankDetailId) {
@@ -197,15 +104,20 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 
 		//Finally submitting if no errors of any type
 		if (Object.values(formErrors).every((error) => error === "")) {
-			onConfirm(moneyInData);
+			onConfirm({ ...moneyInData });
 		}
 	};
-	let paymentMethodOptions = bankList.filter((bank) => bank.type === "bank");
-	paymentMethodOptions = paymentMethodOptions.map((bank) => ({ label: bank.bankName, value: bank.id }));
-	const customerOptions = customerList.map((bank) => ({ label: bank.name, value: bank.id }));
 
-	// console.log("Money in form data", moneyInData);
-	// console.log("Money in Form errors", formErrors);
+	const paymentMethodOptions = [...bankList].map((bank) => ({
+		label: capitalize(bank.bankName),
+		value: bank.id,
+	}));
+	const chartofaccountOptions = chartOfAccounts.map((account) => ({
+		label: capitalize(account.accountName),
+		value: account.id,
+	}));
+	console.log(chartofaccountOptions, "COA options from modal");
+	console.log(moneyInData, "Money in data from modal");
 
 	return (
 		<div className="money-in-modal-container" style={{ minHeight: "200px" }}>
@@ -215,55 +127,26 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 
 			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }} className="money-in-modal-body-container">
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }} className="money-in-modal-body">
-					<div style={{ marginBottom: "20px" }}>
-						{/* <Label label={moneyInData.accountType ? "Account type*" : ""} /> */}
-						<SelectInput
-							allowCreate={false}
-							notAsync={true}
-							loadedOptions={accountTypes}
-							value={moneyInData.accountType}
-							options={{
-								clearable: false,
-								noResultsText: false,
-								labelKey: "label",
-								valueKey: "value",
-								matchProp: "label",
-								placeholder: "Account type",
-								handleChange: handleAccountTypeChange,
-							}}
-						/>
-						<div style={{ marginTop: "18px" }}>
-							<TextInputErrorComponent
-								errorMessage={formErrors.accountTypeError}
-								visible={!!formErrors.accountTypeError}
-							/>
-						</div>
-					</div>
 					<div style={{ marginBottom: "20px", backgroundColor: !moneyInData.accountType ? "#f9f9f9" : null }}>
-						{/* <Label
-							label={moneyInData.accountSubtype ? "Account subtype*" : ""}
-							style={{ color: "#747474" }}
-						/> */}
 						<SelectInput
-							disabled={!moneyInData.accountType}
 							allowCreate={false}
 							notAsync={true}
-							loadedOptions={moneyInData.accountType ? accountSubtypes[moneyInData.accountType] : null}
-							value={moneyInData.accountSubType}
+							loadedOptions={chartofaccountOptions}
+							value={moneyInData.chartOfAccountId}
 							options={{
 								clearable: false,
 								noResultsText: false,
 								labelKey: "label",
 								valueKey: "value",
 								matchProp: "label",
-								placeholder: "Account subtype",
-								handleChange: handleAccountSubTypeChange,
+								placeholder: "Account name",
+								handleChange: handleAccountNameChange,
 							}}
 						/>
 						<div style={{ marginTop: "18px" }}>
 							<TextInputErrorComponent
-								errorMessage={formErrors.accountSubTypeError}
-								visible={!!formErrors.accountSubTypeError}
+								errorMessage={formErrors.chartOfAccountIdError}
+								visible={!!formErrors.chartOfAccountIdError}
 							/>
 						</div>
 					</div>
@@ -276,7 +159,6 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 							}}
 							className="col_xs_6"
 						>
-							{/* <Label label={moneyInData.date ? "Date*" : ""} style={{ marginBottom: "16px" }} /> */}
 							<DateInputComponent
 								name={"date"}
 								value={moneyInData.date}
@@ -284,48 +166,15 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 								label={"Date"}
 								noBorder={true}
 								onChange={(name, value, date) => {
-									setMoneyInData({ ...moneyInData, date: moment(value, "DD-MM-YYYY") });
-									// handleDateChange(name, value, date);
-									// setMoneyInData({ ...moneyInData, date: `${value} ${currentTimeString()}` });
-									// setMoneyInData({ ...moneyInData, date: value });
+									// setMoneyInData({ ...moneyInData, date: moment(value, "DD-MM-YYYY") });
+									setMoneyInData({ ...moneyInData, date: formatApiDate(value) });
 								}}
 							/>
-							<div style={{ width: "%100", borderTop: "1px solid #C6C6C6" }} />
-						</div>
-						<div style={{ width: "100%", marginLeft: "15px", paddingTop: "13px" }} className="col_xs_6">
-							{/* <Label
-								label={moneyInData.customer ? "Customer*" : ""}
-								style={{ marginBottom: "8px" }}
-							/> */}
-							<SelectInput
-								allowCreate={false}
-								notAsync={true}
-								loadedOptions={customerOptions}
-								value={moneyInData.customerId}
-								options={{
-									clearable: false,
-									noResultsText: false,
-									labelKey: "label",
-									valueKey: "value",
-									matchProp: "label",
-									placeholder: "Customer",
-									handleChange: handleCustomerChange,
-								}}
-							/>
-							<div style={{ marginTop: "18px" }}>
-								<TextInputErrorComponent
-									errorMessage={formErrors.customerIdError}
-									visible={!!formErrors.customerIdError}
-								/>
-							</div>
+							<div style={{ width: "100%", borderTop: "1px solid #C6C6C6", marginBottom: "18px" }} />
 						</div>
 					</div>
 					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
 						<div style={{ width: "100%", marginRight: "15px", paddingTop: "11px" }} className="col_xs_6">
-							{/* <Label
-								label={moneyInData.paymentMethod  ? "Payment method*" : ""}
-								style={{ marginBottom: "8px" }}
-							/> */}
 							<SelectInput
 								allowCreate={false}
 								notAsync={true}
@@ -350,20 +199,14 @@ const MoneyInModalComponent = ({ onConfirm, bankList, customerList }) => {
 						</div>
 
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
-							{/* <Label label={moneyInData.credits ? "Amount*" : ""} style={{ marginBottom: "8px" }} /> */}
 							<NumberInputComponent
 								defaultNonZero
 								errorMessage={formErrors.creditsError}
 								label="Amount"
 								value={moneyInData.credits}
-								onChange={handleAmountChange}
+								onChange={handleCreditsChange}
 							/>
-							<div style={{ marginTop: "18px" }}>
-								{/* <TextInputErrorComponent
-									errorMessage={formErrors.creditsError}
-									visible={!!formErrors.creditsError}
-								/> */}
-							</div>
+							<div style={{ marginTop: "18px" }}></div>
 						</div>
 					</div>
 					<div style={{ paddingTop: "10px" }} className="textarea">

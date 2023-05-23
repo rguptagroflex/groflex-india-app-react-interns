@@ -14,6 +14,7 @@
 		padding-left: 0 !important;
 	}
 }
+
 .money-out-modal-container {
 	.Select-placeholder {
 		padding-left: 0px !important;
@@ -25,5 +26,143 @@
 
 	.Select-value {
 		padding-left: 0 !important;
+	}
+}
+
+.add-cash-modal-body {
+	.Select-placeholder {
+		padding-left: 0px !important;
+	}
+	.Select-input {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+	.Select-value {
+		padding-left: 0 !important;
+	}
+}
+// Match and reconcile modal
+.match-and-reconcile-modal-container {
+	.add-bank-select-container {
+		.selectInput {
+			width: 100%;
+			z-index: 10;
+		}
+		.Select-placeholder {
+			padding-left: 0px !important;
+		}
+		.Select-input {
+			padding-left: 0 !important;
+			padding-right: 0 !important;
+		}
+
+		.Select-value {
+			padding-left: 0 !important;
+		}
+	}
+	.Select-placeholder {
+		padding-left: 30px !important;
+	}
+	// .Select-input {
+	// 	padding-left: 0 !important;
+	// 	padding-right: 0 !important;
+	// }
+
+	// .Select-value {
+	// 	padding-left: 0 !important;
+	// }
+
+	.box {
+		padding: 15px !important;
+	}
+	.bank-and-time-period-column {
+		padding-left: 1rem;
+		.box {
+			height: 230px;
+		}
+	}
+	.import-bank-column {
+		padding-right: 1rem;
+		.box {
+			height: 230px;
+		}
+	}
+
+	// Time preiod
+	.time-period-select {
+		.date-input {
+			position: relative;
+
+			.input-icon {
+				position: absolute;
+				left: 0;
+				margin: 8px;
+				z-index: 1;
+			}
+
+			.Select-value-label {
+				padding-left: 18px;
+			}
+		}
+		.selectInput {
+			width: 180px;
+			// margin: 20px 0 0 0 !important;
+			border: 1px solid #c4c4c4;
+			border-radius: 4px;
+
+			.Select-value-label {
+				font-size: 16px;
+				color: #000;
+			}
+		}
+	}
+	.bank-and-time-button-container {
+		.button {
+			float: right;
+		}
+	}
+	.start-end-date-selector-group {
+		margin-top: 20px;
+
+		.dateInput {
+			display: inline-block;
+			border: 1px solid #c4c4c4;
+			border-radius: 4px;
+			margin-left: 20px;
+			width: 120px;
+			padding: 0 5px;
+		}
+	}
+
+	.date-selector-group {
+		.from-selector,
+		.to-selector {
+			padding: 10px;
+			border-right: 1px solid #c4c4c4;
+			background-color: #e8f5ff;
+
+			input {
+				background-color: #e8f5ff;
+			}
+		}
+	}
+
+	// Data table row
+	.reconcile-transactions-table {
+		padding-left: 1rem;
+		.box {
+			height: 350px;
+		}
+		.list-advanced-component {
+			padding-top: 0;
+		}
+	}
+
+	.csv-table {
+		padding-right: 1rem;
+		.box {
+			height: 350px;
+		}
 	}
 }
