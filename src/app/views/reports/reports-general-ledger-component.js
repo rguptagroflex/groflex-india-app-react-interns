@@ -150,7 +150,7 @@ const ReportsGeneralLedger = (props) => {
 	const onGridReady = useCallback((params) => {
 		invoiz
 			.request(
-				"https://dev.groflex.in/api/bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true",
+				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
 				{ auth: true }
 			)
 			.then((res) => {
@@ -375,7 +375,7 @@ const ReportsGeneralLedger = (props) => {
 			<div
 				style={{
 					// position: "absolute",
-					width: "80vw",
+					// width: "80vw",
 					height: "500px",
 					// top: "180px",
 					// left: "334px",
@@ -386,7 +386,10 @@ const ReportsGeneralLedger = (props) => {
 					fontWeight: "600",
 				}}
 			>
-				<div className="general-heading" style={{ width: "80vw", padding: "20px" }}>
+				<div className="general-heading" style={{ 
+					// width: "80vw", 
+					padding: "20px" 
+					}}>
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
