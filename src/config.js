@@ -266,13 +266,14 @@ const config = {
 					resourceKey: "debitNotes",
 				},
 				{
-					name: "chartOfAccounts",
-					// icon: "order",
-					title: "Chart of accounts",
-					url: "/expenses/chart-of-accounts",
+					name: "expenditures",
+					icon: "expense",
+					title: "Ausgaben",
+					url: "/expenses",
 					mainSubmenuItem: "expenditure",
-					resourceKey: "chartOfAccounts",
+					resourceKey: "expenditures",
 				},
+
 				{
 					name: "reports",
 					// icon: "order",
@@ -282,13 +283,14 @@ const config = {
 					resourceKey: "reports",
 				},
 				{
-					name: "expenditures",
-					icon: "expense",
-					title: "Ausgaben",
-					url: "/expenses",
+					name: "chartOfAccounts",
+					// icon: "order",
+					title: "Chart of accounts",
+					url: "/expenses/chart-of-accounts",
 					mainSubmenuItem: "expenditure",
-					resourceKey: "expenditures",
+					resourceKey: "chartOfAccounts",
 				},
+
 				// {
 				// 	name: "purchaseOrders",
 				// 	icon: "order",

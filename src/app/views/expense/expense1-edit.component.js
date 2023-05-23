@@ -144,14 +144,14 @@ class ExpenseEditComponent extends React.Component {
 	}
 
 	handlePaymentMethodChange(option) {
-		this.setState({ ...this.state, paymentMethod: option.value });
+		this.setState({ ...this.state, paymentMethod: option.value, bankDetailId: option.value });
 	}
 
 	render() {
 		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo } = this.state;
 		let title = expense.receiptNumber ? `Expenditure ${expense.receiptNumber}` : `Create expenditure`;
 		let subtitle;
-		// console.log(this.state.expense.type, ": EXPENSE type");
+		console.log(this.state, ": IS PAid STATE");
 
 		if (expense.metaData && expense.metaData.expenseCancellation) {
 			subtitle = (
@@ -968,6 +968,11 @@ class ExpenseEditComponent extends React.Component {
 				} else requestData.status = "paid";
 				if (requestData.payee === null) {
 					requestData.payee = "";
+				}
+				if (this.state.isPaid) {
+					if (this.state.paymentMethod) {
+						requestData.bankDetailId = this.state.paymentMethod;
+					} else return invoiz.page.showToast({ type: "error", message: `Please select a payment method!` });
 				}
 
 				requestData.receipts = this.state.uploadedReceipts;

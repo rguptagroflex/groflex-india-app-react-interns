@@ -117,11 +117,11 @@ const BankListComponent = () => {
 		);
 	};
 
-	const BankListRowItem = ({ id, bank, lastItem, index }) => {
+	const BankListRowItem = ({ bank, lastItem, index }) => {
 		const [menuOptionVisible, setMenuOptionVisible] = useState(false);
 
 		return (
-			<div key={id} className="bank-row">
+			<div className="bank-row">
 				<div
 					style={{ borderTop: "1px solid #C6C6C6", borderRadius: "4px", height: "0.5px" }}
 					className="bank-row-divider"
@@ -258,7 +258,6 @@ const BankListComponent = () => {
 						return (
 							<BankListRowItem
 								key={item.accountNumber}
-								id={item.accountNumber}
 								lastItem={banksList.length === index + 1}
 								index={index}
 								bank={item}
