@@ -60,7 +60,7 @@ const ReportsGeneralLedger = (props) => {
 				return value.charAt(0).toUpperCase() + value.slice(1);
 			},
 		},
-		{ field: "chartOfAccount.accountTypeId" },
+		{ headerName: "Account Type", field: "chartOfAccount.accountTypeId" },
 		{
 			field: "date",
 			filter: false,
@@ -82,8 +82,8 @@ const ReportsGeneralLedger = (props) => {
 				}
 			},
 		},
-		{ field: "chartOfAccount.accountSubTypeId", filter: false },
-		{ field: "debits", filter: false },
+		{ headerName: "Account Subtype", field: "chartOfAccount.accountSubTypeId", filter: false },
+		{ headerName: "Debits", field: "debits", filter: false },
 		{ field: "credits", filter: false },
 		{ field: "balance", filter: false },
 	]);

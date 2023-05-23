@@ -34,13 +34,32 @@ function ReportBalanceSheet() {
 				return value.charAt(0).toUpperCase() + value.slice(1);
 			},
 		},
-		{ field: "chartOfAccount.accountTypeId", enableRowGroup: true },
+		{ headerName: "Account Type", field: "chartOfAccount.accountTypeId", filter: true },
+		{ headerName: "Account SubType", field: "chartOfAccount.accountSubTypeId", filter: false },
 		// { field: "date", filter: false },
 		// { field: "accountSubType", filter: false },
 		// { field: "debits", filter: false },
 		// { field: "credits", filter: false },
-		{ field: "balance", filter: false },
+		{ headerName: "Total", field: "credits", filter: false, type: "numberValue" },
+		{ headerName: "Total", field: "debits", filter: false, type: "numberValue" },
 	]);
+	function numberParser(params) {
+		return parseInt(params.newValue);
+	}
+	const columnTypes = useMemo(() => {
+		return {
+			numberValue: {
+				enableValue: true,
+				aggFunc: "sum",
+				editable: true,
+				valueParser: numberParser,
+			},
+			dimension: {
+				enableRowGroup: true,
+				enablePivot: true,
+			},
+		};
+	}, []);
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
 	}, []);
@@ -362,6 +381,7 @@ function ReportBalanceSheet() {
 						columnDefs={columnDefs}
 						defaultColDef={defaultColDef}
 						autoGroupColumnDef={autoGroupColumnDef}
+						columnTypes={columnTypes}
 						animateRows={true}
 						onGridReady={onGridReady}
 						modules={AllModules}

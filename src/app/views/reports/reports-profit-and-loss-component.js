@@ -25,6 +25,7 @@ function ReportsProfitAndLoss() {
 	const [columnDefs, setColumnDefs] = useState([
 		// { field: "country", rowGroup: true, hide: true },
 		{
+			// headerName: "Account Type",
 			field: "chartOfAccount.accountTypeId",
 			rowGroup: true,
 			enableRowGroup: true,
@@ -34,7 +35,8 @@ function ReportsProfitAndLoss() {
 				return value.charAt(0).toUpperCase() + value.slice(1);
 			},
 		},
-		{ field: "chartOfAccount.accountTypeId", enableRowGroup: true },
+		{ headerName: "Account Subtype", field: "chartOfAccount.accountSubTypeId", enableRowGroup: true },
+		{ headerName: "Account Code", field: "chartOfAccount.accountCode", filter: false },
 		// { field: "date", filter: false },
 		// { field: "accountSubType", filter: false },
 		// { field: "debits", filter: false },
