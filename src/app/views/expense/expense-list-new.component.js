@@ -74,7 +74,7 @@ class ExpenseListNewComponent extends React.Component {
 				title={`Expenditures`}
 				viewIcon={`icon-expense`}
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
-				buttons={topbarButtons}
+				// buttons={topbarButtons}
 			/>
 		);
 

@@ -108,7 +108,7 @@ function ReportsProfitAndLoss() {
 	const onGridReady = useCallback((params) => {
 		invoiz
 			.request(
-				"https://dev.groflex.in/api/bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true",
+				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
 				{ auth: true }
 			)
 			.then((res) => {
