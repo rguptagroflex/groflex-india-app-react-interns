@@ -34,6 +34,7 @@ import ChangeDetection from "helpers/changeDetection";
 import { formatApiDate } from "helpers/formatDate";
 import userPermissions from "enums/user-permissions.enum";
 import SelectInput from "../../shared/inputs/select-input/select-input.component";
+import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 const changeDetection = new ChangeDetection();
 
 const expanseTypes = { EXPENSE_TYPE: "expense", PURCHASE_TYPE: "purchase" };
@@ -325,7 +326,7 @@ class ExpenseEditComponent extends React.Component {
 				{topbar}
 
 				<div className="box wrapper-has-topbar-with-margin">
-					<div className="row">
+					{/* <div className="row">
 						<div className="col-xs-8">
 							<div className="text-h4 heading">
 								{resources.str_details}
@@ -335,18 +336,18 @@ class ExpenseEditComponent extends React.Component {
 
 						<div className="col-xs-4">
 							<div className=" u_pt_60">
-								{/* About to change to radio */}
-								{/* <TabInputComponent
+								About to change to radio
+								<TabInputComponent
 										key="toggleExpensePurchase"
 										items={[{ label: "Expense", value: "expense" }, { label:"Purchase", value:"purchase" }]}
 										value={this.state.expense.type}
 										componentClass="dashboard-tab-input"
 										dataQsId="dashboard-topSalesStats-tabs-yearMonth"
 										onChange={e => this.onExpenseTypeChage(e)}
-									/> */}
+									/>
 							</div>
 						</div>
-					</div>
+					</div> */}
 					<div className="row">
 						<div className="col-xs-6">
 							<div className={`letter-positions-total-content`}>
@@ -373,13 +374,13 @@ class ExpenseEditComponent extends React.Component {
 						</div>
 					</div>
 
-					<div className="row u_mt_40">
-						<div className="col-xs-6 u_pt_28">
-							<div className="row">
+					<div className="row ">
+						<div className="col-xs-12 u_pt_28">
+							{/* <div className="row">
 								<div className="col-xs-12" style={{ fontSize: "16px", fontWeight: 600 }}>
 									{`BILL TO (SHIP TO)`}
 								</div>
-							</div>
+							</div> */}
 							<div className="row">
 								<div className="col-xs-12">
 									<RecipientComponent
@@ -411,40 +412,48 @@ class ExpenseEditComponent extends React.Component {
 								</div>
 							</div>
 						</div>
+					</div>
+
+					<div className="row">
 						<div className="col-xs-6">
-							<div className="row">
-								<div className="col-xs-6 u_pt_28">
-									<b>Invoice No.</b>
-								</div>
-								<div className="col-xs-6">
-									<TextInputExtendedComponent
-										name="expense-receipt-no"
-										dataQsId="expense-edit-receipt-no"
-										value={this.state.expense.receiptNumber}
-										//placeholder={"Enter issued invoice no."}
-										onChange={(value) => this.onReceiptNoChange(value)}
-										//errorMessage={errorMessageReceiptNo}
-									/>
-								</div>
+							<div>
+								<b>Invoice No.</b>
 							</div>
-							<div className="row">
-								<div className="col-xs-6 u_pt_8">
-									<b>Invoice Date</b>
-								</div>
-								<div className="col-xs-6">
-									<div className="dateInput">
-										<DateInputComponent
-											dataQsId="expense-edit-booking-date"
-											name={"expense-booking-date"}
-											value={this.state.expense.displayDate}
-											required={true}
-											onChange={(name, value, date) => this.onDateChange(name, value, date)}
-										/>
-									</div>
+							<div style={{ padding: "0" }} className="col-xs-12">
+								<TextInputExtendedComponent
+									name="expense-receipt-no"
+									dataQsId="expense-edit-receipt-no"
+									value={this.state.expense.receiptNumber}
+									// placeholder={"Enter issued invoice no."}
+									onChange={(value) => this.onReceiptNoChange(value)}
+									errorMessage={errorMessageReceiptNo}
+								/>
+								{/* <TextInputComponent
+									// label="Enter issued invoice no."
+									errorMessage={errorMessageReceiptNo}
+									value={this.state.expense.receiptNumber}
+									onChange={(value) => this.onReceiptNoChange(value)}
+								/> */}
+							</div>
+						</div>
+						<div className="col-xs-6">
+							<div style={{ marginBottom: "19px" }}>
+								<b>Invoice Date</b>
+							</div>
+							<div style={{ padding: "0" }} className="col-xs-12">
+								<div className="dateInput">
+									<DateInputComponent
+										dataQsId="expense-edit-booking-date"
+										name={"expense-booking-date"}
+										value={this.state.expense.displayDate}
+										required={true}
+										onChange={(name, value, date) => this.onDateChange(name, value, date)}
+									/>
 								</div>
 							</div>
 						</div>
 					</div>
+
 					<div style={{ display: "none" }} className="row u_pb_40">
 						<div className="col-xs-6">
 							{/* <div className="textarea">
@@ -1037,7 +1046,7 @@ class ExpenseEditComponent extends React.Component {
 														if (createNew) {
 															invoiz.router.navigate("/expense/new", true, true);
 														} else {
-															invoiz.router.navigate("/expenses");
+															invoiz.router.navigate("/expenses", true, true);
 														}
 													}
 													const requests = this.filesToDelete.map((id) => {
