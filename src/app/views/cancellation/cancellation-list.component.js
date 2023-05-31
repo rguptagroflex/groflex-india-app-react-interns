@@ -1,42 +1,42 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import lang from 'lang';
-import moment from 'moment';
-import config from 'config';
-import _ from 'lodash';
-import accounting from 'accounting';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import ListAdvancedComponent from 'shared/list-advanced/list-advanced.component';
-import ButtonComponent from 'shared/button/button.component';
-import WebStorageKey from 'enums/web-storage-key.enum';
-import InvoiceState from 'enums/invoice/invoice-state.enum';
-import Invoice from 'models/invoice.model';
-import Cancellation from 'models/cancellation.model';
-import ModalService from 'services/modal.service';
-import CancelInvoiceModalComponent from 'shared/modals/cancel-invoice-modal.component';
-import DeleteCancelInvoiceModalComponent from 'shared/modals/delete-cancel-invoice-modal.component';
-import DeleteRowsModal from 'shared/modals/list-advanced/delete-rows-modal.component';
-import { ListAdvancedDefaultSettings, transactionTypes } from 'helpers/constants';
-import { localeCompare, localeCompareNumeric, dateCompare, dateCompareSort } from 'helpers/sortComparators';
-import { getScaledValue } from 'helpers/getScaledValue';
-import { formatCurrency } from 'helpers/formatCurrency';
-import { connect, Provider } from 'react-redux';
-import store from 'redux/store';
-import InvoiceMultiActionComponent from 'shared/invoice-multi-action/invoice-multi-action.component';
-import userPermissions from 'enums/user-permissions.enum';
-import { formatDate, formatApiDate } from 'helpers/formatDate';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import lang from "lang";
+import moment from "moment";
+import config from "config";
+import _ from "lodash";
+import accounting from "accounting";
+import TopbarComponent from "shared/topbar/topbar.component";
+import ListAdvancedComponent from "shared/list-advanced/list-advanced.component";
+import ButtonComponent from "shared/button/button.component";
+import WebStorageKey from "enums/web-storage-key.enum";
+import InvoiceState from "enums/invoice/invoice-state.enum";
+import Invoice from "models/invoice.model";
+import Cancellation from "models/cancellation.model";
+import ModalService from "services/modal.service";
+import CancelInvoiceModalComponent from "shared/modals/cancel-invoice-modal.component";
+import DeleteCancelInvoiceModalComponent from "shared/modals/delete-cancel-invoice-modal.component";
+import DeleteRowsModal from "shared/modals/list-advanced/delete-rows-modal.component";
+import { ListAdvancedDefaultSettings, transactionTypes } from "helpers/constants";
+import { localeCompare, localeCompareNumeric, dateCompare, dateCompareSort } from "helpers/sortComparators";
+import { getScaledValue } from "helpers/getScaledValue";
+import { formatCurrency } from "helpers/formatCurrency";
+import { connect, Provider } from "react-redux";
+import store from "redux/store";
+import InvoiceMultiActionComponent from "shared/invoice-multi-action/invoice-multi-action.component";
+import userPermissions from "enums/user-permissions.enum";
+import { formatDate, formatApiDate } from "helpers/formatDate";
 import planPermissions from "enums/plan-permissions.enum";
 import RestrictedOverlayComponent from "shared/overlay/restricted-overlay.component";
 
 const PAYABLE_STATES = [InvoiceState.DUNNED, InvoiceState.LOCKED, InvoiceState.PARTIALLY_PAID];
-const CANCEL_OR_DELETE_STATES = ['open', InvoiceState.DUNNED, InvoiceState.LOCKED];
+const CANCEL_OR_DELETE_STATES = ["open", InvoiceState.DUNNED, InvoiceState.LOCKED];
 const CANCEL_STATES = [InvoiceState.PAID, InvoiceState.PARTIALLY_PAID];
 const NOT_ALLOWED_TO_COPY = [
 	transactionTypes.TRANSACTION_TYPE_DEPOSIT_INVOICE,
-	transactionTypes.TRANSACTION_TYPE_CLOSING_INVOICE
+	transactionTypes.TRANSACTION_TYPE_CLOSING_INVOICE,
 ];
 
-const debitNoteState = transactionTypes.TRANSACTION_TYPE_CANCELLATION_DEBIT
+const debitNoteState = transactionTypes.TRANSACTION_TYPE_CANCELLATION_DEBIT;
 
 class CancellationListComponent extends React.Component {
 	constructor(props) {
@@ -48,10 +48,12 @@ class CancellationListComponent extends React.Component {
 			selectedRows: [],
 			cancelType: props.cancelType,
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
-			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_CREDIT_NOTE) || invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_DEBIT_NOTE)
+			planRestricted:
+				(invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_CREDIT_NOTE)) ||
+				(invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_DEBIT_NOTE)),
 		};
 	}
-	componentDidMount () {
+	componentDidMount() {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
 			invoiz.user.logout(true);
 		}
@@ -68,12 +70,12 @@ class CancellationListComponent extends React.Component {
 		if (!isLoading) {
 			if (selectedRows && selectedRows.length > 0) {
 				let allDeletable = true;
-					topbarButtons.push({
-						type: 'danger',
-						label: resources.str_clear,
-						buttonIcon: 'icon-trashcan',
-						action: 'delete-invoices',
-					});
+				topbarButtons.push({
+					type: "danger",
+					label: resources.str_clear,
+					buttonIcon: "icon-trashcan",
+					action: "delete-invoices",
+				});
 				//}
 			}
 
@@ -88,7 +90,7 @@ class CancellationListComponent extends React.Component {
 
 		const topbar = (
 			<TopbarComponent
-				title={ cancelType === debitNoteState ? `Debit notes` : `Credit notes` }
+				title={cancelType === debitNoteState ? `Debit notes` : `Credit notes`}
 				viewIcon={`icon-rechnung`}
 				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action, selectedRows)}
 				buttons={topbarButtons}
@@ -101,53 +103,54 @@ class CancellationListComponent extends React.Component {
 	onActionCellPopupItemClick(invoice, entry) {
 		const { resources } = this.props;
 		switch (entry.action) {
-			case 'delete':
+			case "delete":
 				invoice.hideInvoizPay = false;
 				const model = new Invoice(invoice);
 
-				if (invoice.invoiceType === 'cancellation') {
-					return invoiz.page.showToast({ message: resources.cancellationDeleteErrorMessage, type: 'error' });
+				if (invoice.invoiceType === "cancellation") {
+					return invoiz.page.showToast({ message: resources.cancellationDeleteErrorMessage, type: "error" });
 				} else if (!invoice.isLocked) {
-					ModalService.open(resources.deleteInvoiceWarningMessage,
-						{
-							headline: resources.str_deleteInvoice,
-							cancelLabel: resources.str_abortStop,
-							confirmLabel: resources.str_clear,
-							confirmIcon: 'icon-trashcan',
-							confirmButtonType: 'secondary',
-							onConfirm: () => {
-								ModalService.close();
+					ModalService.open(resources.deleteInvoiceWarningMessage, {
+						headline: resources.str_deleteInvoice,
+						cancelLabel: resources.str_abortStop,
+						confirmLabel: resources.str_clear,
+						confirmIcon: "icon-trashcan",
+						confirmButtonType: "secondary",
+						onConfirm: () => {
+							ModalService.close();
 
-								invoiz
-									.request(`${config.resourceHost}invoice/${invoice.id}`, {
-										auth: true,
-										method: 'DELETE',
-									})
-									.then(() => {
-										invoiz.page.showToast({ message: resources.invoiceDeleteSuccessMessage });
+							invoiz
+								.request(`${config.resourceHost}invoice/${invoice.id}`, {
+									auth: true,
+									method: "DELETE",
+								})
+								.then(() => {
+									invoiz.page.showToast({ message: resources.invoiceDeleteSuccessMessage });
 
-										ModalService.close();
+									ModalService.close();
 
-										if (this.refs.listAdvanced) {
-											this.refs.listAdvanced.removeSelectedRows([invoice]);
-										}
-									})
-									.catch(() => {
-										invoiz.page.showToast({ type: 'error', message: resources.defaultErrorMessage });
-									});
-							}
-						}
-					);
+									if (this.refs.listAdvanced) {
+										this.refs.listAdvanced.removeSelectedRows([invoice]);
+									}
+								})
+								.catch(() => {
+									invoiz.page.showToast({ type: "error", message: resources.defaultErrorMessage });
+								});
+						},
+					});
 				} else if (CANCEL_STATES.indexOf(invoice.state) > -1) {
 					ModalService.open(<CancelInvoiceModalComponent invoice={invoice} resources={resources} />, {
 						headline: format(resources.str_cancelInvoice, invoice.number),
-						width: 800
+						width: 800,
 					});
 				} else {
-					ModalService.open(<DeleteCancelInvoiceModalComponent invoice={invoice} isFromList={true} resources={resources} />, {
-						width: 800,
-						modalClass: 'delete-cancel-invoice-modal-component'
-					});
+					ModalService.open(
+						<DeleteCancelInvoiceModalComponent invoice={invoice} isFromList={true} resources={resources} />,
+						{
+							width: 800,
+							modalClass: "delete-cancel-invoice-modal-component",
+						}
+					);
 				}
 				break;
 		}
@@ -156,14 +159,14 @@ class CancellationListComponent extends React.Component {
 	onTopbarButtonClick(action, selectedRows) {
 		const { resources } = this.props;
 		switch (action) {
-			case 'create':
-				invoiz.router.navigate('/invoice/new');
+			case "create":
+				invoiz.router.navigate("/invoice/new");
 				break;
-			case 'delete-invoices':
+			case "delete-invoices":
 				if (this.refs.listAdvanced) {
 					let selectedRowsData = this.refs.listAdvanced.getSelectedRows({
-						prop: 'number',
-						sort: 'asc',
+						prop: "number",
+						sort: "asc",
 					});
 
 					selectedRowsData = selectedRowsData.map((invoice) => {
@@ -174,7 +177,7 @@ class CancellationListComponent extends React.Component {
 						<DeleteRowsModal
 							deleteUrlPrefix={`${config.resourceHost}invoice/`}
 							text="Are you would like to delete the following invoice(s)? This action cannot be undone!"
-							firstColLabelFunc={() => 'Draft'}
+							firstColLabelFunc={() => "Draft"}
 							secondColLabelFunc={(item) => item.displayName}
 							selectedItems={selectedRowsData}
 							onConfirm={() => {
@@ -187,18 +190,18 @@ class CancellationListComponent extends React.Component {
 						/>,
 						{
 							width: 500,
-							headline: 'Delete Invoice(s)',
+							headline: "Delete Invoice(s)",
 						}
 					);
 					ModalService.open(
-					<Provider store={store}>
-						<InvoiceMultiActionComponent onConfirm={() => this.onMultiActionConfirmed()} />
-					</Provider>,
-					{
-						width: 500,
-						headline: resources.str_deleteInvoices
-					}
-				);
+						<Provider store={store}>
+							<InvoiceMultiActionComponent onConfirm={() => this.onMultiActionConfirmed()} />
+						</Provider>,
+						{
+							width: 500,
+							headline: resources.str_deleteInvoices,
+						}
+					);
 				}
 
 				break;
@@ -210,12 +213,16 @@ class CancellationListComponent extends React.Component {
 		const { cancelType, planRestricted, canChangeAccountData } = this.state;
 		return (
 			<div className="cancellation-list-component-wrapper">
-					{planRestricted ? (
+				{planRestricted ? (
 					<RestrictedOverlayComponent
 						message={
 							canChangeAccountData
-							? `${cancelType === debitNoteState ? `Debit`: `Credit`} Notes are not available in your current plan`
-							: `You don’t have permission to access ${cancelType === debitNoteState ? `debit`: `credit`} Notes`
+								? `${
+										cancelType === debitNoteState ? `Debit` : `Credit`
+								  } Notes are not available in your current plan`
+								: `You don’t have permission to access ${
+										cancelType === debitNoteState ? `debit` : `credit`
+								  } Notes`
 						}
 						owner={canChangeAccountData}
 					/>
@@ -228,113 +235,121 @@ class CancellationListComponent extends React.Component {
 						ref="listAdvanced"
 						columnDefs={[
 							{
-								headerName: 'Number',
-								field: 'number',
-								sort: 'desc',
+								headerName: "Number",
+								field: "number",
+								sort: "desc",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								width: getScaledValue(86, window.innerWidth, 1600),
 								cellRenderer: (evt) => {
-									return evt.value === Infinity ? '' : evt.value;
+									return evt.value === Infinity ? "" : evt.value;
 								},
 								comparator: localeCompareNumeric,
 								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.String,
-								filter: 'agNumberColumnFilter',
+								filter: "agNumberColumnFilter",
 								filterParams: {
 									suppressAndOrCondition: true,
 								},
 								customProps: {
-									longName: `${cancelType === debitNoteState ? `Debit note number` : `Credit note number`}`,
+									longName: `${
+										cancelType === debitNoteState ? `Debit note number` : `Credit note number`
+									}`,
 									convertNumberToTextFilterOnDemand: true,
 								},
 							},
 							{
-								headerName: 'Customer name',
-								field: 'customerName',
+								headerName: "Customer name",
+								field: "customerName",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompare,
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 							},
 							{
-								headerName: 'Date created',
-								field: 'date',
+								headerName: "Date created",
+								field: "date",
 								filter: true,
 								comparator: (date1, date2) => dateCompareSort(date1, date2, config.dateFormat.client),
-								 filterParams: {
-								 	suppressAndOrCondition: true,
-								 	filterOptions: ListAdvancedDefaultSettings.DATE_FILTER_PARAMS_OPTIONS,
-								 	comparator: (filterLocalDateAtMidnight, cellValue) =>
+								filterParams: {
+									suppressAndOrCondition: true,
+									filterOptions: ListAdvancedDefaultSettings.DATE_FILTER_PARAMS_OPTIONS,
+									comparator: (filterLocalDateAtMidnight, cellValue) =>
 										dateCompare(filterLocalDateAtMidnight, cellValue, config.dateFormat.client),
-								 },
+								},
 							},
-							 {
-							 	headerName: 'Total gross',
-							 	field: 'totalGross',
-							 	hide: true,
-								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-								comparator: localeCompareNumeric,
-								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
-							 	valueFormatter: (evt) => {
-							 		return formatCurrency(evt.value);
-							 	},
-							 	filter: 'agNumberColumnFilter',
-							 	filterParams: {
-							 		suppressAndOrCondition: true,
-							 	},
-							 	customProps: {
-							 		calculateHeaderSum: true,
-							 	},
-							 },
 							{
-								headerName: 'Amount credited',
-								field: 'paidAmount',
+								headerName: "Total gross",
+								field: "totalGross",
+								hide: true,
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompareNumeric,
 								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
 								valueFormatter: (evt) => {
 									return formatCurrency(evt.value);
 								},
-								filter: 'agNumberColumnFilter',
+								filter: "agNumberColumnFilter",
 								filterParams: {
 									suppressAndOrCondition: true,
 								},
 								customProps: {
-									longName: 'Amount credited',
 									calculateHeaderSum: true,
 								},
 							},
 							{
-								headerName: 'Amount available',
-								hide: true,
-								field: 'refundAvailable',
+								headerName: "Amount credited",
+								field: "paidAmount",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompareNumeric,
 								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
 								valueFormatter: (evt) => {
 									return formatCurrency(evt.value);
 								},
-								filter: 'agNumberColumnFilter',
+								filter: "agNumberColumnFilter",
 								filterParams: {
 									suppressAndOrCondition: true,
 								},
 								customProps: {
-									longName: 'Amount available',
+									longName: "Amount credited",
 									calculateHeaderSum: true,
 								},
 							},
 							{
-								headerName: 'Refund type',
-								field: 'refundType',
+								headerName: "Amount available",
+								hide: true,
+								field: "refundAvailable",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								comparator: localeCompareNumeric,
+								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
 								valueFormatter: (evt) => {
-									return cancelType === debitNoteState ? evt.value === `debits` ? `Debits` : `Cash/Bank` : evt.value === `credits` ? `Credits` : `Cash/Bank`;
+									return formatCurrency(evt.value);
+								},
+								filter: "agNumberColumnFilter",
+								filterParams: {
+									suppressAndOrCondition: true,
 								},
 								customProps: {
-									longName: 'Refund type',
+									longName: "Amount available",
+									calculateHeaderSum: true,
 								},
 							},
 							{
-								headerName: 'Total net',
-								field: 'totalNet',
+								headerName: "Refund type",
+								field: "refundType",
+								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								valueFormatter: (evt) => {
+									return cancelType === debitNoteState
+										? evt.value === `debits`
+											? `Debits`
+											: `Cash/Bank`
+										: evt.value === `credits`
+										? `Credits`
+										: `Cash/Bank`;
+								},
+								customProps: {
+									longName: "Refund type",
+								},
+							},
+							{
+								headerName: "Total net",
+								field: "totalNet",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								hide: true,
 								comparator: localeCompareNumeric,
@@ -342,7 +357,7 @@ class CancellationListComponent extends React.Component {
 								valueFormatter: (evt) => {
 									return formatCurrency(evt.value);
 								},
-								filter: 'agNumberColumnFilter',
+								filter: "agNumberColumnFilter",
 								filterParams: {
 									suppressAndOrCondition: true,
 								},
@@ -352,33 +367,41 @@ class CancellationListComponent extends React.Component {
 							},
 						]}
 						defaultSortModel={{
-							colId: 'number',
-							sort: 'desc',
+							colId: "number",
+							sort: "desc",
 						}}
 						emptyState={{
-							iconClass: 'icon-rechnung',
+							iconClass: "icon-rechnung",
 							headline: `No ${cancelType === debitNoteState ? `debit` : `credit`} notes generated yet`,
-							subHeadline: `${cancelType === debitNoteState ? `Debit notes are created when expenditures are cancelled` : `Credit notes are created when invoices are cancelled`}`,
+							subHeadline: `${
+								cancelType === debitNoteState
+									? `Debit notes are created when expenditures are cancelled`
+									: `Credit notes are created when invoices are cancelled`
+							}`,
 							buttons: (
 								<React.Fragment>
 									<ButtonComponent
-										label="Los geht's"
+										label="Let's go"
 										buttonIcon="icon-plus"
 										dataQsId="empty-list-create-button"
-										callback={() => invoiz.router.navigate('/invoice/new')}
+										callback={() => invoiz.router.navigate("/expense/new-expense")}
 									/>
-									<ButtonComponent
+									{/* <ButtonComponent
 					label={resources.str_hereWeGo}
 					buttonIcon="icon-plus"
 					dataQsId="empty-list-create-button"
 					callback={() => invoiz.router.navigate('/invoice/new')}
 					// disabled={!canCreateInvoice}
-				/>
+				/> */}
 								</React.Fragment>
 							),
 						}}
-                        fetchUrls={[
-							`${config.resourceHost}${cancelType === debitNoteState ? `expenseCancellation` : `cancellation`}?offset=0&searchText=&limit=9999999&orderBy=date&desc=true&filter=${cancelType === debitNoteState ? `debitsAndBalance` : `creditsAndBalance`}&trigger=true`
+						fetchUrls={[
+							`${config.resourceHost}${
+								cancelType === debitNoteState ? `expenseCancellation` : `cancellation`
+							}?offset=0&searchText=&limit=9999999&orderBy=date&desc=true&filter=${
+								cancelType === debitNoteState ? `debitsAndBalance` : `creditsAndBalance`
+							}&trigger=true`,
 						]}
 						// headTabbedFilterItemsFunc={(invoices) => {
 						// 	return [
@@ -444,7 +467,7 @@ class CancellationListComponent extends React.Component {
 								cancellation.customerName = cancellation.displayCustomerName;
 								cancellation.date = cancellation.date
 									? moment(cancellation.date).format(config.dateFormat.client)
-									: '';
+									: "";
 
 								return cancellation;
 							});
@@ -459,13 +482,21 @@ class CancellationListComponent extends React.Component {
 						}}
 						restricted={planRestricted}
 						columnsSettingsModalWidth={680}
-						exportFilename={`Exported ${cancelType === debitNoteState ? `debit` : `credit`} notes list ${moment().format(config.dateFormat.client)}`}
+						exportFilename={`Exported ${
+							cancelType === debitNoteState ? `debit` : `credit`
+						} notes list ${moment().format(config.dateFormat.client)}`}
 						multiSelect={true}
 						usePagination={true}
 						searchFieldPlaceholder={`${cancelType === debitNoteState ? `Debit Notes` : `Credit Notes`} `}
 						loadingRowsMessage={`Loading ${cancelType === debitNoteState ? `debit` : `credit`} notes ...`}
-						noFilterResultsMessage={`No ${cancelType === debitNoteState ? `debit` : `credit`} notes matched the filter`}
-						webStorageKey={cancelType === debitNoteState ? WebStorageKey.DEBIT_CANCELLATION_LIST_SETTINGS: WebStorageKey.CANCELLATION_LIST_SETTINGS}
+						noFilterResultsMessage={`No ${
+							cancelType === debitNoteState ? `debit` : `credit`
+						} notes matched the filter`}
+						webStorageKey={
+							cancelType === debitNoteState
+								? WebStorageKey.DEBIT_CANCELLATION_LIST_SETTINGS
+								: WebStorageKey.CANCELLATION_LIST_SETTINGS
+						}
 						actionCellPopup={{
 							popupEntriesFunc: (item) => {
 								const entries = [];
@@ -473,17 +504,16 @@ class CancellationListComponent extends React.Component {
 
 								if (item) {
 									cancellation = new Cancellation(item);
-											entries.push({
-												label: 'Delete',
-												action: 'delete',
-												dataQsId: 'cancellation-list-item-dropdown-delete',
-											});
-										
+									entries.push({
+										label: "Delete",
+										action: "delete",
+										dataQsId: "cancellation-list-item-dropdown-delete",
+									});
 
 									if (entries.length === 0) {
 										entries.push({
-											label: 'No action available',
-											customEntryClass: 'popover-entry-disabled',
+											label: "No action available",
+											customEntryClass: "popover-entry-disabled",
 										});
 									}
 								}
@@ -503,7 +533,11 @@ class CancellationListComponent extends React.Component {
 							}
 						}}
 						onRowClicked={(cancellation) => {
-							invoiz.router.navigate(`${cancelType === debitNoteState ? `/expenses/cancellation/` : `/cancellation/`}${cancellation.id}`);
+							invoiz.router.navigate(
+								`${cancelType === debitNoteState ? `/expenses/cancellation/` : `/cancellation/`}${
+									cancellation.id
+								}`
+							);
 						}}
 						onRowSelectionChanged={(selectedRows) => {
 							if (!this.isUnmounted) {
@@ -517,12 +551,11 @@ class CancellationListComponent extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	return {
-		resources
+		resources,
 	};
 };
 
 export default connect(mapStateToProps)(CancellationListComponent);
-
