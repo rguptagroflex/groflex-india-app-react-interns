@@ -273,6 +273,9 @@ class CustomerListNewComponent extends React.Component {
 			case "moresettings":
 				invoiz.router.navigate("/settings/more-settings/customer");
 				break;
+			case "importcontacts":
+				invoiz.router.navigate("/settings/data-import/customers/1");
+				break;
 		}
 	}
 	render() {
@@ -799,6 +802,11 @@ class CustomerListNewComponent extends React.Component {
 									label: "More settings",
 									action: "moresettings",
 									dataQsId: "setting-list-item-dropdown-moresettings",
+								});
+								entries.push({
+									label: "Import Contacts",
+									action: "importcontacts",
+									dataQsId: "setting-list-item-dropdown-importcontacts",
 								});
 
 								return [entries];
