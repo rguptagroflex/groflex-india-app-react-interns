@@ -376,11 +376,14 @@ class ExpenseEditComponent extends React.Component {
 
 					<div className="row ">
 						<div className="col-xs-12 u_pt_28">
-							{/* <div className="row">
-								<div className="col-xs-12" style={{ fontSize: "16px", fontWeight: 600 }}>
-									{`BILL TO (SHIP TO)`}
+							<div className="row">
+								<div
+									className="col-xs-12 text-h5"
+									// style={{ fontSize: "16px", fontWeight: 600 }}
+								>
+									{`Received from`}
 								</div>
-							</div> */}
+							</div>
 							<div className="row">
 								<div className="col-xs-12">
 									<RecipientComponent

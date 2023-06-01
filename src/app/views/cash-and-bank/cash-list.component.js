@@ -175,7 +175,7 @@ const CashListComponent = () => {
 										zIndex: 1,
 									}}
 								>
-									<p
+									{/* <p
 										onClick={() => openEditCashModal(cashData.id)}
 										style={{
 											margin: "0",
@@ -186,7 +186,7 @@ const CashListComponent = () => {
 										}}
 									>
 										Edit
-									</p>
+									</p> */}
 									<p
 										onClick={() => openDeleteCashBalance(cashData.id)}
 										style={{
