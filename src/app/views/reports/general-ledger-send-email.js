@@ -764,11 +764,15 @@ class generalLedgerSendEmail extends React.Component {
 											callback={() => ModalService.close()}
 											type="cancel"
 											label={"Cancel"}
-											onClick={() => onTopbarButtonClick("send")}
 										/>
 									</div>
 									<div className="modal-base-confirm">
-										<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Send"} />
+										<ButtonComponent
+											buttonIcon="icon-check"
+											callback={handleSave}
+											label={"Send"}
+											onClick={() => onTopbarButtonClick("send")}
+										/>
 									</div>
 								</div>
 							</div>
