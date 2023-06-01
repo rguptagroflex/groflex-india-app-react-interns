@@ -2,7 +2,7 @@ import React from "react";
 import invoiz from "services/invoiz.service";
 import lang from "lang";
 import moment from "moment";
-import _ from "lodash";
+import _, { capitalize } from "lodash";
 import config from "config";
 import TopbarComponent from "shared/topbar/topbar.component";
 import ModalService from "services/modal.service";
@@ -293,6 +293,12 @@ class ChartofaccountNewComponent extends React.Component {
 									longName: "Account Code",
 									convertNumberToTextFilterOnDemand: true,
 								},
+								cellStyle: (params) => {
+									if (params.data.status.toLowerCase() === "inactive") {
+										return { backgroundColor: "#f2f2f2" };
+									}
+									return null;
+								},
 							},
 							{
 								headerName: "Account Type",
@@ -308,6 +314,12 @@ class ChartofaccountNewComponent extends React.Component {
 										.split(" ")
 										.map((s) => s.charAt(0).toUpperCase() + s.slice(1))
 										.join(" ");
+								},
+								cellStyle: (params) => {
+									if (params.data.status.toLowerCase() === "inactive") {
+										return { backgroundColor: "#f2f2f2" };
+									}
+									return null;
 								},
 
 								comparator: localeCompare,
@@ -325,6 +337,12 @@ class ChartofaccountNewComponent extends React.Component {
 								cellRenderer: (evt) => {
 									const subType = evt.value.replace(/([A-Z])/g, " $1").trim();
 									return subType.charAt(0).toUpperCase() + subType.slice(1).toLowerCase();
+								},
+								cellStyle: (params) => {
+									if (params.data.status.toLowerCase() === "inactive") {
+										return { backgroundColor: "#f2f2f2" };
+									}
+									return null;
 								},
 								comparator: localeCompare,
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
@@ -344,6 +362,15 @@ class ChartofaccountNewComponent extends React.Component {
 										.split(" ")
 										.map((s) => s.charAt(0).toUpperCase() + s.slice(1))
 										.join(" ");
+									// return (
+									// 	<p style={{ color: "red" }}>{capitalize(evt.value)}</p>
+									// );
+								},
+								cellStyle: (params) => {
+									if (params.data.status.toLowerCase() === "inactive") {
+										return { backgroundColor: "#f2f2f2" };
+									}
+									return null;
 								},
 							},
 							{
@@ -357,6 +384,12 @@ class ChartofaccountNewComponent extends React.Component {
 										.split(" ")
 										.map((s) => s.charAt(0).toUpperCase() + s.slice(1))
 										.join(" ");
+								},
+								cellStyle: (params) => {
+									if (params.data.status.toLowerCase() === "inactive") {
+										return { backgroundColor: "#f2f2f2" };
+									}
+									return null;
 								},
 								comparator: localeCompare,
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
@@ -376,6 +409,12 @@ class ChartofaccountNewComponent extends React.Component {
 												: s.toLowerCase()
 										)
 										.join(" ");
+								},
+								cellStyle: (params) => {
+									if (params.data.status.toLowerCase() === "inactive") {
+										return { backgroundColor: "#f2f2f2" };
+									}
+									return null;
 								},
 								comparator: localeCompare,
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,

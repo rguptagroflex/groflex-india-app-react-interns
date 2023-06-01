@@ -419,7 +419,7 @@ class TransactionsListComponent extends React.Component {
 													</div>
 													<div
 														onClick={() => {
-															invoiz.router.navigate("/invoices");
+															invoiz.router.navigate("/invoices/new");
 														}}
 														className="drop-down-opt"
 														style={{
