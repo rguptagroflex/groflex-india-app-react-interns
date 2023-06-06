@@ -347,13 +347,13 @@ const config = {
 		// 		// 	mainSubmenuItem: 'settings',
 		// 		// 	resourceKey: 'accountantExport'
 		// 		// },
-				{
-					name: "dataImport",
-					title: "Import",
-					url: "/settings/data-import",
-					mainSubmenuItem: "settings",
-					resourceKey: "import",
-				},
+		// {
+		// 	name: "dataImport",
+		// 	title: "Import",
+		// 	url: "/settings/data-import",
+		// 	mainSubmenuItem: "settings",
+		// 	resourceKey: "import",
+		// },
 		// 		{
 		// 			name: "paymentConditions",
 		// 			title: "Zahlungsbedingungen",

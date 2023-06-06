@@ -1,29 +1,31 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import config from 'config';
-import ModalService from 'services/modal.service';
-import ButtonComponent from 'shared/button/button.component';
-import { formatCurrency } from 'helpers/formatCurrency';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import config from "config";
+import ModalService from "services/modal.service";
+import ButtonComponent from "shared/button/button.component";
+import { formatCurrency } from "helpers/formatCurrency";
 // import moment from 'moment';
-import accounting from 'accounting';
-import CurrencyInputComponent from 'shared/inputs/currency-input/currency-input.component';
-import DateInputComponent from 'shared/inputs/date-input/date-input.component';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
-import { formatApiDate } from 'helpers/formatDate';
-import CheckboxInputComponent from 'shared/inputs/checkbox-input/checkbox-input.component';
+import accounting from "accounting";
+import CurrencyInputComponent from "shared/inputs/currency-input/currency-input.component";
+import DateInputComponent from "shared/inputs/date-input/date-input.component";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
+import { formatApiDate } from "helpers/formatDate";
+import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
+import { capitalize } from "lodash";
+import SelectInput from "../inputs/select-input/select-input.component";
 
 const PAYMENT_TYPE = {
-	PAYMENT: 'payment',
-	CREDIT: 'credit',
-	SURCHARGE: 'surcharge',
-	SETTLE: 'settle',
-	PARTIAL: 'partial',
-	DISCOUNT: 'discount',
-	BANKCHARGE: 'bankcharge',
-	TDS_CHARGE: 'tdscharge',
-	CREDITS: 'creditsAdjusted',
-	BALANCE: 'balanceAdjusted',
-	EXCESS: 'excessAmount'
+	PAYMENT: "payment",
+	CREDIT: "credit",
+	SURCHARGE: "surcharge",
+	SETTLE: "settle",
+	PARTIAL: "partial",
+	DISCOUNT: "discount",
+	BANKCHARGE: "bankcharge",
+	TDS_CHARGE: "tdscharge",
+	CREDITS: "creditsAdjusted",
+	BALANCE: "balanceAdjusted",
+	EXCESS: "excessAmount",
 };
 
 class BulkPaymentModalComponent extends React.Component {
@@ -31,35 +33,38 @@ class BulkPaymentModalComponent extends React.Component {
 		super(props);
 
 		this.state = {
+			paymentMethod: "",
+			paymentMethodOptions: [],
 			isDeviation: false,
 			isDeviationSet: false,
 			isSaving: false,
 
-			//==== 
+			//====
 			isValid: this.props.payment.amount > 0,
 
-			paymentAmount:this.props.payment.amount,
-			totalAmount:this.props.payment.amount,
-			isNormalPayment:true,
+			paymentAmount: this.props.payment.amount,
+			totalAmount: this.props.payment.amount,
+			isNormalPayment: true,
 
 			//---------
-			hasDues:this.props.customer && this.props.customer.openingBalance > 0,
-			duesAmount:this.props.customer?(this.props.customer.openingBalance):0,
-			clearDues:false,
+			hasDues: this.props.customer && this.props.customer.openingBalance > 0,
+			duesAmount: this.props.customer ? this.props.customer.openingBalance : 0,
+			clearDues: false,
 
 			//-----------
-            previousBalance:this.props.customer
-									? - (this.props.customer.credits + this.props.customer.balance + 
-												( this.props.customer.openingBalance < 0 ?  this.props.customer.openingBalance : 0 )
-									  )
-									:0,
-			usePreviousBalance:false	
-                              
+			previousBalance: this.props.customer
+				? -(
+						this.props.customer.credits +
+						this.props.customer.balance +
+						(this.props.customer.openingBalance < 0 ? this.props.customer.openingBalance : 0)
+				  )
+				: 0,
+			usePreviousBalance: false,
 		};
 	}
 
-	
 	render() {
+		console.log(this.state, "STATE IN BULK PAYMENT MODAL");
 		const { isDeviation } = this.state;
 		let element = null;
 		if (isDeviation) {
@@ -69,6 +74,27 @@ class BulkPaymentModalComponent extends React.Component {
 		}
 
 		return element;
+	}
+
+	getBanksList() {
+		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
+			console.log(res.body.data, "GET BANKS LIST IN BULK PAYMENT MODAL");
+			this.setState({
+				...this.state,
+				paymentMethodOptions: [...res.body.data].map((bank) => ({
+					label: capitalize(bank.bankName),
+					value: bank.id,
+				})),
+			});
+		});
+	}
+
+	handlePaymentMethodChange(option) {
+		this.setState({ ...this.state, paymentMethod: option.value, bankDetailId: option.value });
+	}
+
+	componentDidMount() {
+		this.getBanksList();
 	}
 
 	continue() {
@@ -88,40 +114,39 @@ class BulkPaymentModalComponent extends React.Component {
 	}
 
 	save() {
-		const { isSaving, totalAmount, paymentAmount, usePreviousBalance } = this.state;
+		const { isSaving, totalAmount, paymentAmount, usePreviousBalance, paymentMethod } = this.state;
 		const { payment, onSave, resources, customer } = this.props;
-		
-		payment.amount=paymentAmount
-		payment.clearDues = true
+
+		payment.amount = paymentAmount;
+		payment.clearDues = true;
+		payment.bankDetailId = paymentMethod;
 		if (usePreviousBalance) {
-			payment.useCredits = - customer.credits; // payment // receiving amount // so +ve
-			payment.useBalance = - customer.balance;
+			payment.useCredits = -customer.credits; // payment // receiving amount // so +ve
+			payment.useBalance = -customer.balance;
 		}
 
-		if(totalAmount > payment.outstandingBalance)
-		  payment.type = PAYMENT_TYPE.EXCESS
+		if (totalAmount > payment.outstandingBalance) payment.type = PAYMENT_TYPE.EXCESS;
 		if (isSaving) {
 			return;
 		}
 
-
 		this.setState({ isSaving: true }, () => {
 			invoiz
 				.request(`${config.resourceHost}customer/${customer.id}/bulkPayment`, {
-					method: 'POST',
+					method: "POST",
 					auth: true,
-					data: payment
+					data: payment,
 				})
 				.then(() => {
 					invoiz.page.showToast(resources.str_paymentSaveSuccessMessage);
 					ModalService.close();
 					onSave && onSave();
 				})
-				.catch(error => {
+				.catch((error) => {
 					if (error && error.statusCode === 401) {
-						invoiz.page.showToast({ type: 'error', message: resources.str_paymentTimeoutMessage });
+						invoiz.page.showToast({ type: "error", message: resources.str_paymentTimeoutMessage });
 					} else {
-						invoiz.page.showToast({ type: 'error', message: resources.str_paymentSaveErrorMessage });
+						invoiz.page.showToast({ type: "error", message: resources.str_paymentSaveErrorMessage });
 					}
 
 					ModalService.close();
@@ -129,45 +154,45 @@ class BulkPaymentModalComponent extends React.Component {
 		});
 	}
 
-	hanldeAmountChange(value){
-		let  {paymentAmount,totalAmount,usePreviousBalance, clearDues,isNormalPayment ,previousBalance} = this.state
-		let {payment} = this.props
+	hanldeAmountChange(value) {
+		let { paymentAmount, totalAmount, usePreviousBalance, clearDues, isNormalPayment, previousBalance } =
+			this.state;
+		let { payment } = this.props;
 
-		   paymentAmount = accounting.unformat(value, config.currencyFormat.decimal);
-		   if(paymentAmount < 0)
-		   paymentAmount = 0
+		paymentAmount = accounting.unformat(value, config.currencyFormat.decimal);
+		if (paymentAmount < 0) paymentAmount = 0;
 
-		   if(usePreviousBalance && paymentAmount >= payment.amount )
-		     usePreviousBalance = false
-		 
-			 totalAmount = paymentAmount + ( usePreviousBalance ? previousBalance : 0 )
-			 isNormalPayment =  totalAmount <= payment.amount  
-	
-			this.setState({ paymentAmount,totalAmount, clearDues, usePreviousBalance,isNormalPayment });
+		if (usePreviousBalance && paymentAmount >= payment.amount) usePreviousBalance = false;
+
+		totalAmount = paymentAmount + (usePreviousBalance ? previousBalance : 0);
+		isNormalPayment = totalAmount <= payment.amount;
+
+		this.setState({ paymentAmount, totalAmount, clearDues, usePreviousBalance, isNormalPayment });
 	}
 
-	handlePreviousBalanceCheckbox(){
-		
-		let { usePreviousBalance, previousBalance,paymentAmount,totalAmount}=this.state
-		let {payment} = this.props
+	handlePreviousBalanceCheckbox() {
+		let { usePreviousBalance, previousBalance, paymentAmount, totalAmount } = this.state;
+		let { payment } = this.props;
 
+		usePreviousBalance = !usePreviousBalance;
 
-		usePreviousBalance= !usePreviousBalance
-		
-		paymentAmount=usePreviousBalance
-									?(previousBalance > paymentAmount ) ? 0 :paymentAmount - previousBalance
-									:paymentAmount == 0 ? payment.amount : paymentAmount + previousBalance
+		paymentAmount = usePreviousBalance
+			? previousBalance > paymentAmount
+				? 0
+				: paymentAmount - previousBalance
+			: paymentAmount == 0
+			? payment.amount
+			: paymentAmount + previousBalance;
 
-		totalAmount=paymentAmount +( usePreviousBalance ? previousBalance : 0 )
+		totalAmount = paymentAmount + (usePreviousBalance ? previousBalance : 0);
 
-		this.setState({usePreviousBalance,previousBalance,totalAmount,paymentAmount,isNormalPayment:true })
+		this.setState({ usePreviousBalance, previousBalance, totalAmount, paymentAmount, isNormalPayment: true });
 	}
 
 	createPaymentView() {
-		const { payment, resources,  invoiceOutstandingAmount } = this.props;
-		let {  
-			isSaving,paymentAmount,totalAmount,usePreviousBalance,previousBalance,duesAmount,isNormalPayment
-            } = this.state;
+		const { payment, resources, invoiceOutstandingAmount } = this.props;
+		let { isSaving, paymentAmount, totalAmount, usePreviousBalance, previousBalance, duesAmount, isNormalPayment } =
+			this.state;
 		if (payment.date && payment.date instanceof Date) {
 			// payment.date = moment(payment.date).format(config.dateFormat.api);
 			payment.date = formatApiDate(payment.date);
@@ -180,15 +205,14 @@ class BulkPaymentModalComponent extends React.Component {
 				<div className="row">
 					<div className="col-xs-6">
 						<div className="payment-create-label">{resources.openInvoiceBalance}</div>
-						<div className="payment-create-value">{ formatCurrency (invoiceOutstandingAmount || 0)}</div>
+						<div className="payment-create-value">{formatCurrency(invoiceOutstandingAmount || 0)}</div>
 					</div>
 
 					<div className="col-xs-6">
 						<div className="payment-create-label">{resources.previosDues}</div>
-						<div className="payment-create-value">{ formatCurrency(duesAmount || 0 )}</div>
+						<div className="payment-create-value">{formatCurrency(duesAmount || 0)}</div>
 					</div>
 				</div>
-
 
 				<div className="row">
 					<div className="col-xs-6">
@@ -200,28 +224,45 @@ class BulkPaymentModalComponent extends React.Component {
 							// value={payment.date}
 							value={payment.displayDate}
 							onChange={(name, value) => {
-							//	value = moment(value).format(config.dateFormat.api);
+								//	value = moment(value).format(config.dateFormat.api);
 								payment.date = formatApiDate(value);
 							}}
 						/>
 					</div>
 
 					<div className="col-xs-6 create-payment-amount-wrapper">
-					<CurrencyInputComponent
+						<CurrencyInputComponent
 							name="amount"
 							dataQsId="create-payment-amount"
-							value={ paymentAmount  }
+							value={paymentAmount}
 							selectOnFocus={true}
 							willReceiveNewValueProps={true}
-							
-							
-							onBlur={value => {
-								if (value!=='') {
-									 this.hanldeAmountChange(value)
+							onBlur={(value) => {
+								if (value !== "") {
+									this.hanldeAmountChange(value);
 								}
-								
 							}}
 							label={resources.str_amountOfPayment}
+						/>
+					</div>
+				</div>
+
+				<div className="row bulk-payment-modal-bank-select">
+					<div className="col-xs-12">
+						<SelectInput
+							allowCreate={false}
+							notAsync={true}
+							loadedOptions={this.state.paymentMethodOptions}
+							value={this.state.paymentMethod}
+							options={{
+								clearable: false,
+								noResultsText: false,
+								labelKey: "label",
+								valueKey: "value",
+								matchProp: "label",
+								placeholder: "Payment method",
+								handleChange: (option) => this.handlePaymentMethodChange(option),
+							}}
 						/>
 					</div>
 				</div>
@@ -233,7 +274,7 @@ class BulkPaymentModalComponent extends React.Component {
 							dataQsId="create-payment-notes"
 							value={payment.notes || resources.bulkPaymentNoteText}
 							label={resources.bulkPaymentNote}
-							onChange={value => {
+							onChange={(value) => {
 								payment.notes = value.trim();
 							}}
 						/>
@@ -241,26 +282,21 @@ class BulkPaymentModalComponent extends React.Component {
 				</div>
 
 				<div className="row">
-				{
-					( previousBalance > 0 ) &&
+					{previousBalance > 0 && (
+						<div className="col-xs-12 utilize-credits-balance">
+							{/* 						<div className="payment-create-label">{`Utilize`}</div> */}
 
-					<div className="col-xs-12 utilize-credits-balance">
-			
-{/* 						<div className="payment-create-label">{`Utilize`}</div> */}
-		
 							<CheckboxInputComponent
-								name={'credits'}
-								disabled={(previousBalance) <= 0}
-								label={`Use available balance of ${formatCurrency(previousBalance )}`}
+								name={"credits"}
+								disabled={previousBalance <= 0}
+								label={`Use available balance of ${formatCurrency(previousBalance)}`}
 								checked={usePreviousBalance}
-								
-								onChange={() => {this.handlePreviousBalanceCheckbox()}}
+								onChange={() => {
+									this.handlePreviousBalanceCheckbox();
+								}}
 							/>
-
-				</div> 
-
-				}
-			
+						</div>
+					)}
 				</div>
 
 				<div className="modal-base-footer">
@@ -275,15 +311,15 @@ class BulkPaymentModalComponent extends React.Component {
 
 					<div className="modal-base-confirm">
 						<ButtonComponent
-							buttonIcon={ isNormalPayment ? 'icon-check' : ''}
+							buttonIcon={isNormalPayment ? "icon-check" : ""}
 							dataQsId="createPayment-btn-save"
 							loading={isSaving}
-							disabled={totalAmount<=0}
+							disabled={totalAmount <= 0}
 							callback={() => {
 								if (isNormalPayment) {
 									this.payFull();
 								} else {
-                                   	this.continue();
+									this.continue();
 								}
 							}}
 							label={isNormalPayment ? resources.str_toSave : resources.str_continue}
@@ -296,58 +332,49 @@ class BulkPaymentModalComponent extends React.Component {
 
 	createDeviationView() {
 		const { payment, resources } = this.props;
-		const { isDeviationSet,previousBalance,usePreviousBalance, isSaving,totalAmount } = this.state;
+		const { isDeviationSet, previousBalance, usePreviousBalance, isSaving, totalAmount } = this.state;
 
-	
-		const isMore =totalAmount > payment.amount;
+		const isMore = totalAmount > payment.amount;
 		let deviationAmount = totalAmount - payment.amount;
 
-		let headerText ="Additional amount of "
-		let subHeadingText="You have entered an excess amount"
-		let messageText
+		let headerText = "Additional amount of ";
+		let subHeadingText = "You have entered an excess amount";
+		let messageText;
 
+		let extraAmount;
+		let reamingPreviousBalance;
 
-		let extraAmount
-		let reamingPreviousBalance
-
-		if(usePreviousBalance)
-		{
-			extraAmount = deviationAmount
-			reamingPreviousBalance = previousBalance > payment.amount ? previousBalance - payment.amount : 0
+		if (usePreviousBalance) {
+			extraAmount = deviationAmount;
+			reamingPreviousBalance = previousBalance > payment.amount ? previousBalance - payment.amount : 0;
 		}
-		if(!( usePreviousBalance))
-	    extraAmount = deviationAmount
+		if (!usePreviousBalance) extraAmount = deviationAmount;
 
+		if (extraAmount > 0) {
+			headerText = "Excess amount of ";
+			subHeadingText = "You have entered an excess amount";
+			messageText = `The excess payment of ${formatCurrency(extraAmount)} can be used for upcoming invoices`;
+			deviationAmount = extraAmount;
+		}
 
-
-
-
-		 if(extraAmount > 0)
-		 {
-			 headerText ="Excess amount of "
-			 subHeadingText="You have entered an excess amount"
-       		 messageText=`The excess payment of ${formatCurrency( extraAmount  )} can be used for upcoming invoices`
-			 deviationAmount = extraAmount
-		 }  
-		
-		 if(reamingPreviousBalance > 0)
-		 {
-			headerText ="Excess amount of "
-			subHeadingText="You have entered an excess amount"
-			messageText=`The excess amount of ${formatCurrency( deviationAmount || reamingPreviousBalance  )}  can be used for upcoming invoices`
-		 }
+		if (reamingPreviousBalance > 0) {
+			headerText = "Excess amount of ";
+			subHeadingText = "You have entered an excess amount";
+			messageText = `The excess amount of ${formatCurrency(
+				deviationAmount || reamingPreviousBalance
+			)}  can be used for upcoming invoices`;
+		}
 
 		const element = isMore ? (
-		<div className="payment-create-content">
-			<div className="icon icon-coins_drop" />
-			<div>{messageText}</div>
-	
-		</div>
+			<div className="payment-create-content">
+				<div className="icon icon-coins_drop" />
+				<div>{messageText}</div>
+			</div>
 		) : (
 			<div className="payment-deviation-choices">
 				<div
 					className={`payment-deviation-choice ${
-						isDeviationSet && payment.type === PAYMENT_TYPE.PARTIAL ? 'active' : ''
+						isDeviationSet && payment.type === PAYMENT_TYPE.PARTIAL ? "active" : ""
 					}`}
 					onClick={() => this.setDeviation(PAYMENT_TYPE.PARTIAL)}
 				>
@@ -358,7 +385,7 @@ class BulkPaymentModalComponent extends React.Component {
 
 				<div
 					className={`payment-deviation-choice ${
-						isDeviationSet && payment.type === PAYMENT_TYPE.DISCOUNT ? 'active' : ''
+						isDeviationSet && payment.type === PAYMENT_TYPE.DISCOUNT ? "active" : ""
 					}`}
 					onClick={() => this.setDeviation(PAYMENT_TYPE.DISCOUNT)}
 				>
@@ -369,7 +396,7 @@ class BulkPaymentModalComponent extends React.Component {
 
 				<div
 					className={`payment-deviation-choice ${
-						isDeviationSet && payment.type === PAYMENT_TYPE.BANKCHARGE ? 'active' : ''
+						isDeviationSet && payment.type === PAYMENT_TYPE.BANKCHARGE ? "active" : ""
 					}`}
 					onClick={() => this.setDeviation(PAYMENT_TYPE.BANKCHARGE)}
 				>
@@ -380,7 +407,7 @@ class BulkPaymentModalComponent extends React.Component {
 
 				<div
 					className={`payment-deviation-choice ${
-						isDeviationSet && payment.type === PAYMENT_TYPE.TDS_CHARGE ? 'active' : ''
+						isDeviationSet && payment.type === PAYMENT_TYPE.TDS_CHARGE ? "active" : ""
 					}`}
 					onClick={() => this.setDeviation(PAYMENT_TYPE.TDS_CHARGE)}
 				>

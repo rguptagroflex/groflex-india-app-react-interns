@@ -43,7 +43,7 @@ class ArticleListNewComponent extends React.Component {
 			canCreateArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_ARTICLE),
 			canUpdateArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_ARTICLE),
 			canDeleteArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_ARTICLE),
-			isInventoryNotAvailable: true //invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),  open when we lunch inventory
+			isInventoryNotAvailable: true, //invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),  open when we lunch inventory
 		};
 	}
 
@@ -315,6 +315,9 @@ class ArticleListNewComponent extends React.Component {
 				break;
 			case "moresettings":
 				invoiz.router.navigate("/settings/more-settings/article");
+				break;
+			case "importacticles":
+				invoiz.router.navigate("/settings/data-import/articles/1");
 				break;
 		}
 	}
@@ -802,6 +805,11 @@ class ArticleListNewComponent extends React.Component {
 									label: "Article Units",
 									action: "moresettings",
 									dataQsId: "setting-list-item-dropdown-moresettings",
+								});
+								entries.push({
+									label: "Import Articles",
+									action: "importacticles",
+									dataQsId: "setting-list-item-dropdown-importarticles",
 								});
 
 								return [entries];

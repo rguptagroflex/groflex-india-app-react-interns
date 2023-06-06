@@ -92,3 +92,18 @@
 		}
 	}
 }
+
+.bulk-payment-modal-bank-select {
+	margin-bottom: 25px !important;
+	.Select-placeholder {
+		padding-left: 0px !important;
+	}
+	.Select-input {
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
+
+	.Select-value {
+		padding-left: 0 !important;
+	}
+}
