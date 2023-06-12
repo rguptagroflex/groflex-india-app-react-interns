@@ -23,6 +23,7 @@ const ChargebeePlan = {
 	FREE_PLAN: 'Free_Plan',
 	ACCOUNTING_MONTHLY_PLAN: 'Accounting_Monthly_Plan',
 	ACCOUNTING_YEARLY_PLAN: 'Accounting_Yearly_Plan',
+	ACCOUNTING_TRIAL_PLAN: 'Accounting_Trial_Plan',
 };
 
 export default Object.freeze(ChargebeePlan);

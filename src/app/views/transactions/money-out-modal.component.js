@@ -37,14 +37,14 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 		type: "out",
 		notes: "",
 		date: "",
-		credits: 0,
-		debits: 0, //debits will be edited in this modal
+		credits: 0, //credits will be edited in this modal
+		debits: 0, 
 		bankDetailId: null,
 		chartOfAccountId: null,
 	});
 	const [formErrors, setFormErrors] = useState({
 		dateError: "",
-		debitsError: "",
+		creditsError: "",
 		bankDetailIdError: "",
 		chartOfAccountIdError: "",
 	});
@@ -69,12 +69,12 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 	};
 	const handleDebitsChange = (value) => {
 		if (!value) {
-			setMoneyOutData({ ...moneyOutData, debits: 0 });
-			setFormErrors({ ...formErrors, debitsError: "Amount can not be 0" });
+			setMoneyOutData({ ...moneyOutData, credits: 0 });
+			setFormErrors({ ...formErrors, creditsError: "Amount can not be 0" });
 			return;
 		}
-		setMoneyOutData({ ...moneyOutData, debits: value });
-		setFormErrors({ ...formErrors, debitsError: "" });
+		setMoneyOutData({ ...moneyOutData, credits: value });
+		setFormErrors({ ...formErrors, creditsError: "" });
 	};
 	const handleNotesChange = (event) => {
 		setMoneyOutData({ ...moneyOutData, notes: event.target.value });
@@ -91,8 +91,8 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 			setFormErrors({ ...formErrors, bankDetailIdError: "This is a mandatory field" });
 			emptyFlag = true;
 		}
-		if (!moneyOutData.debits) {
-			setFormErrors({ ...formErrors, debitsError: "This is a mandatory field" });
+		if (!moneyOutData.credits) {
+			setFormErrors({ ...formErrors, creditsError: "This is a mandatory field" });
 			emptyFlag = true;
 		}
 		return emptyFlag;
@@ -117,8 +117,8 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 		label: capitalize(account.accountName),
 		value: account.id,
 	}));
-	console.log(chartofaccountOptions, "COA options from modal");
-	console.log(moneyOutData, "Money out data from modal");
+	// console.log(chartofaccountOptions, "COA options from modal");
+	// console.log(moneyOutData, "Money out data from modal");
 
 	return (
 		<div className="money-in-modal-container" style={{ minHeight: "200px" }}>
@@ -204,9 +204,9 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 						<div style={{ width: "100%", marginLeft: "15px" }} className="col_xs_6">
 							<NumberInputComponent
 								defaultNonZero
-								errorMessage={formErrors.debitsError}
+								errorMessage={formErrors.creditsError}
 								label="Amount"
-								value={moneyOutData.debits}
+								value={moneyOutData.credits}
 								onChange={handleDebitsChange}
 							/>
 							<div style={{ marginTop: "18px" }}></div>

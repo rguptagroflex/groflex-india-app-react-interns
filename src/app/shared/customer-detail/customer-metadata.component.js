@@ -122,20 +122,20 @@ const CustomerMetadataComponent = (props) => {
 			);
 			i++;
 		}
-		console.log(
-			"SYMMETRICBUTTON FUNCTION, console log buttons array: ",
-			buttons,
-			"\n DISPLAY BUTTONS:",
-			displayButtons
-		);
+		// console.log(
+		// 	"SYMMETRICBUTTON FUNCTION, console log buttons array: ",
+		// 	buttons,
+		// 	"\n DISPLAY BUTTONS:",
+		// 	displayButtons
+		// );
 		return displayButtons;
 	};
 
 	setTimeout(() => {
 		$("#customer-detail-metadata-name").dotdotdot({ height: 68, truncate: "letter" });
 	}, 0);
-	console.log("buttons array: ", buttons);
-	console.log("buttons data: ", buttonData);
+	// console.log("buttons array: ", buttons);
+	// console.log("buttons data: ", buttonData);
 	return (
 		<div
 			style={{ minHeight: "98%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}

@@ -58,7 +58,7 @@ const AddCashModalComponent = ({ onConfirm }) => {
 	const handleSave = () => {
 		onConfirm({ ...newCashData, cashType });
 	};
-	console.log(newCashData, "add modal cash data hai");
+	// console.log(newCashData, "add modal cash data hai");
 
 	return (
 		<div className="add-cash-modal-container" style={{ minHeight: "200px" }}>

@@ -60,7 +60,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 				auth: true,
 			})
 			.then((res) => {
-				console.log(res.body.data, "Response for acc type get");
+				// console.log(res.body.data, "Response for acc type get");
 				const accSubtypeObject = {};
 				const accountTypeList = res.body.data.map((accType) => {
 					return {
@@ -110,14 +110,14 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 			accountTypeId: accountType,
 			accountSubTypeId: accountSubType,
 		};
-		console.log(accountData, "accountdata");
+		// console.log(accountData, "accountdata");
 		onConfirm(accountData);
 		ModalService.close();
 	};
-	console.log("chartData after innitialize", chartData);
-	console.log("previousData", previousData);
-	console.log("Required subtypes", requiredSubtypeOptions);
-	console.log("Required subtypes 2", allAccountSubTypeOptions[previousData.accountTypeId]);
+	// console.log("chartData after innitialize", chartData);
+	// console.log("previousData", previousData);
+	// console.log("Required subtypes", requiredSubtypeOptions);
+	// console.log("Required subtypes 2", allAccountSubTypeOptions[previousData.accountTypeId]);
 	return (
 		<div className="add-chart-modal-container" style={{ minHeight: "200px" }}>
 			<div

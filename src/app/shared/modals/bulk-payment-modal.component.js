@@ -13,6 +13,7 @@ import { formatApiDate } from "helpers/formatDate";
 import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
 import { capitalize } from "lodash";
 import SelectInput from "../inputs/select-input/select-input.component";
+import userPermissions from 'enums/user-permissions.enum';
 
 const PAYMENT_TYPE = {
 	PAYMENT: "payment",
@@ -60,11 +61,12 @@ class BulkPaymentModalComponent extends React.Component {
 				  )
 				: 0,
 			usePreviousBalance: false,
+			canViewExpense: false,
 		};
 	}
 
 	render() {
-		console.log(this.state, "STATE IN BULK PAYMENT MODAL");
+		// console.log(this.state, "STATE IN BULK PAYMENT MODAL");
 		const { isDeviation } = this.state;
 		let element = null;
 		if (isDeviation) {
@@ -78,7 +80,10 @@ class BulkPaymentModalComponent extends React.Component {
 
 	getBanksList() {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
-			console.log(res.body.data, "GET BANKS LIST IN BULK PAYMENT MODAL");
+			// console.log(res.body.data, "GET BANKS LIST IN BULK PAYMENT MODAL");
+			if(res.body && res.body.data && res.body.data.length === 0) {
+				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
+			}
 			this.setState({
 				...this.state,
 				paymentMethodOptions: [...res.body.data].map((bank) => ({
@@ -95,6 +100,9 @@ class BulkPaymentModalComponent extends React.Component {
 
 	componentDidMount() {
 		this.getBanksList();
+		this.setState({
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		});
 	}
 
 	continue() {
@@ -114,12 +122,22 @@ class BulkPaymentModalComponent extends React.Component {
 	}
 
 	save() {
-		const { isSaving, totalAmount, paymentAmount, usePreviousBalance, paymentMethod } = this.state;
+		const { isSaving, totalAmount, paymentAmount, usePreviousBalance, paymentMethod, canViewExpense } = this.state;
 		const { payment, onSave, resources, customer } = this.props;
 
 		payment.amount = paymentAmount;
 		payment.clearDues = true;
-		payment.bankDetailId = paymentMethod;
+
+		if (canViewExpense) {
+			if (!paymentMethod) {
+				invoiz.page.showToast({type: "error", message: "Please select payment method"});
+				return;
+			}
+			payment.bankDetailId = paymentMethod;
+		}
+
+		// payment.bankDetailId = paymentMethod;
+
 		if (usePreviousBalance) {
 			payment.useCredits = -customer.credits; // payment // receiving amount // so +ve
 			payment.useBalance = -customer.balance;
@@ -191,7 +209,7 @@ class BulkPaymentModalComponent extends React.Component {
 
 	createPaymentView() {
 		const { payment, resources, invoiceOutstandingAmount } = this.props;
-		let { isSaving, paymentAmount, totalAmount, usePreviousBalance, previousBalance, duesAmount, isNormalPayment } =
+		let { isSaving, paymentAmount, totalAmount, usePreviousBalance, previousBalance, duesAmount, isNormalPayment, canViewExpense } =
 			this.state;
 		if (payment.date && payment.date instanceof Date) {
 			// payment.date = moment(payment.date).format(config.dateFormat.api);
@@ -246,8 +264,8 @@ class BulkPaymentModalComponent extends React.Component {
 						/>
 					</div>
 				</div>
-
-				<div className="row bulk-payment-modal-bank-select">
+				{canViewExpense ? (
+					<div className="row bulk-payment-modal-bank-select">
 					<div className="col-xs-12">
 						<SelectInput
 							allowCreate={false}
@@ -265,7 +283,8 @@ class BulkPaymentModalComponent extends React.Component {
 							}}
 						/>
 					</div>
-				</div>
+					</div>
+				) : null }
 
 				<div className="row">
 					<div className="col-xs-12">

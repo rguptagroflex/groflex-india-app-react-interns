@@ -28,6 +28,7 @@ import { handleNotificationErrorMessage } from 'helpers/errorMessageNotification
 import RazorpayKycSetupModal from "shared/modals/razorpay-kyc-setup-modal.component";
 import { updateSubscriptionDetails } from './helpers/updateSubsciptionDetails';
 import UserWizardOnBoardingModalComponent from './shared/modals/user-onboarding/user-wizard-onboarding-modal.component';
+import GroflexNewFeatureLiveModalComponent from "shared/modals/groflex-new-feature-modal.component";
 
 class PageContainer extends React.Component {
 	constructor(props) {
@@ -84,6 +85,10 @@ class PageContainer extends React.Component {
 				window.sib.email_id = this.state.intercomUser.email
 				window.sendinblue.identify(this.state.intercomUser.email, properties)
 				IntercomAPI.update(this.state.intercomUser)
+			}
+
+			if (this.isLoggedIn() && this.state.intercomUser.Plan === 'Free_Plan') {
+				this.showNewFeatureLivePopup();
 			}
 			
 		});
@@ -220,6 +225,22 @@ class PageContainer extends React.Component {
 		invoiz.on('userModelSubscriptionDataSet', this.update, this);
 		// IntercomAPI('update');
 		IntercomAPI.update();
+	}
+
+	showNewFeatureLivePopup() { 
+		ModalService.open(<GroflexNewFeatureLiveModalComponent/>
+			,
+				{
+					headline: '',
+					confirmLabel: 'Buy',
+					cancelLabel: 'Cancel',
+					onConfirm: () => {
+						ModalService.close();
+						invoiz.router.navigate('/settings/billing');
+					},
+					width: 580,
+				}
+		);
 	}
 
 	render() {

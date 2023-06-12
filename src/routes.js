@@ -955,6 +955,17 @@ const routes = [
 		resourceKey: "",
 	},
 	{
+		path: "/expenses/cancellationsC",
+		type: RouteTypes.PRIVATE,
+		component: CancellationListWrapper,
+		exact: true,
+		title: "Stornorechnungs-Details",
+		menuItem: "expenditure",
+		submenuItem: "creditNotes",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "creditNotes",
+	},
+	{
 		path: "/expenses/reports",
 		type: RouteTypes.PRIVATE,
 		component: ReportsListComponent,

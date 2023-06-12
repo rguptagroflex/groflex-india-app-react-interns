@@ -47,6 +47,7 @@ class EmailViewComponent extends React.Component {
 		const { resources } = this.props;
 
 		this.state = {
+			isPaidPlan: false,
 			customerId: this.props.customerId,
 			documentTitle: this.props.documentTitle,
 			emails: this.props.emails || [],
@@ -92,8 +93,9 @@ class EmailViewComponent extends React.Component {
 				} = response;
 
 				const emailOptions = this.mapCustomerEmails(data);
-
+				// console.log(invoiz.user.planId);
 				this.setState({
+					isPaidPlan: invoiz.user.planId !== 'Free_Plan',
 					emailOptions,
 					emails: emailOptions.length && emailOptions.length > 0 ? [emailOptions[0]] : []
 				});
@@ -361,6 +363,7 @@ class EmailViewComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
+		const { isPaidPlan } = this.state;
 		const buttonDisabled = this.isButtonDisabled();
 		const headline = this.state.model.headline;
 		const subHeadline = this.state.model.subheadline;
@@ -472,10 +475,13 @@ class EmailViewComponent extends React.Component {
 									placeholder={resources.str_yourSincerely}
 								/>
 							</div>
-							<div className="email-view-textarea-footer">
-								<span>{resources.str_poweredBy}</span>
-								<SVGInline width="45px" svg={imprezzLogo} />
-							</div>
+							{isPaidPlan ? null : (
+								<div className="email-view-textarea-footer">
+									<span>{resources.str_poweredBy}</span>
+									<SVGInline width="45px" svg={imprezzLogo} />
+								</div>
+							)}
+							
 						</div>
 					</div>
 				</div>

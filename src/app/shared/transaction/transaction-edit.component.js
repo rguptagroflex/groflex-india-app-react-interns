@@ -481,18 +481,19 @@ class TransactionEditComponent extends React.Component {
 									: { display: "flex" }
 							}
 						>
-							{!isOffer && !isPurchaseOrder && !isRecurring && !isDeliveryChallan && (
-								<div className="transaction-form-payment" style={{ width: "90%" }}>
-									<LetterPaymentComponent
-										resources={resources}
-										onEnablePaymentChange={(paymentData) => this.onEnablePaymentChange(paymentData)}
-										onEnablePartialChange={(paymentData) =>
-											this.onEnablePartialPayment(paymentData)
-										}
-										transaction={transaction}
-									/>
-								</div>
-							)}
+							{/* {!isOffer && !isPurchaseOrder && !isRecurring && !isDeliveryChallan && (
+								// uncomment when razorpay intrigrate 
+								// <div className="transaction-form-payment" style={{ width: "90%" }}>
+								// 	<LetterPaymentComponent
+								// 		resources={resources}
+								// 		onEnablePaymentChange={(paymentData) => this.onEnablePaymentChange(paymentData)}
+								// 		onEnablePartialChange={(paymentData) =>
+								// 			this.onEnablePartialPayment(paymentData)
+								// 		}
+								// 		transaction={transaction}
+								// 	/>
+								// </div>
+							)} */}
 							<LetterPositionsTotalComponent
 								onChange={(value) => this.onLetterPriceKindChange(value)}
 								onDiscountChange={(value) => this.onDiscountChange(value)}
@@ -1349,13 +1350,13 @@ class TransactionEditComponent extends React.Component {
 					!isProject && !isDeposit && !isClosing ? requestData.columns : null
 				).then(
 					() => {
-						console.log("save trans data")
+						// console.log("save trans data")
 						saveCustomer(
 							this.createCustomer || this.updateCustomer ? requestData : null,
 							this.createCustomer
 							).then(
 								(newOrUpdateCustomerData) => {
-								console.log("save customer")
+								// console.log("save customer")
 								if (!newOrUpdateCustomerData) {
 									if (this.createdCustomerId) {
 										requestData.customerId = this.createdCustomerId;
@@ -1431,7 +1432,7 @@ class TransactionEditComponent extends React.Component {
 		});
 	}
 	saveData(requestData) {
-		console.log("save data")
+		// console.log("save data")
 		const { resources } = this.props;
 		const { recurringInvoice, project } = this.state;
 		const { isRecurring, isProject, isDeposit, isOffer, isClosing, isPurchaseOrder, isDeliveryChallan } =

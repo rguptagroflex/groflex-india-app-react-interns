@@ -20,10 +20,10 @@ const CashListComponent = () => {
 
 	const getCashList = () => {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
-			console.log(
-				"CASH DATA RESPONSE :",
-				res.body.data.filter((bank) => bank.type === "cash")
-			);
+			// console.log(
+			// 	"CASH DATA RESPONSE :",
+			// 	res.body.data.filter((bank) => bank.type === "cash")
+			// );
 			setCashDataList([...res.body.data.filter((bank) => bank.type === "cash")]);
 		});
 	};
@@ -37,7 +37,7 @@ const CashListComponent = () => {
 			invoiz
 				.request(`${config.resourceHost}bank`, { auth: true, method: "POST", data: { ...newCashData } })
 				.then((res) => {
-					console.log(res, "RESPONSE of ADD CASH");
+					// console.log(res, "RESPONSE of ADD CASH");
 					// setCashDataList([...cashDataList, res.body.data]);
 					getCashList();
 				});
@@ -208,7 +208,7 @@ const CashListComponent = () => {
 		);
 	};
 
-	console.log(cashDataList, "cash data list");
+	// console.log(cashDataList, "cash data list");
 
 	return (
 		<div style={{ padding: 0 }} className="box cash-list-wrapper">

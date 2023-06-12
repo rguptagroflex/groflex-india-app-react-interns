@@ -307,10 +307,12 @@ class AccountSubscriptionComponent extends React.Component {
 		}
 
 		if (portal) {
-			if(planType === "yearly") {
+			if (planType === "yearly") {
 				plan = ChargebeePlan.ACCOUNTING_YEARLY_PLAN;
-			} else {
+			} else if (planType === "monthly") {
 				plan = ChargebeePlan.ACCOUNTING_MONTHLY_PLAN;
+			} else {
+				plan = ChargebeePlan.ACCOUNTING_TRIAL_PLAN;
 			}
 			this.setState({ isLoading: true });
 			redirectToChargebee(plan, false);
@@ -344,45 +346,14 @@ class AccountSubscriptionComponent extends React.Component {
 
 	getPlanName() {
 		let { subscriptionDetail } = this.props;
-		// if (subscriptionDetail.planId === ChargebeePlan.FREE_MONTH) {
-		// 	return `Free Monthly Plan`;
-		// } else if (
-		// 	subscriptionDetail.planId === ChargebeePlan.STARTER_249 ||
-		// 	subscriptionDetail.planId === ChargebeePlan.STARTER_MONTHLY ||
-		// 	subscriptionDetail.planId === RazorpayPlan.STARTER_MONTHLY
-		// ) {
-		// 	return `Starter Monthly Plan`;
-		// } else if (
-		// 	subscriptionDetail.planId === ChargebeePlan.STANDARD_749 ||
-		// 	subscriptionDetail.planId === ChargebeePlan.STANDARD_MONTHLY ||
-		// 	subscriptionDetail.planId === RazorpayPlan.STANDARD_MONTHLY
-		// ) {
-		// 	return `Standard Monthly Plan`;
-		// } else if (
-		// 	subscriptionDetail.planId === ChargebeePlan.UNLIMITED_999 ||
-		// 	subscriptionDetail.planId === ChargebeePlan.UNLIMITED_MONTHLY ||
-		// 	subscriptionDetail.planId === RazorpayPlan.UNLIMITED_MONTHLY
-		// ) {
-		// 	return `Unlimited Monthly Plan`;
-		// } else if (subscriptionDetail.planId === ChargebeePlan.STARTER_YEARLY || subscriptionDetail.planId === ChargebeePlan.STARTER_YEARLY_21) {
-		// 	return `Starter Yearly Plan`;
-		// } else if (subscriptionDetail.planId === ChargebeePlan.STANDARD_YEARLY || subscriptionDetail.planId === ChargebeePlan.STANDARD_YEARLY_21) {
-		// 	return `Standard Yearly Plan`;
-		// } else if (subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY || subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY_21) {
-		// 	return `Unlimited Yearly Plan`;
-		// } else if (subscriptionDetail.planId === ChargebeePlan.UNLIMITED_INTERNAL) {
-		// 	return `Imprezz Internal Plan`;
-		// } else if (subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021) {
-		// 	return 'Free Plan 2021'
-		// } else {
-		// 	return ``;
-		// }
 		if (subscriptionDetail.planId === ChargebeePlan.FREE_PLAN) {
 			return `Free Plan`;
 		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN) { 
 			return `Accounting Monthly Plan`;
 		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN) { 
 			return `Accounting Yearly Plan`;
+		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN) { 
+			return `Accounting Trial Plan`;
 		} else {
 			return ``;
 		}
@@ -405,8 +376,10 @@ class AccountSubscriptionComponent extends React.Component {
 		// customer[key] = value;
 		if(value === "yearly") {
 			this.setState({ planType:value, planPrice: "₹3999/ Year" });
-		} else {
+		} else if(value === "monthly") {
 			this.setState({ planType:value, planPrice: "₹399/ Month"  });
+		} else {
+			this.setState({ planType:value, planPrice: "Accounting Trial Plan 14 days"  });
 		}
 		
 	}
@@ -437,6 +410,7 @@ class AccountSubscriptionComponent extends React.Component {
 		
 
 		let subscriptionDatePercentage = 0;
+		let subscriptionDateColor = '#00A353';
 		if (
 			subscriptionDetail.status === SubscriptionStatus.CANCELLED ||
 			subscriptionDetail.status === SubscriptionStatus.NON_RENEWING
@@ -458,9 +432,16 @@ class AccountSubscriptionComponent extends React.Component {
 			let totalDays = a.diff(b, 'days');
 			let remainingDays = c.diff(b, 'days');
 			subscriptionDatePercentage = (remainingDays / totalDays) * 100;
+			if (subscriptionDatePercentage > 100) {
+				subscriptionDatePercentage = 100
+				subscriptionDateColor = '#F03636'
+			} else if (subscriptionDatePercentage > 85 && subscriptionDatePercentage < 99) {
+				subscriptionDateColor = '#dd7474'
+			}
 			switch (subscriptionDetail.planId) {
 				case ChargebeePlan.ACCOUNTING_MONTHLY_PLAN:
 				case ChargebeePlan.ACCOUNTING_YEARLY_PLAN:
+				case ChargebeePlan.ACCOUNTING_TRIAL_PLAN:
 				case ChargebeePlan.FREE_PLAN:
 
 				content = (
@@ -474,14 +455,19 @@ class AccountSubscriptionComponent extends React.Component {
 									<div className="subscription-quota-bar">
 										<div
 											className="subscription-quota-used"
-											style={{ width: `${subscriptionDatePercentage}%` }}
+											style={{ width: `${subscriptionDatePercentage}%`, background:`${subscriptionDateColor}`  }}
 										/>
 									</div>
 								</div>
 							)}
-							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE ? (
+							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE && subscriptionDetail.planId !=  ChargebeePlan.ACCOUNTING_TRIAL_PLAN ? (
 								<div className="text-semibold text-next-payment">
 									{format(resources.subscriptionNextPlanInfo, subscriptionNextPaymentDate)}
+								</div>
+							) : null}
+							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE && subscriptionDetail.planId ===  ChargebeePlan.ACCOUNTING_TRIAL_PLAN ? (
+								<div className="text-semibold text-next-payment">
+									{format(resources.subscriptionTrialExpirePlanInfo, subscriptionNextPaymentDate)}
 								</div>
 							) : null}
 						</div>
@@ -750,7 +736,7 @@ class AccountSubscriptionComponent extends React.Component {
 						</div>
 					</div>
 					{/* Uncomment when accounting live */}
-					{/* <div className="box" style={{padding: "26px 32px"}}>
+					<div className="box" style={{padding: "26px 32px"}}>
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_10">{"Accounting Module"}</div>
 							<div className="col-xs-12 text-h6 u_pb_20">{"Your one-stop solution for all your accounting needs ! Here’s what you will get in the accounting module. "}</div>
@@ -779,6 +765,7 @@ class AccountSubscriptionComponent extends React.Component {
 										options={[
 											{ label: "Yearly (Save 20%)", value: "yearly" },
 											{ label: "Monthly", value: "monthly" },
+											{ label: "Trial", value: "accountingTrial" },
 										]}
 										value={planType || "yearly"}
 										onChange={(val) => this.onPlanTypeFieldChange(val)}
@@ -801,10 +788,10 @@ class AccountSubscriptionComponent extends React.Component {
 								/>
 							</div>
 						</div>
-					</div> */}
+					</div>
 				</div>
 			: 
-			(subscriptionDetail.planId && ( subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN )) ? 
+			(subscriptionDetail.planId && ( subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN )) ? 
 				<div className="settings-subscription-component">
 					<div className="box" style={{padding: "26px 32px"}}>
 						<div className="row">

@@ -181,8 +181,8 @@ const AddBankModalComponent = ({ onConfirm }) => {
 		}
 	};
 
-	console.log("Add bank Form data", newBankData);
-	console.log("Add bank Form errors", formErrors);
+	// console.log("Add bank Form data", newBankData);
+	// console.log("Add bank Form errors", formErrors);
 	return (
 		<div className="add-bank-modal-container" style={{ minHeight: "200px" }}>
 			<div style={{ padding: "20px", boxShadow: "0px 1px 4px 0px #0000001F" }} className="modal-base-headline">

@@ -390,7 +390,7 @@ class DeliveryChallanListNewComponent extends React.Component {
 		const { resources } = this.props;
 		const { canCreateChallan, canDeleteChallan, canUpdateChallan, planRestricted, canChangeAccountData } =
 			this.state;
-		console.log(canCreateChallan, "challan");
+		// console.log(canCreateChallan, "challan");
 		return (
 			<div className="invoice-list-component-wrapper">
 				{/* {planRestricted ? (

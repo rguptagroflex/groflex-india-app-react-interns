@@ -89,9 +89,9 @@
 		}
 
 		<!-- Iconfont -->
-
+		<!-- || releaseStage === 'development' || releaseStage === 'local' -->
 		<!-- Amplitude -->
-		@@if (releaseStage === 'production' || releaseStage === 'qa' || releaseStage === 'development' || releaseStage === 'local'  ) {
+		@@if (releaseStage === 'production' || releaseStage === 'qa') {
 		<script type="text/javascript">
 			(function(e,t){var n=e.amplitude||{_q:[],_iq:{}};var r=t.createElement("script")
 			;r.type="text/javascript"
@@ -125,7 +125,7 @@
 		@@if (releaseStage !== 'local') {
 		<link href="/css/iconfont.css" rel="stylesheet" />
 		}		
-		
+		@@if (releaseStage === 'production' ) {
 		<!-- Sendinblue -->
 			<script type="text/javascript">
 				(function() {
@@ -154,6 +154,7 @@
 				})();
 			</script>
 		<!-- /Sendinblue -->
+		}
 	</head>
 
 	<body spellcheck="false">

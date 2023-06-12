@@ -586,7 +586,7 @@ class ListAdvancedComponent extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (this.props.refreshData !== prevProps.refreshData) {
-			console.log("UPDATE HUA LIST ADVANCED COMPONENT");
+			// console.log("UPDATE HUA LIST ADVANCED COMPONENT");
 			this.fetchRows();
 		}
 	}

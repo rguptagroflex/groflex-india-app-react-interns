@@ -266,6 +266,13 @@ const config = {
 					resourceKey: "debitNotes",
 				},
 				{
+					name: "creditNotes",
+					title: "Zeiterfassungen",
+					url: "/expenses/cancellationsC",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "creditNotes",
+				},
+				{
 					name: "expenditures",
 					icon: "expense",
 					title: "Ausgaben",
@@ -912,6 +919,7 @@ const config = {
 			//updateSubscription: `${resourceHost}chargebee/subscription`,
 			// updateSubscription: `${resourceHost}zoho/subscription`,
 			updateSubscription: `${resourceHost}chargebeev2/subscription`,
+			updateSubscriptionToTrial: `${resourceHost}chargebeev2/subscription`,
 
 			// account endpoint
 			account: `${resourceUrls.settings}account`,

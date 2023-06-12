@@ -66,6 +66,9 @@ class ExpenseEditComponent extends React.Component {
 	getBanksList() {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
 			// console.log(res.body.data, "GET BANKS LIST");
+			if(res.body.data.length === 0) {
+				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
+			}
 			this.setState({
 				...this.state,
 				paymentMethodOptions: [...res.body.data].map((bank) => ({
@@ -152,7 +155,7 @@ class ExpenseEditComponent extends React.Component {
 		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo } = this.state;
 		let title = expense.receiptNumber ? `Expenditure ${expense.receiptNumber}` : `Create expenditure`;
 		let subtitle;
-		console.log(this.state, ": IS PAid STATE");
+		// console.log(this.state, ": IS PAid STATE");
 
 		if (expense.metaData && expense.metaData.expenseCancellation) {
 			subtitle = (

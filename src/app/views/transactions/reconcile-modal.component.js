@@ -419,8 +419,8 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 				};
 			}
 		});
-		console.log(transactionsObjectBasedOnNames, "Transaction based of names");
-		console.log(statementObjectBasedOnNames, "Bank statement based of names");
+		// console.log(transactionsObjectBasedOnNames, "Transaction based of names");
+		// console.log(statementObjectBasedOnNames, "Bank statement based of names");
 
 		// Check for exact names are matching or not
 		if (
@@ -457,7 +457,7 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 			return q.all(requests);
 		};
 		const proceed = (...args) => {
-			console.log(args, "Reconcile ka response");
+			// console.log(args, "Reconcile ka response");
 			NotificationService.show({
 				message: "Transactions reconciled successfully",
 				type: "success",
@@ -466,7 +466,7 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 			ModalService.close();
 		};
 		if (allValid) {
-			console.log("All valid");
+			// console.log("All valid");
 			q.fcall(reconcileTransactions).spread(proceed).done();
 		} else {
 			setFormError("Amounts of selected transactions and bank statement transactions do not match");
@@ -655,8 +655,8 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 		{ label: "Custom", value: "custom", group: "custom" },
 	];
 	let bankNameList = bankOptions.map((bank) => ({ label: capitalize(bank.bankName), value: bank.id }));
-	console.log(bankOptions, "Bank options from reconcile modal");
-	console.log(transactionsList, "Transactions list");
+	// console.log(bankOptions, "Bank options from reconcile modal");
+	// console.log(transactionsList, "Transactions list");
 	// console.log(bankStatementList, "bank statement list");
 	// console.log(selectedTransactionsList, "Selected Transactions list");
 	// console.log(selectedBankStatementList, "Selected bank transactions list");
@@ -768,11 +768,11 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 													label={"Start Date"}
 													noBorder={true}
 													onChange={(name, value) => {
-														console.log(
-															"setting custom start date",
-															value,
-															moment(value, "DD-MM-YYYY")
-														);
+														// console.log(
+														// 	"setting custom start date",
+														// 	value,
+														// 	moment(value, "DD-MM-YYYY")
+														// );
 														setDateData({
 															...dateData,
 															customStartDate: moment(value, "DD-MM-YYYY"),
@@ -787,11 +787,11 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 													label={"End Date"}
 													noBorder={true}
 													onChange={(name, value) => {
-														console.log(
-															"setting custom end date",
-															value,
-															moment(value, "DD-MM-YYYY")
-														);
+														// console.log(
+														// 	"setting custom end date",
+														// 	value,
+														// 	moment(value, "DD-MM-YYYY")
+														// );
 														setDateData({
 															...dateData,
 															customEndDate: moment(value, "DD-MM-YYYY"),

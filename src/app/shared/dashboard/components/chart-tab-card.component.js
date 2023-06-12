@@ -116,7 +116,7 @@ class ChartTabCardComponent extends React.Component {
             node.style.stroke = '#' + chartData.series[bar.seriesIndex].color;
             node.style['stroke-width'] = 40;
             node.onclick = event => {
-                console.log('event', event, bar)
+                // console.log('event', event, bar)
                 bar.series.subSeriesData.series.length 
                     ? this.subCategoryOnClick(name, bar.series.subSeriesData) 
                     : null
@@ -130,7 +130,7 @@ class ChartTabCardComponent extends React.Component {
                 const seriesName = $point.parent().attr('ct:series-name') || '';
                 const value = $point.attr('ct:value');
 
-                console.log('point', $point)
+                // console.log('point', $point)
 
                 $toolTip.html(`
                     <div class='tooltip-wrapper'>

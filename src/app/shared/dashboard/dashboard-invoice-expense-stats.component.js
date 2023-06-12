@@ -258,7 +258,7 @@ class DashboardInvoiceExpenseStatsComponent extends React.Component {
                         className: `pie-${seriesItem.subSeriesData.series.length + 1}`,
                         color: this.stateColorShades[invoice.state][seriesItem.subSeriesData.series.length],
                         onClick: invoice => {
-                            console.log(invoice)
+                            // console.log(invoice)
                             AddAdvancedListComponentFilters({
                                 webStorageKey: WebStorageKey.INVOICE_LIST_SETTINGS, 
                                 filterItems: {

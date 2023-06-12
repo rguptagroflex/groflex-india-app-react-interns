@@ -271,7 +271,7 @@ class CancellationInvoiceDetailComponent extends React.Component {
 	}
 
 	onHeadControlClick(action) {
-		console.log("function call");
+		// console.log("function call");
 		const { resources } = this.props;
 		switch (action) {
 			case CancellationInvoiceAction.EMAIL:

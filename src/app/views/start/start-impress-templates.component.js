@@ -614,7 +614,8 @@ class StartImpressTemplatesComponent extends React.Component {
 						<StartQuickLinksComponent />
 					</div>
 					{/* {kycStatus == ACTIVE ? ( */}
-						<div className="col-xs-12"> 
+					{/* uncomment when razorpay intrigation done */}
+						{/* <div className="col-xs-12"> 
 							<div className="widgetContainer box box-large-bottom box-large-top dashboard-quick-buttons">
 								<div className="box-header">
 									{
@@ -633,7 +634,7 @@ class StartImpressTemplatesComponent extends React.Component {
 								</div>
 								{this.quickButtonsContent(`setupKyc`)}
 							</div>
-						</div>
+						</div> */}
 					{/* ) : null} */}
 
 					{/* <div className="col-xs-12"> 

@@ -71,8 +71,11 @@ class TransactionsListComponent extends React.Component {
 			return q.all(requests);
 		};
 		const proceed = (...args) => {
-			// console.log(args, "ARGS");
+			console.log(args, "ARGS");
 			banks = args[0];
+			if(banks.body.data.length === 0) {
+				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
+			}
 			chartOfAccountOptions = args[1];
 			// customers = args[1];
 			this.setState({
@@ -277,18 +280,6 @@ class TransactionsListComponent extends React.Component {
 								},
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 							},
-							// {
-							// 	headerName: "Account type",
-							// 	field: "accountType",
-							// 	minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
-							// 	comparator: localeCompare,
-							// 	filter: "agSetColumnFilter",
-							// 	cellRenderer: (evt) => {
-							// 		const str = evt.value;
-							// 		return str.charAt(0).toUpperCase() + str.slice(1);
-							// 	},
-							// 	...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
-							// },
 							{
 								headerName: "Payment method",
 								field: "bankDetail.bankName",
@@ -320,6 +311,23 @@ class TransactionsListComponent extends React.Component {
 							{
 								headerName: "Credit",
 								field: "credits",
+								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								comparator: localeCompareNumeric,
+								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
+								cellRenderer: (evt) => {
+									if (evt.value) {
+										return formatCurrency(evt.value);
+									}
+									return "-";
+								},
+								filter: "agNumberColumnFilter",
+								filterParams: {
+									suppressAndOrCondition: true,
+								},
+							},
+							{
+								headerName: "Balance",
+								field: "balance",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompareNumeric,
 								cellClass: ListAdvancedDefaultSettings.EXCEL_STYLE_IDS.Currency,
