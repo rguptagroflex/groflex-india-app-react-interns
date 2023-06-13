@@ -76,10 +76,19 @@ class PaymentCreateModalComponent extends React.Component {
 	}
 
 	componentDidMount() {
+		this.setState({
+			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		}, () => {
+			this.getBanksList();
+		});
+	}
+
+	getBanksList() {
+		const { canViewExpense } = this.state;
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((response) => {
 			const { body } = response;
 			let paymentMethodList = [];
-			if(body && body.data && body.data.length === 0) {
+			if(body && body.data && body.data.length === 0 && canViewExpense) {
 				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
 			}
 			if (body && body.data && body.data.length > 0) {
@@ -89,9 +98,6 @@ class PaymentCreateModalComponent extends React.Component {
 			}
 			// console.log(paymentMethodList, "LISt OF PAYMENT METHODS as NEEDED");
 			this.setState({ ...this.state, paymentMethodList });
-		});
-		this.setState({
-			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
 		});
 	}
 

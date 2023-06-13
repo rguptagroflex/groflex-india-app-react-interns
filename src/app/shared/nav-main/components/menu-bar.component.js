@@ -106,7 +106,7 @@ class MenuBarComponent extends React.Component {
 		//  if (!canViewDashboard) {
 		// 	return permitteditems.filter(item => item.name !== 'dashboard');		  
 		//   }
-		// console.log(invoiz.user, invoiz.user.rights, userPermissions.VIEW_EXPENSE) 
+		//console.log('buildPermittedItems', canViewExpenses, viewAccounting) 
 		if (invoiz.user.rights != null && !canViewExpenses) {
 		  return permitteditems.filter(item => item.name !== 'expenditure');		  
 		}
@@ -132,6 +132,10 @@ class MenuBarComponent extends React.Component {
 			canViewDunning,
 			canViewExpenses
 			};
+		
+		if (!canViewExpenses) {
+			items.push({ name: 'admin-panel', icon: 'expense', title: 'Accounting', url: '/settings/billing', resourceKey: 'accounting' });
+		}
 		 //const items = [...config.menuItemsData];
 		if (invoiz.user.isAdmin) {
 			items.push({ name: 'admin-panel', icon: 'settings', title: 'Admin Panel', url: '/admin-panel', resourceKey: 'adminpanel' });
@@ -169,7 +173,11 @@ class MenuBarComponent extends React.Component {
 			canViewExpenses,
 			viewAccounting
 			};
-		 //const items = [...config.menuItemsData];		 
+		 //const items = [...config.menuItemsData];	
+		 if (!canViewExpenses) {
+			items.push({ name: 'billing', icon: 'expense', title: 'Accounting', url: '/settings/billing', resourceKey: 'accounting' });
+		}
+
 		if (invoiz.user.isAdmin) {
 			items.push({ name: 'admin-panel', icon: 'settings', title: 'Admin Panel', url: '/admin-panel', resourceKey: 'adminpanel' });
 		}

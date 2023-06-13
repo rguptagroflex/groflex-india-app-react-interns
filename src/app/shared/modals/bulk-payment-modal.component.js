@@ -79,9 +79,10 @@ class BulkPaymentModalComponent extends React.Component {
 	}
 
 	getBanksList() {
+		const { canViewExpense } = this.state;
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
 			// console.log(res.body.data, "GET BANKS LIST IN BULK PAYMENT MODAL");
-			if(res.body && res.body.data && res.body.data.length === 0) {
+			if(res.body && res.body.data && res.body.data.length === 0 && canViewExpense) {
 				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
 			}
 			this.setState({
@@ -99,9 +100,10 @@ class BulkPaymentModalComponent extends React.Component {
 	}
 
 	componentDidMount() {
-		this.getBanksList();
 		this.setState({
 			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+		}, () => {
+			this.getBanksList();
 		});
 	}
 

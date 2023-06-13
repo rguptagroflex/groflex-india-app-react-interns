@@ -124,7 +124,7 @@ export const updateSubscriptionDetails = callback => {
 					$('.menuHeader_search').addClass('trial-locked');
 					$('.menuHeader_newsfeed').addClass('trial-locked');
 
-					invoiz.router.redirectTo('/settings/account');
+					invoiz.router.redirectTo('/settings/billing');
 
 					// ModalService.open(
 					// 	<UpgradeModalComponent title={resources.trialExpiredMessage} resources={resources} subscriptionDetail={subscriptionData} />,
@@ -143,7 +143,7 @@ export const updateSubscriptionDetails = callback => {
 				$('.menuHeader_search').addClass('trial-locked');
 				$('.menuHeader_newsfeed').addClass('trial-locked');
 
-				invoiz.router.redirectTo('/settings/account');
+				invoiz.router.redirectTo('/settings/billing');
 
 				// ModalService.open(
 				// 	<UpgradeModalComponent title={resources.accountDownMessage} resources={resources} subscriptionDetail={subscriptionData} />,

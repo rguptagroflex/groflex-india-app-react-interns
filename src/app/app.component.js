@@ -87,12 +87,12 @@ class PageContainer extends React.Component {
 				IntercomAPI.update(this.state.intercomUser)
 			}
 
-			if (this.isLoggedIn() && this.state.intercomUser.Plan === 'Free_Plan') {
+			if (this.isLoggedIn() && this.state.intercomUser.Plan === 'Free_Plan' && (invoiz.user.registrationStep !== "legal_form" && invoiz.user.registrationStep !== "mobileotp")) {
 				this.showNewFeatureLivePopup();
 			}
 			
 		});
-
+		
 		this.setState(
 			{
 				isSubscriptionDataSet: true,
@@ -144,6 +144,9 @@ class PageContainer extends React.Component {
 				}}
 				closeModal={() => {
 					ModalService.close(<UserWizardOnBoardingModalComponent store={store} />);
+					if (this.isLoggedIn() && this.state.intercomUser.Plan === 'Free_Plan') {
+						this.showNewFeatureLivePopup();
+					}
 				}}
 			/>,
 			{
