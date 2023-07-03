@@ -998,6 +998,7 @@
 		"unlimited": "Unlimited",
 		"starter": "Starter",
 		"free": "Free",
+		"accounting": "Accounting",		
 		"recurringTemplate": "Recurring invoice template",
 		"locked": "Locked",
 		"cash": "Paid by cash",
@@ -1066,7 +1067,8 @@
 		"source": "Source",
 		"value": "Value",
 		"exportFormat": "Export type",
-		"type": "File format"
+		"type": "File format",
+		"mobile": "Mobile"
 	},
 	"additionalDiscount": "Additional discount",
 	"discountAmountError": "Discount amount must be greater than 0!",
@@ -1931,7 +1933,8 @@
 		"teamMembers": "Team Members",
 		"settings": "Settings",
 		"adminpanel": "Admin Panel",
-		"marketplace": " App Store"
+		"marketplace": " App Store",
+		"inventory": "Inventory Management"
 	},
 	"subMenuItems": {
 		"invoice": "Invoices",
@@ -1962,7 +1965,8 @@
 		"reports": "Reports",
 		"cashAndBank": "Cash and bank",
 		"transactions": "Transactions",
-		"chartOfAccounts": "Chart of Accounts"
+		"chartOfAccounts": "Chart of Accounts",
+		"stockMovement": "Stock Movement"
 	},
 	"routesTitle": {
 		"login": "Login",

@@ -31,7 +31,8 @@ class MenuComponent extends React.Component {
 			isNewsfeedVisible: false,
 			canReceiveNotification: invoiz.user && invoiz.user.hasPermission(userPermissions.RECEIVE_NOTIFCATIONS),
 			canViewInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_INVOICE_REMINDER),
-			canViewRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_RECURRING_INVOICE)
+			canViewRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_RECURRING_INVOICE),
+			viewAccounting: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING),
 		};
 	}
 
@@ -129,9 +130,10 @@ class MenuComponent extends React.Component {
 	}
 
 	render() {
-		const { activeItem, activeSubmenuItem, hideMenu, submenuVisible, isNewsfeedVisible } = this.state;
+		const { activeItem, activeSubmenuItem, hideMenu, submenuVisible, isNewsfeedVisible, viewAccounting  } = this.state;
 		const { isLoadingNewsfeedItems, newsfeedItems, resources } = this.props;
 		const items = this.getPermittedNotifications(newsfeedItems);
+		//console.log('viewAccounting', viewAccounting)
 		const content = hideMenu ? null : (
 			<nav className="menu">
 				<MenuHeaderComponent

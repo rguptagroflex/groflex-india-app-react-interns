@@ -36,18 +36,20 @@ const initialState = {
 		{ key: 'planId', title: 'Plan ID', width: 100, resourceKey: 'planId' },
 		{ key: 'vendor', title: 'Vendor', width: 80, notSortable: true, resourceKey: 'vendor' },
 		{ key: 'trialEndAt', title: 'Trial bis', width: 80, resourceKey: 'trialUp' },
-		{ key: 'impressOfferLimit', title: 'Impress', width: 75, notSortable: true, resourceKey: 'impress' },
-		{ key: 'financeApiTenantId', title: 'Finance ID', notSortable: true, resourceKey: 'financeId' },
+		{ key: 'registeredAt', title: 'Reg. Date', width: 75, notSortable: true, resourceKey: 'startDate' },
+		{ key: 'mobile', title: 'Mobile', notSortable: true, resourceKey: 'mobile' },
 		{ key: 'registrationStep', title: 'Reg. Step', width: 85, notSortable: true, resourceKey: 'registrationStep' },
 		{ key: 'dropdown', title: '', width: '50px', notSortable: true, notClickable: true, resourceKey: '' }
 	],
 	filterItems: [
 		{ key: 'all', title: 'Alle', count: 0, active: true, resouceKey: 'all' },
-		{ key: 'trial', title: 'Trial', count: 0, resouceKey: 'trial' },
-		{ key: 'Free_mnth', title: 'Free.', count: 0, resouceKey: 'free' },
-		{ key: 'starter', title: 'Std.', count: 0, resouceKey: 'starter' },
-		{ key: 'standard', title: 'Std.', count: 0, resouceKey: 'standard' },
-		{ key: 'unlimited', title: 'Unlimited', count: 0, resouceKey: 'unlimited' }
+		{ key: 'Free_Plan', title: 'Free_Plan', count: 0, resouceKey: 'free' },
+		{ key: 'Accounting', title: 'Accounting', count: 0, resouceKey: 'accounting' },		
+		// { key: 'trial', title: 'Trial', count: 0, resouceKey: 'trial' },
+		// { key: 'Free_mnth', title: 'Free.', count: 0, resouceKey: 'free' },
+		// { key: 'starter', title: 'Std.', count: 0, resouceKey: 'starter' },
+		// { key: 'standard', title: 'Std.', count: 0, resouceKey: 'standard' },
+		// { key: 'unlimited', title: 'Unlimited', count: 0, resouceKey: 'unlimited' }
 	],
 	currentPage: 1,
 	totalPages: 1,

@@ -791,7 +791,71 @@ class AccountSubscriptionComponent extends React.Component {
 					</div>
 				</div>
 			: 
-			(subscriptionDetail.planId && ( subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN )) ? 
+			(subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN ) ? 
+				<div className="settings-subscription-component">
+					{isLoading ? (
+						<LoaderComponent text={"Loading..."} visible={isLoading} />
+					) : (null)}
+					<div className="box" style={{padding: "26px 32px"}}>
+						<div className="row">
+							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
+							<div className="col-xs-12">
+								<div className="text-h5 u_mb_8">{title}</div>
+							</div>
+							<div className="col-xs-12 text-h6 u_pb_20">{"You can now access these premium features "}</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Cash and Bank</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Transactions</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Chart of Accounts</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Bank Reconciliation</div>
+							</div>
+							<div className="text-h6 u_pl_10">	
+								<div className="icon active icon-check_circle">&nbsp;Cash Flow</div>
+							</div>
+							<div className="col-xs-12 u_pt_20">{content}</div>
+							<div className="col-xs-12 u_pt_20 u_pb_20">							
+								<div className="text-h5 u_mb_8">{'Choose Plan'}</div>
+							</div>
+							<div className="col-xs-12">
+								<div className="row">
+									<RadioInputComponent
+										wrapperClass={`plan-type-toggle col-xs-6`}
+										options={[
+											{ label: "Yearly (Save 20%)", value: "yearly" },
+											{ label: "Monthly", value: "monthly" },
+										]}
+										value={planType || "yearly"}
+										onChange={(val) => this.onPlanTypeFieldChange(val)}
+										dataQsId="plan-type"
+									/>
+								</div>
+							</div>
+							<div className="col-xs-12 u_pt_10">							
+								<div className="text-h5 plan-price-text">{planPrice}</div>
+							</div>
+							<div className="col-xs-12" style={{"textAlign": "right"}}>							
+								<ButtonComponent
+									buttonIcon={"icon-check"}
+									type="primary"
+									isWide={false}
+									callback={() => this.onManageSubscriptionClick(true)}
+									label={"Buy Now"}
+									dataQsId="settings-account-btn-subscription"
+									disabled={!canEditSubscription}
+								/>
+							</div>
+							{/* <div className="col-xs-12 text-next-payment u_pt_20">{"Your next payment will be on 27.03.2024"}</div> */}
+						</div>
+					</div>
+				</div>
+			:
+			(subscriptionDetail.planId && ( subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN )) ? 
 				<div className="settings-subscription-component">
 					<div className="box" style={{padding: "26px 32px"}}>
 						<div className="row">

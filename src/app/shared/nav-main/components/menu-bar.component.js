@@ -174,7 +174,7 @@ class MenuBarComponent extends React.Component {
 			viewAccounting
 			};
 		 //const items = [...config.menuItemsData];	
-		 if (!canViewExpenses) {
+		if (!canViewExpenses) {
 			items.push({ name: 'billing', icon: 'expense', title: 'Accounting', url: '/settings/billing', resourceKey: 'accounting' });
 		}
 
