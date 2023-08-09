@@ -1,29 +1,29 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import invoiz from 'services/invoiz.service';
+import React from "react";
+import { Provider } from "react-redux";
+import invoiz from "services/invoiz.service";
 import TopbarComponent from "shared/topbar/topbar-start-page.component";
 // import DashboardTaxEstimationStatsComponent from 'shared/dashboard/dashboard-tax-estimation-stats.component';
 // import DashboardOnboardingComponent from 'shared/dashboard/dashboard-onboarding.component';
-import DashboardInvoiceExpenseStatsComponent from 'shared/dashboard/dashboard-invoice-expense-stats.component';
-import DashboardSalesExpensesStatsComponent from 'shared/dashboard/dashboard-sales-expenses-stats.component';
-import DashboardTopSalesStatsArticleComponent from 'shared/dashboard/dashboard-top-sales-stats-article.component';
-import DashboardTopSalesStatsComponent from 'shared/dashboard/dashboard-top-sales-stats.component';
+import DashboardInvoiceExpenseStatsComponent from "shared/dashboard/dashboard-invoice-expense-stats.component";
+import DashboardSalesExpensesStatsComponent from "shared/dashboard/dashboard-sales-expenses-stats.component";
+import DashboardTopSalesStatsArticleComponent from "shared/dashboard/dashboard-top-sales-stats-article.component";
+import DashboardTopSalesStatsComponent from "shared/dashboard/dashboard-top-sales-stats.component";
 // import DashboardInvoiceOfferStatsComponent from 'shared/dashboard/dashboard-invoice-offer-stats.component';
 // import DashboardAchievementCenterComponent from 'shared/dashboard/dashboard-achievement-center.component';
 // import DashboardQuickButtonsComponent from 'shared/dashboard/dashboard-quick-buttons.component';
 // import DashboardBankingComponent from 'shared/dashboard/dashboard-banking.component';
-import DashboardSalesByArticleStatsComponent from 'shared/dashboard/dashboard-sales-article-stats.component';
-import DashboardQuotationComponent from 'shared/dashboard/dashboard-quotation.component';
-import DashboardInvoiceQuotationStatsComponent from 'shared/dashboard/dashborad-invoice-quotation-stats.component';
-import store from 'redux/store';
-import { scrollToTop } from 'helpers/scrollToTop';
-import userPermissions from 'enums/user-permissions.enum';
-import DashboardQuotationsPurchaseOrderStatsComponent from 'shared/dashboard/dashboard-quotations-purchase-order-stats.component';
-import DashboardReceivablesStatsComponent from 'shared/dashboard/dashboard-receivables-stats.component';
-import DashboardUnpaidExpensesStatsComponent from 'shared/dashboard/dashboard-unpaid-expenses-stats.component';
-import DashboardSalesByCustomerStatsComponent from '../../shared/dashboard/dashboard-sales-customer-stats.component';
-import DashboardExpenseArticleStatsComponent from '../../shared/dashboard/dashboard-expense-article-stats.component';
-import DashboardSalesArticleCustomerStatsComponent from '../../shared/dashboard/dashboard-sales-article-customer-stats.component';
+import DashboardSalesByArticleStatsComponent from "shared/dashboard/dashboard-sales-article-stats.component";
+import DashboardQuotationComponent from "shared/dashboard/dashboard-quotation.component";
+import DashboardInvoiceQuotationStatsComponent from "shared/dashboard/dashborad-invoice-quotation-stats.component";
+import store from "redux/store";
+import { scrollToTop } from "helpers/scrollToTop";
+import userPermissions from "enums/user-permissions.enum";
+import DashboardQuotationsPurchaseOrderStatsComponent from "shared/dashboard/dashboard-quotations-purchase-order-stats.component";
+import DashboardReceivablesStatsComponent from "shared/dashboard/dashboard-receivables-stats.component";
+import DashboardUnpaidExpensesStatsComponent from "shared/dashboard/dashboard-unpaid-expenses-stats.component";
+import DashboardSalesByCustomerStatsComponent from "../../shared/dashboard/dashboard-sales-customer-stats.component";
+import DashboardExpenseArticleStatsComponent from "../../shared/dashboard/dashboard-expense-article-stats.component";
+import DashboardSalesArticleCustomerStatsComponent from "../../shared/dashboard/dashboard-sales-article-customer-stats.component";
 
 class DashboardComponent extends React.Component {
 	constructor(props) {
@@ -57,7 +57,7 @@ class DashboardComponent extends React.Component {
 	// 		</Provider>
 	// 	);
 	// }
-	componentDidMount () {
+	componentDidMount() {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_DASHBOARD)) {
 			invoiz.user.logout(true);
 		}
@@ -70,29 +70,25 @@ class DashboardComponent extends React.Component {
 		return (
 			<Provider store={store}>
 				<div className="dashboard-component-wrapper">
-					<TopbarComponent
-						title={'Dashboard'}
-						viewIcon={`icon-dashboard`}
-					/>
+					<TopbarComponent title={"Dashboard"} viewIcon={`icon-dashboard`} />
 					{/* <DashboardOnboardingComponent /> */}
 					{/* <DashboardQuickButtonsComponent /> */}
-					<div className="row" style={{paddingTop: '18px'}}>
+					<div className="row" style={{ paddingTop: "18px" }}>
 						{canViewExpense && (
-								<div className="col-xs-6">
+							<div className="col-xs-6">
 								<DashboardReceivablesStatsComponent />
 							</div>
-							)}
+						)}
 						{canViewExpense && (
 							<div className="col-xs-6">
 								<DashboardUnpaidExpensesStatsComponent />
 							</div>
-							)}
+						)}
 						{!canViewExpense && (
 							<div className="col-xs-12">
 								<DashboardReceivablesStatsComponent />
 							</div>
-							)}
-						
+						)}
 					</div>
 					<div className="row">
 						<div className="col-xs-6">
@@ -103,24 +99,24 @@ class DashboardComponent extends React.Component {
 						</div>
 					</div>
 					{canViewExpense && (
-							<div className="row">
+						<div className="row">
 							<div className="col-xs-12">
 								<DashboardSalesExpensesStatsComponent />
 							</div>
 						</div>
-							)}
-					
+					)}
+
 					<div className="row">
-					{!canViewExpense && (
-							 <div className="col-xs-6">
-							 <DashboardSalesByArticleStatsComponent />
-						 </div>
-							)}
-							{!canViewExpense && (
+						{!canViewExpense && (
 							<div className="col-xs-6">
-							<DashboardSalesByCustomerStatsComponent />
-						</div> 
-							)}
+								<DashboardSalesByArticleStatsComponent />
+							</div>
+						)}
+						{!canViewExpense && (
+							<div className="col-xs-6">
+								<DashboardSalesByCustomerStatsComponent />
+							</div>
+						)}
 						{/* <div className="col-xs-6">
 							<DashboardSalesByArticleStatsComponent />
 						</div>
@@ -129,16 +125,14 @@ class DashboardComponent extends React.Component {
 						</div> */}
 						{canViewExpense && (
 							<div className="col-xs-6">
-							<DashboardSalesArticleCustomerStatsComponent />
-						</div>
-							)}
-							{canViewExpense && (
-						<div className="col-xs-6">
-						<DashboardExpenseArticleStatsComponent />
-					</div>
-							)}
-						
-						
+								<DashboardSalesArticleCustomerStatsComponent />
+							</div>
+						)}
+						{canViewExpense && (
+							<div className="col-xs-6">
+								<DashboardExpenseArticleStatsComponent />
+							</div>
+						)}
 					</div>
 					{/* <div className="row">
 						<div className="col-xs-5 col-gutter-right-10">
@@ -150,16 +144,16 @@ class DashboardComponent extends React.Component {
 					</div> */}
 					{/* <DashboardBankingComponent /> */}
 					<div className="row">
-	 					{/* <div className="col-xs-6 col-gutter-right-20">
+						{/* <div className="col-xs-6 col-gutter-right-20">
 	 						<DashboardTopSalesStatsComponent />
 	 					</div>
 						<div className="col-xs-6 col-gutter-left-20">
 	 						<DashboardTopSalesStatsArticleComponent />
 	 					</div> */}
-	 					{/* <div className="col-xs-5 col-no-gutter-left">
+						{/* <div className="col-xs-5 col-no-gutter-left">
 	 						<DashboardInvoiceOfferStatsComponent />
 	 					</div> */}
-	 				</div>
+					</div>
 					{/* <DashboardTaxEstimationStatsComponent /> */}
 					{/* <DashboardAchievementCenterComponent /> */}
 				</div>

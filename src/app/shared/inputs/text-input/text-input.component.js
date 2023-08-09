@@ -1,7 +1,7 @@
-import React from 'react';
-import TextInputLabelComponent from 'shared/inputs/text-input/text-input-label.component';
-import TextInputHintComponent from 'shared/inputs/text-input/text-input-hint.component';
-import TextInputErrorComponent from 'shared/inputs/text-input/text-input-error.component';
+import React from "react";
+import TextInputLabelComponent from "shared/inputs/text-input/text-input-label.component";
+import TextInputHintComponent from "shared/inputs/text-input/text-input-hint.component";
+import TextInputErrorComponent from "shared/inputs/text-input/text-input-error.component";
 
 class TextInputComponent extends React.Component {
 	render() {
@@ -23,15 +23,16 @@ class TextInputComponent extends React.Component {
 			noInputBar,
 			wrapperClass,
 			icon,
-			iconAction
+			iconAction,
 		} = this.props;
 
 		return (
-			<div className={`text-input-component ${wrapperClass || ''}`}>
+			<div className={`text-input-component ${wrapperClass || ""}`}>
 				<input
-					className={`input ${!value ? 'input-empty' : ''} ${errorMessage ? 'input-invalid' : ''}`}
+					autoFocus={this.props.autoFocus}
+					className={`input ${!value ? "input-empty" : ""} ${errorMessage ? "input-invalid" : ""}`}
 					tabIndex="0"
-					type={isPassword ? 'password' : 'text'}
+					type={isPassword ? "password" : "text"}
 					id={id}
 					name={name}
 					placeholder={placeholder}
@@ -41,17 +42,22 @@ class TextInputComponent extends React.Component {
 					spellCheck={spellCheck}
 					value={value}
 					data-qs-id={dataQsId}
-					onChange={ev => this.onChange(ev)}
-					onInput={ev => this.onInput(ev)}
-					onPaste={ev => this.onPaste(ev)}
-					onKeyUp={ev => this.onKeyUp(ev)}
-					onKeyDown={ev => this.onKeyDown(ev)}
-					onBlur={ev => this.onBlur(ev)}
-					onFocus={ev => this.onFocus(ev)}
+					onChange={(ev) => this.onChange(ev)}
+					onInput={(ev) => this.onInput(ev)}
+					onPaste={(ev) => this.onPaste(ev)}
+					onKeyUp={(ev) => this.onKeyUp(ev)}
+					onKeyDown={(ev) => this.onKeyDown(ev)}
+					onBlur={(ev) => this.onBlur(ev)}
+					onFocus={(ev) => this.onFocus(ev)}
 				/>
-				
+
 				{noInputBar ? null : <span className="input_bar" />}
-				{icon && <span  className={`input_icon ${icon} ${iconAction ? 'pointer' : ''}`} onClick={()=> iconAction && iconAction()} ></span>}
+				{icon && (
+					<span
+						className={`input_icon ${icon} ${iconAction ? "pointer" : ""}`}
+						onClick={() => iconAction && iconAction()}
+					></span>
+				)}
 				<TextInputLabelComponent className="input_label" text={label} />
 
 				<TextInputHintComponent visible={!!hintMessage} hintMessage={hintMessage} />

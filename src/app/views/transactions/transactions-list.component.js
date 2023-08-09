@@ -73,8 +73,8 @@ class TransactionsListComponent extends React.Component {
 		const proceed = (...args) => {
 			console.log(args, "ARGS");
 			banks = args[0];
-			if(banks.body.data.length === 0) {
-				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
+			if (banks.body.data.length === 0) {
+				invoiz.page.showToast({ type: "error", message: "Please create Cash and Bank first" });
 			}
 			chartOfAccountOptions = args[1];
 			// customers = args[1];

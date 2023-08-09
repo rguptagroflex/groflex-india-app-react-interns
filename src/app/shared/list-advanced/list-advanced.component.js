@@ -29,6 +29,7 @@ import BtnCellRendererComponent from "shared/list-advanced/cell-renderers/button
 import SelectCellRendererComponent from "shared/list-advanced/cell-renderers/dropdown-cell-renderer.component";
 const parallelLinesIcon = require("assets/images/icons/parallelLines.svg");
 import SvgInline from "react-svg-inline";
+import SelectInput from "../inputs/select-input/select-input.component";
 
 const ACTION_POPUP_CELL_CLASS = "action-popup-cell";
 const FIELD_ACTION_POPUP_CELL = "actionPopupCell";
@@ -75,6 +76,13 @@ const ColumnSystemCells = {
 		cellRenderer: "actionPopupCellRenderer",
 	},
 };
+
+function camelCase(str) {
+	// converting all characters to lowercase
+	let ans = str.toLowerCase();
+	// Returning string to camelcase
+	return ans.split(" ").reduce((s, c) => s + (c.charAt(0).toUpperCase() + c.slice(1)));
+}
 
 class ListAdvancedComponent extends React.Component {
 	constructor(props) {
@@ -553,6 +561,7 @@ class ListAdvancedComponent extends React.Component {
 		this.updateLocalStorageSettingsTimeout = null;
 
 		this.state = {
+			selectFilterOption: null,
 			currentActionCellPopupId: null,
 			currentActionCellPopupItemData: null,
 			frameworkComponents: {
@@ -1189,7 +1198,7 @@ class ListAdvancedComponent extends React.Component {
 			rowData = this.getAllRows();
 			tabbedFilterItems = headTabbedFilterItemsFunc(rowData);
 			currentFilterModel = gridOptions.api.getFilterModel();
-
+			console.log("%cTabbedFilterItems: ", "background: #000000; color: #bada55", tabbedFilterItems);
 			if (Object.keys(currentFilterModel).length > 0) {
 				tabbedFilterItems.forEach((tabbedFilterItem) => {
 					if (
@@ -1293,6 +1302,22 @@ class ListAdvancedComponent extends React.Component {
 
 		const hasNoFilterResults = rowCount === 0;
 		const hasSecondHeadBar = tabbedFilterItems.length > 0 || headViewSwitchAction;
+		let currentFilterValue = tabbedFilterItems.find((item) => item.active);
+		currentFilterValue = currentFilterValue
+			? { ...currentFilterValue, label: `${currentFilterValue.label} (${currentFilterValue.count})` }
+			: null;
+		console.log(currentFilterValue, "NOW LATEST");
+
+		// if (gridOptions && gridOptions.api) {
+		// 	currentFilterValue = camelCase(currentFilterValue.label || this.state.selectFilterOption);
+		// 	console.log("Selected filter option", this.state.selectFilterOption);
+		// 	console.log("CURRENT LABEL", currentFilterValue);
+		// 	console.log(
+		// 		"%cCurrent selected tab filter: ",
+		// 		"background: #000000; color: #bada55",
+		// 		gridOptions.api.getFilterModel()
+		// 	);
+		// }
 
 		const emptyListContent = emptyState ? (
 			<div className="list-advanced-component-empty-list">
@@ -1424,7 +1449,7 @@ class ListAdvancedComponent extends React.Component {
 
 		const searchContent = (
 			<React.Fragment>
-				{rowCount > -1 && rowCountMax > -1 ? (
+				{/* {rowCount > -1 && rowCountMax > -1 ? (
 					<div className="search-results-info">
 						<span className="bold">Displayed:</span> <span>{rowCount}</span> of <span>{rowCountMax}</span>
 						{rowsSelected.length > 0 ? (
@@ -1433,7 +1458,7 @@ class ListAdvancedComponent extends React.Component {
 							</React.Fragment>
 						) : null}
 					</div>
-				) : null}
+				) : null} */}
 
 				{!firstHeadBarControlsInSecondHeadBar ? (
 					<ListAdvancedSearchComponent
@@ -1454,7 +1479,8 @@ class ListAdvancedComponent extends React.Component {
 				className={`${
 					!hasFirstHeadBar
 						? `list-advanced-component ag-theme-alpine ${usePagination ? "" : "no-pagination"} ${
-								hasSecondHeadBar ? "has-second-head-bar" : ""
+								// hasSecondHeadBar ? "has-second-head-bar" : ""
+								false ? "has-second-head-bar" : ""
 						  } ${searchFieldInSecondHeadBar ? "search-field-in-second-head-bar" : ""}`
 						: `list-advanced-component-manual-entry ag-theme-alpine no-pagination`
 				}`}
@@ -1463,18 +1489,52 @@ class ListAdvancedComponent extends React.Component {
 				<div className="list-advanced-head">
 					{!hasFirstHeadBar ? (
 						<div className="head-first-bar">
-							{firstHeadBarControlsInSecondHeadBar ? null : headBarControls}
-
 							<div className="left-col">
 								{searchFieldInSecondHeadBar
 									? replaceSearchFieldInFirstHeadBarWith
 										? replaceSearchFieldInFirstHeadBarWith()
 										: searchContent
 									: searchContent}
+
+								{tabbedFilterItems.length > 0 && (
+									<div className="filter-search-container">
+										<span className="search-filter-label">Filters: </span>
+										<SelectInput
+											allowCreate={false}
+											notAsync={true}
+											loadedOptions={tabbedFilterItems.map((item) => {
+												return {
+													...item,
+													label: `${item.label} (${item.count})`,
+													value: camelCase(item.label),
+												};
+											})}
+											value={currentFilterValue || tabbedFilterItems[0]}
+											options={{
+												clearable: false,
+												noResultsText: false,
+												labelKey: "label",
+												valueKey: "value",
+												matchProp: "label",
+												// placeholder: "Select Bank",
+												handleChange: (filterItem) => {
+													this.onTabbedFilterItemClick(filterItem);
+													this.setState({
+														...this.state,
+														selectFilterOption: filterItem.value,
+													});
+												},
+											}}
+										/>
+									</div>
+								)}
 							</div>
+
+							{firstHeadBarControlsInSecondHeadBar ? null : headBarControls}
 						</div>
 					) : null}
-					{hasSecondHeadBar ? (
+					{/* {hasSecondHeadBar ? ( */}
+					{false ? (
 						<div className="head-second-bar">
 							{searchFieldInSecondHeadBar ? <div className="search-content">{searchContent}</div> : null}
 

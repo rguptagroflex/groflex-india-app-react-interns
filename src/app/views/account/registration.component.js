@@ -18,12 +18,15 @@ import { format } from "util";
 import SelectStateInputComponent from "shared/select-state/select-state.component";
 import imprezzLogoSmall from "assets/images/impress_short_icon.png";
 import landingImage from "assets/images/login/login.jpg";
+import googleIcon from "assets/images/social/google.png";
 
 import Carousel from "shared/carousel/Carousel.component";
 import OnboardTileWrapper from "shared/onboarding/onboardtile-wrapper.component";
 import OnboardInputComponent from "shared/onboarding/onboard-select.component";
 import { handleTwoFactorErrors } from "helpers/errors";
 import { DetailViewConstants, errorCodes } from "helpers/constants";
+import FirstColumn from "./firstColumn.component";
+
 class RegistrationComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -232,128 +235,14 @@ class RegistrationComponent extends React.Component {
 
 		return (
 			<div className={`landing-wrapper landing-state-${viewState}`}>
-				<div className="landing-sidebar">
+				{/* <div className="landing-sidebar">
 					<div className="imprezz-logo">
 						<Link to="/account/login">
 							<img src="/assets/images/svg/groflex.svg" />
 						</Link>
 					</div>
 
-					{/* <div className="landing-fact-imprezz-logo">
-						<Link to="/account/login">
-							<img className="imprezz-small-image" src={imprezzLogoSmall} />
-						</Link>
-					</div> */}
-					{/* {registrationFact} */}
-
-					{/* <div className="landing-carousel-wrapper">
-						<Carousel
-							className="landing-carousel"
-							activeSlide={activeCarouselSlide}
-							updateActiveSlide={(slide) => this.setState({ activeCarouselSlide: slide })}
-						>
-							<Carousel.Slides>
-								<div className="landing-carousel-slide text-center">
-									<p className="landing-carousel-slide-title">Best and Easiest Billing Software!</p>
-									<div className="landing-carousel-slide-content">
-										<img
-											className="landing-carousel-slide-content-image"
-											width={200}
-											height={200}
-											src="/assets/images/svg/landing/landing-slide1.svg"
-										/>
-										<div className="landing-carousel-slide-content-points">
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>Create GST compliant invoices</p>
-											</div>
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>Recurring invoices for your buis</p>
-											</div>
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>Create bills in multiple currencies</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div className="landing-carousel-slide text-center">
-									<p className="landing-carousel-slide-title">Sales Insights at your Finger Tips</p>
-									<div className="landing-carousel-slide-content">
-										<img
-											className="landing-carousel-slide-content-image"
-											width={200}
-											height={200}
-											src="/assets/images/svg/landing/landing-slide2.svg"
-										/>
-										<div className="landing-carousel-slide-content-points">
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>Analyse your business better</p>
-											</div>
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>Real-time business data</p>
-											</div>
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>
-													Get your sales numbers increasing<br></br> with smart products
-												</p>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div className="landing-carousel-slide text-center">
-									<p className="landing-carousel-slide-title">Manage your Expenses Effectively</p>
-									<div className="landing-carousel-slide-content">
-										<img
-											className="landing-carousel-slide-content-image"
-											width={200}
-											height={200}
-											src="/assets/images/svg/landing/landing-slide3.svg"
-										/>
-										<div className="landing-carousel-slide-content-points">
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>
-													Track all your expenses and <br></br>purchases in one place
-												</p>
-											</div>
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>Easiest tool for expense tracking</p>
-											</div>
-											<div className="point">
-												<img src="/assets/images/icons/green_check_mark.svg" />
-												<p>Create purchase orders</p>
-											</div>
-										</div>
-									</div>
-								</div>
-							</Carousel.Slides>
-							<Carousel.PageIndicators>
-								<button
-									key={0}
-									className={activeCarouselSlide === 0 ? "active" : ""}
-									onClick={() => this.setState({ activeCarouselSlide: 0 })}
-								/>
-								<button
-									key={1}
-									className={activeCarouselSlide === 1 ? "active" : ""}
-									onClick={() => this.setState({ activeCarouselSlide: 1 })}
-								/>
-								<button
-									key={2}
-									className={activeCarouselSlide === 2 ? "active" : ""}
-									onClick={() => this.setState({ activeCarouselSlide: 2 })}
-								/>
-							</Carousel.PageIndicators>
-						</Carousel>
-					</div> */}
-					<img className='landing-image' src={landingImage}/>
-
+					<img className="landing-image" src={landingImage} />
 
 					<div className="media-coverage text-center">
 						<p className="media-coverage-title">National media that has covered us!</p>
@@ -374,35 +263,23 @@ class RegistrationComponent extends React.Component {
 						<hr></hr>
 						<div style={{ display: "flex" }}>
 							<p>
-								For more details visit <a href={"https://groflex.in"} target="_blank">www.groflex.in</a>
+								For more details visit{" "}
+								<a href={"https://groflex.in"} target="_blank">
+									www.groflex.in
+								</a>
 							</p>
 							<a href="https://groflex.in/terms-&-conditions" target="_blank">
 								Terms & Conditions
 							</a>
 						</div>
 					</div>
-
-					{/* <div className="landing-sidebar-footer">
-						<a href="https://www.imprezz.in/imprint/" target="_blank">
-							{resources.str_imprint}
-						</a>
-						<div className="link-divider" />
-						<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
-							{resources.str_termsPrivacy}
-						</a>
-					</div> */}
-				</div>
+				</div> */}
+				<FirstColumn />
 
 				<div className="landing-content">
 					<div className="landing-content-inner">
 						<div className="landing-content-inner-header">
-							{/* <div className="invoiz-logo">
-								<Link to="/account/login">
-									<img src="/assets/images/svg/imprezz.svg" />
-								</Link>
-							</div> */}
-
-							{registrationContent} 
+							{registrationContent}
 
 							{viewState === RegistrationViewState.WAIT_FOR_APPROVAL && showApprovalHintModal
 								? approvalHintModal
@@ -415,27 +292,29 @@ class RegistrationComponent extends React.Component {
 							{footer}
 						</div>
 						<div className="landing-content-inner-footer">
-							{oauthGoogleUrl ? (
-								<hr></hr>
-							) : null}
-							
+							{oauthGoogleUrl ? <hr></hr> : null}
+
 							{oauthGoogleUrl ? (
 								<ButtonComponent
 									callback={() => this.onGoogleRegisterClicked()}
-									label={resources.googleLogin}
+									// label={resources.googleLogin}
 									// buttonIcon={"icon-google"}
 									customCssClass={"button-google"}
 									// disabled={isLogginIn}
 									dataQsId="login-btn-googleLogin"
-								/>
+								>
+									<div className="button-google-content">
+										<img
+											width={20}
+											height={20}
+											style={{ marginRight: "10px", display: "inline-block" }}
+											src={googleIcon}
+											alt="loginwithgoogle"
+										/>
+										<span>{resources.googleLogin}</span>
+									</div>
+								</ButtonComponent>
 							) : null}
-							{/* <p className="terms-privacy-link">
-								By signing up you're agreeing to our
-								<a href="https://www.imprezz.in/privacy-policy/" target="_blank">
-									{" "}
-									TERMS & PRIVACY
-								</a>
-							</p> */}
 						</div>
 					</div>
 				</div>
@@ -1292,12 +1171,12 @@ class RegistrationComponent extends React.Component {
 				const passwordErrorElement = <div className="landing-password-error">{resources.passwordNotMatch}</div>;
 
 				headlineElement = resources.createInvoizAccount; //this.isMobile ? resources.trailPeriodMessage : resources.createInvoizAccount;
-				
+
 				headlineElement = (
 					<div>
-					{headlineElement}
-					<br></br>
-					<span className='sub-heading'>{resources.str_loginSub }</span>
+						{headlineElement}
+						<br></br>
+						{/* <span className="sub-heading">{resources.str_loginSub}</span> */}
 					</div>
 				);
 				const errorElement = this.state.emailError ? (
@@ -1416,7 +1295,10 @@ class RegistrationComponent extends React.Component {
 						/>
 
 						<p style={{ marginTop: 0 }}>
-							Already registered? <Link to={"/account/login"}>SIGN IN</Link>
+							Already registered?{" "}
+							<Link className="color-primary is-bold" to={"/account/login"}>
+								Sign in
+							</Link>
 						</p>
 
 						{this.state.emailValidError ? (
@@ -1531,8 +1413,8 @@ class RegistrationComponent extends React.Component {
 						</button>
 						<hr></hr>
 						<p>
-							Change Email address {" "}
-							<a onClick={() => this.changeEmail()}>
+							Change Email address{" "}
+							<a className="color-primary is-bold" onClick={() => this.changeEmail()}>
 								<strong>Go Back</strong>
 							</a>
 						</p>
@@ -1854,7 +1736,7 @@ class RegistrationComponent extends React.Component {
 						<p className="text-center">
 							Change Number?{" "}
 							<span
-								className="text-secondary"
+								className="text-secondary color-primary is-bold"
 								style={{ fontWeight: 600, cursor: "pointer" }}
 								onClick={() => {
 									invoiz.router.navigate("/account/register/mobile", true, true);
@@ -1876,7 +1758,7 @@ class RegistrationComponent extends React.Component {
 						this.state.passwordAlertClicked && !this.state.passwordValid ? "alert" : ""
 					}`}
 				>
-					{headlineElement} 
+					{headlineElement}
 				</div>
 				{contentElement}
 			</div>
