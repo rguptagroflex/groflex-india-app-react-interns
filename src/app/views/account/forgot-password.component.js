@@ -318,7 +318,7 @@ class ForgotPasswordComponent extends React.Component {
 							/>
 						</div>
 						<div style={{ margin: "10px 0px", marginBottom: "20px" }}>
-							Do you remember the password nowwww?{" "}
+							Do you remember the password now?{" "}
 							<Link className="login-now-btn" to="/account/login">
 								{resources.str_toTheLogin}
 							</Link>
