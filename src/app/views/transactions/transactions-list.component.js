@@ -356,6 +356,21 @@ class TransactionsListComponent extends React.Component {
 									return "Not reconciled";
 								},
 							},
+							{
+								headerName: "Source",
+								field: "sourceType",
+								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								comparator: localeCompare,
+								filter: "agSetColumnFilter",
+								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
+								cellRenderer: (evt) => {
+									if (evt.value == 'invoice') {
+										return "Invoice";
+									} else if (evt.value == 'expense') {
+										return "Expense";
+									}
+								},
+							},
 						]}
 						defaultSortModel={{
 							colId: "number",
