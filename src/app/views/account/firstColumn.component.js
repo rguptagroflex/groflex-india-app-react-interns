@@ -25,7 +25,7 @@ const FirstColumn = ({ settings }) => {
 		return () => {
 			clearInterval(internvalId);
 		};
-	});
+	}, []);
 
 	const defaultSetting = {
 		dots: true,
