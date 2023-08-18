@@ -1198,7 +1198,7 @@ class ListAdvancedComponent extends React.Component {
 			rowData = this.getAllRows();
 			tabbedFilterItems = headTabbedFilterItemsFunc(rowData);
 			currentFilterModel = gridOptions.api.getFilterModel();
-			console.log("%cTabbedFilterItems: ", "background: #000000; color: #bada55", tabbedFilterItems);
+			// console.log("%cTabbedFilterItems: ", "background: #000000; color: #bada55", tabbedFilterItems);
 			if (Object.keys(currentFilterModel).length > 0) {
 				tabbedFilterItems.forEach((tabbedFilterItem) => {
 					if (
@@ -1306,7 +1306,7 @@ class ListAdvancedComponent extends React.Component {
 		currentFilterValue = currentFilterValue
 			? { ...currentFilterValue, label: `${currentFilterValue.label} (${currentFilterValue.count})` }
 			: null;
-		console.log(currentFilterValue, "NOW LATEST");
+		// console.log(currentFilterValue, "NOW LATEST");
 
 		// if (gridOptions && gridOptions.api) {
 		// 	currentFilterValue = camelCase(currentFilterValue.label || this.state.selectFilterOption);

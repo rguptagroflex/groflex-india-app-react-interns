@@ -9,7 +9,7 @@ export default function ReactSlickCarousel({ settings, children }) {
 		slidesToScroll: 1,
 		autoplay: true,
 		autoplaySpeed: 2000,
-		pauseOnFocus: false,
+		pauseOnHover: false,
 		...settings,
 	};
 

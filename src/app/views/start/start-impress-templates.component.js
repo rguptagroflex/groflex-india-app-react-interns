@@ -618,9 +618,7 @@ class StartImpressTemplatesComponent extends React.Component {
 							</div>
 						</div>
 					) : null} */}
-					<div className="col-xs-12">
-						<StartQuickLinksComponent />
-					</div>
+
 					{/* uncomment when razorpay intrigation done */}
 					{kycStatus == ACTIVE ? (
 						<div className="col-xs-12">
@@ -658,6 +656,10 @@ class StartImpressTemplatesComponent extends React.Component {
 						<div className="box">
 							<WelcomeCarouselComponent />
 						</div>
+					</div>
+					{/* New placement */}
+					<div className="col-xs-12">
+						<StartQuickLinksComponent />
 					</div>
 
 					<div className="col-xs-12">

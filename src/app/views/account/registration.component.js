@@ -26,6 +26,7 @@ import OnboardInputComponent from "shared/onboarding/onboard-select.component";
 import { handleTwoFactorErrors } from "helpers/errors";
 import { DetailViewConstants, errorCodes } from "helpers/constants";
 import FirstColumn from "./firstColumn.component";
+import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
 
 class RegistrationComponent extends React.Component {
 	constructor(props) {
@@ -46,6 +47,7 @@ class RegistrationComponent extends React.Component {
 			passwordRetyped: "",
 			passwordsMatch: false,
 			hidePassword: true,
+			hideRetypedPassword: true,
 			showPasswordError: false,
 			passwordValid: false,
 			passwordAlert: false,
@@ -174,6 +176,9 @@ class RegistrationComponent extends React.Component {
 		const registrationFact = this.createRegistrationFact();
 		const registrationContent = this.createRegistrationContent();
 		const footer = this.createFooter();
+
+		console.log(this.state.password, this.state.passwordRetyped);
+		console.log(this.state.password === this.state.passwordRetyped);
 
 		const approvalHintModal = (
 			<div className="approval-hint-modal md_content">
@@ -337,6 +342,11 @@ class RegistrationComponent extends React.Component {
 
 		if (!emailValid) {
 			this.setState({ emailValidError: true });
+			return;
+		}
+
+		if (this.state.password !== this.state.passwordRetyped) {
+			// this.setState({ showPasswordError: true });
 			return;
 		}
 
@@ -591,7 +601,7 @@ class RegistrationComponent extends React.Component {
 		this.setState(
 			{
 				password,
-				passwordRetyped: password,
+				// passwordRetyped: password,
 				passwordInfo,
 			},
 			() => {
@@ -1186,17 +1196,19 @@ class RegistrationComponent extends React.Component {
 				contentElement = (
 					<div className="landing-email-input-wrapper">
 						<TextInputExtendedComponent
+							label={"Email"}
 							onKeyDown={(e) => this.onEmailKeyDown(e)}
 							value={this.state.email}
-							placeholder={resources.str_yourEmailAddress}
+							// placeholder={resources.str_yourEmailAddress}This email address already exists.
 							onChange={(val) => this.onEmailInput(val)}
 						/>
 
 						<div className={this.state.showPasswordError ? "landing-password-mismatch" : ""}>
-							<TextInputExtendedComponent
+							{/* <TextInputExtendedComponent
+								label={"Password"}
 								value={this.state.password}
 								isPassword={this.state.hidePassword}
-								placeholder={resources.str_yourPassword}
+								// placeholder={resources.str_yourPassword}
 								onKeyDown={(e) => this.onPasswordKeydown(e)}
 								onChange={(val) => this.onPasswordInput(val)}
 								// isPassword={this.state.hidePassword}
@@ -1206,14 +1218,55 @@ class RegistrationComponent extends React.Component {
 								}}
 							/>
 
-							{/* <TextInputExtendedComponent
-							value={this.state.passwordRetyped}
-							isPassword={true}
-							placeholder={resources.str_confirmPassword}
-							onFocus={() => this.onPasswordRetypeFocus()}
-							onKeyDown={e => this.onPasswordKeydown(e)}
-							onChange={val => this.onPasswordRetype(val)}
-						/> */}
+							<TextInputExtendedComponent
+								label={"Confirm your Password"}
+								value={this.state.passwordRetyped}
+								errorMessage={
+									this.state.password === this.state.passwordRetyped
+										? null
+										: resources.passwordNotMatch
+								}
+								isPassword={this.state.hideRetypedPassword}
+								// placeholder={resources.str_confirmPassword}
+								onFocus={() => this.onPasswordRetypeFocus()}
+								onKeyDown={(e) => this.onPasswordKeydown(e)}
+								onChange={(val) => this.onPasswordRetype(val)}
+								icon={!this.state.hideRetypedPassword ? "icon-invisible" : "icon-visible"}
+							/> */}
+
+							{/* testing text input component */}
+							<TextInputComponent
+								value={this.state.password}
+								label={resources.str_password}
+								id={"registration-password"}
+								name={"registration-password"}
+								isPassword={this.state.hidePassword}
+								onChange={(e) => this.onPasswordInput(e.target.value)}
+								icon={this.state.hidePassword ? "icon-invisible" : "icon-visible"}
+								iconAction={() => {
+									this.setState({ hidePassword: !this.state.hidePassword });
+								}}
+								wrapperClass="password-field"
+							/>
+
+							<TextInputComponent
+								value={this.state.passwordRetyped}
+								label={"Confirm your Password"}
+								id={"confirm-registration-password"}
+								name={"confirm-registration-password"}
+								isPassword={this.state.hidePassword}
+								errorMessage={
+									this.state.password === this.state.passwordRetyped
+										? null
+										: resources.passwordNotMatch
+								}
+								onChange={(e) => this.onPasswordRetype(e.target.value)}
+								icon={this.state.hidePassword ? "icon-invisible" : "icon-visible"}
+								iconAction={() => {
+									this.setState({ hidePassword: !this.state.hidePassword });
+								}}
+								wrapperClass="password-field"
+							/>
 
 							{this.state.showPasswordError && passwordErrorElement}
 

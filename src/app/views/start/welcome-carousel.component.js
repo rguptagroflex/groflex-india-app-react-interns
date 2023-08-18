@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const WelcomeCarouselComponent = () => {
 	return (
-		<ReactSlickCarousel settings={{ autoplaySpeed: 3000 }}>
+		<ReactSlickCarousel settings={{ autoplaySpeed: 300000, pauseOnHover: true }}>
 			<div className="welcome-carousel-div welcome1">
 				<div className="welcome1-content">
 					<h3>Welcome to Groflex!</h3>
@@ -29,12 +29,23 @@ const WelcomeCarouselComponent = () => {
 					</Link>
 				</div>
 			</div>
-			<div className="welcome-carousel-div welcome4">
+			{/* <div className="welcome-carousel-div welcome4">
 				<div className="welcome4-content">
 					<h3>Switch to digital payments</h3>
 					<p>Complete your KYC to start reciving payments directly into your bank account.</p>
 					<Link to="/invoice/new" className="outlined-button">
 						Complete KYC form
+					</Link>
+				</div>
+			</div> */}
+			<div className="welcome-carousel-div welcome5">
+				<div className="welcome5-content">
+					<h3>Invite your team</h3>
+					<p>
+						Invite your Accountant and Sales people to Groflex and save time and effort in communications.{" "}
+					</p>
+					<Link to="/settings/user" className="outlined-button">
+						Invite team
 					</Link>
 				</div>
 			</div>
