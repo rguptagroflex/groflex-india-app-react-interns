@@ -4,8 +4,8 @@ import SVGInline from "react-svg-inline";
 import userPermissions from "enums/user-permissions.enum";
 import config from "config";
 import invoiz from "services/invoiz.service";
-import checkSvg from "../../../../assets/images/icons/tick_icon.svg";
-import editSvg from "../../../../assets/images/icons/edit_icon.svg";
+import editSvgGreen from "../../../../assets/images/icons/edit_icon_green.svg";
+import checkSvgGreen from "../../../../assets/images/icons/tick_icon_green.svg";
 
 const quickLinksMap = [
 	{ name: "Create Sales", linkId: "create-sales", link: "/invoice/new" },
@@ -148,9 +148,9 @@ class StartQuickLinksComponent extends Component {
 								<SVGInline
 									width="20px"
 									height="15px"
-									svg={quickLinksEditable ? checkIcon : editIcon}
+									// svg={quickLinksEditable ? checkIcon : editIcon}
+									svg={quickLinksEditable ? checkSvgGreen : editSvgGreen}
 									className="edit-icon"
-									// fill="#00A353"
 								/>
 							</p>
 						</div>

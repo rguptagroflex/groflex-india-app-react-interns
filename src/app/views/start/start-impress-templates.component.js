@@ -662,9 +662,9 @@ class StartImpressTemplatesComponent extends React.Component {
 						<StartQuickLinksComponent />
 					</div>
 
-					<div className="col-xs-12">
+					{/* <div className="col-xs-12">
 						<StartExploreComponent />
-					</div>
+					</div> */}
 
 					<div className="dashboard-last-used-documents-component-wrapper">
 						<div className="col-xs-12">
