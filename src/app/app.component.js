@@ -1,33 +1,33 @@
-import invoiz from 'services/invoiz.service';
-import Intercom, { IntercomAPI } from 'services/intercom.service';
+import invoiz from "services/invoiz.service";
+import Intercom, { IntercomAPI } from "services/intercom.service";
 import _, { first } from "lodash";
-import React from 'react';
-import routes from 'routes';
-import { RouteTypes } from 'helpers/constants';
-import { Router, Route, Switch, withRouter } from 'react-router-dom';
-import { PublicRoute, PrivateRoute } from 'helpers/routes';
-import history from 'helpers/history';
-import { Provider } from 'react-redux';
-import store from 'redux/store';
-import NavMainComponent from 'shared/nav-main/nav-main.component';
-import FooterComponent from 'shared/footer/footer.component';
-import { getBrowserLanguage } from 'helpers/getBrowserLanguage';
-import { fetchLanguageFile } from 'redux/ducks/language/lang';
-import LanguageComponent from 'shared/language/language.component';
-import RegistrationViewState from 'enums/account/registration-view-state.enum';
-import config from 'config';
-import WebStorageService from 'services/webstorage.service';
-import WebStorageKey from 'enums/web-storage-key.enum';
-import { parseQueryString } from 'helpers/parseQueryString';
-import RegistrationOnboardingValues from 'enums/registration-values.enum';
-import UserWizardModalCompoment from 'shared/modals/user-onboarding/user-wizard-modal.component';
-import moment from 'moment';
-import { getRemainingTime } from 'helpers/timetracking';
-import ModalService from 'services/modal.service';
-import { handleNotificationErrorMessage } from 'helpers/errorMessageNotification';
+import React from "react";
+import routes from "routes";
+import { RouteTypes } from "helpers/constants";
+import { Router, Route, Switch, withRouter } from "react-router-dom";
+import { PublicRoute, PrivateRoute } from "helpers/routes";
+import history from "helpers/history";
+import { Provider } from "react-redux";
+import store from "redux/store";
+import NavMainComponent from "shared/nav-main/nav-main.component";
+import FooterComponent from "shared/footer/footer.component";
+import { getBrowserLanguage } from "helpers/getBrowserLanguage";
+import { fetchLanguageFile } from "redux/ducks/language/lang";
+import LanguageComponent from "shared/language/language.component";
+import RegistrationViewState from "enums/account/registration-view-state.enum";
+import config from "config";
+import WebStorageService from "services/webstorage.service";
+import WebStorageKey from "enums/web-storage-key.enum";
+import { parseQueryString } from "helpers/parseQueryString";
+import RegistrationOnboardingValues from "enums/registration-values.enum";
+import UserWizardModalCompoment from "shared/modals/user-onboarding/user-wizard-modal.component";
+import moment from "moment";
+import { getRemainingTime } from "helpers/timetracking";
+import ModalService from "services/modal.service";
+import { handleNotificationErrorMessage } from "helpers/errorMessageNotification";
 import RazorpayKycSetupModal from "shared/modals/razorpay-kyc-setup-modal.component";
-import { updateSubscriptionDetails } from './helpers/updateSubsciptionDetails';
-import UserWizardOnBoardingModalComponent from './shared/modals/user-onboarding/user-wizard-onboarding-modal.component';
+import { updateSubscriptionDetails } from "./helpers/updateSubsciptionDetails";
+import UserWizardOnBoardingModalComponent from "./shared/modals/user-onboarding/user-wizard-onboarding-modal.component";
 import GroflexNewFeatureLiveModalComponent from "shared/modals/groflex-new-feature-modal.component";
 
 class PageContainer extends React.Component {
@@ -37,7 +37,7 @@ class PageContainer extends React.Component {
 		this.state = {
 			hasFooterContent: false,
 			isSubscriptionDataSet: invoiz.user && invoiz.user.subscriptionData,
-			intercomUser: {}
+			intercomUser: {},
 		};
 
 		this.isLoggedInOnce = false;
@@ -55,44 +55,47 @@ class PageContainer extends React.Component {
 		// 	}
 		// });
 
-		invoiz.on('userModelSubscriptionDataSet', this.update, this);
+		invoiz.on("userModelSubscriptionDataSet", this.update, this);
 	}
 
 	update() {
-		this.setupIntercom()
-		.then(() => {
+		this.setupIntercom().then(() => {
 			//IntercomAPI.update()
 			// console.log(this.state.intercomUser);
 			let properties = {
-				'FIRSTNAME': this.state.intercomUser.firstName,
-				'LASTNAME': this.state.intercomUser.lastName,
-				'EMAIL': this.state.intercomUser.email,
-				'PLAN' : this.state.intercomUser.Plan,
-				'SMS' : `+91${this.state.intercomUser.phone}`,
-				'WHATSAPP_Number': `+91${this.state.intercomUser.phone}`,
-				'WHATSAPP': `+91${this.state.intercomUser.phone}`,
-				'LAST_LOGIN_TIME' : this.state.intercomUser.Last_Login_Time,
-				'REGISTERED_AT' : this.state.intercomUser.registeredat,
-				'USEDREFERRALCODES' : this.state.intercomUser.usedReferralCodes,
-				'UTM_CAMPAIGN' : this.state.intercomUser.utm_campaign,
-				'UTM_SOURCE' : this.state.intercomUser.utm_source,
-				'UTM_MEDIUM' : this.state.intercomUser.utm_medium,
-				'UTM_TERM' : this.state.intercomUser.utm_term,
-				'UTM_CONTENT' : this.state.intercomUser.utm_content
-			  }
+				FIRSTNAME: this.state.intercomUser.firstName,
+				LASTNAME: this.state.intercomUser.lastName,
+				EMAIL: this.state.intercomUser.email,
+				PLAN: this.state.intercomUser.Plan,
+				SMS: `+91${this.state.intercomUser.phone}`,
+				WHATSAPP_Number: `+91${this.state.intercomUser.phone}`,
+				WHATSAPP: `+91${this.state.intercomUser.phone}`,
+				LAST_LOGIN_TIME: this.state.intercomUser.Last_Login_Time,
+				REGISTERED_AT: this.state.intercomUser.registeredat,
+				USEDREFERRALCODES: this.state.intercomUser.usedReferralCodes,
+				UTM_CAMPAIGN: this.state.intercomUser.utm_campaign,
+				UTM_SOURCE: this.state.intercomUser.utm_source,
+				UTM_MEDIUM: this.state.intercomUser.utm_medium,
+				UTM_TERM: this.state.intercomUser.utm_term,
+				UTM_CONTENT: this.state.intercomUser.utm_content,
+			};
 			// console.log(properties, 'isLoggedIn', this.isLoggedIn());
-			if(config.releaseStage == "production") {
-				window.sib.email_id = this.state.intercomUser.email
-				window.sendinblue.identify(this.state.intercomUser.email, properties)
-				IntercomAPI.update(this.state.intercomUser)
+			if (config.releaseStage == "production") {
+				window.sib.email_id = this.state.intercomUser.email;
+				window.sendinblue.identify(this.state.intercomUser.email, properties);
+				IntercomAPI.update(this.state.intercomUser);
 			}
 
-			if (this.isLoggedIn() && this.state.intercomUser.Plan === 'Free_Plan' && (invoiz.user.registrationStep !== "legal_form" && invoiz.user.registrationStep !== "mobileotp")) {
+			if (
+				this.isLoggedIn() &&
+				this.state.intercomUser.Plan === "Free_Plan" &&
+				invoiz.user.registrationStep !== "legal_form" &&
+				invoiz.user.registrationStep !== "mobileotp"
+			) {
 				this.showNewFeatureLivePopup();
 			}
-			
 		});
-		
+
 		this.setState(
 			{
 				isSubscriptionDataSet: true,
@@ -100,9 +103,10 @@ class PageContainer extends React.Component {
 			() => {
 				if (this.isLoggedIn()) {
 					// if (!this.isLoggedInOnce) {
-						this.isLoggedInOnce = true;
-						if (invoiz.user.registrationStep !== "legal_form" && invoiz.user.registrationStep !== "mobileotp") return;
-						this.showUserWizard();
+					this.isLoggedInOnce = true;
+					if (invoiz.user.registrationStep !== "legal_form" && invoiz.user.registrationStep !== "mobileotp")
+						return;
+					this.showUserWizard();
 					// }
 				}
 			}
@@ -135,16 +139,16 @@ class PageContainer extends React.Component {
 				continue={async () => {
 					if (window && window.dataLayer) {
 						window._tfa = window._tfa || [];
-						window._tfa.push({notify: 'event', name: 'complete_registration', id: 1291642});
-						window.dataLayer.push({'event': 'registration_completed'});
+						window._tfa.push({ notify: "event", name: "complete_registration", id: 1291642 });
+						window.dataLayer.push({ event: "registration_completed" });
 					}
-					await this.setState({intercomUser: {...this.state.intercomUser, phone: invoiz.user.mobile}})
+					await this.setState({ intercomUser: { ...this.state.intercomUser, phone: invoiz.user.mobile } });
 					// IntercomAPI('update');
-					 IntercomAPI.update(this.state.intercomUser);
+					IntercomAPI.update(this.state.intercomUser);
 				}}
 				closeModal={() => {
 					ModalService.close(<UserWizardOnBoardingModalComponent store={store} />);
-					if (this.isLoggedIn() && this.state.intercomUser.Plan === 'Free_Plan') {
+					if (this.isLoggedIn() && this.state.intercomUser.Plan === "Free_Plan") {
 						this.showNewFeatureLivePopup();
 					}
 				}}
@@ -155,7 +159,7 @@ class PageContainer extends React.Component {
 				noTransform: true,
 				isCloseable: false,
 			}
-		)
+		);
 	}
 
 	async setupIntercom() {
@@ -168,7 +172,7 @@ class PageContainer extends React.Component {
 		}
 		if (this.isLoggedIn()) {
 			const userEmail = invoiz.user.userEmail;
-			const usedReferralCodes = invoiz.user.usedReferralCodes ? invoiz.user.usedReferralCodes.join(',') : '';
+			const usedReferralCodes = invoiz.user.usedReferralCodes ? invoiz.user.usedReferralCodes.join(",") : "";
 			const userName = `${invoiz.user.companyAddress.firstName} ${invoiz.user.companyAddress.lastName}`;
 			const plan = invoiz.user.planId ? invoiz.user.planId : "Free_Plan_2021";
 			const businessType = invoiz.user.businessType
@@ -196,7 +200,7 @@ class PageContainer extends React.Component {
 				Rererral_Codes: usedReferralCodes,
 				registeredat: registeredTime,
 				lastLoginsendpulse,
-				registeredTimesendpulse
+				registeredTimesendpulse,
 			};
 			if (invoiz.user.mobile) {
 				intercomUser.phone = invoiz.user.mobile;
@@ -216,34 +220,29 @@ class PageContainer extends React.Component {
 			utmParams.utm_content ? (intercomUser.utm_content = utmParams.utm_content) : null;
 		}
 		//console.log('intercomUser', intercomUser)
-		await this.setState({intercomUser: {...intercomUser}});
-		invoiz.on('userModelSubscriptionDataSet', this.update, this);
+		await this.setState({ intercomUser: { ...intercomUser } });
+		invoiz.on("userModelSubscriptionDataSet", this.update, this);
 	}
 
-	componentDidMount() {
-		
-	}
+	componentDidMount() {}
 
 	componentDidUpdate() {
-		invoiz.on('userModelSubscriptionDataSet', this.update, this);
+		invoiz.on("userModelSubscriptionDataSet", this.update, this);
 		// IntercomAPI('update');
 		IntercomAPI.update();
 	}
 
-	showNewFeatureLivePopup() { 
-		ModalService.open(<GroflexNewFeatureLiveModalComponent/>
-			,
-				{
-					headline: '',
-					confirmLabel: 'Buy',
-					cancelLabel: 'Cancel',
-					onConfirm: () => {
-						ModalService.close();
-						invoiz.router.navigate('/settings/billing');
-					},
-					width: 580,
-				}
-		);
+	showNewFeatureLivePopup() {
+		ModalService.open(<GroflexNewFeatureLiveModalComponent />, {
+			headline: "",
+			confirmLabel: "Buy",
+			cancelLabel: "Cancel",
+			onConfirm: () => {
+				ModalService.close();
+				invoiz.router.navigate("/settings/billing");
+			},
+			width: 580,
+		});
 	}
 
 	render() {
@@ -325,7 +324,7 @@ class AppComponent extends React.Component {
 	componentDidMount() {
 		// store.dispatch(fetchLanguageFile(getBrowserLanguage()));
 		// set default language en
-		store.dispatch(fetchLanguageFile('en'));
+		store.dispatch(fetchLanguageFile("en"));
 		// const loader = document.querySelector('#app-loader'); // hide loader in language component bcs first we get the language strings then we hide loader.
 		// loader && loader.parentNode.removeChild(loader);
 	}
