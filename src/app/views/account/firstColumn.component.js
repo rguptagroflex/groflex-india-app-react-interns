@@ -5,12 +5,8 @@ import carousel1 from "../../../assets/images/login-carousal/carousel1.png";
 import carousel2 from "../../../assets/images/login-carousal/carousel2.png";
 import carousel3 from "../../../assets/images/login-carousal/carousel3.png";
 import carousel4 from "../../../assets/images/login-carousal/carousel4.png";
-
 import { Link } from "react-router-dom";
 
-import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 const carouselImages = [carousel1, carousel2, carousel3, carousel4];
 const FirstColumn = ({ settings }) => {
 	const [carouselIndex, setCarouselIndex] = React.useState(0);
