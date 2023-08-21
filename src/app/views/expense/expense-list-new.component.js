@@ -262,20 +262,20 @@ class ExpenseListNewComponent extends React.Component {
 									label: "Open",
 									count: expenses.filter((expense) => expense.status === "open").length,
 								},
+								// {
+								// 	filter: {
+								// 		field: "status",
+								// 		filterType: "set",
+								// 		values: ["paidBank"],
+								// 	},
+								// 	label: "Paid - Bank",
+								// 	count: expenses.filter((expense) => expense.payKind === "paidBank").length,
+								// },
 								{
 									filter: {
 										field: "status",
 										filterType: "set",
-										values: ["paidBank"],
-									},
-									label: "Paid - Bank",
-									count: expenses.filter((expense) => expense.payKind === "paidBank").length,
-								},
-								{
-									filter: {
-										field: "payKind",
-										filterType: "set",
-										values: ["paidCash"],
+										values: ["paid"],
 									},
 									label: "Paid",
 									count: expenses.filter((expense) => expense.status === "paid").length,

@@ -15,6 +15,7 @@ const apiServers = {
 };
 
 const byPassCors = true;
+// const byPassCors = false;
 
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
