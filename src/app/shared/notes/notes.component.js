@@ -91,9 +91,12 @@ class NotesComponent extends React.Component {
 		return (
 			<div>
 				<div className="notes_heading text-h4">{heading}</div>
-				<div className="notes_content row">
+				<div className="notes_content row u_ml_2">
 					<div
 						onClick={this.onEditClick.bind(this)}
+						style={{width: "259px",
+							height: "80px",
+							flexShrink: "0"}}
 						className={`col-xs-12 ${viewState === NOTES_DISPLAY_STATE ? 'notes-display-wrapper' : ''}`}
 					>
 						{activeComponent}

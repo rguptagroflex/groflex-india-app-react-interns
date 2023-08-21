@@ -39,20 +39,44 @@ class CustomerContactInformationComponent extends React.Component {
 		const customer = this.props.customer;
 
 		return (
-			<div style={{ minHeight: "196px" }} className="box box-rounded customer-contact-information">
+			<div
+				style={{
+					height: "335px",
+					display: "flex",
+					padding: "16px",
+					flexDirection: "column",
+					alignItems: "flex-start",
+					gap: "16px",
+					width: "350px",
+				}}
+				className=" box-rounded customer-contact-information detail-wrap u_ml_6 u_p_20"
+			>
 				{/* <div className="text-h4 u_mb_20">Contact information</div> */}
 				<div className="customer-contact-information-scroll-container">
-					<div className="row u_mb_0">
-						<div className="col-xs-6 u_mb_10 u_mt_10">
+					<div
+						className="row u_mb_0"
+						// 					 style={{width: "390px",
+						// height: "300px",
+						// flexShrink: "0"}}
+					>
+						<div className="col-xs-5 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-4">
+								<div className="col-xs-7">
 									<div className="text-muted">E-mail</div>
-								</div>
-								<div className="col-xs-5">
-									<div className={`text-truncate ${!customer.email ? "text-placeholder" : null}`}>
+									<div
+										style={{
+											 overflow: "visible"
+											 }}
+										className={`text-truncate ${!customer.email ? "text-placeholder" : null}`}
+									>
 										{customer.email || "Not available"}
 									</div>
 								</div>
+								{/* <div className="col-xs-5">
+									<div className={`text-truncate ${!customer.email ? "text-placeholder" : null}`}>
+										{customer.email || "Not available"}
+									</div>
+								</div> */}
 								{/* <div className="col-xs-3">
 									{customer.email && (
 										<ButtonComponent
@@ -67,16 +91,22 @@ class CustomerContactInformationComponent extends React.Component {
 								</div> */}
 							</div>
 						</div>
-						<div className="col-xs-6 u_mb_10 u_mt_10">
+						<div className="col-xs-5 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-4">
+								<div className="col-xs-7">
 									<div className="text-muted">Website</div>
-								</div>
-								<div className="col-xs-5">
-									<div className={`text-truncate ${!customer.website ? "text-placeholder" : null}`}>
+									<div
+										style={{ overflow: "visible" }}
+										className={`text-truncate ${!customer.website ? "text-placeholder" : null}`}
+									>
 										{customer.website || "Not available"}
 									</div>
 								</div>
+								{/* <div className="col-xs-5">
+									<div className={`text-truncate ${!customer.website ? "text-placeholder" : null}`}>
+										{customer.website || "Not available"}
+									</div>
+								</div> */}
 								{/* <div className="col-xs-3">
 									{customer.website && (
 										<ButtonComponent
@@ -91,81 +121,90 @@ class CustomerContactInformationComponent extends React.Component {
 								</div> */}
 							</div>
 						</div>
-						<div className="col-xs-6 u_mb_10 u_mt_10">
+						<div className="col-xs-5 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-4">
+								<div className="col-xs-7">
 									<div className="text-muted">Telephone</div>
-								</div>
-								<div className="col-xs-5">
 									<div className={customer.phone1 ? "" : "text-placeholder"}>
 										{customer.phone1 || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3"></div>
+								{/* <div className="col-xs-5">
+									<div className={customer.phone1 ? "" : "text-placeholder"}>
+										{customer.phone1 || "Not available"}
+									</div>
+								</div> */}
+								{/* <div className="col-xs-3"></div> */}
 							</div>
 						</div>
 						{customer.phone2 && (
-							<div className="col-xs-6 u_mb_10 u_mt_10">
+							<div className="col-xs-5 u_mb_10 u_mt_10">
 								<div className="row">
-									<div className="col-xs-4">
+									<div className="col-xs-6">
 										<div className="text-muted">Telephone 2</div>
-									</div>
-									<div className="col-xs-5">
 										<div>{customer.phone2}</div>
 									</div>
-									<div className="col-xs-3"></div>
+									{/* <div className="col-xs-5">
+										<div>{customer.phone2}</div>
+									</div> */}
+									{/* <div className="col-xs-3"></div> */}
 								</div>
 							</div>
 						)}
 						{customer.fax && (
-							<div className="col-xs-6 u_mb_10 u_mt_10">
+							<div className="col-xs-5 u_mb_10 u_mt_10">
 								<div className="row">
-									<div className="col-xs-4">
+									<div className="col-xs-6">
 										<div className="text-muted">Fax</div>
-									</div>
-									<div className="col-xs-5">
 										<div>{customer.fax}</div>
 									</div>
-									<div className="col-xs-3"></div>
+									{/* <div className="col-xs-5">
+										<div>{customer.fax}</div>
+									</div> */}
+									{/* <div className="col-xs-3"></div> */}
 								</div>
 							</div>
 						)}
-						<div className="col-xs-6 u_mb_10 u_mt_10">
+						<div className="col-xs-5 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-4">
+								<div className="col-xs-7">
 									<div className="text-muted">Mobile</div>
-								</div>
-								<div className="col-xs-5">
 									<div className={customer.mobile ? "" : "text-placeholder"}>
 										{customer.mobile || "Not available"}
 									</div>
 								</div>
-								<div className="col-xs-3"></div>
+								{/* <div className="col-xs-5">
+									<div className={customer.mobile ? "" : "text-placeholder"}>
+										{customer.mobile || "Not available"}
+									</div>
+								</div> */}
+								{/* <div className="col-xs-3"></div> */}
 							</div>
 						</div>
 						<div className="col-xs-12 u_mb_10 u_mt_10">
 							<div className="row">
 								<div className="col-xs-2">
 									<div className="text-muted">Address</div>
+									<div>
+										{customer.address.city ||
+										customer.country ||
+										customer.address.street ||
+										customer.address.zipCode ? (
+											<React.Fragment>
+												{customer.address.street && <div>{customer.address.street}</div>}
+												{(customer.address.zipCode || customer.address.city) && (
+													<div>
+														{customer.address.zipCode} {customer.address.city}
+													</div>
+												)}
+												{customer.country && <div>{customer.country}</div>}
+											</React.Fragment>
+										) : (
+											<div className="text-placeholder">Not available</div>
+										)}
+									</div>
 								</div>
-								<div className="col-xs-10">
-									{customer.address.city ||
-									customer.country ||
-									customer.address.street ||
-									customer.address.zipCode ? (
-										<React.Fragment>
-											{customer.address.street && <div>{customer.address.street}</div>}
-											{(customer.address.zipCode || customer.address.city) && (
-												<div>
-													{customer.address.zipCode} {customer.address.city}
-												</div>
-											)}
-											{customer.country && <div>{customer.country}</div>}
-										</React.Fragment>
-									) : (
-										<div className="text-placeholder">Not available</div>
-									)}
-								</div>
+
 								{/* <div className="col-xs-3">
 									{customer.address.street && (
 										<ButtonComponent

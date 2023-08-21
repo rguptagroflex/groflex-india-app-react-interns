@@ -1,7 +1,7 @@
-import React from 'react';
-import config from 'config';
-import _ from 'lodash';
-import ButtonComponent from 'shared/button/button.component';
+import React from "react";
+import config from "config";
+import _ from "lodash";
+import ButtonComponent from "shared/button/button.component";
 
 class CustomerContactPersonsComponent extends React.Component {
 	constructor(props) {
@@ -16,39 +16,37 @@ class CustomerContactPersonsComponent extends React.Component {
 			nav: true,
 			dots: false,
 			center: true,
-			slideBy: 'page',
+			slideBy: "page",
 			margin: 30,
 			mouseDrag: this.props.contactPersons.length > 1,
 			touchDrag: this.props.contactPersons.length > 1,
-			onChanged: this.handleCarouselSlideChange.bind(this)
+			onChanged: this.handleCarouselSlideChange.bind(this),
 		});
 
-		this.carousel = $(this.refs.carousel)
-			.owlCarousel(options)
-			.data('owl.carousel');
+		this.carousel = $(this.refs.carousel).owlCarousel(options).data("owl.carousel");
 	}
 
 	handleCarouselSlideChange(event) {
 		if (_.isNumber(event.item.index)) {
-			const lis = $('li', $(this.refs.nameInitialsLeft));
-			lis.removeClass('active');
-			lis.eq(event.item.index).addClass('active');
+			const lis = $("li", $(this.refs.nameInitialsLeft));
+			lis.removeClass("active");
+			lis.eq(event.item.index).addClass("active");
 		}
 	}
 
 	onEmailClick(email) {
-		window.open(`mailto:${email}`, '_self');
+		window.open(`mailto:${email}`, "_self");
 	}
 
 	render() {
 		const contactPersons = this.props.contactPersons;
 
 		return (
-			<div className="box box-rounded customer-contact-persons">
+			<div className=" box-rounded customer-contact-persons detail-wrap">
 				<div className="carousel" ref="carousel">
 					{contactPersons.map((contactPerson, index) => {
 						return (
-							<div key={index}>
+							<div key={index} style={{ padding: "10px" }}>
 								<div className="text-muted text-small">
 									{contactPerson.salutation} {contactPerson.title}
 								</div>
@@ -69,10 +67,10 @@ class CustomerContactPersonsComponent extends React.Component {
 										<div className="text-muted text-small">E-mail</div>
 										<div
 											className={
-												contactPerson.email ? 'text-medium' : 'text-medium text-placeholder'
+												contactPerson.email ? "text-medium" : "text-medium text-placeholder"
 											}
 										>
-											{contactPerson.email || 'Not available'}
+											{contactPerson.email || "Not available"}
 										</div>
 									</div>
 									<div className="col-xs-2 button-wrapper">
@@ -93,10 +91,10 @@ class CustomerContactPersonsComponent extends React.Component {
 										<div className="text-muted text-small">Phone 1</div>
 										<div
 											className={
-												contactPerson.phone1 ? 'text-medium' : 'text-medium text-placeholder'
+												contactPerson.phone1 ? "text-medium" : "text-medium text-placeholder"
 											}
 										>
-											{contactPerson.phone1 || 'Not available'}
+											{contactPerson.phone1 || "Not available"}
 										</div>
 									</div>
 								</div>
@@ -113,10 +111,10 @@ class CustomerContactPersonsComponent extends React.Component {
 										<div className="text-muted text-small">Mobile no.</div>
 										<div
 											className={
-												contactPerson.mobile ? 'text-medium' : 'text-medium text-placeholder'
+												contactPerson.mobile ? "text-medium" : "text-medium text-placeholder"
 											}
 										>
-											{contactPerson.mobile || 'Not available'}
+											{contactPerson.mobile || "Not available"}
 										</div>
 									</div>
 								</div>

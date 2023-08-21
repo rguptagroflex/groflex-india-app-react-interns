@@ -2,6 +2,7 @@
 @import "../../../abstracts/mixins";
 
 .customer-edit-component-wrapper {
+	
 
 	.customer-edit-type-toggle {
 		padding: 0px 7.5px 8px;
@@ -81,6 +82,7 @@
 			color: $color-text-muted;
 			letter-spacing: .025em;
 			line-height: 39px;
+			
 		}
 
 		.selectInput {
@@ -92,9 +94,12 @@
 
 				.Select-value {
 					line-height: 39px;
-					padding-left: 10px !important;
+					// padding-left: 10px !important;
+					margin-left: 5px;
 				}
+			
 			}
+			
 		}
 	}
 
@@ -105,7 +110,7 @@
 		padding: 5px 0 10px;
 
 		.notes-alert-label {
-			font-size: 14px;
+			font-size: 10px;
 			color: $color-text-muted;
 		}
 
@@ -120,21 +125,25 @@
 	.customer-edit-contactpersons {
 		margin-bottom: 25px;
 		word-break: break-all;
+		max-width: 100%; 
+		max-height: 50%; 
+		overflow-y: auto;
+		overflow-x: hidden;
 	}
 
 	.customer-edit-contactperson-row {
 		position: relative;
-		padding: 20px 0;
-		border-bottom: 1px solid $color-line-light;
+		padding: 10px 0;
+		// border-bottom: 1px solid $color-line-light;
 
 		.label {
-			font-weight: 600;
+			font-weight: 100;
 		}
 
 		.customer-edit-contactperson-controls {
-			display: none;
+			display: flex;
 			position: absolute;
-			right: 0;
+			right: 10px;
 			top: 50%;
 			@include vendor-prefix('transform', 'translateY(-50%)');
 
@@ -149,14 +158,59 @@
 			}
 		}
 
-		&.customer-edit-contactperson-row-first {
-			border-top: 1px solid $color-line-light;
-		}
+		
 
 		&:hover {
 			.customer-edit-contactperson-controls {
 				display: block;
 			}
 		}
+		
 	}
+	 .border-topbar-wrapper{
+		border-radius: 8px;
+    border: 1px solid var(--grey-dark-c-6-c-6-c-6, #C6C6C6);
+    background: var(--font-colors-white-fffffff, #FFF);
+    padding: 20px;
+	}
+	.border-topbar-wrapper-rows{
+		border-radius: 8px;
+    border: 1px solid var(--grey-dark-c-6-c-6-c-6, #C6C6C6);
+    background: var(--font-colors-white-fffffff, #FFF);
+		padding: 10px;
+    min-height: 250px;
+   
+	}
+
+.button-wrapper{
+	padding-left: 0; 
+  padding-right: 0;
+		padding-left: 50%;
+    padding-top: 10px;
+		border-radius: 0px 0px 8px 8px;
+ border-top: 1px solid var(--grey-dark-c-6-c-6-c-6, #C6C6C6);
+background: var(--font-colors-white-fffffff, #FFF);
+	}
+	.customer-edit-contactpersons-container {
+		border: 1px solid #ccc;
+    padding: 8px;
+	}
+	
+	.customer-edit-contactpersons {
+		overflow-y: auto; 
+		max-height: 15vh;
+
+	}
+	.customer-edit-component-wrapper .customer-edit-paycondition .selectInput .Select-control .Select-value {
+    line-height: 39px;
+    padding-left: 10px !important;
+    margin-left: 10px;
+}
+
+	
+
+	
+	
+	
+	
 }

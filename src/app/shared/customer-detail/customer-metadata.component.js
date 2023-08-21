@@ -15,72 +15,72 @@ const CustomerMetadataComponent = (props) => {
 	const customer = props.customer;
 	const otherActions = [];
 	let { bulkPayment, issueRefund } = props;
-	const availableApps = [
-		{
-			label: "Quotation",
-			icon: "icon-offer",
-			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
-			url: `/offer/new/customer/${customer.id}`,
-		},
-		{
-			label: "Invoice",
-			icon: "icon-rechnung",
-			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
-			url: `/invoice/new/customer/${customer.id}`,
-		},
-		{
-			label: "Bulk payment",
-			icon: "icon-bulk_payment1",
-			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
-			action: () => {
-				bulkPayment && bulkPayment();
-			},
-		},
-		{
-			label: "Issue refund",
-			icon: "icon-rechnung",
-			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
-			action: () => {
-				issueRefund && issueRefund();
-			},
-		},
-		{
-			label: "Recurring invoice",
-			icon: "icon-rechnung",
-			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
-			url: `/recurringInvoice/new/customer/${customer.id}`,
-		},
-		{
-			label: "Timesheet",
-			icon: "icon-rechnung",
-			isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
-			url: `/timetracking/new/${customer.id}`,
-		},
-		{
-			label: "Expenditure",
-			icon: "icon-expense",
-			isAvailable: customer.type == contactTypes.PAYEE ? true : false,
-			url: `/expense/new/customer/${customer.id}`,
-		},
-		// {
-		// 	label: "Purchase order",
-		// 	icon: "icon-order",
-		// 	isAvailable: customer.type == contactTypes.PAYEE ? true : false,
-		// 	url: `/purchase-order/new/customer/${customer.id}`,
-		// },
-	];
+	// const availableApps = [
+	// 	{
+	// 		label: "Quotation",
+	// 		icon: "icon-offer",
+	// 		isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
+	// 		url: `/offer/new/customer/${customer.id}`,
+	// 	},
+	// 	{
+	// 		label: "Invoice",
+	// 		icon: "icon-rechnung",
+	// 		isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
+	// 		url: `/invoice/new/customer/${customer.id}`,
+	// 	},
+	// 	{
+	// 		label: "Bulk payment",
+	// 		icon: "icon-bulk_payment1",
+	// 		isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
+	// 		action: () => {
+	// 			bulkPayment && bulkPayment();
+	// 		},
+	// 	},
+	// 	{
+	// 		label: "Issue refund",
+	// 		icon: "icon-rechnung",
+	// 		isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
+	// 		action: () => {
+	// 			issueRefund && issueRefund();
+	// 		},
+	// 	},
+	// 	{
+	// 		label: "Recurring invoice",
+	// 		icon: "icon-rechnung",
+	// 		isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
+	// 		url: `/recurringInvoice/new/customer/${customer.id}`,
+	// 	},
+	// 	{
+	// 		label: "Timesheet",
+	// 		icon: "icon-rechnung",
+	// 		isAvailable: customer.type == contactTypes.CUSTOMER ? true : false,
+	// 		url: `/timetracking/new/${customer.id}`,
+	// 	},
+	// 	{
+	// 		label: "Expenditure",
+	// 		icon: "icon-expense",
+	// 		isAvailable: customer.type == contactTypes.PAYEE ? true : false,
+	// 		url: `/expense/new/customer/${customer.id}`,
+	// 	},
+	// 	// {
+	// 	// 	label: "Purchase order",
+	// 	// 	icon: "icon-order",
+	// 	// 	isAvailable: customer.type == contactTypes.PAYEE ? true : false,
+	// 	// 	url: `/purchase-order/new/customer/${customer.id}`,
+	// 	// },
+	// ];
 	const buttonData = [];
 
-	availableApps.forEach((app) => {
-		if (app.isAvailable) {
-			buttonData.push({
-				label: app.label,
-				buttonIcon: app.icon,
-				url: app.url,
-				action: app.action,
-			});
-		}
-	});
+	// availableApps.forEach((app) => {
+	// 	if (app.isAvailable) {
+	// 		buttonData.push({
+	// 			label: app.label,
+	// 			buttonIcon: app.icon,
+	// 			url: app.url,
+	// 			action: app.action,
+	// 		});
+	// 	}
+	// });
 
 	const onCreateButtonClick = (url, action) => {
 		if (action) action();
@@ -138,11 +138,23 @@ const CustomerMetadataComponent = (props) => {
 	// console.log("buttons data: ", buttonData);
 	return (
 		<div
-			style={{ minHeight: "98%", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
-			className="box box-rounded customer-metadata row"
+			style={{ 
+				// minHeight: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" 
+				display: "flex",
+				width: "291px",
+				padding:" 16px",
+				flexDirection: "column",
+				alignItems: "center",
+				gap: "16px",
+				// height:"100%"
+ 
+			}}
+			className=" box-rounded customer-metadata row"
 		>
 			<div className="row">
-				<div className="customer-avatar col-xs-6 ">
+				<div className="customer-avatar col-xs-6 u_ml_48 " style={{width: "112px",
+height: "112px",
+flexShrink: "0" }}>
 					{customer.kind === "person" &&
 						customer.salutation === "Familie" &&
 						(customer.address.countryIso === `IN` ? (
@@ -171,21 +183,41 @@ const CustomerMetadataComponent = (props) => {
 							<SVGInline height="120px" svg={ForeignCustomer} />
 						))}
 				</div>
-				<div className="customer-detail-metadata-name col-xs-6 ">
+				{/* <div className="customer-detail-metadata-name col-xs-6 "> */}
+				{/* <div className="row">
 					<div
 						id="customer-detail-metadata-name"
-						className={`u_mb_10 ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
+						style={{marginLeft: "23%"}}
+						className={`u_mb_10  ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
 					>
 						{customer.name}
 					</div>
-					<div className="text-muted ">
+					<div className="text-muted u_p_16 ">
 						{`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
 							customer.address.countryIso !== `IN`
 								? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
 								: ``
 						}`}
 					</div>
-				</div>
+				</div> */}
+				<div className="row " style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",justifyContent: "center"}}>
+    <div
+        id="customer-detail-metadata-name"
+        style={{margin: "0 auto", maxWidth: "calc(100% - 40px)",flexGrow: "1"}}
+        className={`u_mb_10  ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
+    >
+        {customer.name}
+    </div>
+    <div className="text-muted u_p_16" style={{margin: "0 auto"}}>
+        {`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
+            customer.address.countryIso !== `IN`
+                ? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
+                : ``
+        }`}
+    </div>
+</div>
+
+				{/* </div> */}
 			</div>
 
 			<div>
