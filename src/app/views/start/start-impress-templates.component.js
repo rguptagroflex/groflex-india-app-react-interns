@@ -41,6 +41,7 @@ import { updateUserPermissions } from "helpers/updateUserPermissions";
 import Slider from "react-slick";
 import ReactSlickCarousel from "../../shared/react-slick-carousel/react-slick-carousel.component";
 import WelcomeCarouselComponent from "./welcome-carousel.component";
+import ComingSoonCarouselComponent from "./coming-soon-carousel.component";
 
 const { ACCOUNT, BANK_DETAILS, STAKEHOLDER, COMPLETED } = KycProgress;
 const { CREATED, CLARIFICATION, ACTIVE, REJECTED, REVIEW, SUSPENDED } = KycStatus;
@@ -662,6 +663,12 @@ class StartImpressTemplatesComponent extends React.Component {
 						<StartQuickLinksComponent />
 					</div>
 
+					<div className="col-xs-12 homepage-coming-soon-container">
+						<div className="box">
+							<ComingSoonCarouselComponent />
+						</div>
+					</div>
+
 					{/* <div className="col-xs-12">
 						<StartExploreComponent />
 					</div> */}
@@ -676,6 +683,7 @@ class StartImpressTemplatesComponent extends React.Component {
 							</div>
 						</div>
 					</div>
+
 					{/* cmt sandy */}
 					{/* <div className="row" style={{margin: 0}}>
 						<StartTrackArticlesComponent />

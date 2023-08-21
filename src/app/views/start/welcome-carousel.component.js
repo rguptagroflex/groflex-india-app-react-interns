@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const WelcomeCarouselComponent = () => {
 	return (
-		<ReactSlickCarousel settings={{ autoplaySpeed: 300000, pauseOnHover: true }}>
+		<ReactSlickCarousel settings={{ autoplaySpeed: 3000, pauseOnHover: true }}>
 			<div className="welcome-carousel-div welcome1">
 				<div className="welcome1-content">
 					<h3>Welcome to Groflex!</h3>
