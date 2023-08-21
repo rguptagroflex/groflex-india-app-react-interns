@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 // TODO: replace logic in registration and forgot password component with this component
 class RegistrationInvitationComponent extends React.Component {
@@ -39,10 +39,11 @@ class RegistrationInvitationComponent extends React.Component {
 		return (
 			<div>
 				<div className="password-validity">
-					Min. 8 characters
+					{/* Min. 8 characters */}
+					At least 8 characters
 					<div
-						className={`password-validity-check u_c ${passwordLengthValid ? 'checked' : ''} ${
-							!passwordLengthValid && checkPassword ? 'alert' : ''
+						className={`password-validity-check u_c ${passwordLengthValid ? "checked" : ""} ${
+							!passwordLengthValid && checkPassword ? "alert" : ""
 						}`}
 						onClick={this.checkPassword}
 					>
@@ -51,10 +52,11 @@ class RegistrationInvitationComponent extends React.Component {
 					</div>
 				</div>
 				<div className="password-validity">
-					Min. 1 Uppercase & lowercase letters
+					{/* Min. 1 Uppercase & lowercase letters */}
+					At least 1 number or special character
 					<div
-						className={`password-validity-check u_c ${passwordAlphaValid ? 'checked' : ''} ${
-							!passwordAlphaValid && checkPassword ? 'alert' : ''
+						className={`password-validity-check u_c ${passwordAlphaValid ? "checked" : ""} ${
+							!passwordAlphaValid && checkPassword ? "alert" : ""
 						}`}
 						onClick={this.checkPassword}
 					>
@@ -63,10 +65,11 @@ class RegistrationInvitationComponent extends React.Component {
 					</div>
 				</div>
 				<div className="password-validity">
-					Min. 1 Number or special character
+					{/* Min. 1 Number or special character */}
+					At least 1 number or special character
 					<div
-						className={`password-validity-check u_c ${passwordSpecialValid ? 'checked' : ''} ${
-							!passwordSpecialValid && checkPassword ? 'alert' : ''
+						className={`password-validity-check u_c ${passwordSpecialValid ? "checked" : ""} ${
+							!passwordSpecialValid && checkPassword ? "alert" : ""
 						}`}
 						onClick={this.checkPassword}
 					>

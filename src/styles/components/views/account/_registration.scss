@@ -1126,3 +1126,18 @@
 		margin-top: 10px !important;
 	}
 }
+
+//design changes:
+.landing-wrapper {
+	.icon-visible {
+		@include icon(after, show_visibility);
+		&.required {
+			color: $color-text-disabled;
+			cursor: default;
+		}
+	}
+
+	.icon-invisible {
+		@include icon(after, hide_visibility);
+	}
+}
