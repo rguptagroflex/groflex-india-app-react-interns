@@ -1233,11 +1233,12 @@
 }
 
 .welcome-carousel-div {
+	position: relative;
 	height: 217px !important;
 	width: 100% !important;
-	background-position: center !important;
-	background-repeat: no-repeat !important;
-	background-size: contain !important;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: contain;
 	display: flex !important;
 	h3 {
 		font-weight: 700;
@@ -1245,20 +1246,36 @@
 	align-items: center !important;
 }
 
+// .welcome1 {
+// 	background-image: url("../../../../assets/images/homePage/Banner1.png");
+// }
+// .welcome2 {
+// 	background-image: url("../../../../assets/images/homePage/Banner2.png");
+// }
+// .welcome3 {
+// 	background-image: url("../../../../assets/images/homePage/Banner3.png");
+// }
+// .welcome4 {
+// 	background-image: url("../../../../assets/images/homePage/Banner4.png");
+// }
+// .welcome5 {
+// 	background-image: url("../../../../assets/images/homePage/Banner5.png");
+// }
+
 .welcome1 {
-	background-image: url("../../../../assets/images/homePage/Banner1.png");
+	background-image: url("/assets/images/homePage/Banner1.png");
 }
 .welcome2 {
-	background-image: url("../../../../assets/images/homePage/Banner2.png");
+	background-image: url("/assets/images/homePage/Banner2.png");
 }
 .welcome3 {
-	background-image: url("../../../../assets/images/homePage/Banner3.png");
+	background-image: url("/assets/images/homePage/Banner3.png");
 }
 .welcome4 {
-	background-image: url("../../../../assets/images/homePage/Banner4.png");
+	background-image: url("/assets/images/homePage/Banner4.png");
 }
 .welcome5 {
-	background-image: url("../../../../assets/images/homePage/Banner5.png");
+	background-image: url("/assets/images/homePage/Banner5.png");
 }
 
 .welcome1-content {

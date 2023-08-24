@@ -1,5 +1,15 @@
 import React from "react";
 import ReactSlickCarousel from "../../shared/react-slick-carousel/react-slick-carousel.component";
+// import welcome1 from "../../../assets/images/homePage/Banner1.png";
+// import welcome2 from "../../../assets/images/homePage/Banner2.png";
+// import welcome3 from "../../../assets/images/homePage/Banner3.png";
+// import welcome4 from "../../../assets/images/homePage/Banner4.png";
+// import welcome5 from "../../../assets/images/homePage/Banner5.png";
+// import welcome1 from "/assets/images/homePage/Banner1.png";
+// import welcome2 from "/assets/images/homePage/Banner2.png";
+// import welcome3 from "/assets/images/homePage/Banner3.png";
+// import welcome4 from "/assets/images/homePage/Banner4.png";
+// import welcome5 from "/assets/images/homePage/Banner5.png";
 import { Link } from "react-router-dom";
 
 const WelcomeCarouselComponent = () => {
