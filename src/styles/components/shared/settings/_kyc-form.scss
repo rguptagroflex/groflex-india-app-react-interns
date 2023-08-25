@@ -2,9 +2,16 @@
 @import "../../../abstracts/_mixins";
 
 .settings-kycform-component {
+    display: inline-flex;
+				flex-direction: column;
+				align-items: flex-end;
+				gap: 16px;
+				border-radius: 8px;
+				border: 1px solid #C6C6C6;
+				background: #FFF;
 
     .col-xs-offset-6 {
-        margin-left: 66%!important;
+        // margin-left: 66%!important;
 
         &.clarification {
             margin-left: 0!important;

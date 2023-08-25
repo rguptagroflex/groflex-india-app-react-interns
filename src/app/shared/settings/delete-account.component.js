@@ -181,8 +181,8 @@ class DeleteAccountComponent extends React.Component {
 		const { checkCaptchaError, passwordError, disableAccountDeleteButton, isGoogleAccount } = this.state;
 		const { resources } = this.props;
 		return (
-			<div className="settings-deleteaccount-component">
-				<div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
+			<div className="settings-deleteaccount-component u_p_20 u_mt_16">
+				<div className="row "> {/*u_pt_60 u_pb_40 u_pt_20*/}
 					<div className="col-xs-12 text-h4 u_pb_20">{resources.str_deleteText}</div>
 					<div className="col-xs-12">
 						{/* <div className="col-xs-12"> */}
@@ -231,16 +231,20 @@ class DeleteAccountComponent extends React.Component {
 									/>
 								</div>
 
-								<div className="col-xs-12">
+								{/* <div className="col-xs-12">
 									<div className="deleteaccount-reason">
-										{resources.accountDeleteReason}
-									</div>
+										{/* {resources.accountDeleteReason} */}
+										{/* {"Address"}
+									</div> */}
 
-									<HtmlInputComponent
+									{/* <HtmlInputComponent
 										value={this.state.reason}
 										onTextChange={val => this.setState({ reason: val })}
 									/>
-								</div>
+									<div className="deleteaccount-reason">
+									{"Please confirm “Delete account” by clicking confirmation link sent to your email address"}
+									</div>
+								</div> */} 
 							</div>
 						{/* </div> */}
 						<div className="col-xs-6 col-xs-offset-6">

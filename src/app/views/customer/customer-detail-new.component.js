@@ -47,7 +47,7 @@ const TopbarActions = {
 	EDIT: 1,
 	FETCH_EMAILS: 2,
 };
-const tabs = ["Overview", "Activities", "Documents"];
+const tabs = ["Contact Overview", "Activities", "Documents"];
 class CustomerDetailNewComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -57,7 +57,7 @@ class CustomerDetailNewComponent extends React.Component {
 
 		this.carousel = null;
 		this.state = {
-			activeTab: "Overview", 
+			activeTab: "Contact Overview",
 		};
 		// this.setActiveTab = this.setActiveTab.bind(this);
 
@@ -151,7 +151,7 @@ class CustomerDetailNewComponent extends React.Component {
 		this.setState({
 			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
 		});
-		this.setState({ activeTab: "Overview" });
+		this.setState({ activeTab: "Contact Overview" });
 	}
 
 	onSaveNotesClick({ notes, notesAlert }) {
@@ -242,23 +242,17 @@ class CustomerDetailNewComponent extends React.Component {
 		const { customer } = this.state;
 		const formattedOpeningBalance = formatCurrencyMinusPlus(customer.openingBalance);
 
-
 		return (
 			<div className="opening-balance-container">
 				<div>
-					<SVGInline
-						svg={IconQuoatation}
-						alt={"Could not load image!"}
-					/>
+					<SVGInline svg={IconQuoatation} alt={"Could not load image!"} />
 				</div>
 				<div className="text-muted text-medium u_mb_6">
 					<span>Opening </span>
 					<br />
 					<span>Balance</span>
 				</div>
-				<div className="text-h4 text-primary">
-					{formattedOpeningBalance}
-				</div>
+				<div className="text-h4 text-primary">{formattedOpeningBalance}</div>
 			</div>
 		);
 	}
@@ -272,7 +266,7 @@ class CustomerDetailNewComponent extends React.Component {
 
 		return (
 			<div className="outstanding-receivables-container">
-				<SVGInline className="overlay-image-red" svg={ReceivablePayment} alt={"Could not load image!"} />	
+				<SVGInline className="overlay-image-red" svg={ReceivablePayment} alt={"Could not load image!"} />
 				<div className="text-muted text-medium u_mb_6 u_mt_10">
 					<span>Outstanding</span>
 					<br />
@@ -297,13 +291,11 @@ class CustomerDetailNewComponent extends React.Component {
 					<span>Excess</span>
 					<br />
 					<span>Payment</span>
-				
 				</div>
 				<div className="text-h4 text-primary">
 					{/* {formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)} */}
 					{formattedOutstandingReceivables}
 				</div>
-			
 			</div>
 		);
 	}
@@ -311,7 +303,7 @@ class CustomerDetailNewComponent extends React.Component {
 	renderOpenQuotationSection(customer, index) {
 		if (!customer || typeof customer.balance === "undefined" || typeof customer.openingBalance === "undefined") {
 			console.log("Data not available for rendering Open Quotation section");
-			return null; 
+			return null;
 		}
 
 		console.log("Customer:", customer);
@@ -321,12 +313,7 @@ class CustomerDetailNewComponent extends React.Component {
 
 		return (
 			<div key={index} className="open-quotation-container">
-			
-				<SVGInline
-					className="overlay-image"
-					svg={Quotataion}
-					alt={"Could not load image!"}
-				/>
+				<SVGInline className="overlay-image" svg={Quotataion} alt={"Could not load image!"} />
 				<div className="text-muted text-medium u_mb_6 u_mt_10">
 					<span>Open</span>
 					<br />
@@ -334,9 +321,7 @@ class CustomerDetailNewComponent extends React.Component {
 				</div>
 				<div className="row">
 					<div className="col-xs-12 col-gutter-right-30">
-						<div className={`text-h4 text-primary `}>
-							{formatCurrencyMinusPlus(balanceSumValue)}
-						</div>
+						<div className={`text-h4 text-primary `}>{formatCurrencyMinusPlus(balanceSumValue)}</div>
 					</div>
 				</div>
 				{index < this.salesOrExpensesData.length - 1 && <hr className="u_mt_20 u_mb_20" />}
@@ -1013,18 +998,56 @@ class CustomerDetailNewComponent extends React.Component {
 					buttons={topbarButtons}
 				/>
 				<div className="row">
-					<div className="tabs-container">
-						<TabsComponent activeTab={activeTab} 
-						setActiveTab={this.setActiveTab}
-						>
+					<div className="tabs-container" style={{ display: "flex", marginLeft: "10px", marginTop: "30px" }}>
+						<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
 							<TabsComponent.List>
 								{tabs.map((tab, index) => (
 									<div
 										key={index}
-										className={`tab-item ${activeTab === tab ? "active-tab" : ""}`}
+										className={`tab-item ${this.state.activeTab === tab ? "active-tab" : ""}`}
 										onClick={() => this.setActiveTab(tab)}
+										style={{
+											marginRight: "20px",
+											cursor: "pointer",
+											position: "relative",
+											color: this.state.activeTab === tab ? "#00A353" : "#272D30",
+										}}
 									>
 										{tab}
+										{this.state.activeTab === tab && (
+											<div>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-7px",
+														left: "0",
+														width: "100%",
+														height: "3px",
+														backgroundColor: "#00A353",
+													}}
+												/>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-8px", 
+														left:
+															this.state.activeTab === "Contact Overview"
+																? "0px"
+																: this.state.activeTab === "Activities"
+																? "-220%"
+																: "-280%",
+
+														width: "1112px",
+														height: "1px",
+														background: "#C6C6C6",
+													}}
+												/>
+											</div>
+										)}
 									</div>
 								))}
 							</TabsComponent.List>
@@ -1032,7 +1055,7 @@ class CustomerDetailNewComponent extends React.Component {
 					</div>
 				</div>
 				<div className="wrap-detail-contact">
-					{activeTab === "Overview" && (
+					{activeTab === "Contact Overview" && (
 						<div>
 							<div className="row">
 								<div className="col-xs-3">
@@ -1070,7 +1093,6 @@ class CustomerDetailNewComponent extends React.Component {
 										>
 											{this.getConditions()}
 										</div>
-									
 									</div>
 								</div>
 								<div className="col-xs-9">
@@ -1136,7 +1158,7 @@ class CustomerDetailNewComponent extends React.Component {
 										</div>
 									</div>
 								</div>
-								
+
 								{/* /////////////////////////////////////
 				<div className="col-xs-7 col-no-gutter-left flexible-height">
 					<div className="row">

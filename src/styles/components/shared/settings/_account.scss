@@ -2,6 +2,13 @@
 @import "../../../abstracts/_mixins";
 
 .settings-account-component {
+	display: inline-flex;
+				flex-direction: column;
+				align-items: flex-end;
+				gap: 16px;
+				border-radius: 8px;
+				border: 1px solid #C6C6C6;
+				background: #FFF;
 	.update-email-link {
 		text-align: right;
 		margin-top: -12px;

@@ -80,7 +80,6 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 			});
 	};
 
-	
 	const handleAccountCodeChange = (value) => {
 		setChartData({ ...chartData, accountCode: value });
 	};
@@ -99,7 +98,6 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 		});
 	};
 
-
 	const handleAccountTypeChange = (option) => {
 		setAccountType(option.value);
 		setRequiredSubtypeOptions(allAccountSubTypeOptions[option.value]);
@@ -110,7 +108,6 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	};
 
 	const handleSave = () => {
-	
 		const accountData = {
 			...chartData,
 			accountTypeId: accountType,
@@ -124,7 +121,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	// console.log(allAccountSubTypeOptions, "All subtype options");
 	// console.log(requiredSubtypeOptions, "required subtype options");
 	return (
-		<div className="add-chart-modal-container" style={{ minHeight: "200px" }}>
+		<div className="add-chart-modal-container">
 			<div
 				style={{
 					padding: "20px",
@@ -134,7 +131,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 			>
 				Add account
 			</div>
-			<div style={{ padding: "10px", backgroundColor: "#f5f5f5" }}>
+			<div style={{ padding: "12px", backgroundColor: "#F0F4F6" }}>
 				<div style={{ padding: "35px 30px", backgroundColor: "white" }}>
 					<div>
 						<SelectInput
@@ -164,7 +161,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 						</div>
 					</div>
 					{requiredSubtypeOptions.length ? (
-						<div style={{ margin: 0 }}>
+						<div style={{ margin: 0, marginTop: "20px", marginBottom: "25px" }}>
 							<SelectInput
 								style={{ margin: "0px" }}
 								allowCreate={false}
@@ -193,36 +190,37 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 							</div>
 						</div>
 					) : null}
-
-					<div style={{ flexWrap: "nowrap", margin: "0" }} className="row">
-						<div style={{ width: "100%", marginRight: "15px" }} className="col-xs-6 ">
-							<TextInputComponent
-								style={{ padding: "0px" }}
-								name="accountName"
-								required
-								value={chartData.accountName}
-								onChange={handleAccountNameChange}
-								aria-invalid={accountNameError}
-								aria-describedby={accountNameError ? "accountNameError" : null}
-								label="Account name"
-							/>
-							<div style={{ marginTop: "-5px" }}>
-								{accountNameError && (
-									<span id="accountNameError" style={{ color: "red" }}>
-										This is a mandatory field.
-									</span>
-								)}
-							</div>
+					<div style={{ width: "100%", marginRight: "15px" }}>
+						<TextInputComponent
+							name="accountName"
+							required
+							value={chartData.accountName}
+							onChange={handleAccountNameChange}
+							aria-invalid={accountNameError}
+							aria-describedby={accountNameError ? "accountNameError" : null}
+							label="Account name"
+						/>
+						<div style={{ marginTop: "-5px" }}>
+							{accountNameError && (
+								<span id="accountNameError" style={{ color: "red" }}>
+									This is a mandatory field.
+								</span>
+							)}
 						</div>
-						<div style={{ width: "100%", marginLeft: "15px" }} className="col-xs-6 ">
-							<NumberInputComponent
-								name="accountCode"
-								value={chartData.accountCode}
-								onChange={handleAccountCodeChange}
-								disabled
-								label="Account code"
-							/>
-						</div>
+					</div>
+					<div
+						style={{
+							width: "100%",
+							marginTop: "10px",
+						}}
+					>
+						<NumberInputComponent
+							name="accountCode"
+							value={chartData.accountCode}
+							onChange={handleAccountCodeChange}
+							disabled
+							label="Account code"
+						/>
 					</div>
 					<div style={{ paddingTop: "10px" }} className="textarea">
 						<label style={{ fontSize: "16px" }} className="textarea_label">
@@ -236,11 +234,9 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 						/>
 						<span className="textarea_bar" />
 					</div>
-					<div className="row" style={{ paddingTop: "10px" }}>
+					<div className="row" style={{ paddingTop: "20px" }}>
 						<div className="col-xs-10 ">
-							<label className="notes-alert-label">
-								Activate account(Active accounts only will appear in dropdown )
-							</label>
+							<label className="notes-alert-label">Activated account (Displayed in dropdowns)</label>
 						</div>
 						<div className="col-xs-2 ">
 							<OvalToggleComponent

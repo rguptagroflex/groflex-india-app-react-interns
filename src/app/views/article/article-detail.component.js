@@ -53,7 +53,7 @@ class ArticleDetailComponent extends React.Component {
 		const inventoryHistory = this.props.inventoryHistory || {};
 		const salesVolumeData = this.props.salesVolumeData || {};
 		this.state = {
-			activeTab: "Article Overview", 
+			activeTab: "Article Overview",
 		};
 		this.state = {
 			article,
@@ -234,11 +234,9 @@ class ArticleDetailComponent extends React.Component {
 			: `${config.imageResourceHost}${article.imageUrl}`;
 		return (
 			<div className="detail-wrap u_mt_48 u_p_16 getBlock1Content-wrap ">
-			
 				<div className="article-content_content row">
 					<div className="article-row">
-						<div
-							className="articleImageContainer">
+						<div className="articleImageContainer">
 							<img
 								className=""
 								style={
@@ -330,7 +328,7 @@ class ArticleDetailComponent extends React.Component {
 						</div>
 					</div>
 				</div>
-							</div>
+			</div>
 		);
 	}
 	renderSellingPriceNet(article, resources) {
@@ -350,7 +348,7 @@ class ArticleDetailComponent extends React.Component {
 			);
 		} else {
 			console.log("No displayPrice found");
-			return null; 
+			return null;
 		}
 	}
 	renderSellingPriceGross(article, resources) {
@@ -387,7 +385,7 @@ class ArticleDetailComponent extends React.Component {
 				</div>
 			);
 		} else {
-			return null; 
+			return null;
 		}
 	}
 	renderPurchasePriceGross(article, resources) {
@@ -405,7 +403,7 @@ class ArticleDetailComponent extends React.Component {
 				</div>
 			);
 		} else {
-			return null; 
+			return null;
 		}
 	}
 
@@ -430,7 +428,6 @@ class ArticleDetailComponent extends React.Component {
 
 				<div className="graph-cont row">
 					<div className="col-xs-3">
-
 						<div className="item item-vertical ">
 							<div className="item_label">Ø {resources.articleQuantityPerOrderLabel}</div>
 							<div className="item_text">{salesVolumeData.averageAmount}</div>
@@ -618,16 +615,54 @@ class ArticleDetailComponent extends React.Component {
 					/>
 				)}
 				<div className="row">
-					<div className="tabs-container">
-						<TabsComponent activeTab={activeTab} setActiveTab={this.setActiveTab}>
+					<div className="tabs-container" style={{ display: "flex", marginLeft: "10px", marginTop: "30px" }}>
+						<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
 							<TabsComponent.List>
 								{tabs.map((tab, index) => (
 									<div
 										key={index}
-										className={`tab-item ${activeTab === tab ? "active-tab" : ""}`}
+										className={`tab-item ${this.state.activeTab === tab ? "active-tab" : ""}`}
 										onClick={() => this.setActiveTab(tab)}
+										style={{
+											marginRight: "20px",
+											cursor: "pointer",
+											position: "relative",
+											color: this.state.activeTab === tab ? "#00A353" : "#272D30",
+										}}
 									>
 										{tab}
+										{this.state.activeTab === tab && (
+											<div>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-7px",
+														left: "0",
+														width: "100%",
+														height: "3px",
+														backgroundColor: "#00A353",
+													}}
+												/>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-8px", 
+														left:
+															this.state.activeTab === "Article Overview"
+																? "0px"
+																: "-270%",
+
+														width: "1100px",
+														height: "1px",
+														background: "#C6C6C6",
+													}}
+												/>
+											</div>
+										)}
 									</div>
 								))}
 							</TabsComponent.List>
@@ -650,18 +685,10 @@ class ArticleDetailComponent extends React.Component {
 									resources={resources}
 									defaultFocus={true}
 								/>
-							
 							</div>
 						</div>
-						<div
-							className="col-xs-9 "
-
-						>
-							<div
-								className="row "
-							
-							>
-								
+						<div className="col-xs-9 ">
+							<div className="row ">
 								<div className="col-xs-6 u_ml_10">
 									<div className="row detail-wrap u_ml_8 u_mt_48">
 										<div className="row u_m_16 row-box-col">
@@ -684,11 +711,9 @@ class ArticleDetailComponent extends React.Component {
 											</div>
 											<div className=" col-xs-4 box-column">{this.getTotalOrders()}</div>
 										</div>
-										
 									</div>
 								</div>
 								<div className="col-xs-5 u_ml_16 detail-wrap detail-information u_mt_48">
-								
 									<div className="detail-information-content">
 										<div className="content-information">
 											<div className="title is-4 mb-2 mt-4">Coming Soon</div>
@@ -779,7 +804,6 @@ class ArticleDetailComponent extends React.Component {
 								{canViewArticleSalesOverview ? this.getBlock2Content() : null}
 							</div>
 						</div>
-					
 
 						{article.trackedInInventory ? (
 							<div className="box" style={{ height: 699 }}>
@@ -844,7 +868,6 @@ class ArticleDetailComponent extends React.Component {
 								</div>
 							</div>
 						) : null}
-					
 					</div>
 				)}
 
