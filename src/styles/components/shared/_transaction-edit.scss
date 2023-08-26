@@ -406,8 +406,196 @@
 //Design changes:-
 .transaction-edit-component-wrapper {
 	.transaction-edit-wrapper {
+		.headerContainer {
+			.headerEmpty {
+				height: 100% !important;
+			}
+		}
+
 		.box {
-			width: 930px;
+			width: 950px;
+		}
+		.transaction-form-page {
+			padding: 40px;
+		}
+	}
+
+	.letter-headerEmpty_title {
+		background-color: #f2f2f2;
+		.row1 {
+			font-weight: 600;
+			font-size: 16px;
+			margin: 0 0 15px 0;
+		}
+		.row2 {
+			text-transform: none;
+			font-weight: 400;
+			font-size: 12px;
+			margin: 0 0 15px 0;
+			color: #272d30;
+		}
+		.row3 {
+			display: flex;
+			justify-content: space-between;
+			.or-div {
+				font-size: 14px;
+				font-weight: 500;
+				color: #888787;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0 20px;
+			}
+			.btn1,
+			.btn2 {
+				padding: 15px 70px;
+				span {
+					font-size: 14px;
+					font-weight: 600;
+				}
+				border: 1px solid #c6c6c6;
+				border-radius: 4px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			.btn1-subname {
+				color: #888787;
+				font-weight: 500;
+				font-size: 14px;
+			}
+		}
+	}
+
+	.transaction-form-sender {
+		margin-top: 10px;
+		.ql-editor {
+			p {
+				font-weight: 600;
+				font-size: 14px;
+				color: #272d30;
+			}
+		}
+	}
+
+	.transaction-form-row {
+		justify-content: space-between;
+		.recipientContainer {
+			.recipientDisplay {
+				width: 220px;
+			}
+			.billed-to-name {
+				color: $color-primary;
+				font-weight: 600;
+				font-size: 14px;
+			}
+			.billed-to-address,
+			.gstno-container,
+			.cinno-container,
+			.phone-no-container {
+				margin-top: 10px !important;
+			}
+			.address-label,
+			.gst-label,
+			.cin-label,
+			.phone-label {
+				font-weight: 600;
+				color: #888787;
+			}
+		}
+	}
+
+	.transaction-form-title {
+		margin-top: 15px;
+	}
+	.letter-title-component-wrapper {
+		input {
+			font-weight: 600 !important;
+		}
+	}
+
+	.letter-positions-head-component-wrapper {
+		height: 60px;
+		border-bottom: 1px solid #dddddd;
+		.letter-positions-head {
+			border-bottom: none;
+			padding: 20px 75px 20px 41px;
+			font-size: 13px !important;
+			font-weight: 600 !important;
+			div:nth-of-type(n + 2) {
+				border-left: 1px solid #c6c6c6;
+			}
+			.letter-positions-head-column {
+				text-transform: uppercase !important;
+				// margin: 0 !important;
+				// padding: 0 !important;
+			}
+
+			.letter-positions-head-column-hsnSacCode {
+				flex-basis: 110px !important;
+				padding-left: 10px;
+			}
+			.letter-positions-head-column-amount {
+				max-width: 121px !important;
+			}
+			.letter-positions-head-column-vat {
+				width: 70px !important;
+			}
+			.letter-positions-head-column-price {
+				width: 115px !important;
+			}
+			.letter-positions-head-column-discount {
+				width: 90px !important;
+			}
+			.letter-positions-head-column-total {
+				width: 80px !important;
+			}
+		}
+
+		background-color: #f1f8fb !important;
+		color: #888787 !important;
+	}
+
+	.letter-positions-component-wrapper {
+		.letter-positions-item {
+			padding: 0 72px 0 50px !important;
+		}
+	}
+
+	.transaction-form-positions {
+		border: 1px solid #c6c6c6 !important;
+		min-height: 120px !important;
+
+		.letter-positions-add-position {
+			padding: 0 0 0 14px;
+			margin: 14px 0;
+			.letter-positions-add-position-button {
+				margin: 0 0 0 0;
+			}
+		}
+		.letter-positions-item:nth-child(odd) {
+			.inline {
+				.input {
+					background-color: white;
+				}
+			}
+		}
+		.letter-positions-item,
+		.Select-control {
+			background-color: white;
+		}
+
+		.letter-positions-item {
+			.letter-positions-item-column-amount {
+				// max-width: 139px;
+			}
+
+			.Select-multi-value-wrapper {
+				.Select-value {
+					padding-right: 25px;
+				}
+			}
 		}
 	}
 }

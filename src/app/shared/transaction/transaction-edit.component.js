@@ -79,7 +79,7 @@ class TransactionEditComponent extends React.Component {
 				invoiz.cache.invoice.times = null;
 			}
 		}
-
+		props.letter.sender = "BILLED TO";
 		this.state = {
 			transaction: props.transaction,
 			letter: props.letter,
@@ -360,6 +360,7 @@ class TransactionEditComponent extends React.Component {
 						<div className="transaction-form-sender">
 							<LetterSenderComponent
 								value={letter.sender}
+								// value={"BILLED TO"}
 								onChange={(val) => this.onLetterSenderChange(val)}
 								resources={resources}
 							/>
@@ -1260,7 +1261,7 @@ class TransactionEditComponent extends React.Component {
 		this.refs["transaction-positions-ref"] && this.refs["transaction-positions-ref"].forceBlur();
 		this.refs["transaction-order-payCondition-ref"] && this.refs["transaction-order-payCondition-ref"].blur();
 
-		// Remove offer limitation 25-11-2022 
+		// Remove offer limitation 25-11-2022
 		// if (isOffer && !canCreateOffer) {
 		// 	ModalService.open(
 		// 		<BuyAddonModalComponent
@@ -1284,7 +1285,7 @@ class TransactionEditComponent extends React.Component {
 		// 	);
 		// 	return;
 		// }
-		// Remove offer limitation 25-11-2022 end 
+		// Remove offer limitation 25-11-2022 end
 
 		// TODO: Handle subscription later
 		// if (isDeliveryChallan && !canCreateChallan) {
@@ -1354,8 +1355,8 @@ class TransactionEditComponent extends React.Component {
 						saveCustomer(
 							this.createCustomer || this.updateCustomer ? requestData : null,
 							this.createCustomer
-							).then(
-								(newOrUpdateCustomerData) => {
+						).then(
+							(newOrUpdateCustomerData) => {
 								// console.log("save customer")
 								if (!newOrUpdateCustomerData) {
 									if (this.createdCustomerId) {
@@ -1423,7 +1424,7 @@ class TransactionEditComponent extends React.Component {
 						);
 					},
 					(err) => {
-						console.log("err saving data", err)
+						console.log("err saving data", err);
 						this.setState({ saving: false });
 						invoiz.page.showToast({ type: "error", message: `ERROR` });
 					}
