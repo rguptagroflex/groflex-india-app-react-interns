@@ -43,7 +43,7 @@ class LetterPositionsComponent extends React.Component {
 			showDiscountPopoverPosition: null,
 			popoverDiscountElementId: null,
 			customerData: props.customerData,
-			transaction: props.transaction
+			transaction: props.transaction,
 		};
 
 		this.amountRefs = [];
@@ -102,7 +102,7 @@ class LetterPositionsComponent extends React.Component {
 	}
 
 	componentWillReceiveProps(newProps) {
-		this.setState({ customerData: newProps.customerData, transaction: newProps.transaction })
+		this.setState({ customerData: newProps.customerData, transaction: newProps.transaction });
 	}
 
 	render() {
@@ -115,7 +115,7 @@ class LetterPositionsComponent extends React.Component {
 			popoverInventoryElementId,
 			isInvoice,
 			transaction,
-			customerData
+			customerData,
 		} = this.state;
 		if (!columns) {
 			return null;
@@ -221,7 +221,7 @@ class LetterPositionsComponent extends React.Component {
 							label={`Opening balance`}
 							selectOnFocus={true}
 							name={"opening-balance"}
-							placeholder={`Enter opening balance`}
+							// placeholder={`Enter opening balance`}
 							isDecimal={true}
 							value={showInventoryPopover["openingBalance"]}
 							placeholder={`Enter minimum balance`}
@@ -301,8 +301,9 @@ class LetterPositionsComponent extends React.Component {
 						<div className="letter-positions-item-draggable icon icon-grab" />
 						{isDeposit ? null : (
 							<div className="letter-positions-item-remove">
-								<button
-									className="document_info-action button-icon-close"
+								<div
+									// className="document_info-action button-icon-close"
+									className="document_info-action button-icon-trashcan"
 									onClick={() => this.onPositionRemove(position)}
 								/>
 							</div>
@@ -441,7 +442,10 @@ class LetterPositionsComponent extends React.Component {
 		};
 
 		return {
-			placeholder: customerData && customerData.countryIso !== "IN" ? `Select an existing article` : resources.str_enterSelectArticle,
+			placeholder:
+				customerData && customerData.countryIso !== "IN"
+					? `Select an existing article`
+					: resources.str_enterSelectArticle,
 			labelKey: "label",
 			valueKey: "value",
 			matchProp: "label",
@@ -495,13 +499,16 @@ class LetterPositionsComponent extends React.Component {
 				showDescription: true,
 				title: "",
 				unit: "pcs",
-				vatPercent: invoiz.user.isSmallBusiness || customerData && customerData.countryIso !== "IN" ? 0 : parseInt(config.defualtVatPercent),
+				vatPercent:
+					invoiz.user.isSmallBusiness || (customerData && customerData.countryIso !== "IN")
+						? 0
+						: parseInt(config.defualtVatPercent),
 				totalNetAfterDiscount: 0,
 				totalGrossAfterDiscount: 0,
 				hsnSacCode: null,
 				trackedInInventory: null,
 				articlePriceNet: 0,
-				mrp: 0
+				mrp: 0,
 			});
 
 			this.setState({ addingArticle: true }, () => {
@@ -534,21 +541,28 @@ class LetterPositionsComponent extends React.Component {
 					position.title = article.title;
 					position.description = article.description;
 					position.number = article.number;
-					position.priceNet = recipientType === contactTypes.PAYEE ? transaction.exchangeRate > 0 ? 
-					(article.purchasePrice / transaction.exchangeRate) : article.purchasePrice : transaction.exchangeRate > 0 ? (article.price / transaction.exchangeRate) : article.price
+					position.priceNet =
+						recipientType === contactTypes.PAYEE
+							? transaction.exchangeRate > 0
+								? article.purchasePrice / transaction.exchangeRate
+								: article.purchasePrice
+							: transaction.exchangeRate > 0
+							? article.price / transaction.exchangeRate
+							: article.price;
 					//position.priceNet = recipientType === contactTypes.PAYEE ? article.purchasePrice : article.price;
 					position.priceGross =
 						recipientType === contactTypes.PAYEE ? article.purchasePriceGross : article.priceGross;
 					position.unit = article.unit || "pcs";
 					// position.vatPercent = invoiz.user.isSamllBusiness ? 0 : recipientType == contactTypes.PAYEE ? article.purchaseVatPercent : article.vatPercent;
-					position.vatPercent = invoiz.user.isSamllBusiness || transaction.exchangeRate > 0 ? 0 : article.vatPercent;
+					position.vatPercent =
+						invoiz.user.isSamllBusiness || transaction.exchangeRate > 0 ? 0 : article.vatPercent;
 					position.metaData = {
 						id: article.id,
 						type: "article",
 						number: article.number,
 						purchasePrice: article.purchasePrice,
 						calculationBase: article.calculationBase,
-						articlePriceNet: recipientType === contactTypes.PAYEE ? article.purchasePrice : article.price
+						articlePriceNet: recipientType === contactTypes.PAYEE ? article.purchasePrice : article.price,
 					};
 					position.hsnSacCode = article.hsnSacCode;
 					position.trackedInInventory = article.trackedInInventory;
@@ -714,7 +728,7 @@ class LetterPositionsComponent extends React.Component {
 					// pos.priceGross = accounting.unformat(value, ',');
 					pos.priceGross = accounting.unformat(value);
 					if (pos.mrp === 0 || pos.metaData.type === `custom`) {
-					pos.mrp = accounting.unformat(value);
+						pos.mrp = accounting.unformat(value);
 					}
 				}
 				pos = this.calculate(pos, false);
@@ -749,9 +763,7 @@ class LetterPositionsComponent extends React.Component {
 			if (pos.tempId === position.tempId) {
 				// pos.discountPercent = accounting.unformat(value, ',');
 				//pos.discountPercent = accounting.unformat(value, config.currencyFormat.decimal);
-				numberCalculate
-					? (pos.discountNumber = value)
-					: (pos.discountPercent = accounting.unformat(value));
+				numberCalculate ? (pos.discountNumber = value) : (pos.discountPercent = accounting.unformat(value));
 				pos = this.calculate(pos, numberCalculate);
 			}
 		});
@@ -853,7 +865,7 @@ class LetterPositionsComponent extends React.Component {
 		if (invoiz.user.isSmallBusiness || priceKind === "net") {
 			position.priceGross = position.priceNet * (1 + position.vatPercent / 100);
 			if (position.mrp === 0 || position.metaData.type === `custom`) {
-			position.mrp = position.priceNet * (1 + position.vatPercent / 100);
+				position.mrp = position.priceNet * (1 + position.vatPercent / 100);
 			}
 		} else {
 			position.priceNet = position.priceGross / (1 + position.vatPercent / 100);
@@ -874,41 +886,41 @@ class LetterPositionsComponent extends React.Component {
 			// priceKind === "net"
 			// 	? (position.discountNumber = position.totalNet - position.totalNetAfterDiscount)
 			// 	: (position.discountNumber = position.totalNet - position.totalNetAfterDiscount);
-			position.discountNumber = position.totalNet - position.totalNetAfterDiscount
+			position.discountNumber = position.totalNet - position.totalNetAfterDiscount;
 		} else if (numberCalculate && position.discountNumber >= 0) {
 			// position.totalGrossAfterDiscount = position.discountNumber
 			// ? new Decimal(position.totalGross).minus(parseInt(position.discountNumber)).toDP(2).toNumber()
 			// : 0;
 			if (priceKind === "net") {
 				position.totalNetAfterDiscount = position.discountNumber
-				? new Decimal(position.totalNet).minus(position.discountNumber).toDP(2).toNumber()
-				: 0;
+					? new Decimal(position.totalNet).minus(position.discountNumber).toDP(2).toNumber()
+					: 0;
 
 				position.discountPercent = new Decimal(
-					((position.totalNet - position.totalNetAfterDiscount) / position.totalNet) * 100)
+					((position.totalNet - position.totalNetAfterDiscount) / position.totalNet) * 100
+				)
 					.toDP(2)
-					.toNumber()
-
+					.toNumber();
 
 				position.totalGrossAfterDiscount = new Decimal(position.totalGross)
-				.minus((position.totalGross * position.discountPercent) / 100)
-				.toDP(2)
-				.toNumber();
+					.minus((position.totalGross * position.discountPercent) / 100)
+					.toDP(2)
+					.toNumber();
 			} else {
 				position.totalNetAfterDiscount = position.discountNumber
-				? new Decimal(position.totalNet).minus(position.discountNumber).toDP(2).toNumber()
-				: 0;
+					? new Decimal(position.totalNet).minus(position.discountNumber).toDP(2).toNumber()
+					: 0;
 
 				position.discountPercent = new Decimal(
-					((position.totalNet - position.totalNetAfterDiscount) / position.totalNet) * 100)
+					((position.totalNet - position.totalNetAfterDiscount) / position.totalNet) * 100
+				)
 					.toDP(2)
-					.toNumber()
+					.toNumber();
 
-					position.totalGrossAfterDiscount = new Decimal(position.totalGross)
-						.minus((position.totalGross * position.discountPercent) / 100)
-						.toDP(2)
-						.toNumber();
-
+				position.totalGrossAfterDiscount = new Decimal(position.totalGross)
+					.minus((position.totalGross * position.discountPercent) / 100)
+					.toDP(2)
+					.toNumber();
 			}
 			// priceKind === "net"
 			// 	? (position.discountPercent = new Decimal(
@@ -921,7 +933,6 @@ class LetterPositionsComponent extends React.Component {
 			// 	  )
 			// 			.toDP(2)
 			// 			.toNumber());
-
 		} else {
 			position.totalNetAfterDiscount = new Decimal(position.totalNet)
 				.minus((position.totalNet * position.discountPercent) / 100)
@@ -957,7 +968,7 @@ class LetterPositionsComponent extends React.Component {
 				>
 					<span className="edit-icon" />
 					<span className="icon icon-rounded icon-plus" />
-					{customerData && customerData.countryIso !== "IN" ? `Select article`: resources.str_enterArticle}
+					{customerData && customerData.countryIso !== "IN" ? `Select article` : resources.str_enterArticle}
 				</div>
 
 				<div
@@ -1112,15 +1123,15 @@ class LetterPositionsComponent extends React.Component {
 					<div
 						id={`vat-popover-price-${position.tempId}`}
 						onClick={() => {
-							if (!invoiz.user.isSmallBusiness && this.state.transaction === '') {
+							if (!invoiz.user.isSmallBusiness && this.state.transaction === "") {
 								this.showVatPopover(`vat-popover-price-${position.tempId}`, position);
 							}
 						}}
 					>
-						{
-							transaction.baseCurrency !== '' && this.state.addingArticle ? 
-							formatMoneySymbol(price, transaction.baseCurrency) : (
-								<CurrencyInputComponent
+						{transaction.baseCurrency !== "" && this.state.addingArticle ? (
+							formatMoneySymbol(price, transaction.baseCurrency)
+						) : (
+							<CurrencyInputComponent
 								willReceiveNewValueProps={true}
 								name="price"
 								value={price}
@@ -1130,8 +1141,7 @@ class LetterPositionsComponent extends React.Component {
 								currencyType={`symbol`}
 								currencyCode={this.state.transaction.baseCurrency}
 							/>
-							)
-						}
+						)}
 					</div>
 				);
 				break;
@@ -1187,16 +1197,19 @@ class LetterPositionsComponent extends React.Component {
 						</div>
 					);
 				} else {
-					element = this.state.transaction.baseCurrency === '' || !this.state.transaction.baseCurrency ? formatCurrency(
-						invoiz.user.isSmallBusiness || priceKind === "net"
-							? position.totalNetAfterDiscount
-							: position.totalGrossAfterDiscount
-					) : formatMoneySymbol(
-						priceKind === "net"
-						? position.totalNetAfterDiscount
-						: position.totalGrossAfterDiscount,
-						this.state.transaction.baseCurrency
-					)
+					element =
+						this.state.transaction.baseCurrency === "" || !this.state.transaction.baseCurrency
+							? formatCurrency(
+									invoiz.user.isSmallBusiness || priceKind === "net"
+										? position.totalNetAfterDiscount
+										: position.totalGrossAfterDiscount
+							  )
+							: formatMoneySymbol(
+									priceKind === "net"
+										? position.totalNetAfterDiscount
+										: position.totalGrossAfterDiscount,
+									this.state.transaction.baseCurrency
+							  );
 				}
 				break;
 			}

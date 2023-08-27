@@ -590,11 +590,17 @@
 			.letter-positions-item-column-amount {
 				// max-width: 139px;
 			}
-
 			.Select-multi-value-wrapper {
 				.Select-value {
 					padding-right: 25px;
 				}
+			}
+			.document_info-action {
+				box-shadow: none;
+			}
+			.document_info-action:before {
+				font-size: 16px;
+				margin-right: 8px;
 			}
 		}
 	}
