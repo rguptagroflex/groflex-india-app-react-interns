@@ -21,7 +21,7 @@ class LetterPositionsTotalComponent extends React.Component {
 			kind: props.priceKind,
 			customerData: props.customerData || {},
 			additionalCharges: props.additionalCharges,
-			transaction: props.transaction
+			transaction: props.transaction,
 		};
 	}
 
@@ -55,7 +55,8 @@ class LetterPositionsTotalComponent extends React.Component {
 
 	componentWillReceiveProps(newProps) {
 		if (newProps.isActiveComponentHasError) this.setState({ editing: false });
-		if (newProps.activeComponent != "positionTotalComponent") this.setState({ editing: false, customerData: newProps.customerData, transaction: newProps.transaction });
+		if (newProps.activeComponent != "positionTotalComponent")
+			this.setState({ editing: false, customerData: newProps.customerData, transaction: newProps.transaction });
 	}
 
 	showDiscountPopover(elementId) {
@@ -75,52 +76,73 @@ class LetterPositionsTotalComponent extends React.Component {
 			discountNumber = value;
 			discountPercent = new Decimal(((totalNet - (totalNet - value)) / totalNet) * 100).toDP(2).toNumber();
 
-		if (discountPercent > 100 || discountPercent < 0)
-			return invoiz.showNotification({
-			message: resources.transactionDiscountPercentErrorMessage,
-			type: "error",
-		});
+			if (discountPercent > 100 || discountPercent < 0)
+				return invoiz.showNotification({
+					message: resources.transactionDiscountPercentErrorMessage,
+					type: "error",
+				});
 
-		if (discountNumber < 0 || discountPercent > 100)
-			return invoiz.showNotification({
-			message: resources.discountAmountError,
-			type: "error",
-		});
-		this.setState({ popoverDiscountElementId: null, discountPercent: accounting.unformat(discountPercent, config.currencyFormat.decimal), discountNumber  } ,() => {
-			this.props.onDiscountChange && this.props.onDiscountChange(this.state.discountPercent)
-		});
+			if (discountNumber < 0 || discountPercent > 100)
+				return invoiz.showNotification({
+					message: resources.discountAmountError,
+					type: "error",
+				});
+			this.setState(
+				{
+					popoverDiscountElementId: null,
+					discountPercent: accounting.unformat(discountPercent, config.currencyFormat.decimal),
+					discountNumber,
+				},
+				() => {
+					this.props.onDiscountChange && this.props.onDiscountChange(this.state.discountPercent);
+				}
+			);
 		} else if (name === "discountPercent") {
 			discountPercent = value;
-			discountNumber = (totalNet * (discountPercent/100))
-		
-		if (discountPercent > 100 || discountPercent < 0)
-			return invoiz.showNotification({
-			message: resources.transactionDiscountPercentErrorMessage,
-			type: "error",
-		});
+			discountNumber = totalNet * (discountPercent / 100);
 
-		if (discountNumber < 0 || discountPercent > 100)
-			return invoiz.showNotification({
-			message: resources.discountAmountError,
-			type: "error",
-		});
-		this.setState({ popoverDiscountElementId: null, discountPercent: accounting.unformat(discountPercent, config.currencyFormat.decimal), discountNumber } ,() => {
-			this.props.onDiscountChange && this.props.onDiscountChange(this.state.discountPercent)
-		});
+			if (discountPercent > 100 || discountPercent < 0)
+				return invoiz.showNotification({
+					message: resources.transactionDiscountPercentErrorMessage,
+					type: "error",
+				});
+
+			if (discountNumber < 0 || discountPercent > 100)
+				return invoiz.showNotification({
+					message: resources.discountAmountError,
+					type: "error",
+				});
+			this.setState(
+				{
+					popoverDiscountElementId: null,
+					discountPercent: accounting.unformat(discountPercent, config.currencyFormat.decimal),
+					discountNumber,
+				},
+				() => {
+					this.props.onDiscountChange && this.props.onDiscountChange(this.state.discountPercent);
+				}
+			);
 		}
 	}
 
 	onChargesChange(value, name) {
 		const { additionalCharges } = this.state;
 		additionalCharges[name] = parseInt(value);
-		this.setState({additionalCharges}, () => {
+		this.setState({ additionalCharges }, () => {
 			this.props.onChargesChange && this.props.onChargesChange(additionalCharges);
-		})
+		});
 	}
 
 	render() {
 		const { priceKind, positions, resources } = this.props;
-		let { popoverDiscountElementId, discountNumber, discountPercent, customerData, additionalCharges, transaction } = this.state;
+		let {
+			popoverDiscountElementId,
+			discountNumber,
+			discountPercent,
+			customerData,
+			additionalCharges,
+			transaction,
+		} = this.state;
 		if (!priceKind || !positions) {
 			return null;
 		}
@@ -137,23 +159,34 @@ class LetterPositionsTotalComponent extends React.Component {
 		const vatOptions = invoiz.user.vatCodes;
 		if (invoiz.user.isSmallBusiness || priceKind === "net") {
 			totalNet = positions.reduce((a, b) => a + b.totalNetAfterDiscount, 0);
-			discountedTotalNet = totalNet - totalNet * (discountPercent / 100) + Object.values(additionalCharges).reduce((a, b) => a + b, 0);
+			discountedTotalNet =
+				totalNet -
+				totalNet * (discountPercent / 100) +
+				Object.values(additionalCharges).reduce((a, b) => a + b, 0);
 			totalNetElement = (
 				<div className="letter-positions-total letter-positions-total-net">
 					<div className="column-left">{resources.str_totalNet}</div>
-					<div className="column-right">{transaction.baseCurrency ? formatMoneySymbol(totalNet, transaction.baseCurrency) : formatCurrency(totalNet)}</div>
+					<div className="seperator-hyphen">-</div>
+					<div className="column-right">
+						{transaction.baseCurrency
+							? formatMoneySymbol(totalNet, transaction.baseCurrency)
+							: formatCurrency(totalNet)}
+					</div>
 				</div>
 			);
 			discountElement = (
 				<div className="letter-positions-total letter-positions-total-net">
 					<div className="column-left">{resources.additionalDiscount}</div>
+					<div className="seperator-hyphen">-</div>
 					<div className="column-discount-right">
-					<div id={`letter-positions-discount-popover`}
-						onClick={(ev) => {
-							this.onStartEditing(ev)
-							// this.showDiscountPopover(`letter-positions-discount-popover`);
-						}}>
-						<span>{discountPercent + '%'}</span>
+						<div
+							id={`letter-positions-discount-popover`}
+							onClick={(ev) => {
+								this.onStartEditing(ev);
+								// this.showDiscountPopover(`letter-positions-discount-popover`);
+							}}
+						>
+							<span>{discountPercent + "%"}</span>
 						</div>
 					</div>
 				</div>
@@ -162,50 +195,55 @@ class LetterPositionsTotalComponent extends React.Component {
 				<div>
 					<div className="letter-positions-total letter-positions-total-net">
 						<div className="column-left">{`Service charge`}</div>
-							{/* <div className="column-currency-right"> */}
-								<CurrencyInputComponent
-								willReceiveNewValueProps={true}
-								name="serviceCharge"
-								value={parseInt(additionalCharges.serviceCharge)}
-								selectOnFocus={true}
-								onBlur={(value) => this.onChargesChange(value, "serviceCharge")}
-								currencyTotal={true}
-								currencyType={`symbol`}
-								currencyCode={transaction.baseCurrency}
-							/>
-							{/* </div> */}
+						<div className="seperator-hyphen">-</div>
+						{/* <div className="column-currency-right"> */}
+						<CurrencyInputComponent
+							willReceiveNewValueProps={true}
+							name="serviceCharge"
+							value={parseInt(additionalCharges.serviceCharge)}
+							selectOnFocus={true}
+							onBlur={(value) => this.onChargesChange(value, "serviceCharge")}
+							currencyTotal={true}
+							currencyType={`symbol`}
+							currencyCode={transaction.baseCurrency}
+						/>
+						{/* </div> */}
 					</div>
 					<div className="letter-positions-total letter-positions-total-net">
 						<div className="column-left">{`Shipping charge`}</div>
-							{/* <div className="column-currency-right"> */}
-								<CurrencyInputComponent
-								willReceiveNewValueProps={true}
-								name="shippingCharge"
-								value={parseInt(additionalCharges.shippingCharge)}
-								selectOnFocus={true}
-								onBlur={(value) => this.onChargesChange(value, "shippingCharge")}
-								currencyTotal={true}
-								currencyType={`symbol`}
-								currencyCode={transaction.baseCurrency}
-							/>
-							{/* </div> */}
+						<div className="seperator-hyphen">-</div>
+						{/* <div className="column-currency-right"> */}
+						<CurrencyInputComponent
+							willReceiveNewValueProps={true}
+							name="shippingCharge"
+							value={parseInt(additionalCharges.shippingCharge)}
+							selectOnFocus={true}
+							onBlur={(value) => this.onChargesChange(value, "shippingCharge")}
+							currencyTotal={true}
+							currencyType={`symbol`}
+							currencyCode={transaction.baseCurrency}
+						/>
+						{/* </div> */}
 					</div>
 				</div>
 			);
 			discountElement = (
 				<div className="letter-positions-total letter-positions-total-net">
 					<div className="column-left">{resources.additionalDiscount}</div>
+					<div className="seperator-hyphen">-</div>
 					<div className="column-discount-right">
-					<div id={`letter-positions-discount-popover`}
-						onClick={(ev) => {
-							this.onStartEditing(ev)
-							// this.showDiscountPopover(`letter-positions-discount-popover`);
-						}}>
-						<span>{discountPercent + '%'}</span>
+						<div
+							id={`letter-positions-discount-popover`}
+							onClick={(ev) => {
+								this.onStartEditing(ev);
+								// this.showDiscountPopover(`letter-positions-discount-popover`);
+							}}
+						>
+							<span>{discountPercent + "%"}</span>
 						</div>
 					</div>
 				</div>
-		);
+			);
 			let vatValue = null;
 			positions &&
 				positions.length !== 0 &&
@@ -232,105 +270,122 @@ class LetterPositionsTotalComponent extends React.Component {
 				? discountedTotalNet
 				: discountedTotalNet + vats.reduce((a, b) => a + b.value, 0);
 			totalElement = (
-				<div>
+				<div className="last-letter-positions-total-container">
 					<div className="letter-positions-total">
 						<div className="column-left">{resources.str_total}</div>
-						<div className="column-right">{customerData && customerData.baseCurrency ? formatMoneySymbol(totalValue, transaction.baseCurrency) : formatCurrency(totalValue)}</div>
+						<div className="seperator-hyphen">-</div>
+						<div className="column-right">
+							{customerData && customerData.baseCurrency
+								? formatMoneySymbol(totalValue, transaction.baseCurrency)
+								: formatCurrency(totalValue)}
+						</div>
 					</div>
 				</div>
 			);
 		} else {
 			totalGross = positions.reduce((a, b) => a + b.totalGrossAfterDiscount, 0);
 			totalNet = positions.reduce((a, b) => a + b.totalNetAfterDiscount, 0);
-			discountedTotalNet = totalNet - (totalNet * (discountPercent/100));
+			discountedTotalNet = totalNet - totalNet * (discountPercent / 100);
 			if (customerData && customerData.countryIso === "IN") {
-			//discountedTotalNet = totalNet - totalNet * (discountPercent / 100);
-			discountedTotalNet = totalNet - totalNet * (discountPercent / 100) + Object.values(additionalCharges).reduce((a, b) => a + b, 0);
-			let totalNetVat = null;
-			positions &&
-				positions.length !== 0 &&
-				vatOptions.map((vatObj) => {
-					totalNetVat = positions
-						.filter((pos) => pos.vatPercent === vatObj.value)
-						.reduce(
-							(a, b) =>
-								a +
-								(b.totalGrossAfterDiscount - b.totalGrossAfterDiscount / ((100 + vatObj.value) / 100)),
-							0
-						);
-					const vatValue = new Decimal(totalNetVat).toDP(2).toNumber();
-					if (vatValue > 0) {
-						this.handleGstDetails(vatObj.value, vatValue, vats);
-					}
-				});
-
+				//discountedTotalNet = totalNet - totalNet * (discountPercent / 100);
+				discountedTotalNet =
+					totalNet -
+					totalNet * (discountPercent / 100) +
+					Object.values(additionalCharges).reduce((a, b) => a + b, 0);
+				let totalNetVat = null;
+				positions &&
+					positions.length !== 0 &&
+					vatOptions.map((vatObj) => {
+						totalNetVat = positions
+							.filter((pos) => pos.vatPercent === vatObj.value)
+							.reduce(
+								(a, b) =>
+									a +
+									(b.totalGrossAfterDiscount -
+										b.totalGrossAfterDiscount / ((100 + vatObj.value) / 100)),
+								0
+							);
+						const vatValue = new Decimal(totalNetVat).toDP(2).toNumber();
+						if (vatValue > 0) {
+							this.handleGstDetails(vatObj.value, vatValue, vats);
+						}
+					});
 			}
-				discountElement = (
-					<div className="letter-positions-total letter-positions-total-net">
-						<div className="column-left">{resources.additionalDiscount}</div>
-						<div className="column-discount-right">
+			discountElement = (
+				<div className="letter-positions-total letter-positions-total-net">
+					<div className="column-left">{resources.additionalDiscount}</div>
+					<div className="seperator-hyphen">-</div>
+					<div className="column-discount-right">
 						<div
 							id={`letter-positions-discount-popover`}
 							onClick={() => {
 								this.showDiscountPopover(`letter-positions-discount-popover`);
 							}}
 						>
-							<span>{discountPercent + '%'}</span>
-							</div>
+							<span>{discountPercent + "%"}</span>
 						</div>
 					</div>
+				</div>
 			);
 			additionalChargesElement = (
 				<div>
 					<div className="letter-positions-total letter-positions-total-net">
 						<div className="column-left">{`Service charge`}</div>
-							{/* <div className="column-currency-right"> */}
-								<CurrencyInputComponent
-								willReceiveNewValueProps={true}
-								name="serviceCharge"
-								value={parseInt(additionalCharges.serviceCharge)}
-								selectOnFocus={true}
-								onBlur={(value) => this.onChargesChange(value, "serviceCharge")}
-								currencyTotal={true}
-								currencyType={`symbol`}
-								currencyCode={this.state.customerData ? transaction.baseCurrency : ''}
-							/>
-							{/* </div> */}
+						<div className="seperator-hyphen">-</div>
+						{/* <div className="column-currency-right"> */}
+						<CurrencyInputComponent
+							willReceiveNewValueProps={true}
+							name="serviceCharge"
+							value={parseInt(additionalCharges.serviceCharge)}
+							selectOnFocus={true}
+							onBlur={(value) => this.onChargesChange(value, "serviceCharge")}
+							currencyTotal={true}
+							currencyType={`symbol`}
+							currencyCode={this.state.customerData ? transaction.baseCurrency : ""}
+						/>
+						{/* </div> */}
 					</div>
 					<div className="letter-positions-total letter-positions-total-net">
 						<div className="column-left">{`Shipping charge`}</div>
-							{/* <div className="column-currency-right"> */}
-								<CurrencyInputComponent
-								willReceiveNewValueProps={true}
-								name="shippingCharge"
-								value={parseInt(additionalCharges.shippingCharge)}
-								selectOnFocus={true}
-								onBlur={(value) => this.onChargesChange(value, "shippingCharge")}
-								currencyTotal={true}
-								currencyType={`symbol`}
-								currencyCode={this.state.customerData && this.state.customerData.baseCurrency}
-							/>
-							{/* </div> */}
+						<div className="seperator-hyphen">-</div>
+						{/* <div className="column-currency-right"> */}
+						<CurrencyInputComponent
+							willReceiveNewValueProps={true}
+							name="shippingCharge"
+							value={parseInt(additionalCharges.shippingCharge)}
+							selectOnFocus={true}
+							onBlur={(value) => this.onChargesChange(value, "shippingCharge")}
+							currencyTotal={true}
+							currencyType={`symbol`}
+							currencyCode={this.state.customerData && this.state.customerData.baseCurrency}
+						/>
+						{/* </div> */}
 					</div>
 				</div>
 			);
 			discountedTotalGross = discountedTotalNet + vats.reduce((a, b) => a + b.value, 0);
 			totalGrossElement = (
-				<div>
+				<div className="last-letter-positions-total-container">
 					<div className="letter-positions-total">
 						<div className="column-left">{resources.str_total}</div>
-						<div className="column-right">{customerData && customerData.baseCurrency ? formatMoneySymbol(totalNet, customerData.baseCurrency) : formatCurrency(discountedTotalGross)}</div>
+						<div className="seperator-hyphen">-</div>
+						<div className="column-right">
+							{customerData && customerData.baseCurrency
+								? formatMoneySymbol(totalNet, customerData.baseCurrency)
+								: formatCurrency(discountedTotalGross)}
+						</div>
 					</div>
 				</div>
 			);
 		}
-		
+
 		const vatElements = vats.map((vatObj) => {
 			return (
 				<div className="letter-positions-vat" key={`letter-positions-vat-${vatObj.vatPercent}-${vatObj.label}`}>
 					<div className="column-left">
 						{priceKind === "net" ? "" : resources.str_contains} {vatObj.label} {vatObj.vatPercent}%
 					</div>
+					<div className="seperator-hyphen">-</div>
 					<div className="column-right">{formatCurrency(vatObj.value)}</div>
 				</div>
 			);
@@ -381,30 +436,48 @@ class LetterPositionsTotalComponent extends React.Component {
 				>
 					{/* <span className="edit-icon" /> */}
 					{/* {invoiz.user.isSmallBusiness ? null : this.state.editing ? (  */}
-					{
-						customerData && customerData.countryIso === "IN" ? (
-							<div className="letter-positions-radio">
-							<RadioInputComponent
+					{customerData && customerData.countryIso === "IN" ? (
+						<div className="letter-positions-radio">
+							{/* <RadioInputComponent
 								useCustomStyle={true}
 								value={priceKind}
 								options={[
 									{ value: "gross", label: resources.str_gross },
 									{ value: "net", label: resources.str_net },
 								]}
-								onChange={(value) => this.onChange(value)}
-							/>
+								onChange={(value) => {
+									this.onChange(value);
+									console.log(value, "VSALUE");
+									console.log(priceKind, "PRICE KIND");
+								}}
+							/> */}
+							<div
+								onClick={() => {
+									this.onChange("gross");
+								}}
+								className={`total-option ${priceKind === "gross" ? "total-active" : ""}`}
+							>
+								Gross
+							</div>
+							<div
+								onClick={() => {
+									this.onChange("net");
+								}}
+								className={`total-option ${priceKind === "net" ? "total-active" : ""}`}
+							>
+								Net
+							</div>
 						</div>
-						) : null
-					}
-				 {/* ) : null} */}
+					) : null}
+					{/* ) : null} */}
 					{priceKind === "gross" ? discountElement : null}
-					{!invoiz.user.isSmallBusiness && totalNetElement}
-					{!invoiz.user.isSmallBusiness && totalGrossElement}
 					{priceKind === "net" ? discountElement : null}
-					{priceKind === "net" ? additionalChargesElement : null}
-					{(!invoiz.user.isSmallBusiness || transaction.baseCurrency === '') ? vatElements : null}
 					{priceKind === "gross" ? additionalChargesElement : null}
+					{priceKind === "net" ? additionalChargesElement : null}
+					{!invoiz.user.isSmallBusiness && totalNetElement}
+					{!invoiz.user.isSmallBusiness || transaction.baseCurrency === "" ? vatElements : null}
 					{totalElement}
+					{!invoiz.user.isSmallBusiness && totalGrossElement}
 				</div>
 			</div>
 		);

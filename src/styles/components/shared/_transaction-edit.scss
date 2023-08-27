@@ -404,9 +404,7 @@
 }
 
 //Design changes:-
-.vertically-middle {
-	vertical-align: middle;
-}
+
 .transaction-edit-component-wrapper {
 	.transaction-edit-wrapper {
 		.headerContainer {
@@ -511,6 +509,9 @@
 		.transaction-form-meta {
 			.letter-meta-display {
 				width: 310px;
+				.letter-meta-display-row {
+					margin-bottom: 4px;
+				}
 			}
 			.letter-meta-display-label {
 				color: #888787;
@@ -606,9 +607,9 @@
 		}
 
 		.letter-positions-item {
-			.letter-positions-item-column-amount {
-				// max-width: 139px;
-			}
+			// .letter-positions-item-column-amount {
+			// 	max-width: 139px;
+			// }
 			.Select-multi-value-wrapper {
 				.Select-value {
 					padding-right: 25px;
@@ -623,4 +624,59 @@
 			}
 		}
 	}
+	.letter-positions-total-component {
+		margin-top: 20px;
+		.letter-positions-total-content {
+			padding: 0px 0px 20px 0px;
+
+			.letter-positions-radio {
+				border: 1px solid #dddddd;
+				display: flex;
+				.total-option {
+					cursor: pointer;
+					height: 30px;
+					width: 50%;
+					text-align: center;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+				.total-active {
+					background-color: #ecfcf4;
+					color: #272d30;
+					font-weight: 700;
+				}
+			}
+
+			.column-left {
+				min-width: 180px;
+				font-weight: 600;
+				color: #888787;
+			}
+			.letter-positions-total,
+			.letter-positions-vat {
+				margin-bottom: 4px;
+			}
+			&:after {
+				border-color: #c6c6c6;
+				bottom: 50px;
+				border-width: 1px 0;
+			}
+			.last-letter-positions-total-container {
+				margin-top: 12px;
+				color: #272d30;
+				.column-left {
+					font-weight: 700;
+					color: #272d30;
+				}
+			}
+		}
+	}
+}
+
+.vertically-middle {
+	vertical-align: middle;
+}
+.seperator-hyphen {
+	margin: 0 10px;
 }
