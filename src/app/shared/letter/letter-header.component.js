@@ -183,7 +183,12 @@ class LetterHeaderComponent extends React.Component {
 									</span> */}
 									<div className="btn1">
 										<div className="btn1-name">
-											<SVGInline width="20px" height="15px" svg={editSvgGreen} />
+											<SVGInline
+												width="17px"
+												height="17px"
+												svg={editSvgGreen}
+												className="vertically-middle u_mr_6"
+											/>
 											<span>Upload</span>
 										</div>
 										<div className="btn1-subname">Or Drop a file</div>
@@ -191,7 +196,12 @@ class LetterHeaderComponent extends React.Component {
 									<div className="or-div">OR</div>
 									<div className="btn2">
 										<div>
-											<SVGInline width="20px" height="15px" svg={plusSvgGreen} />
+											<SVGInline
+												width="17px"
+												height="17px"
+												svg={plusSvgGreen}
+												className="vertically-middle u_mr_6"
+											/>
 											<span>Enter text</span>
 										</div>
 									</div>

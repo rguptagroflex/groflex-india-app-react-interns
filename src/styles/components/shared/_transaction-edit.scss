@@ -404,6 +404,9 @@
 }
 
 //Design changes:-
+.vertically-middle {
+	vertical-align: middle;
+}
 .transaction-edit-component-wrapper {
 	.transaction-edit-wrapper {
 		.headerContainer {
@@ -502,6 +505,22 @@
 			.phone-label {
 				font-weight: 600;
 				color: #888787;
+			}
+		}
+		// tranasction form meta
+		.transaction-form-meta {
+			.letter-meta-display {
+				width: 310px;
+			}
+			.letter-meta-display-label {
+				color: #888787;
+			}
+			.document_info-action {
+				box-shadow: none;
+			}
+			.document_info-action:before {
+				font-size: 14px;
+				margin-left: 5px;
 			}
 		}
 	}

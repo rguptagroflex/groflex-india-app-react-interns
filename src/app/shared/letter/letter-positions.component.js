@@ -22,6 +22,8 @@ import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.
 import WebStorageService from "services/webstorage.service";
 import WebStorageKey from "enums/web-storage-key.enum";
 import ButtonComponent from "shared/button/button.component";
+import plusSvgGreen from "../../../assets/images/icons/plusSvgGreen.svg";
+import SVGInline from "react-svg-inline";
 class LetterPositionsComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -967,7 +969,8 @@ class LetterPositionsComponent extends React.Component {
 					onClick={() => this.onNewPositionClick()}
 				>
 					<span className="edit-icon" />
-					<span className="icon icon-rounded icon-plus" />
+					{/* <span className="icon icon-rounded icon-plus" /> */}
+					<SVGInline width="17px" height="17px" svg={plusSvgGreen} className="vertically-middle u_mr_6" />
 					{customerData && customerData.countryIso !== "IN" ? `Select article` : resources.str_enterArticle}
 				</div>
 
