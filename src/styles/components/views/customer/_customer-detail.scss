@@ -11,6 +11,10 @@
 		margin-bottom: 8px;
 		padding: 10px;
 	}
+	.tabs-container .tab-list{
+		border-radius: 8px 8px 0 0 !important;
+		background-color: #f5f5f5 !important;
+	}
 
 	.flexible-height {
 		display: flex;
@@ -159,7 +163,12 @@
 			}
 		}
 	}
-
+	.tabs-container{
+		.tab-list {
+			border-radius: 8px 8px 0 0 !important;
+			background-color: grey !important;
+		}
+	}
 	.customer-contact-persons {
 		width: 100%;
 		.carousel_prev {

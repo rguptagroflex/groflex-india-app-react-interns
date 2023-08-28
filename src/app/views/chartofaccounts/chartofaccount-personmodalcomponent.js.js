@@ -30,6 +30,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 		accountName: "",
 		description: "",
 	});
+
 	const [accountNameError, setAccountNameError] = useState(false);
 	const [accountTypeError, setAccountTypeError] = useState(false);
 	const handleDescriptionChange = (event) => {
@@ -85,7 +86,9 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	};
 
 	const handleAccountNameChange = (event) => {
-		setChartData({ ...chartData, accountName: event.target.value });
+		const value = event.target.value;
+		setChartData({ ...chartData, accountName: value });
+		setAccountNameError(value === ""); 
 	};
 
 	const handleAccountStatus = (newValue) => {
@@ -101,22 +104,50 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	const handleAccountTypeChange = (option) => {
 		setAccountType(option.value);
 		setRequiredSubtypeOptions(allAccountSubTypeOptions[option.value]);
+		setAccountTypeError(false);
 	};
 
 	const handleAccountSubTypeChange = (option) => {
 		setAccountSubType(option.value);
 	};
-
 	const handleSave = () => {
-		const accountData = {
-			...chartData,
-			accountTypeId: accountType,
-			accountSubTypeId: accountSubType,
-		};
-		console.log(accountData, "accountdata");
-		onConfirm(accountData);
-		ModalService.close();
+		let hasError = false;
+
+		if (!accountType) {
+			setAccountTypeError(true);
+			hasError = true;
+		} else {
+			setAccountTypeError(false);
+		}
+
+		if (!chartData.accountName) {
+			setAccountNameError(true);
+			hasError = true;
+		} else {
+			setAccountNameError(false);
+		}
+
+		if (!hasError) {
+			const accountData = {
+				...chartData,
+				accountTypeId: accountType,
+				accountSubTypeId: accountSubType,
+			};
+			console.log(accountData, "accountdata");
+			onConfirm(accountData);
+			ModalService.close();
+		}
 	};
+	// const handleSave = () => {
+	// 	const accountData = {
+	// 		...chartData,
+	// 		accountTypeId: accountType,
+	// 		accountSubTypeId: accountSubType,
+	// 	};
+	// 	console.log(accountData, "accountdata");
+	// 	onConfirm(accountData);
+	// 	ModalService.close();
+	// };
 	// console.log(accountTypeOptions, "Acc type options");
 	// console.log(allAccountSubTypeOptions, "All subtype options");
 	// console.log(requiredSubtypeOptions, "required subtype options");
@@ -200,7 +231,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 							aria-describedby={accountNameError ? "accountNameError" : null}
 							label="Account name"
 						/>
-						<div style={{ marginTop: "-5px" }}>
+						<div style={{ marginTop: "-10px" }}>
 							{accountNameError && (
 								<span id="accountNameError" style={{ color: "red" }}>
 									This is a mandatory field.

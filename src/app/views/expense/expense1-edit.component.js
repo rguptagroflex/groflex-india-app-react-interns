@@ -74,6 +74,7 @@ class ExpenseEditComponent extends React.Component {
 				paymentMethodOptions: [...res.body.data].map((bank) => ({
 					label: capitalize(bank.bankName),
 					value: bank.id,
+					type: bank.type
 				})),
 			});
 		});
@@ -148,7 +149,10 @@ class ExpenseEditComponent extends React.Component {
 	}
 
 	handlePaymentMethodChange(option) {
-		this.setState({ ...this.state, paymentMethod: option.value, bankDetailId: option.value });
+		let bankdetails = this.state.paymentMethodOptions.find(x => x.value == option.value);
+		const { expense } = this.state;
+		expense.payKind = bankdetails.type;
+		this.setState({ ...this.state, expense, paymentMethod: option.value, bankDetailId: option.value });
 	}
 
 	render() {

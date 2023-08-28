@@ -37,8 +37,11 @@ import StartTrackArticlesComponent from "./track-articles/start-track-articles.c
 import StartFeatureCarouselComponent from "./feature-carousel/start-feature-carousel.component";
 import StartPromotionalCarouselComponent from "./promotional-carousel/start-promotional-carousel.component";
 import StartArticlesLowOnStockComponent from "./track-articles/start-articles-low-on-stock.component";
-import { updateUserPermissions } from 'helpers/updateUserPermissions';
-
+import { updateUserPermissions } from "helpers/updateUserPermissions";
+import Slider from "react-slick";
+import ReactSlickCarousel from "../../shared/react-slick-carousel/react-slick-carousel.component";
+import WelcomeCarouselComponent from "./welcome-carousel.component";
+import ComingSoonCarouselComponent from "./coming-soon-carousel.component";
 
 const { ACCOUNT, BANK_DETAILS, STAKEHOLDER, COMPLETED } = KycProgress;
 const { CREATED, CLARIFICATION, ACTIVE, REJECTED, REVIEW, SUSPENDED } = KycStatus;
@@ -148,7 +151,7 @@ class StartImpressTemplatesComponent extends React.Component {
 			kycProgress: invoiz.user && invoiz.user.razorpayKycProgress,
 			kycStatus: invoiz.user && invoiz.user.razorpayKycStatus,
 			planId: null,
-			isLoadingKyc: true
+			isLoadingKyc: true,
 		};
 	}
 
@@ -171,23 +174,27 @@ class StartImpressTemplatesComponent extends React.Component {
 
 		setTimeout(() => {
 			if (invoiz.user && !invoiz.user.kycProgress && invoiz.user.kycStatus !== ACTIVE) {
-				invoiz.request(config.razorpay.endpoints.getAccountDetails, { auth: true, method: "GET" }).then(({ body: { data }}) => {
-					invoiz.user.kycProgress = data.kycProgress;
-					invoiz.user.kycStatus = data.kycStatus;
-					this.setState({ kycProgress: data.kycProgress, kycStatus: data.kycStatus, isLoadingKyc: false })
-				})
+				invoiz
+					.request(config.razorpay.endpoints.getAccountDetails, { auth: true, method: "GET" })
+					.then(({ body: { data } }) => {
+						invoiz.user.kycProgress = data.kycProgress;
+						invoiz.user.kycStatus = data.kycStatus;
+						this.setState({
+							kycProgress: data.kycProgress,
+							kycStatus: data.kycStatus,
+							isLoadingKyc: false,
+						});
+					});
 			}
-		}, 6000)
+		}, 6000);
 		setTimeout(() => {
 			updateUserPermissions(() => {
-				this.setState(
-					{
-						canCreateOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_OFFER),
-						canCreateInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_INVOICE),
-					}
-				)
-			})
-		}, 1000)
+				this.setState({
+					canCreateOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_OFFER),
+					canCreateInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_INVOICE),
+				});
+			});
+		}, 1000);
 	}
 	componentWillUnmount() {
 		// invoiz.off('updateNewsfeedCount');
@@ -415,10 +422,16 @@ class StartImpressTemplatesComponent extends React.Component {
 			);
 		} else if (type === `setupKyc`) {
 			let kycLabel =
-				kycProgress === COMPLETED && kycStatus === CLARIFICATION ? `Add clarification` : kycProgress !== COMPLETED ? `Submit KYC` : `View form`;
+				kycProgress === COMPLETED && kycStatus === CLARIFICATION
+					? `Add clarification`
+					: kycProgress !== COMPLETED
+					? `Submit KYC`
+					: `View form`;
 			return (
 				<div className="box-content">
-					{kycProgress !== COMPLETED && kycProgress !== null ? <ProgressBarComponent progress={kycProgress} /> : null}
+					{kycProgress !== COMPLETED && kycProgress !== null ? (
+						<ProgressBarComponent progress={kycProgress} />
+					) : null}
 					<ButtonComponent
 						callback={() => {
 							kycProgress === COMPLETED && kycStatus === CLARIFICATION
@@ -525,11 +538,7 @@ class StartImpressTemplatesComponent extends React.Component {
 
 		return (
 			<div className="start-groflex-templates-component-wrapper">
-				<TopbarComponent
-					title={resources.str_impress}
-					viewIcon={`icon-start`}
-					resources={resources}
-				/>
+				<TopbarComponent title={resources.str_impress} viewIcon={`icon-start`} resources={resources} />
 				{/* <div className="impress-templates-head">
 					<div className="steps-container">
 						<div className="step">
@@ -610,50 +619,59 @@ class StartImpressTemplatesComponent extends React.Component {
 							</div>
 						</div>
 					) : null} */}
-					<div className="col-xs-12">
-						<StartQuickLinksComponent />
-					</div>
-					{/* {kycStatus == ACTIVE ? ( */}
+
 					{/* uncomment when razorpay intrigation done */}
-						{/* <div className="col-xs-12"> 
+					{kycStatus == ACTIVE ? (
+						<div className="col-xs-12">
 							<div className="widgetContainer box box-large-bottom box-large-top dashboard-quick-buttons">
 								<div className="box-header">
-									{
-										this.state.isLoadingKyc ? <LoaderComponent visible={true} text={`Loading KYC status`}/> : (
-											<div className="text-h5 u_mb_0">
-										{kycProgress !== COMPLETED ? `Complete KYC` : `KYC activation status`}
-										<span style={{ fontSize: 14, fontWeight: 400, marginLeft: 20 }}>
-											{kycProgress === COMPLETED
-												? this.getIconAndStatus(kycStatus)
-												: `Please submit KYC details to accept payments`}
-										</span>
-									</div>
-										)
-									}
-									
+									{this.state.isLoadingKyc ? (
+										<LoaderComponent visible={true} text={`Loading KYC status`} />
+									) : (
+										<div className="text-h5 u_mb_0">
+											{kycProgress !== COMPLETED ? `Complete KYC` : `KYC activation status`}
+											<span style={{ fontSize: 14, fontWeight: 400, marginLeft: 20 }}>
+												{kycProgress === COMPLETED
+													? this.getIconAndStatus(kycStatus)
+													: `Please submit KYC details to accept payments`}
+											</span>
+										</div>
+									)}
 								</div>
 								{this.quickButtonsContent(`setupKyc`)}
 							</div>
-						</div> */}
-					{/* ) : null} */}
+						</div>
+					) : null}
 
-					{/* <div className="col-xs-12"> 
-						<div className="widgetContainer box" style={{padding: '10px'}}>
+					{/* <div className="col-xs-12">
+						<div className="widgetContainer box" style={{ padding: "10px" }}>
 							<p className="text-h5">Latest Updates {kycStatus}</p>
 						</div>
 					</div> */}
 
-				
+					{/* <div className="col-xs-12">
+						<StartFeatureCarouselComponent />
+					</div> */}
 
+					<div className="col-xs-12 homepage-welcome-carousel-box-container">
+						<div className="box">
+							<WelcomeCarouselComponent />
+						</div>
+					</div>
+					{/* New placement */}
 					<div className="col-xs-12">
-						{/* <StartFeatureCarouselComponent /> */}
+						<StartQuickLinksComponent />
 					</div>
 
-					<div className="col-xs-12">
+					<div className="col-xs-12 homepage-coming-soon-container">
+						<div className="box">
+							<ComingSoonCarouselComponent />
+						</div>
+					</div>
+
+					{/* <div className="col-xs-12">
 						<StartExploreComponent />
-					</div>
-					
-					
+					</div> */}
 
 					<div className="dashboard-last-used-documents-component-wrapper">
 						<div className="col-xs-12">
@@ -665,13 +683,14 @@ class StartImpressTemplatesComponent extends React.Component {
 							</div>
 						</div>
 					</div>
+
 					{/* cmt sandy */}
 					{/* <div className="row" style={{margin: 0}}>
 						<StartTrackArticlesComponent />
 						<StartArticlesLowOnStockComponent />
 						<StartPromotionalCarouselComponent />
 					</div> */}
-					
+
 					{/* <div className="col-xs-12">
 						<div className="widgetContainer box box-large-bottom box-large-top dashboard-quick-buttons">
 							<div className="box-header">

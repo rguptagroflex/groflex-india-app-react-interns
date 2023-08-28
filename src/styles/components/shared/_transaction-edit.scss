@@ -65,14 +65,13 @@
 				padding-top: 10px;
 			}
 
-			.recipientForm-mobile{
+			.recipientForm-mobile {
 				margin-top: -13px;
-				
+
 				&.existing {
 					margin-top: 7px;
 				}
 			}
-
 
 			.recipient-form--address-street {
 				padding: 20px;
@@ -402,4 +401,13 @@
 .street-div {
 	overflow-wrap: break-word;
 	white-space: pre-line;
+}
+
+//Design changes:-
+.transaction-edit-component-wrapper {
+	.transaction-edit-wrapper {
+		.box {
+			width: 930px;
+		}
+	}
 }

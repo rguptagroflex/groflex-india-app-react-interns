@@ -10,7 +10,7 @@
 	.box {
 		padding: 40px;
 		border-radius: 8px;
-		
+
 		&.small-padding {
 			padding: 40px;
 		}
@@ -39,7 +39,7 @@
 		&-large {
 			font-size: 10em;
 		}
-		
+
 		&-small {
 			font-size: 7em;
 			@include rem(margin-top, 10);
@@ -133,10 +133,10 @@
 					right: 0;
 					width: 1px;
 					height: 37px;
-					background: #E2E2E2;
+					background: #e2e2e2;
 					content: " ";
 				}
-				
+
 				.stats-value {
 					margin-top: 7px;
 					font-size: 24px;
@@ -145,7 +145,7 @@
 					cursor: pointer;
 				}
 			}
-	
+
 			.right-content {
 				.stats-value {
 					margin-top: 4px;
@@ -197,10 +197,10 @@
 					right: 0;
 					width: 1px;
 					height: 37px;
-					background: #E2E2E2;
+					background: #e2e2e2;
 					content: " ";
 				}
-				
+
 				.stats-value {
 					margin-top: 7px;
 					font-size: 21px;
@@ -209,7 +209,7 @@
 					cursor: pointer;
 				}
 			}
-	
+
 			.right-content {
 				.stats-value {
 					margin-top: 4px;
@@ -226,4 +226,78 @@
 			padding: 0 !important;
 		}
 	}
+}
+
+//New design changes
+.box {
+	box-shadow: none !important;
+	border: 1px solid #c6c6c6;
+	border-radius: 8px !important;
+}
+
+.head {
+	border-radius: 8px 8px 0 0 !important;
+	background-color: white !important;
+	border-bottom: none !important;
+	padding: 18px 20px 0px 20px !important;
+}
+
+.tab-list {
+	border-radius: 8px 8px 0 0 !important;
+	background-color: white !important;
+}
+
+.stacked-bar-chart {
+	padding-bottom: 0 !important;
+	margin-bottom: 10px !important;
+}
+
+.ct-chart-bar,
+.ct-horizontal-bars {
+	border-radius: 8px !important;
+}
+
+.stacked-bar-chart-card .box .body-content .row .amount-value {
+	color: $color-primary !important;
+	font-size: 14px !important;
+}
+
+.stacked-bar-chart-card .body-desc {
+	margin-bottom: 0 !important;
+}
+
+.amount-text {
+	color: #888787 !important;
+}
+
+.text-green {
+	color: $color-primary !important;
+}
+.text-red {
+	color: rgb(255, 94, 84) !important;
+}
+
+.amt-text-indicator-green {
+	display: inline-block;
+	border-radius: 3px;
+	background-color: $color-primary !important;
+	width: 11px;
+	height: 11px;
+}
+.amt-text-indicator-red {
+	display: inline-block;
+	border-radius: 3px;
+	background-color: rgb(255, 94, 84) !important;
+	width: 11px;
+	height: 11px;
+	margin-right: 5px;
+}
+
+//tabs
+.chart-card-tab-component .tabs .tab-list .tab.active p {
+	color: $color-primary !important;
+}
+
+.chart-card-tab-component .tabs .tab-list .tab.active {
+	border-bottom: 2px solid $color-primary !important;
 }

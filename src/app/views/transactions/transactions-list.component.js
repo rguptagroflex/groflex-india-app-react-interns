@@ -73,8 +73,8 @@ class TransactionsListComponent extends React.Component {
 		const proceed = (...args) => {
 			console.log(args, "ARGS");
 			banks = args[0];
-			if(banks.body.data.length === 0) {
-				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
+			if (banks.body.data.length === 0) {
+				invoiz.page.showToast({ type: "error", message: "Please create Cash and Bank first" });
 			}
 			chartOfAccountOptions = args[1];
 			// customers = args[1];
@@ -354,6 +354,21 @@ class TransactionsListComponent extends React.Component {
 										return "Reconciled";
 									}
 									return "Not reconciled";
+								},
+							},
+							{
+								headerName: "Source",
+								field: "sourceType",
+								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
+								comparator: localeCompare,
+								filter: "agSetColumnFilter",
+								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
+								cellRenderer: (evt) => {
+									if (evt.value == 'invoice') {
+										return "Invoice";
+									} else if (evt.value == 'expense') {
+										return "Expense";
+									}
 								},
 							},
 						]}

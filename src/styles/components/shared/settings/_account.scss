@@ -46,6 +46,10 @@
 	z-index: -5;
 }
 .settings-account-wrapper {
+	.tabs-container .tab-list{
+		border-radius: 8px 8px 0 0 !important;
+		background-color: #f5f5f5 !important;
+	}
 	.plan-type-toggle {
 		.radio_inputs {
 			display: inline-block;

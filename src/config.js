@@ -15,6 +15,7 @@ const apiServers = {
 };
 
 const byPassCors = true;
+// const byPassCors = false;
 
 const releaseStage = _.get(window, "settings.releaseStage") || "development";
 delete window.settings;
@@ -197,22 +198,22 @@ const config = {
 		// },
 		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
 		{ name: "articles", icon: "article_outlined", title: "Artikel", url: "/articles", resourceKey: "article" },
-		// {
-		// 	name: 'inventory',
-		// 	icon: 'doc_table',
-		// 	title: 'Inventory',
-		// 	url: '',
-		// 	resourceKey: 'inventory',
-		// 	submenuItems: [
-		// 		{
-		// 			name: 'inventoryStockMovement',
-		// 			title: 'Stock Movement',
-		// 			url: '/inventory', //url: '/inventory/stock-movement',
-		// 			mainSubmenuItem: 'inventory',
-		// 			resourceKey: 'stockMovement'
-		// 		}				
-		// 	]
-		// },
+		{
+			name: 'inventory',
+			icon: 'doc_table',
+			title: 'Inventory',
+			url: '',
+			resourceKey: 'inventory',
+			submenuItems: [
+				{
+					name: 'inventoryStockMovement',
+					title: 'Stock Movement',
+					url: '/inventory', //url: '/inventory/stock-movement',
+					mainSubmenuItem: 'inventory',
+					resourceKey: 'stockMovement'
+				}				
+			]
+		},
 		// {
 		// 	name: "inventory",
 		// 	title: "Abo-Rechnungen",
@@ -333,13 +334,13 @@ const config = {
 		},
 		// { name: 'expenses', icon: 'expense', title: 'Ausgaben', url: '/expenses', resourceKey: 'expense' },
 		// { name: 'purchaseOrders', icon: 'order', title: 'Purchase Orders', url: '/purchase-orders', resourceKey: 'purchaseOrder' },
-		// {
-		// 	name: "documentExport",
-		// 	icon: "tax",
-		// 	title: "GST Export",
-		// 	url: "/document-export",
-		// 	resourceKey: "accountantExport",
-		// },
+		{
+			name: "documentExport",
+			icon: "tax",
+			title: "GST Export",
+			url: "/document-export",
+			resourceKey: "accountantExport",
+		},
 		// {
 		// 	name: "teamMembers",
 		// 	icon: "user_user",

@@ -1,9 +1,13 @@
 @import "../../../abstracts/variables";
-@import "../../../abstracts/mixins"; 
+@import "../../../abstracts/mixins";
 
 .article-detail-wrapper {
 	.low_stock_alert {
 		color: red;
+	}
+	.tabs-container .tab-list{
+		border-radius: 8px 8px 0 0 !important;
+		background-color: #f5f5f5 !important;
 	}
 
 	.article-content {
@@ -12,11 +16,11 @@
 		&_heading {
 			margin-bottom: 12px;
 		}
-	
+
 		&_subheading {
 			margin-bottom: 26px;
 		}
-	
+
 		&_content {
 			// display: flex;
 			// border-bottom: 1px solid #dddd;
@@ -25,7 +29,7 @@
 				> :first-child {
 					padding-right: 10px;
 				}
-	
+
 				// > :nth-child(n+1) {
 				// 	padding-right: 30px;
 				// }
@@ -34,14 +38,14 @@
 					padding-right: 20px;
 				}
 			}
-	
+
 			&-divided.row {
-				> :nth-child(n+2) {
+				> :nth-child(n + 2) {
 					border-left: 1px solid $color-input-bar;
 				}
 			}
 		}
-		
+
 		&_footer {
 			border-top: 1px solid $color-input-bar;
 			padding-top: 60px;
@@ -67,10 +71,10 @@
 			padding: 0 40px;
 			border-radius: 30px;
 			font-size: 13px;
-			background: #0079B3;
+			background: #0079b3;
 			font-weight: 600;
 			&:hover {
-				background: #194B7C;
+				background: #194b7c;
 				background: lightgrey;
 			}
 		}
@@ -455,4 +459,11 @@ justify-content: space-between;
 align-items: flex-start;
 flex-shrink: 0;
 }
+}
+
+//New design changes
+.article-detail-wrapper {
+	.wrapper-has-topbar-with-margin {
+		width: calc(100% + 2px) !important;
+	}
 }
