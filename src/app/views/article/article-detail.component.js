@@ -342,7 +342,7 @@ class ArticleDetailComponent extends React.Component {
 							<br />
 							<span>(Net)</span>
 						</div>
-						<div className="text-h4 text-primary">{article.displayPrice}</div>
+						<div className="text-h6 text-primary">{article.displayPrice}</div>
 					</div>
 				</div>
 			);
@@ -362,7 +362,7 @@ class ArticleDetailComponent extends React.Component {
 							<br />
 							<span>(Gross)</span>
 						</div>
-						<div className="text-h4 text-primary">{article.displayPriceGross}</div>
+						<div className="text-h6 text-primary">{article.displayPriceGross}</div>
 					</div>
 				</div>
 			);
@@ -380,7 +380,7 @@ class ArticleDetailComponent extends React.Component {
 							<span>Purchase (Net)</span>
 							<span>price</span>
 						</div>
-						<div className="text-h4 text-primary">{article.displayPurchasePrice}</div>
+						<div className="text-h6 text-primary">{article.displayPurchasePrice}</div>
 					</div>
 				</div>
 			);
@@ -398,7 +398,7 @@ class ArticleDetailComponent extends React.Component {
 							<span>Purchase (Gross) </span>
 							<span>price</span>
 						</div>
-						<div className="text-h4 text-primary">{article.displayPurchasePriceGross}</div>
+						<div className="text-h6 text-primary">{article.displayPurchasePriceGross}</div>
 					</div>
 				</div>
 			);
@@ -457,7 +457,7 @@ class ArticleDetailComponent extends React.Component {
 						<span>Total Revenue</span>
 						<br />
 					</div>
-					<div className="text-h4 text-primary">{formatCurrency(salesVolumeData.turnoverTotal)}</div>
+					<div className="text-h6 text-primary">{formatCurrency(salesVolumeData.turnoverTotal)}</div>
 				</div>
 			</div>
 		);
@@ -474,7 +474,7 @@ class ArticleDetailComponent extends React.Component {
 						<span>Total Orders</span>
 						<br />
 					</div>
-					<div className="text-h4 text-primary">{salesVolumeData.invoiceCount}</div>
+					<div className="text-h6 text-primary">{salesVolumeData.invoiceCount}</div>
 				</div>
 			</div>
 		);
@@ -650,7 +650,7 @@ class ArticleDetailComponent extends React.Component {
 														content: "",
 														display: "block",
 														position: "absolute",
-														bottom: "-8px", 
+														bottom: "-8px",
 														left:
 															this.state.activeTab === "Article Overview"
 																? "0px"
@@ -678,9 +678,9 @@ class ArticleDetailComponent extends React.Component {
 								<NotesComponent
 									data={article}
 									heading={resources.str_remarks}
-									placeholder={resources.articleEnterCommentsAboutArticleText}
-									notesAlertLabel={resources.str_seeNoteConfirmationMessage}
-									showToggleInput={true}
+									// placeholder={resources.articleEnterCommentsAboutArticleText}
+									// notesAlertLabel={resources.str_seeNoteConfirmationMessage}
+									// showToggleInput={true}
 									onSave={({ notes, notesAlert }) => this.onSaveNotesClick({ notes, notesAlert })}
 									resources={resources}
 									defaultFocus={true}

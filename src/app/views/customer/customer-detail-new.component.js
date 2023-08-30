@@ -244,15 +244,15 @@ class CustomerDetailNewComponent extends React.Component {
 
 		return (
 			<div className="opening-balance-container">
-				<div>
+				<div style={{ marginTop: "-10%" }}>
 					<SVGInline svg={IconQuoatation} alt={"Could not load image!"} />
 				</div>
 				<div className="text-muted text-medium u_mb_6">
 					<span>Opening </span>
 					<br />
-					<span>Balance</span>
+					<span>balance</span>
 				</div>
-				<div className="text-h4 text-primary">{formattedOpeningBalance}</div>
+				<div className="text-h6 text-primary">{formattedOpeningBalance}</div>
 			</div>
 		);
 	}
@@ -270,9 +270,9 @@ class CustomerDetailNewComponent extends React.Component {
 				<div className="text-muted text-medium u_mb_6 u_mt_10">
 					<span>Outstanding</span>
 					<br />
-					<span>Receivables</span>
+					<span>receivables</span>
 				</div>
-				<div className="text-h4 text-primary">
+				<div className="text-h6 text-primary">
 					{/* {formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)} */}
 					{formattedOutstandingReceivables}
 				</div>
@@ -290,9 +290,9 @@ class CustomerDetailNewComponent extends React.Component {
 				<div className="text-muted text-medium u_mb_6 u_mt_10">
 					<span>Excess</span>
 					<br />
-					<span>Payment</span>
+					<span>payment</span>
 				</div>
-				<div className="text-h4 text-primary">
+				<div className="text-h6 text-primary">
 					{/* {formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)} */}
 					{formattedOutstandingReceivables}
 				</div>
@@ -321,7 +321,7 @@ class CustomerDetailNewComponent extends React.Component {
 				</div>
 				<div className="row">
 					<div className="col-xs-12 col-gutter-right-30">
-						<div className={`text-h4 text-primary `}>{formatCurrencyMinusPlus(balanceSumValue)}</div>
+						<div className={`text-h6 text-primary `}>{formatCurrencyMinusPlus(balanceSumValue)}</div>
 					</div>
 				</div>
 				{index < this.salesOrExpensesData.length - 1 && <hr className="u_mt_20 u_mb_20" />}
@@ -347,7 +347,7 @@ class CustomerDetailNewComponent extends React.Component {
 					<br />
 					<span>notes</span>
 				</div>
-				<div className="text-h4 text-primary ">{creditsOrDebitsSum}</div>
+				<div className="text-h6 text-primary ">{creditsOrDebitsSum}</div>
 			</div>
 		);
 	}
@@ -367,7 +367,7 @@ class CustomerDetailNewComponent extends React.Component {
 					<br />
 					<span>invoices</span>
 				</div>
-				<div className="text-h4 text-primary">
+				<div className="text-h6 text-primary">
 					{formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)}
 				</div>
 			</div>
@@ -1033,7 +1033,7 @@ class CustomerDetailNewComponent extends React.Component {
 														content: "",
 														display: "block",
 														position: "absolute",
-														bottom: "-8px", 
+														bottom: "-8px",
 														left:
 															this.state.activeTab === "Contact Overview"
 																? "0px"

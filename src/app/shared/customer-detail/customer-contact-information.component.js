@@ -59,14 +59,14 @@ class CustomerContactInformationComponent extends React.Component {
 						// height: "300px",
 						// flexShrink: "0"}}
 					>
-						<div className="col-xs-5 u_mb_10 u_mt_10">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-7">
+								<div className="col-xs-12">
 									<div className="text-muted">E-mail</div>
 									<div
 										style={{
-											 overflow: "visible"
-											 }}
+											overflow: "visible",
+										}}
 										className={`text-truncate ${!customer.email ? "text-placeholder" : null}`}
 									>
 										{customer.email || "Not available"}
@@ -91,9 +91,9 @@ class CustomerContactInformationComponent extends React.Component {
 								</div> */}
 							</div>
 						</div>
-						<div className="col-xs-5 u_mb_10 u_mt_10">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-7">
+								<div className="col-xs-12">
 									<div className="text-muted">Website</div>
 									<div
 										style={{ overflow: "visible" }}
@@ -121,9 +121,9 @@ class CustomerContactInformationComponent extends React.Component {
 								</div> */}
 							</div>
 						</div>
-						<div className="col-xs-5 u_mb_10 u_mt_10">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-7">
+								<div className="col-xs-12">
 									<div className="text-muted">Telephone</div>
 									<div className={customer.phone1 ? "" : "text-placeholder"}>
 										{customer.phone1 || "Not available"}
@@ -138,9 +138,9 @@ class CustomerContactInformationComponent extends React.Component {
 							</div>
 						</div>
 						{customer.phone2 && (
-							<div className="col-xs-5 u_mb_10 u_mt_10">
+							<div className="col-xs-6 u_mb_10 u_mt_10">
 								<div className="row">
-									<div className="col-xs-6">
+									<div className="col-xs-12">
 										<div className="text-muted">Telephone 2</div>
 										<div>{customer.phone2}</div>
 									</div>
@@ -152,9 +152,9 @@ class CustomerContactInformationComponent extends React.Component {
 							</div>
 						)}
 						{customer.fax && (
-							<div className="col-xs-5 u_mb_10 u_mt_10">
+							<div className="col-xs-6 u_mb_10 u_mt_10">
 								<div className="row">
-									<div className="col-xs-6">
+									<div className="col-xs-12">
 										<div className="text-muted">Fax</div>
 										<div>{customer.fax}</div>
 									</div>
@@ -165,9 +165,9 @@ class CustomerContactInformationComponent extends React.Component {
 								</div>
 							</div>
 						)}
-						<div className="col-xs-5 u_mb_10 u_mt_10">
+						<div className="col-xs-6 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-7">
+								<div className="col-xs-12">
 									<div className="text-muted">Mobile</div>
 									<div className={customer.mobile ? "" : "text-placeholder"}>
 										{customer.mobile || "Not available"}
@@ -183,7 +183,7 @@ class CustomerContactInformationComponent extends React.Component {
 						</div>
 						<div className="col-xs-12 u_mb_10 u_mt_10">
 							<div className="row">
-								<div className="col-xs-2">
+								<div className="col-xs-12">
 									<div className="text-muted">Address</div>
 									<div>
 										{customer.address.city ||
