@@ -998,6 +998,15 @@ class LetterPositionsComponent extends React.Component {
 		const { resources, isInvoice } = this.props;
 		const { transaction } = this.state;
 		switch (column.name) {
+			case "SNo": {
+				const value = index + 1;
+				element = (
+					<span>
+						{Number(value).toLocaleString("en-US", { minimumIntegerDigits: 2, useGrouping: false })}
+					</span>
+				);
+				break;
+			}
 			case "description": {
 				const value = position["title"] || "";
 				element = (

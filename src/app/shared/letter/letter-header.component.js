@@ -12,8 +12,8 @@ import LoaderComponent from "shared/loader/loader.component";
 import { FineUploaderBasic as Uploader } from "fine-uploader";
 import PropTypes from "prop-types";
 import LetterElement from "models/letter/letter-element.model";
-import SVGInline from "react-svg-inline";
 import editSvgGreen from "../../../assets/images/icons/edit_icon_green.svg";
+import SVGInline from "react-svg-inline";
 import plusSvgGreen from "../../../assets/images/icons/plusSvgGreen.svg";
 
 import {

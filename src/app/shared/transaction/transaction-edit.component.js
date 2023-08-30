@@ -54,7 +54,8 @@ import BuyAddonModalComponent from "shared/modals/upgrade/buy-addon-modal.compon
 import ChargebeeAddon from "enums/chargebee-addon.enum";
 import DeliveryChallan from "../../models/delivery-challan.model";
 import { saveDeliveryChallan } from "../../helpers/transaction/saveDeliveryChallan";
-
+import groflexLetterFooterIcon from "../../../assets/images/groflex_name_logo_color_no_tag.png";
+import { Link } from "react-router-dom";
 // const LETTER_MAX_WIDTH = 925;
 // const LETTER_MAX_HEIGHT = 1309;
 const changeDetection = new ChangeDetection();
@@ -80,6 +81,16 @@ class TransactionEditComponent extends React.Component {
 			}
 		}
 		props.letter.sender = "BILLED TO";
+		props.transaction.columns = [
+			{
+				name: "SNo",
+				label: "S.No",
+				active: true,
+				required: true,
+				editable: false,
+			},
+			...props.transaction.columns,
+		];
 		this.state = {
 			transaction: props.transaction,
 			letter: props.letter,
@@ -315,6 +326,8 @@ class TransactionEditComponent extends React.Component {
 			paymentSetting.usePayPal = transaction.useAdvancedPaymentPayPal;
 			paymentSetting.useTransfer = transaction.useAdvancedPaymentTransfer;
 		}
+
+		console.log(transaction, "transaction in transaction edit");
 		return (
 			<div className="transaction-edit-component-wrapper wrapper-has-topbar-with-margin">
 				{topbar}
@@ -618,6 +631,20 @@ class TransactionEditComponent extends React.Component {
 								onReset={() => this.onLetterFooterReset()}
 								resources={resources}
 							/>
+						</div>
+						<div className="last-footer-msg-container">
+							<div className="thank-you-msg">
+								We thank you for your order and look forward to further cooperation.
+							</div>
+							<div className="groflex-ad">
+								<img className="footer-logo" src={groflexLetterFooterIcon} alt="logo" />
+								<div>Try Free Invoicing and Accounting software here </div>
+								<div>
+									<a className="app-link" target="_blank" href="https://app.groflex.in">
+										&nbsp;app.groflex.io
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 

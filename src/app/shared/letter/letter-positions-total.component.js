@@ -471,13 +471,13 @@ class LetterPositionsTotalComponent extends React.Component {
 					) : null}
 					{/* ) : null} */}
 					{priceKind === "gross" ? discountElement : null}
-					{priceKind === "net" ? discountElement : null}
-					{priceKind === "gross" ? additionalChargesElement : null}
-					{priceKind === "net" ? additionalChargesElement : null}
 					{!invoiz.user.isSmallBusiness && totalNetElement}
-					{!invoiz.user.isSmallBusiness || transaction.baseCurrency === "" ? vatElements : null}
-					{totalElement}
 					{!invoiz.user.isSmallBusiness && totalGrossElement}
+					{priceKind === "net" ? discountElement : null}
+					{priceKind === "net" ? additionalChargesElement : null}
+					{!invoiz.user.isSmallBusiness || transaction.baseCurrency === "" ? vatElements : null}
+					{priceKind === "gross" ? additionalChargesElement : null}
+					{totalElement}
 				</div>
 			</div>
 		);
