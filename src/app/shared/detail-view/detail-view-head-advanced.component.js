@@ -20,7 +20,7 @@ const DetailViewHeadAdvancedComponent = (props) => {
 
 	return (
 		<div className="detail-view-head-advanced-component">
-			<div className="detail-view-head-advanced-infos" style={divStyle}>
+			{/* <div className="detail-view-head-advanced-infos" style={divStyle}>
 				<div className="detail-view-head-advanced-infos-wrapper">
 					<div className="detail-view-head-advanced-infos-left">
 						{leftElements &&
@@ -67,10 +67,11 @@ const DetailViewHeadAdvancedComponent = (props) => {
 						</React.Fragment>
 					);
 				})}
-			</div>
+			</div> */}
 			<div className="detail-view-head-advanced-actions">
 				{actionElements &&
 					actionElements.map((element, index) => {
+						// console.log(element, "invoice info head actions");
 						let labelAction, hint;
 
 						if (element.labelAction) {

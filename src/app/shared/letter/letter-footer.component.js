@@ -30,6 +30,7 @@ class LetterFooterComponent extends React.Component {
 					sortId,
 					metaData: { html },
 				} = column;
+				// console.log(html, "HTML FROM BACKEND");
 				elements[sortId - 1] = (
 					<div className="letter-footer-column" key={`letter-footer-column-${index}`}>
 						<HtmlInputComponent
@@ -37,18 +38,24 @@ class LetterFooterComponent extends React.Component {
 							displayBlueLine={false}
 							placeholder={`${resources.str_column} ${sortId}`}
 							value={html}
+							// value={html + "<p>.............. : .............</p>"}
 							onFocus={() => this.onFocus(column)}
 							onBlur={({ quill, value }) => {
 								this.onBlur(value, column);
-								console.log("ON BLUR", value, column, quill);
+								// console.log("ON BLUR", value, column, quill);
 							}}
 							onKeyUp={({ event, quill }) => {
-								console.log("ON KEY UP", event, column, quill);
+								// console.log("ON KEY UP", event, column, quill);
 								this.onKeyUp(event, quill);
 							}}
 							formats={["bold", "italic", "underline"]}
 						/>
-						<div className="add-field-button">
+						<div
+							onClick={() => {
+								this.props.addParagraphToLetterFooter(index);
+							}}
+							className="add-field-button"
+						>
 							<SVGInline
 								width="17px"
 								height="17px"

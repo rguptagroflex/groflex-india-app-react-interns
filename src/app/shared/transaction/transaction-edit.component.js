@@ -261,6 +261,15 @@ class TransactionEditComponent extends React.Component {
 		);
 	}
 
+	addParagraphToLetterFooter(columnIndex) {
+		const footerArr = this.state.letter.footer;
+		footerArr[columnIndex].metaData.html += "<p>................ : ...............</p>";
+		this.setState({
+			...this.state,
+			letter: { ...this.state.letter, footer: footerArr },
+		});
+	}
+
 	render() {
 		const {
 			transaction,
@@ -277,6 +286,9 @@ class TransactionEditComponent extends React.Component {
 		} = this.state;
 		const { isRecurring, isProject, isDeposit, isClosing, isOffer, resources, isPurchaseOrder, isDeliveryChallan } =
 			this.props;
+		// console.log(letter, "letter in transaction edit");
+		// console.log(transaction, "transaction in transaction edit");
+		// console.log(letter, "letter in transaction edit");
 
 		let title = transaction.id ? resources.editInvoice : resources.str_makeBillText;
 		if (isRecurring) {
@@ -327,7 +339,6 @@ class TransactionEditComponent extends React.Component {
 			paymentSetting.useTransfer = transaction.useAdvancedPaymentTransfer;
 		}
 
-		console.log(transaction, "transaction in transaction edit");
 		return (
 			<div className="transaction-edit-component-wrapper wrapper-has-topbar-with-margin">
 				{topbar}
@@ -630,6 +641,9 @@ class TransactionEditComponent extends React.Component {
 								onChange={(column, value) => this.onLetterFooterChange(column, value)}
 								onReset={() => this.onLetterFooterReset()}
 								resources={resources}
+								addParagraphToLetterFooter={(columnIndex) =>
+									this.addParagraphToLetterFooter(columnIndex)
+								}
 							/>
 						</div>
 						<div className="last-footer-msg-container">

@@ -56,7 +56,7 @@ class LetterPositionsHeadComponent extends React.Component {
 		const totalEditable = !priceColumn || (!priceColumn.active && !forceAmountColumn);
 		columns.forEach((column) => {
 			switch (column.name) {
-				case "S.No": {
+				case "SNo": {
 					column.active = true;
 					column.required = true;
 					column.editable = false;
