@@ -71,7 +71,7 @@ const DetailViewHeadAdvancedComponent = (props) => {
 			<div className="detail-view-head-advanced-actions">
 				{actionElements &&
 					actionElements.map((element, index) => {
-						// console.log(element, "invoice info head actions");
+						// console.log(element, "invoice info head actions", index);
 						let labelAction, hint;
 
 						if (element.labelAction) {

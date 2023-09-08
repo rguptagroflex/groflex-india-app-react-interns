@@ -10,7 +10,7 @@ import { formatMoney } from "helpers/formatMoney";
 import { handleNotificationErrorMessage } from "helpers/errorMessageNotification";
 import HistoryTypes from "enums/history-types.enum";
 
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 class HistoryItemComponent extends React.Component {
 	constructor(props) {
@@ -324,6 +324,7 @@ class HistoryItemComponent extends React.Component {
 		const month = months[date.getMonth()];
 		const day = date.getDate();
 		const year = date.getFullYear();
+		// console.log(historyType, "history type");
 		// console.log(item, "ITEM");
 		// console.log(title, "TITLE");
 		return (
@@ -347,7 +348,9 @@ class HistoryItemComponent extends React.Component {
 						<div className={`history-body ${!isOpen ? "truncated" : "not-truncated"}`}>
 							{/* <span className="history-date">{item && item.getDateSubstring}: </span> */}
 							<span className="history-date">{item && `${month} ${day}, ${year}`} </span>
-							<div className={historyType === "payment" ? "greenCircle" : "greyCircleSolid"} />
+							{/* <span className="history-date">{item && `${month} ${day}, ${year}`} </span> */}
+							{/* <div className={historyType === "payment" ? "greenCircle" : "greyCircleSolid"} /> */}
+							<div className={this.props.index === 0 ? "greenCircle" : "greyCircleSolid"} />
 							<span
 								ref={this.textRef}
 								className={`history-text ${

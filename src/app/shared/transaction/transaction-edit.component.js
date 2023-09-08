@@ -655,7 +655,7 @@ class TransactionEditComponent extends React.Component {
 								<div>Try Free Invoicing and Accounting software here </div>
 								<div>
 									<a className="app-link" target="_blank" href="https://app.groflex.in">
-										&nbsp;app.groflex.io
+										&nbsp;app.groflex.in
 									</a>
 								</div>
 							</div>

@@ -59,7 +59,7 @@ import {
 	PAYMENT_TYPE_LESS_TDSCHARGE,
 } from "../../helpers/constants";
 import planPermissions from "enums/plan-permissions.enum";
-const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+import abbreviationDateFormat, { dateObjToAbbreviation } from "../../helpers/abbreviationDateFormat";
 
 const createTopbarDropdown = (invoice, resources) => {
 	const items = [];
@@ -1243,7 +1243,10 @@ class InvoiceDetailNewComponent extends React.Component {
 		if (this.state.dunnings) {
 			this.state.dunnings.forEach((dunning) => {
 				// const date = formatDate(dunning.date, 'YYYY-MM-DD', 'DD.MM.YYYY');
-				const date = formatClientDate(dunning.date);
+				// const date = formatClientDate(dunning.date);
+				// console.log(dunning.date, "dunning");
+				const date = dateObjToAbbreviation(dunning.date);
+
 				const actions = (
 					<div>
 						<Link to={`/dunning/${this.state.invoice.id}/${dunning.id}`}>{resources.str_show}</Link>
@@ -1758,7 +1761,7 @@ class InvoiceDetailNewComponent extends React.Component {
 		const paymentAndDeliveryNoteContent = (
 			<React.Fragment>
 				{paymentTable.rows.length > 0 && (
-					<div className="detail-view-box-new u_mt_40">
+					<div className="detail-view-box-new u_mt_40 box">
 						<ListComponent
 							title="Payments received"
 							columns={paymentTable.columns}
@@ -1848,15 +1851,11 @@ class InvoiceDetailNewComponent extends React.Component {
 							</div>
 							{headContents.rightElements.map((item, index) => {
 								if (index === 0) return;
-								let date;
-								if (index === headContents.rightElements.length - 1) {
-									const dateArr = item.value.split("-");
-									date = { day: dateArr[0], month: dateArr[1], year: dateArr[2] };
-									// console.log(date);
-									// console.log(`${months[Number(date.month) - 1]} ${date.day}, ${date.year}`);
-								}
 								return (
-									<div className="date-of-invoice-container font-14px">
+									<div
+										style={{ color: item.headline === "payment overdue" ? "#FFAA2C" : null }}
+										className="date-of-invoice-container font-14px"
+									>
 										<div>{capitalize(item.headline)}</div>
 										<div
 											className={
@@ -1866,7 +1865,7 @@ class InvoiceDetailNewComponent extends React.Component {
 											}
 										>
 											{index === headContents.rightElements.length - 1
-												? `${months[Number(date.month) - 1]} ${date.day}, ${date.year}`
+												? abbreviationDateFormat(item.value)
 												: item.value}
 										</div>
 									</div>
@@ -1905,6 +1904,7 @@ class InvoiceDetailNewComponent extends React.Component {
 												{historyItems.map((item, index) => {
 													return (
 														<HistoryItemComponent
+															index={index}
 															key={`document-history-item-${index}`}
 															item={item}
 															onCancelPayment={(id) => {
