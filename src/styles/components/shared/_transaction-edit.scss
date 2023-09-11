@@ -404,10 +404,399 @@
 }
 
 //Design changes:-
+
 .transaction-edit-component-wrapper {
 	.transaction-edit-wrapper {
-		.box {
-			width: 930px;
+		.headerContainer {
+			.headerEmpty {
+				height: 100% !important;
+			}
+		}
+
+		// .box {
+		// }
+		.transaction-form-page {
+			width: 1000px;
+			padding: 40px;
 		}
 	}
+
+	.letter-headerEmpty_title {
+		background-color: #f2f2f2;
+		.row1 {
+			font-weight: 600;
+			font-size: 16px;
+			margin: 0 0 15px 0;
+		}
+		.row2 {
+			text-transform: none;
+			font-weight: 400;
+			font-size: 12px;
+			margin: 0 0 15px 0;
+			color: #272d30;
+		}
+		.row3 {
+			display: flex;
+			justify-content: space-between;
+			.or-div {
+				font-size: 14px;
+				font-weight: 500;
+				color: #888787;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin: 0 20px;
+			}
+			.btn1,
+			.btn2 {
+				padding: 15px 70px;
+				span {
+					font-size: 14px;
+					font-weight: 600;
+				}
+				border: 1px solid #c6c6c6;
+				border-radius: 4px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+			}
+			.btn1-subname {
+				color: #888787;
+				font-weight: 500;
+				font-size: 14px;
+			}
+		}
+	}
+
+	.transaction-form-sender {
+		margin-top: 10px;
+		.ql-editor {
+			p {
+				font-weight: 600;
+				font-size: 14px;
+				color: #272d30;
+			}
+		}
+	}
+
+	.transaction-form-row {
+		justify-content: space-between;
+		.recipientContainer {
+			.recipientDisplay {
+				width: 220px;
+			}
+			.billed-to-name {
+				color: $color-primary;
+				font-weight: 600;
+				font-size: 14px;
+			}
+			.billed-to-address,
+			.gstno-container,
+			.cinno-container,
+			.phone-no-container {
+				margin-top: 10px !important;
+			}
+			.address-label,
+			.gst-label,
+			.cin-label,
+			.phone-label {
+				font-weight: 600;
+				color: #888787;
+			}
+		}
+		// tranasction form meta
+		.transaction-form-meta {
+			.letter-meta-display {
+				width: 310px;
+				.letter-meta-display-row {
+					margin-bottom: 4px;
+				}
+			}
+			.letter-meta-display-label {
+				color: #888787;
+			}
+			.document_info-action {
+				box-shadow: none;
+			}
+			.document_info-action:before {
+				font-size: 14px;
+				margin-left: 5px;
+			}
+		}
+	}
+
+	.transaction-form-title {
+		margin-top: 15px;
+	}
+	.letter-title-component-wrapper {
+		input {
+			font-weight: 600 !important;
+		}
+	}
+	//Letter positions head
+	.letter-positions-head-component-wrapper {
+		height: 60px;
+		border-bottom: 1px solid #dddddd;
+		.letter-positions-head {
+			border-bottom: none;
+			padding: 20px 75px 20px 41px;
+			font-size: 13px !important;
+			font-weight: 600 !important;
+			div:nth-of-type(n + 2) {
+				border-left: 1px solid #c6c6c6;
+			}
+			.letter-positions-head-column {
+				text-transform: uppercase !important;
+				// margin: 0 !important;
+				// padding: 0 !important;
+			}
+			.letter-positions-head-column-SNo {
+				flex-basis: 0;
+				flex-grow: 0;
+				margin-right: 12px;
+				padding-right: 0;
+				max-width: 32px;
+			}
+			.letter-positions-head-column-description {
+				padding-left: 12px;
+			}
+			.letter-positions-head-column-hsnSacCode {
+				flex-basis: 110px !important;
+				padding-left: 10px;
+			}
+			.letter-positions-head-column-amount {
+				max-width: 121px !important;
+			}
+			.letter-positions-head-column-vat {
+				width: 70px !important;
+			}
+			.letter-positions-head-column-price {
+				width: 115px !important;
+			}
+			.letter-positions-head-column-discount {
+				width: 90px !important;
+			}
+			.letter-positions-head-column-total {
+				width: 80px !important;
+			}
+		}
+
+		background-color: #f1f8fb !important;
+		color: #888787 !important;
+	}
+	//Letter position item
+	.letter-positions-component-wrapper {
+		.letter-positions-item {
+			padding: 0 72px 0 50px !important;
+		}
+
+		.letter-positions-item-column-SNo {
+			width: 50px;
+			text-align: center;
+		}
+		.letter-positions-item-textarea {
+			padding-left: 50px;
+		}
+	}
+
+	.transaction-form-positions {
+		border: 1px solid #c6c6c6 !important;
+		min-height: 120px !important;
+
+		.letter-positions-add-position {
+			padding: 0 0 0 14px;
+			margin: 14px 0;
+			.letter-positions-add-position-button {
+				margin: 0 0 0 0;
+			}
+		}
+		.letter-positions-item:nth-child(odd) {
+			.inline {
+				.input {
+					background-color: white;
+				}
+			}
+		}
+		.letter-positions-item,
+		.Select-control {
+			background-color: white;
+		}
+
+		.letter-positions-item {
+			// .letter-positions-item-column-amount {
+			// 	max-width: 139px;
+			// }
+			.Select-multi-value-wrapper {
+				.Select-value {
+					padding-right: 25px;
+				}
+			}
+			.document_info-action {
+				box-shadow: none;
+			}
+			.document_info-action:before {
+				font-size: 16px;
+				margin-right: 8px;
+			}
+		}
+	}
+	.letter-positions-total-component {
+		margin-top: 20px;
+		.letter-positions-total-content {
+			padding: 0px 0px 20px 0px;
+
+			.letter-positions-radio {
+				border: 1px solid #dddddd;
+				display: flex;
+				.total-option {
+					cursor: pointer;
+					height: 30px;
+					width: 50%;
+					text-align: center;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+				.total-active {
+					background-color: #ecfcf4;
+					color: #272d30;
+					font-weight: 700;
+				}
+			}
+
+			.column-left {
+				min-width: 180px;
+				font-weight: 600;
+				color: #888787;
+			}
+			.letter-positions-total,
+			.letter-positions-vat {
+				margin-bottom: 4px;
+			}
+			&:after {
+				border-color: #c6c6c6;
+				// bottom: 50px;
+				border-width: 1px 0;
+			}
+			.last-letter-positions-total-container {
+				// margin-top: 12px;
+				color: #272d30;
+				.column-left {
+					font-weight: 700;
+					color: #272d30;
+				}
+			}
+		}
+	}
+
+	.transaction-positions-totalInWords {
+		font-size: 14px !important;
+	}
+
+	.transaction-form-footer {
+		.letter-footer-first-two-section {
+			p,
+			strong {
+				font-size: 14px;
+			}
+			.add-field-button {
+				color: $color-primary;
+				font-weight: 600;
+				font-size: 14px;
+				padding: 5px 5px 5px 0;
+				// border: 1px solid $color-primary;
+			}
+		}
+
+		.letter-footer-component-wrapper {
+			.footerSignatureText {
+				min-width: 220px;
+				font-size: 14px;
+			}
+			.footerSignatureWrapper {
+				top: 22px;
+				b {
+					font-size: 14px;
+				}
+			}
+			.signatureEmpty {
+				width: 95%;
+				font-size: 14px;
+				.signatureEmpty_label {
+					padding-left: 4px;
+				}
+				border: 1px solid #c6c6c6;
+				border-radius: 4px;
+				padding: 13px 35px;
+				display: flex !important;
+				flex-direction: column !important;
+				justify-content: center !important;
+				align-items: center !important;
+			}
+			.or-div {
+				color: #888787;
+				margin: 0;
+				font-size: 14px;
+			}
+			.orSection {
+				text-align: center;
+			}
+			.signature-text-div {
+				top: 105px;
+				input {
+					width: 95%;
+				}
+			}
+		}
+	}
+
+	.last-footer-msg-container {
+		.thank-you-msg {
+			text-align: center;
+		}
+		.groflex-ad {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 15px;
+			background-color: #f2f2f2;
+			padding: 5px;
+			font-size: 12px;
+			.footer-logo {
+				object-fit: contain;
+				height: 15px;
+				margin-top: 3px;
+				padding-right: 7px;
+				border-right: 1px solid #dddddd;
+				margin-right: 7px;
+			}
+			.app-link {
+				color: #00a353;
+				font-weight: 600;
+			}
+		}
+	}
+	.transaction-notes {
+		width: 1000px !important;
+	}
+}
+
+.vertically-middle {
+	vertical-align: middle;
+}
+.seperator-hyphen {
+	margin: 0 10px;
+}
+.font-14px {
+	font-size: 14px;
+}
+.font-12px {
+	font-size: 12px;
+}
+.font-600 {
+	font-weight: 600;
+}
+.font-700 {
+	font-weight: 700;
 }

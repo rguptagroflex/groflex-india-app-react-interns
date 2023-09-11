@@ -54,7 +54,8 @@ import BuyAddonModalComponent from "shared/modals/upgrade/buy-addon-modal.compon
 import ChargebeeAddon from "enums/chargebee-addon.enum";
 import DeliveryChallan from "../../models/delivery-challan.model";
 import { saveDeliveryChallan } from "../../helpers/transaction/saveDeliveryChallan";
-
+import groflexLetterFooterIcon from "../../../assets/images/groflex_name_logo_color_no_tag.png";
+import { Link } from "react-router-dom";
 // const LETTER_MAX_WIDTH = 925;
 // const LETTER_MAX_HEIGHT = 1309;
 const changeDetection = new ChangeDetection();
@@ -79,7 +80,17 @@ class TransactionEditComponent extends React.Component {
 				invoiz.cache.invoice.times = null;
 			}
 		}
-
+		props.letter.sender = "BILLED TO";
+		props.transaction.columns = [
+			{
+				name: "SNo",
+				label: "S.No",
+				active: true,
+				required: true,
+				editable: false,
+			},
+			...props.transaction.columns,
+		];
 		this.state = {
 			transaction: props.transaction,
 			letter: props.letter,
@@ -250,6 +261,15 @@ class TransactionEditComponent extends React.Component {
 		);
 	}
 
+	addParagraphToLetterFooter(columnIndex) {
+		const footerArr = this.state.letter.footer;
+		footerArr[columnIndex].metaData.html += "<p>................ : ...............</p>";
+		this.setState({
+			...this.state,
+			letter: { ...this.state.letter, footer: footerArr },
+		});
+	}
+
 	render() {
 		const {
 			transaction,
@@ -266,6 +286,9 @@ class TransactionEditComponent extends React.Component {
 		} = this.state;
 		const { isRecurring, isProject, isDeposit, isClosing, isOffer, resources, isPurchaseOrder, isDeliveryChallan } =
 			this.props;
+		// console.log(letter, "letter in transaction edit");
+		// console.log(transaction, "transaction in transaction edit");
+		// console.log(letter, "letter in transaction edit");
 
 		let title = transaction.id ? resources.editInvoice : resources.str_makeBillText;
 		if (isRecurring) {
@@ -315,6 +338,7 @@ class TransactionEditComponent extends React.Component {
 			paymentSetting.usePayPal = transaction.useAdvancedPaymentPayPal;
 			paymentSetting.useTransfer = transaction.useAdvancedPaymentTransfer;
 		}
+
 		return (
 			<div className="transaction-edit-component-wrapper wrapper-has-topbar-with-margin">
 				{topbar}
@@ -360,6 +384,7 @@ class TransactionEditComponent extends React.Component {
 						<div className="transaction-form-sender">
 							<LetterSenderComponent
 								value={letter.sender}
+								// value={"BILLED TO"}
 								onChange={(val) => this.onLetterSenderChange(val)}
 								resources={resources}
 							/>
@@ -616,7 +641,24 @@ class TransactionEditComponent extends React.Component {
 								onChange={(column, value) => this.onLetterFooterChange(column, value)}
 								onReset={() => this.onLetterFooterReset()}
 								resources={resources}
+								addParagraphToLetterFooter={(columnIndex) =>
+									this.addParagraphToLetterFooter(columnIndex)
+								}
 							/>
+						</div>
+						<div className="last-footer-msg-container">
+							<div className="thank-you-msg">
+								We thank you for your order and look forward to further cooperation.
+							</div>
+							<div className="groflex-ad">
+								<img className="footer-logo" src={groflexLetterFooterIcon} alt="logo" />
+								<div>Try Free Invoicing and Accounting software here </div>
+								<div>
+									<a className="app-link" target="_blank" href="https://app.groflex.in">
+										&nbsp;app.groflex.in
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -1260,7 +1302,7 @@ class TransactionEditComponent extends React.Component {
 		this.refs["transaction-positions-ref"] && this.refs["transaction-positions-ref"].forceBlur();
 		this.refs["transaction-order-payCondition-ref"] && this.refs["transaction-order-payCondition-ref"].blur();
 
-		// Remove offer limitation 25-11-2022 
+		// Remove offer limitation 25-11-2022
 		// if (isOffer && !canCreateOffer) {
 		// 	ModalService.open(
 		// 		<BuyAddonModalComponent
@@ -1284,7 +1326,7 @@ class TransactionEditComponent extends React.Component {
 		// 	);
 		// 	return;
 		// }
-		// Remove offer limitation 25-11-2022 end 
+		// Remove offer limitation 25-11-2022 end
 
 		// TODO: Handle subscription later
 		// if (isDeliveryChallan && !canCreateChallan) {
@@ -1354,8 +1396,8 @@ class TransactionEditComponent extends React.Component {
 						saveCustomer(
 							this.createCustomer || this.updateCustomer ? requestData : null,
 							this.createCustomer
-							).then(
-								(newOrUpdateCustomerData) => {
+						).then(
+							(newOrUpdateCustomerData) => {
 								// console.log("save customer")
 								if (!newOrUpdateCustomerData) {
 									if (this.createdCustomerId) {
@@ -1423,7 +1465,7 @@ class TransactionEditComponent extends React.Component {
 						);
 					},
 					(err) => {
-						console.log("err saving data", err)
+						console.log("err saving data", err);
 						this.setState({ saving: false });
 						invoiz.page.showToast({ type: "error", message: `ERROR` });
 					}
