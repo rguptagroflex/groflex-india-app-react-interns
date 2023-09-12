@@ -84,7 +84,7 @@ class TransactionEditComponent extends React.Component {
 		props.transaction.columns = [
 			{
 				name: "SNo",
-				label: "S.No",
+				label: "SN",
 				active: true,
 				required: true,
 				editable: false,
@@ -1366,6 +1366,8 @@ class TransactionEditComponent extends React.Component {
 					delete col.hidden;
 					return { ...col };
 				});
+
+				requestData.columns = requestData.columns.filter(c => c.name != 'SNo');
 
 				delete requestData.deliveryPeriodStartDate;
 				delete requestData.deliveryPeriodEndDate;
