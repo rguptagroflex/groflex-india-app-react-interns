@@ -20,8 +20,22 @@ function ReportsProfitAndLoss() {
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState();
+	const CustomCellRenderer = ({ value, colDef }) => (
+		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
+	);
 	const [columnDefs, setColumnDefs] = useState([
-			{
+		{
+			field: "chartOfAccount.accountTypeId",
+			rowGroup: true,
+			enableRowGroup: true,
+			filter: false,
+			hide: true,
+			valueFormatter: function (params) {
+				var value = params.value;
+				return value.charAt(0).toUpperCase() + value.slice(1);
+			},
+		},
+		{
 			headerName: "Account",
 			field: "chartOfAccount.accountSubTypeId",
 			filter: false,
@@ -42,7 +56,7 @@ function ReportsProfitAndLoss() {
 			field: "chartOfAccount.accountCode",
 			filter: false,
 		},
-		{ field: "Total", filter: false },
+		{ field: "balance", filter: false, cellRendererFramework: CustomCellRenderer },
 	]);
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
@@ -126,7 +140,7 @@ function ReportsProfitAndLoss() {
 		});
 	};
 	const activeAction = OfferAction.PRINT;
-		const onDate = (value) => {
+	const onDate = (value) => {
 		let startDate = "";
 		let endDate = "";
 
@@ -188,7 +202,7 @@ function ReportsProfitAndLoss() {
 		FISCAL_YEAR: "fiscalYear",
 	};
 	const [selectedDate, setSelectedDate] = useState(null);
-const [selectedDateFilter, setSelectedDateFilter] = useState("");
+	const [selectedDateFilter, setSelectedDateFilter] = useState("");
 	const [dateData, setDateData] = useState({
 		currentMonthName: moment().format("MMMM"),
 		lastMonthName: moment().subtract(1, "months").format("MMMM"),
@@ -234,7 +248,7 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 
 				break;
 			default:
-					onDate(option.value);
+				onDate(option.value);
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: false,
@@ -262,102 +276,130 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 				}}
 			/>
 			<div
-				className="general-ledger-component"
 				style={{
-					marginTop: "90px",
+					// height: "500px",
+					height: "1186px",
+					width: "1120px",
+					backgroundColor: "#fff",
+					border: "1px solid #ccc",
+					marginTop: "30px",
 					marginLeft: "50px",
-					display: "flex",
-					flexDirection: "column",
+					marginRight: "50px",
+					fontWeight: "600",
+					borderRadius: "8px",
+					marginTop: "130px",
 				}}
 			>
 				<div
-					className="time-period-select-container"
+					className="general-ledger-component"
 					style={{
-						width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-					 display: "flex", justifyContent: "space-between" }}
+						// marginTop: "90px",
+						// marginLeft: "50px",
+						// display: "flex",
+						// flexDirection: "column",
+						marginTop: "20px",
+						marginLeft: "20px",
+						display: "flex",
+						flexDirection: "column",
+						// height:"32px",
+						// width:"1120px",
+						padding: "0px, 24px, 0px, 24px",
+						justifyContent: "space-between",
+					}}
 				>
-					<div style={{ flex: "1.5", display: "flex", alignItems: "center" }} className="time-period-select">
-						<div style={{ position: "relative", width: "100%" , flex: "1"}}>
-							<SelectInputComponent
-								allowCreate={false}
-								notAsync={true}
-								loadedOptions={dateOptions}
-								value={dateData.dateFilterValue}
-								icon={calenderIcon}
-								containerClass="date-input"
-								options={{
-									clearable: false,
-									noResultsText: false,
-									labelKey: "label",
-									valueKey: "value",
-									matchProp: "label",
-									placeholder: "Select Date",
-								// 	handleChange: (option) => {
-								// 		updateSelectedDate(option);
-								// 	},
-								// }}
-									handleChange: handleChange,
+					<div
+						className="time-period-select-container"
+						style={{
+							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
+							display: "flex",
+							justifyContent: "space-between",
+						}}
+					>
+						<div
+							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
+							className="time-period-select"
+						>
+							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+								<SelectInputComponent
+									allowCreate={false}
+									notAsync={true}
+									loadedOptions={dateOptions}
+									value={dateData.dateFilterValue}
+									icon={calenderIcon}
+									containerClass="date-input"
+									options={{
+										clearable: false,
+										noResultsText: false,
+										labelKey: "label",
+										valueKey: "value",
+										matchProp: "label",
+										placeholder: "Select Date",
+										// 	handleChange: (option) => {
+										// 		updateSelectedDate(option);
+										// 	},
+										// }}
+										handleChange: handleChange,
 
-									formatOptionLabel: ({ value, label }) => {
-										if (value === "custom" && dateData.showCustomDateRangeSelector) {
-											return (
-												<div>
-													{label}
-													<div
-														style={{
-															whiteSpace: "normal",
-															overflow: "hidden",
-															textOverflow: "ellipsis",
-														}}
-													>
-														Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
-														<br />
-														End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
+										formatOptionLabel: ({ value, label }) => {
+											if (value === "custom" && dateData.showCustomDateRangeSelector) {
+												return (
+													<div>
+														{label}
+														<div
+															style={{
+																whiteSpace: "normal",
+																overflow: "hidden",
+																textOverflow: "ellipsis",
+															}}
+														>
+															Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
+															<br />
+															End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
+														</div>
 													</div>
-												</div>
-											);
-										} else {
-											return label;
-										}
-									},
-								}}
-								style={{ position: "absolute", width: "100%" }}
-							/>
-						</div>
-						{dateData.showCustomDateRangeSelector && (
-							<div
-								id="general-ledger-date-picker-container"
-								className="start-end-date-selector-group"
-								style={{ display: "flex" }}
-							>
-								<div style={{ marginRight: "10px" }}>
-									<DateInputComponent
-										name={"startDate"}
-										value={dateData.customStartDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"Start Date"}
-										noBorder={true}
-										onChange={handleStartDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
-								<div>
-									<DateInputComponent
-										name={"endDate"}
-										value={dateData.customEndDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"End Date"}
-										noBorder={true}
-										onChange={handleEndDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
+												);
+											} else {
+												return label;
+											}
+										},
+									}}
+									style={{ position: "absolute", width: "100%" }}
+								/>
 							</div>
-						)}
+							{dateData.showCustomDateRangeSelector && (
+								<div
+									id="general-ledger-date-picker-container"
+									className="start-end-date-selector-group"
+									style={{ display: "flex" }}
+								>
+									<div style={{ marginRight: "10px" }}>
+										<DateInputComponent
+											name={"startDate"}
+											value={dateData.customStartDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"Start Date"}
+											noBorder={true}
+											onChange={handleStartDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+									<div>
+										<DateInputComponent
+											name={"endDate"}
+											value={dateData.customEndDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"End Date"}
+											noBorder={true}
+											onChange={handleEndDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+								</div>
+							)}
+						</div>
 					</div>
-				</div>
 
-				<div
+					{/* <div
 					style={{
 						display: "flex",
 						alignItems: "center",
@@ -413,22 +455,129 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 						<div className="icon icon-download2"></div>
 						<div className="icon-label">Export</div>
 					</div> */}
+					{/* </div> */}
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "flex-end",
+							padding: " 0px 16px 0px 16px",
+							height: "32px",
+							/* width: 326px; */
+
+							position: "relative",
+							borderRadius: "4px",
+							gap: "16px",
+						}}
+					>
+						<div
+							style={{
+								border: "1px solid #ccc",
+								padding: "10px",
+								display: "flex",
+								alignItems: "center",
+								position: "relative",
+								borderRadius: "4px",
+								marginTop: "-70px",
+							}}
+						>
+							<div
+								className="icon-mail"
+								onClick={sendEmail}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									width: "101 px",
+									height: " 18px",
+									marginRight: "20px",
+								}}
+							>
+								<span
+									className="pdf_mail"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Send email
+								</span>
+							</div>
+							<div
+								style={{
+									borderLeft: "1px solid #ccc",
+									height: "100%",
+									position: "absolute",
+									left: "44%",
+									top: "0",
+									bottom: "0",
+									transform: "translateX(-50%)",
+								}}
+							></div>
+							<div
+								className="icon-print2"
+								onClick={onBtPrint}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									// marginLeft: "10px",
+									width: "101 px",
+									height: " 18px",
+									marginRight: "20px",
+									marginLeft: "5px",
+								}}
+							>
+								<span
+									className="pdf_print"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Print
+								</span>
+							</div>
+							<div
+								style={{
+									borderLeft: "1px solid #ccc",
+									height: "100%",
+									position: "absolute",
+									left: "70%",
+									top: "0",
+									bottom: "0",
+									transform: "translateX(-50%)",
+								}}
+							></div>
+
+							<div
+								className="icon-download"
+								onClick={onBtExport}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									// marginLeft: "10px",
+									width: "101 px",
+									height: " 18px",
+								}}
+							>
+								<span
+									className="download"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Export
+								</span>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div
-				style={{
-					width: "80vw",
-					height: "500px",
-					backgroundColor: "#fff",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-				}}
-			>
-				<div className="general-heading" style={{ 
-					// width: "80vw",
-				 padding: "20px" }}>
+
+				<div
+					className="general-heading"
+					style={{
+						// padding: "20px",
+						marginLeft: "20px",
+						marginBottom: "30px",
+					}}
+				>
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -437,7 +586,7 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 						</h3>
 					</div>
 					{selectedDate && selectedDate.startDate && selectedDate.endDate && (
-						<p>
+						<p style={{ color: "#888787" }}>
 							<span>From </span>
 							<span className="date">{moment(selectedDate.startDate).format("DD MMMM YYYY")}</span>
 							<span> to </span>

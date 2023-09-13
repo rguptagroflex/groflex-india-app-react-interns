@@ -12,9 +12,11 @@ import invoiz from "../../services/invoiz.service";
 function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
+		document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
 		return () => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
+			document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
 	});
@@ -38,7 +40,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	};
 
 	const [allAccountSubTypeOptions, setAllAccountSubTypeOptions] = useState({});
-	const [requiredSubtypeOptions, setRequiredSubtypeOptions] = useState({});
+	const [requiredSubtypeOptions, setRequiredSubtypeOptions] = useState([]);
 	const [accountTypeOptions, setAccountTypeOptions] = useState([]);
 	useEffect(() => {
 		getAccoutTyeAndSubtypes();
@@ -80,6 +82,24 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 				setAllAccountSubTypeOptions({ ...accSubtypeObject });
 			});
 	};
+	// const getAccoutTyeAndSubtypes = () => {
+	// 	invoiz
+	// 		.request(`${config.resourceHost}accountType?offset=0&searchText=&limit=9999999&orderBy=name&desc=false`, {
+	// 			auth: true,
+	// 		})
+	// 		.then((res) => {
+	// 			const accSubtypeOptions = [];
+	// 			res.body.data.forEach((accType) => {
+	// 				accSubtypeOptions.push(
+	// 					...accType.accountSubType.map((subType) => ({
+	// 						value: subType.id,
+	// 						label: subType.name,
+	// 					}))
+	// 				);
+	// 			});
+	// 			setRequiredSubtypeOptions(accSubtypeOptions);
+	// 		});
+	// };
 
 	const handleAccountCodeChange = (value) => {
 		setChartData({ ...chartData, accountCode: value });
@@ -88,7 +108,7 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 	const handleAccountNameChange = (event) => {
 		const value = event.target.value;
 		setChartData({ ...chartData, accountName: value });
-		setAccountNameError(value === ""); 
+		setAccountNameError(value === "");
 	};
 
 	const handleAccountStatus = (newValue) => {
@@ -160,44 +180,58 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 				}}
 				className="modal-base-headline"
 			>
-				Add account
+				Add new account
 			</div>
-			<div style={{ padding: "12px", backgroundColor: "#F0F4F6" }}>
-				<div style={{ padding: "35px 30px", backgroundColor: "white" }}>
-					<div>
+			<div
+				style={{
+					borderTop: "1px solid #C6C6C6",
+					//  padding: "12px", backgroundColor: "#F0F4F6"
+				}}
+			>
+				<div
+					style={{
+						padding: "20px",
+						// padding: "30px 25px",
+						backgroundColor: "white",
+					}}
+				>
+					<div style={{ marginTop: "25px" }}>
 						<SelectInput
 							allowCreate={false}
 							notAsync={true}
 							loadedOptions={accountTypeOptions}
 							name="accountType"
 							value={accountType}
+							title={"Account type *"}
 							options={{
 								clearable: false,
 								noResultsText: false,
 								labelKey: "label",
 								valueKey: "value",
 								matchProp: "label",
-								placeholder: "Account type",
+								placeholder: "Choose an account type",
 								handleChange: handleAccountTypeChange,
 							}}
 							aria-invalid={accountTypeError}
 							aria-describedby={accountTypeError ? "accountTypeError" : null}
 						/>
-						<div style={{ marginTop: "10px" }}>
+						<div style={{ marginTop: "-15px", marginBottom: "10px" }}>
 							{accountTypeError && (
 								<span id="accountTypeError" style={{ color: "red" }}>
-									This is a mandatory field.
+									This field is mandatory
 								</span>
 							)}
 						</div>
 					</div>
-					{requiredSubtypeOptions.length ? (
-						<div style={{ margin: 0, marginTop: "20px", marginBottom: "25px" }}>
+					{/* {requiredSubtypeOptions.length ? ( */}
+					<div className="row">
+						<div className="col-xs-6" style={{ margin: 0, marginTop: "20px" }}>
 							<SelectInput
 								style={{ margin: "0px" }}
 								allowCreate={false}
 								notAsync={true}
 								name="accountSubType"
+								title={"Account subtype *"}
 								loadedOptions={requiredSubtypeOptions}
 								value={accountSubType ? accountSubType : ""}
 								options={{
@@ -206,22 +240,22 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 									labelKey: "label",
 									valueKey: "value",
 									matchProp: "label",
-									placeholder: "Account sub type",
+									placeholder: "Choose an account name",
 									handleChange: handleAccountSubTypeChange,
 								}}
 								//aria-invalid={accountTypeError}
 								//aria-describedby={accountTypeError ? "accountTypeError" : null}
 							/>
-							<div style={{ marginTop: "10px" }}>
+							<div style={{ marginTop: "-15px", marginBottom: "10px" }}>
 								{accountTypeError && (
 									<span id="accountTypeError" style={{ color: "red" }}>
-										This is a mandatory field.
+										This field is mandatory
 									</span>
 								)}
 							</div>
 						</div>
-					) : null}
-					<div style={{ width: "100%", marginRight: "15px" }}>
+						{/* ) : null} */}
+						{/* <div style={{ width: "100%", marginRight: "15px" }}>
 						<TextInputComponent
 							name="accountName"
 							required
@@ -238,22 +272,24 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 								</span>
 							)}
 						</div>
+					</div> */}
+						<div
+							className="col-xs-6"
+							style={{
+								width: "100%",
+								marginTop: "8px",
+							}}
+						>
+							<NumberInputComponent
+								name="accountCode"
+								value={chartData.accountCode}
+								onChange={handleAccountCodeChange}
+								disabled
+								label="Code *"
+							/>
+						</div>
 					</div>
-					<div
-						style={{
-							width: "100%",
-							marginTop: "10px",
-						}}
-					>
-						<NumberInputComponent
-							name="accountCode"
-							value={chartData.accountCode}
-							onChange={handleAccountCodeChange}
-							disabled
-							label="Account code"
-						/>
-					</div>
-					<div style={{ paddingTop: "10px" }} className="textarea">
+					<div className="textarea" style={{ marginTop: "-5px" }}>
 						<label style={{ fontSize: "16px" }} className="textarea_label">
 							Description
 						</label>
@@ -266,10 +302,10 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 						<span className="textarea_bar" />
 					</div>
 					<div className="row" style={{ paddingTop: "20px" }}>
-						<div className="col-xs-10 ">
-							<label className="notes-alert-label">Activated account (Displayed in dropdowns)</label>
+						<div className="col-xs-3 ">
+							<label className="notes-alert-label">Activate Account</label>
 						</div>
-						<div className="col-xs-2 ">
+						<div className="col-xs-9" style={{ marginTop: "3px" }}>
 							<OvalToggleComponent
 								checked={active}
 								onChange={handleAccountStatus}
@@ -280,11 +316,19 @@ function ChartOfAccountPersonModalComponent({ onConfirm }) {
 				</div>
 			</div>
 			<div style={{ position: "relative" }} className="modal-base-footer">
-				<div className="modal-base-cancel">
-					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
-				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Save"} />
+				</div>
+				<div
+					className="modal-base-cancel"
+					// style={{ marginLeft: "54%", border: "1px solid green" }}
+				>
+					<ButtonComponent
+						style={{ color: "green !important" }}
+						callback={() => ModalService.close()}
+						type="cancel"
+						label={"Cancel"}
+					/>
 				</div>
 			</div>
 		</div>

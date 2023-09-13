@@ -81,7 +81,7 @@ class ModalBaseComponent extends React.Component {
 					</div>
 				) : null}
 				{options.cancelLabel ? (
-					<div className="modal-base-cancel">
+					<div className="modal-base-cancel" style={{ color: "green !important" }}>
 						<ButtonComponent
 							type="cancel"
 							callback={() => ModalService.close(true)}

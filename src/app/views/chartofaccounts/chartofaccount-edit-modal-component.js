@@ -12,11 +12,13 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+		document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
 
 		setChartData(previousData);
 
 		return () => {
 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
+			document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
 		};
 	}, []);
@@ -128,28 +130,41 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 			>
 				Edit account
 			</div>
-			<div style={{ padding: "10px", backgroundColor: "#F0F4F6" }}>
-				<div style={{ padding: "35px 30px", backgroundColor: "white" }}>
-					<div>
+			<div
+				//  style={{ padding: "10px", backgroundColor: "#F0F4F6" }}
+				style={{
+					borderTop: "1px solid #C6C6C6",
+					//  padding: "12px", backgroundColor: "#F0F4F6"
+				}}
+			>
+				<div
+					style={{
+						padding: "20px",
+						// padding: "35px 30px",
+						backgroundColor: "white",
+					}}
+				>
+					<div style={{ marginTop: "25px" }}>
 						<SelectInput
 							allowCreate={false}
 							notAsync={true}
 							loadedOptions={accountTypeOptions}
 							name="accountType"
 							value={chartData.accountTypeId}
+							title={"Account type *"}
 							options={{
 								clearable: false,
 								noResultsText: false,
 								labelKey: "label",
 								valueKey: "value",
 								matchProp: "label",
-								placeholder: "Account type",
+								placeholder: "Choose an account type *",
 								handleChange: handleAccountTypeChange,
 							}}
 							aria-invalid={accountTypeError}
 							aria-describedby={accountTypeError ? "accountTypeError" : null}
 						/>
-						<div style={{ marginTop: "10px" }}>
+						<div style={{ marginTop: "-15px", marginBottom: "10px" }}>
 							{accountTypeError && (
 								<span id="accountTypeError" style={{ color: "red" }}>
 									This is a mandatory field.
@@ -157,38 +172,41 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 							)}
 						</div>
 					</div>
-
-					{Object.keys(requiredSubtypeOptions).length ? (
-						<div style={{ margin: 0, marginTop: "20px", marginBottom: "25px" }}>
-							<SelectInput
-								style={{ margin: "0px" }}
-								allowCreate={false}
-								notAsync={true}
-								name="accountSubType"
-								loadedOptions={requiredSubtypeOptions}
-								value={chartData.accountSubTypeId}
-								options={{
-									clearable: false,
-									noResultsText: false,
-									labelKey: "label",
-									valueKey: "value",
-									matchProp: "label",
-									placeholder: "Account sub type",
-									handleChange: handleAccountSubTypeChange,
-								}}
-								aria-invalid={accountTypeError}
-								aria-describedby={accountTypeError ? "accountTypeError" : null}
-							/>
-							<div style={{ marginTop: "10px" }}>
-								{accountTypeError && (
-									<span id="accountTypeError" style={{ color: "red" }}>
-										This is a mandatory field.
-									</span>
-								)}
+					<div className="row">
+						{/* <div className="col-xs-6"> */}
+						{Object.keys(requiredSubtypeOptions).length ? (
+							<div style={{ margin: 0, marginTop: "20px" }} className="col-xs-6">
+								<SelectInput
+									style={{ margin: "0px" }}
+									allowCreate={false}
+									notAsync={true}
+									name="accountSubType"
+									title={"Account subtype *"}
+									loadedOptions={requiredSubtypeOptions}
+									value={chartData.accountSubTypeId}
+									options={{
+										clearable: false,
+										noResultsText: false,
+										labelKey: "label",
+										valueKey: "value",
+										matchProp: "label",
+										placeholder: "Choose an account name *",
+										handleChange: handleAccountSubTypeChange,
+									}}
+									aria-invalid={accountTypeError}
+									aria-describedby={accountTypeError ? "accountTypeError" : null}
+								/>
+								<div style={{ marginTop: "-15px", marginBottom: "10px" }}>
+									{accountTypeError && (
+										<span id="accountTypeError" style={{ color: "red" }}>
+											This is a mandatory field.
+										</span>
+									)}
+								</div>
 							</div>
-						</div>
-					) : null}
-										<div
+						) : null}
+						{/* </div> */}
+						{/* <div
 						style={{ width: "100%", marginRight: "15px" }}
 					>
 						<TextInputComponent
@@ -207,19 +225,18 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 								</span>
 							)}
 						</div>
+					</div> */}
+						<div className="col-xs-6" style={{ width: "100%", marginTop: "8px" }}>
+							<NumberInputComponent
+								name="accountCode"
+								value={parseInt(chartData.accountCode)}
+								onChange={handleAccountCodeChange}
+								label="Code *"
+								disabled
+							/>
+						</div>
 					</div>
-					<div
-						style={{ width: "100%", marginTop: "10px" }}
-					>
-						<NumberInputComponent
-							name="accountCode"
-							value={parseInt(chartData.accountCode)}
-							onChange={handleAccountCodeChange}
-							label="Account code"
-							disabled
-						/>
-					</div>
-					<div style={{ paddingTop: "10px" }} className="textarea">
+					<div className="textarea" style={{ marginTop: "-5px" }}>
 						<label style={{ fontSize: "16px" }} className="textarea_label">
 							Description
 						</label>
@@ -232,10 +249,10 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 						<span className="textarea_bar" />
 					</div>
 					<div className="row" style={{ paddingTop: "20px" }}>
-						<div className="col-xs-10 ">
-							<label className="notes-alert-label">Activated account (Displayed in dropdowns)</label>
+						<div className="col-xs-3 ">
+							<label className="notes-alert-label">Activate Account</label>
 						</div>
-						<div>
+						<div className="col-xs-9" style={{ marginTop: "3px" }}>
 							<OvalToggleComponent
 								checked={active}
 								items={[{ label: "Active" }, { label: "Inactive" }]}
@@ -247,11 +264,14 @@ function ChartOfAccountPersonModalComponent({ onConfirm, previousData }) {
 				</div>
 			</div>
 			<div style={{ position: "relative" }} className="modal-base-footer">
-				<div className="modal-base-cancel">
-					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
-				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Save"} />
+				</div>
+				<div
+					className="modal-base-cancel"
+					// style={{ marginLeft: "54%", border: "1px solid green" }}
+				>
+					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
 				</div>
 			</div>
 		</div>

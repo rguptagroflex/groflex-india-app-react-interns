@@ -144,7 +144,8 @@ class ChartofaccountNewComponent extends React.Component {
 
 		ModalService.open(<ChartOfAccountPersonModalComponent onConfirm={handleNewAccount} />, {
 			modalClass: "edit-contact-person-modal-component",
-			width: 630,
+			width: 632,
+			borderRadius: 8,
 		});
 	}
 
