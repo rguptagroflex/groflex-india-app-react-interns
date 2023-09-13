@@ -919,17 +919,17 @@ const routes = [
 
 	// Inventory
 
-	// {
-	// 	path: "/inventory",
-	// 	type: RouteTypes.PRIVATE,
-	// 	component: InventoryListWrapper,
-	// 	exact: true,
-	// 	title: "Stock Movement",
-	// 	menuItem: "inventory",
-	// 	submenuItem: "inventoryStockMovement",
-	// 	pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
-	// 	resourceKey: "inventory",
-	// },
+	{
+		path: "/inventory",
+		type: RouteTypes.PRIVATE,
+		component: InventoryListWrapper,
+		exact: true,
+		title: "Stock Movement",
+		menuItem: "inventory",
+		submenuItem: "inventoryStockMovement",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "inventory",
+	},
 
 	// Expense
 	{
