@@ -1,16 +1,16 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import PropTypes from 'prop-types';
-import PopoverComponent from 'shared/popover/popover.component';
-import Direction from 'enums/direction.enum';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import PropTypes from "prop-types";
+import PopoverComponent from "shared/popover/popover.component";
+import Direction from "enums/direction.enum";
 // import { formatDate, formatApiDate } from 'helpers/formatDate';
-import { formatApiDate } from 'helpers/formatDate';
-import moment from 'moment';
-import config from 'config';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
-import ModalService from 'services/modal.service';
+import { formatApiDate } from "helpers/formatDate";
+import moment from "moment";
+import config from "config";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
+import ModalService from "services/modal.service";
 
-import EditColumnModal from 'shared/modals/edit-column.modal.component';
+import EditColumnModal from "shared/modals/edit-column.modal.component";
 
 class LetterPositionsHeadComponent extends React.Component {
 	constructor(props) {
@@ -18,21 +18,21 @@ class LetterPositionsHeadComponent extends React.Component {
 
 		// const userRegisteredAt = formatDate(invoiz.user.registeredAt, 'YYYY-MM-DD', 'YYYY-MM-DD');
 		const userRegisteredAt = formatApiDate(invoiz.user.registeredAt, config.dateFormat.api);
-		const editableColumns = moment(new Date(userRegisteredAt)).isSameOrBefore(moment(new Date('2018-09-06')));
+		const editableColumns = moment(new Date(userRegisteredAt)).isSameOrBefore(moment(new Date("2018-09-06")));
 		this.state = {
 			editableColumns,
 			editingColumns: false,
 			columns: props.columns,
-			positions: props.positions
+			positions: props.positions,
 		};
 	}
 
 	componentDidMount() {
-		invoiz.on('documentClicked', () => this.onDocumentClick());
+		invoiz.on("documentClicked", () => this.onDocumentClick());
 		const { columns, positions, isPurchaseOrder, customerData } = this.props;
 		this.initializeColumns(columns, positions, customerData);
-		const forcePriceAndDiscountColumn = positions.filter(pos => pos.discountPercent > 0).length > 0;
-		if (isPurchaseOrder && !forcePriceAndDiscountColumn) this.onColumnRemove('discount');
+		const forcePriceAndDiscountColumn = positions.filter((pos) => pos.discountPercent > 0).length > 0;
+		if (isPurchaseOrder && !forcePriceAndDiscountColumn) this.onColumnRemove("discount");
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -42,40 +42,45 @@ class LetterPositionsHeadComponent extends React.Component {
 
 	initializeColumns(columns, positions, customerData) {
 		const diffVatValues = [];
-		positions.forEach(pos => {
+		positions.forEach((pos) => {
 			if (diffVatValues.indexOf(pos.vat) === -1) {
 				diffVatValues.push(pos.vat);
 			}
 		});
 
-		const priceColumn = columns.find(col => col.name === 'price');
+		const priceColumn = columns.find((col) => col.name === "price");
 
 		const forceVatColumn = diffVatValues.length > 1;
-		const forceAmountColumn = positions.filter(pos => pos.amount > 1).length > 0;
-		const forcePriceAndDiscountColumn = positions.filter(pos => pos.discountPercent > 0).length > 0;
+		const forceAmountColumn = positions.filter((pos) => pos.amount > 1).length > 0;
+		const forcePriceAndDiscountColumn = positions.filter((pos) => pos.discountPercent > 0).length > 0;
 		const totalEditable = !priceColumn || (!priceColumn.active && !forceAmountColumn);
-		columns.forEach(column => {
+		columns.forEach((column) => {
 			switch (column.name) {
-				case 'description': {
+				case "SNo": {
+					column.active = true;
+					column.required = true;
+					column.editable = false;
+				}
+				case "description": {
 					column.active = true;
 					column.required = true;
 					column.editable = false;
 					break;
 				}
-				case 'hsnSacCode': {
+				case "hsnSacCode": {
 					column.active = forceVatColumn ? true : column.active;
 					column.required = false;
 					column.editable = false;
 					break;
 				}
-				case 'amount': {
+				case "amount": {
 					column.active = forceAmountColumn ? true : column.active;
 					column.required = !!forceAmountColumn;
 					column.editable = true;
 					break;
 				}
 
-				case 'vat': {
+				case "vat": {
 					if (invoiz.user.isSmallBusiness) {
 						column.active = false;
 						column.required = true;
@@ -95,21 +100,21 @@ class LetterPositionsHeadComponent extends React.Component {
 					break;
 				}
 
-				case 'price': {
+				case "price": {
 					column.active = forcePriceAndDiscountColumn ? true : column.active;
 					column.required = !!forcePriceAndDiscountColumn;
 					column.editable = true;
 					break;
 				}
 
-				case 'discount': {
+				case "discount": {
 					column.active = forcePriceAndDiscountColumn ? true : column.active;
 					column.required = !!forcePriceAndDiscountColumn;
 					column.editable = false;
 					break;
 				}
 
-				case 'total': {
+				case "total": {
 					column.editable = totalEditable;
 				}
 			}
@@ -117,7 +122,7 @@ class LetterPositionsHeadComponent extends React.Component {
 
 		this.setState({
 			columns,
-			positions
+			positions,
 		});
 	}
 
@@ -125,7 +130,7 @@ class LetterPositionsHeadComponent extends React.Component {
 		const { columns } = this.props;
 		const { editableColumns, editingColumns } = this.state;
 		const displayedColumns = columns
-			.filter(column => column.active)
+			.filter((column) => column.active)
 			.map((column, index) => {
 				if (column.hidden) {
 					return null;
@@ -139,7 +144,7 @@ class LetterPositionsHeadComponent extends React.Component {
 							<div className="letter-positions-head-column-value letter-positions-head-column-edit-label inline">
 								<TextInputExtendedComponent
 									value={column.label}
-									onChange={val => this.onColumnLabelChange(column.name, val)}
+									onChange={(val) => this.onColumnLabelChange(column.name, val)}
 								/>
 							</div>
 						) : (
@@ -161,12 +166,12 @@ class LetterPositionsHeadComponent extends React.Component {
 			<div className={`letter-positions-head-component-wrapper outlined`}>
 				<div className="letter-positions-head-wrapper">
 					<div
-						className={`letter-positions-head ${editingColumns ? 'letter-positions-head-editing' : ''}`}
-						onClick={ev => this.onLetterHeadClick(ev)}
+						className={`letter-positions-head ${editingColumns ? "letter-positions-head-editing" : ""}`}
+						onClick={(ev) => this.onLetterHeadClick(ev)}
 					>
 						{displayedColumns}
 						{/* {contextMenu} */}
-						<span className="edit-icon"/>
+						<span className="edit-icon" />
 					</div>
 				</div>
 			</div>
@@ -181,7 +186,7 @@ class LetterPositionsHeadComponent extends React.Component {
 
 	onColumnLabelChange(name, value) {
 		const { columns } = this.state;
-		const updatedColumns = columns.map(col => {
+		const updatedColumns = columns.map((col) => {
 			if (col.name === name) {
 				col.label = value;
 			}
@@ -209,19 +214,27 @@ class LetterPositionsHeadComponent extends React.Component {
 		// if (!this.state.editingColumns) {
 		// 	this.setState({ editingColumns: true });
 		// }
-		ModalService.open(<EditColumnModal key={columns} columns={columns} propColumns={this.props.columns} onColumnsClose={this.props.onColumnsClose} />, {
-			headline: 'Modify columns',
-			isCloseable: false,
-			width: 500,
-			padding: 40,
-			noTransform: true
-		});
+		ModalService.open(
+			<EditColumnModal
+				key={columns}
+				columns={columns}
+				propColumns={this.props.columns}
+				onColumnsClose={this.props.onColumnsClose}
+			/>,
+			{
+				headline: "Modify columns",
+				isCloseable: false,
+				width: 500,
+				padding: 40,
+				noTransform: true,
+			}
+		);
 	}
 
 	onColumnRemove(name) {
 		const { onColumnsClose } = this.props;
 		const { columns } = this.state;
-		const column = columns.find(c => c.name === name);
+		const column = columns.find((c) => c.name === name);
 		if (column) {
 			column.active = false;
 		}
@@ -234,7 +247,7 @@ class LetterPositionsHeadComponent extends React.Component {
 		const { onColumnsClose } = this.props;
 		const { columns } = this.state;
 
-		columns.forEach(col => {
+		columns.forEach((col) => {
 			if (col.name === entry.name) {
 				col.active = true;
 			}
@@ -247,18 +260,18 @@ class LetterPositionsHeadComponent extends React.Component {
 
 	createContextMenu() {
 		const { columns } = this.state;
-		const missingColumns = columns.filter(col => !col.active && !col.hidden && col.name != 'number');
+		const missingColumns = columns.filter((col) => !col.active && !col.hidden && col.name != "number");
 		const showMenu = missingColumns.length > 0;
 		let menu = null;
 
 		if (showMenu) {
 			const entries = [];
 			entries.push(
-				missingColumns.map(col => {
+				missingColumns.map((col) => {
 					return {
 						label: col.label,
 						name: col.name,
-						dataQsId: `letter-positions-menu-column-${col.label}`
+						dataQsId: `letter-positions-menu-column-${col.label}`,
 					};
 				})
 			);
@@ -272,9 +285,9 @@ class LetterPositionsHeadComponent extends React.Component {
 						offsetTop={15}
 						offsetLeft={-9}
 						entries={entries}
-						elementId={'letter-positions-head-context-menu-icon'}
+						elementId={"letter-positions-head-context-menu-icon"}
 						showOnClick={true}
-						onClick={entry => this.onContextMenuClick(entry)}
+						onClick={(entry) => this.onContextMenuClick(entry)}
 					/>
 				</div>
 			);
@@ -285,7 +298,7 @@ class LetterPositionsHeadComponent extends React.Component {
 }
 
 LetterPositionsHeadComponent.propTypes = {
-	onColumnsClose: PropTypes.func
+	onColumnsClose: PropTypes.func,
 };
 
 export default LetterPositionsHeadComponent;

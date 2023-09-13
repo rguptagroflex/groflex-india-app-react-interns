@@ -71,7 +71,7 @@ class LastUsedDocumentsComponent extends React.Component {
 				break;
 
 			case DocumentType.INVOICE:
-				icon = 'icon-sales_outlined';
+				icon = 'icon-rechnung';
 				break;
 
 			case DocumentType.RECCURRING_INVOICE_TEMPLATE:

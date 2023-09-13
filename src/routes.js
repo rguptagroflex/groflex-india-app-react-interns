@@ -74,6 +74,7 @@ import ExpenseNewWrapper from "views/expense/expense1-new.wrapper";
 import AdminPanelWrapper from "views/admin-panel/admin-panel.wrapper";
 import SettingsAccountWrapper from "views/settings/settings-account.wrapper";
 import SettingsUserWrapper from "views/settings/settings-user.wrapper";
+import TeamsWrapperComponent from "./app/views/teams/teams-wrapper.component";
 import SettingsDocumentExportWrapper from "views/settings/settings-document-export.wrapper";
 import SettingsDataImportOverviewWrapper from "views/settings/settings-data-import-overview.wrapper";
 import SettingsDataImportArticlesWrapper from "views/settings/settings-data-import-articles.wrapper";
@@ -94,7 +95,6 @@ import ReportBalanceSheet from "./app/views/reports/reports-balance-sheet-compon
 import ReportsProfitAndLoss from "./app/views/reports/reports-profit-and-loss-component";
 import ReportsCashFlowStatement from "./app/views/reports/reports-cash-flow-statement-component";
 import ReportsGeneralLedger from "./app/views/reports/reports-general-ledger-component";
-
 
 import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
 import TransactionsListWrapper from "./app/views/transactions/transactions-list-wrapper";
@@ -1178,6 +1178,7 @@ const routes = [
 		path: "/settings/user",
 		type: RouteTypes.PRIVATE,
 		component: SettingsUserWrapper,
+		// component: TeamsWrapperComponent,
 		exact: true,
 		title: "Einstellungen - Benutzer",
 		menuItem: "teamMembers",

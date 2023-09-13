@@ -1,6 +1,9 @@
-import React from 'react';
-import HtmlInputComponent from 'shared/inputs/html-input/html-input.component';
-import LetterFooterSignatureComponent from './letter-footer-signature.component';
+import React from "react";
+import HtmlInputComponent from "shared/inputs/html-input/html-input.component";
+import LetterFooterSignatureComponent from "./letter-footer-signature.component";
+import SVGInline from "react-svg-inline";
+import plusSvgGreen from "../../../assets/images/icons/plusSvgGreen.svg";
+import ButtonComponent from "../button/button.component";
 
 const KEY_CODE_ESCAPE = 27;
 
@@ -9,7 +12,7 @@ class LetterFooterComponent extends React.Component {
 		super(props);
 		const { columns } = props;
 		this.state = {
-			letter: columns
+			letter: columns,
 		};
 		this.reset = false;
 		this.onChangeTimer = null;
@@ -19,13 +22,15 @@ class LetterFooterComponent extends React.Component {
 	render() {
 		const { columns, resources } = this.props;
 
+		// console.log(columns, "HTML FROM BACKEND");
 		const elements = [];
 		columns.map((column, index) => {
 			if (index < 2) {
 				const {
 					sortId,
-					metaData: { html }
+					metaData: { html },
 				} = column;
+				// console.log(html, "HTML FROM BACKEND");
 				elements[sortId - 1] = (
 					<div className="letter-footer-column" key={`letter-footer-column-${index}`}>
 						<HtmlInputComponent
@@ -33,31 +38,60 @@ class LetterFooterComponent extends React.Component {
 							displayBlueLine={false}
 							placeholder={`${resources.str_column} ${sortId}`}
 							value={html}
+							// value={html + "<p>.............. : .............</p>"}
 							onFocus={() => this.onFocus(column)}
-							onBlur={({ quill, value }) => this.onBlur(value, column)}
-							onKeyUp={({ event, quill }) => this.onKeyUp(event, quill)}
-							formats={['bold', 'italic', 'underline']}
+							onBlur={({ quill, value }) => {
+								this.onBlur(value, column);
+								// console.log("ON BLUR", value, column, quill);
+							}}
+							onKeyUp={({ event, quill }) => {
+								// console.log("ON KEY UP", event, column, quill);
+								this.onKeyUp(event, quill);
+							}}
+							formats={["bold", "italic", "underline"]}
 						/>
+						<div
+							onClick={() => {
+								this.props.addParagraphToLetterFooter(index);
+							}}
+							className="add-field-button"
+						>
+							<SVGInline
+								width="17px"
+								height="17px"
+								svg={plusSvgGreen}
+								className="vertically-middle u_mr_6"
+							/>
+							Add Field
+						</div>
 					</div>
 				);
 			}
 		});
 		const signatureElement = columns.slice(2);
-		return 	<div className="letter-footer-component-wrapper">			
-			<div className="letter-footer-first-two-section col-xs-8">		
-				<div className="letter-footer-component-wrapper outlined">
-				<span className="edit-icon"/>
-					{elements}
+		return (
+			<div className="letter-footer-component-wrapper">
+				<div className="letter-footer-first-two-section col-xs-8">
+					<div className="letter-footer-component-wrapper outlined">
+						<span className="edit-icon" />
+						{elements}
+					</div>
+				</div>
+				<div
+					className="footerSignatureText"
+					// dangerouslySetInnerHTML={{ __html: signatureElement[0].metaData.html }}
+				>
+					<b>Signature</b>
+				</div>
+				<div className="footerSignatureWrapper col-xs-4">
+					<LetterFooterSignatureComponent
+						resources={resources}
+						items={signatureElement}
+						onFinish={(elements) => this.onLetterFooterSignatureEdited(elements)}
+					/>
 				</div>
 			</div>
-			<div className="footerSignatureText" dangerouslySetInnerHTML={{ __html: signatureElement[0].metaData.html }}></div>
-			<div className="footerSignatureWrapper col-xs-4">
-				<LetterFooterSignatureComponent
-					resources={resources}
-					items={signatureElement}
-					onFinish={elements => this.onLetterFooterSignatureEdited(elements)}/>
-			</div>
-		</div>;
+		);
 	}
 
 	onLetterFooterSignatureEdited(elements) {
@@ -104,7 +138,7 @@ class LetterFooterComponent extends React.Component {
 
 	onChange() {
 		const { columns } = this.props;
-		const focusedColumns = columns.filter(col => col.focused);
+		const focusedColumns = columns.filter((col) => col.focused);
 
 		if (focusedColumns.length === 0) {
 			this.forcingBlur = false;
