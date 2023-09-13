@@ -118,7 +118,6 @@ class ModalBaseComponent extends React.Component {
 					) : (
 						options.customHeadline
 					)}
-
 					<div className="modal-base-content">{this.state.content}</div>
 
 					{options.inputFieldOptions ? (

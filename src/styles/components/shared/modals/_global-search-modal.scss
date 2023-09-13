@@ -3,7 +3,7 @@
 
 .global-search-modal-component {
 	.modal-base-content {
-		margin: 0!important;
+		margin: 0 !important;
 	}
 
 	.global-search-input {
@@ -50,7 +50,9 @@
 			overflow-y: auto;
 
 			.global-search-list-category {
-				.global-search-list-headline{
+				.global-search-list-headline {
+					color: red;
+					border: 1px solid;
 					height: 25px;
 					line-height: 25px;
 					padding: 0px 25px;
@@ -79,7 +81,8 @@
 						cursor: pointer;
 						@include truncate-text();
 
-						&:hover, &.active {
+						&:hover,
+						&.active {
 							background: $color-primary;
 							color: $color-white;
 						}
@@ -105,7 +108,7 @@
 				padding: 28px 34px 12px;
 
 				.global-search-detail-image {
-					@include vendor-prefix('box-shadow', '0px 2px 8px 0px rgba(0, 0, 0, 0.2)');
+					@include vendor-prefix("box-shadow", "0px 2px 8px 0px rgba(0, 0, 0, 0.2)");
 					margin: 20px auto 0;
 					width: 280px;
 					height: 396px;
@@ -205,7 +208,6 @@
 						text-align: left;
 					}
 				}
-
 			}
 		}
 	}
@@ -225,6 +227,164 @@
 
 		.global-search-no-results-text {
 			font-size: 19px;
+		}
+	}
+}
+
+.newsfeed-component {
+	.global-search-list-headline {
+		padding-top: 8px;
+		padding-bottom: 8px;
+		border-top: 1px solid #c6c6c6;
+		border-bottom: 1px solid #c6c6c6;
+		background: #f1f8fb;
+		font-size: 14px;
+		font-weight: 900;
+		color: #272d30;
+		.global-search-list-headline-text {
+			font-size: 14px;
+			margin-left: 17px;
+			text-transform: uppercase;
+		}
+	}
+	.global-search-list-item {
+		padding: 15px;
+	}
+	// .text-input-component {
+	// 	border: 2px solid #c6c6c6;
+	// 	width: 83%;
+	// 	margin-left: 36px;
+	// 	height: 35px;
+	// 	margin-top: 23px;
+	// 	display: flex;
+	// 	border-radius: 4px;
+	// 	gap: 4px;
+	// 	margin-bottom: 24px;
+	// 	.MuiSvgIcon-root {
+	// 		margin-top: 5px;
+	// 		color: #c6c6c6;
+	// 		margin-left: 9px;
+	// 	}
+	// }
+
+	// .text-input-component:focus-within {
+	// 	border: 2px solid #00a353 !important;
+	// }
+
+	.input {
+		border: 0px;
+	}
+
+	.global-search-input {
+		display: flex;
+		align-items: center;
+		gap: 7px;
+		margin-left: 27px;
+		border: 2px solid #c6c6c6;
+		height: 7%;
+		margin-top: 14px;
+		border-radius: 4px;
+		width: 86%;
+		margin-right: 27px;
+		.MuiSvgIcon-root {
+			color: #c6c6c6;
+			margin-left: 7px;
+		}
+		.input {
+			height: 89%;
+		}
+		.text-input-component {
+			height: 82%;
+			width: 93%;
+			margin-bottom: 6px;
+		}
+	}
+	.global-search-input:focus-within {
+		border: 2px solid #00a353 !important;
+	}
+
+	.global-search-detail {
+		display: none;
+	}
+	.global-search-results {
+		height: 70%;
+		overflow-y: scroll;
+		margin-top: 24px;
+		.search-result-heading {
+			font-size: 14px;
+			color: #888787;
+			margin-bottom: 16px;
+			margin-left: 24px;
+		}
+	}
+	.global-search-results::-webkit-scrollbar {
+		width: 10px;
+	}
+	.global-search-results::-webkit-scrollbar-track {
+		-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+		border-radius: 8px;
+	}
+	.global-search-results::-webkit-scrollbar-thumb {
+		border-radius: 8px;
+		// -webkit-box-shadow: inset 0 0 6px #00a353;
+		background-color: #00a353;
+	}
+
+	.global-search-list-item {
+		display: flex;
+		gap: 5px;
+		.MuiSvgIcon-root {
+			margin-top: 0px;
+		}
+	}
+	.icon {
+		border: 1px solid #c6c6c6;
+		border-radius: 64%;
+		color: darkgray;
+		width: 29px;
+		padding-left: 8px;
+		height: 31px;
+		padding-top: 3px;
+		padding-right: 23px;
+	}
+
+	.search-item-main {
+		display: flex;
+		justify-content: space-between;
+		border-bottom: 1px solid #c6c6c6;
+		padding-bottom: 12px;
+		padding-top: 12px;
+		.MuiSvgIcon-root {
+			margin-right: 16px;
+			margin-top: 12px;
+			color: #888787;
+		}
+		.search-item-content {
+			display: flex;
+			flex-direction: column;
+			font-size: 14px;
+			margin-left: 8px;
+			.global-search-list-item-description {
+				color: #888787;
+			}
+			.global-search-list-item-title {
+				margin-bottom: 8px;
+			}
+		}
+	}
+	.search-item-main:hover {
+		background: #ecfcf4;
+	}
+	.search-heading {
+		display: flex;
+		justify-content: space-between;
+		h5 {
+			margin-left: 28px;
+		}
+		.MuiSvgIcon-root {
+			margin-top: 21px;
+			color: #00a353;
+			margin-right: 20px;
 		}
 	}
 }

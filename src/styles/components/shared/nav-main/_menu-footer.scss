@@ -68,7 +68,6 @@
 			height: 27px;
 			padding-left: 5.5px;
 			padding-top: 1.5px;
-			
 		}
 		@include breakpoint-md {
 			.icon.icon-user_outlined {
@@ -111,12 +110,11 @@
 			padding-left: 8px;
 			padding-right: 0px;
 			padding-top: 3px;
-			
 		}
 		.menuItem.small {
 			height: 35px;
 			min-height: 35px;
-			
+
 			@include breakpoint-md {
 				width: 100%;
 			}
@@ -143,7 +141,7 @@
 
 		.text-info {
 			width: 175px;
-    		white-space: initial;
+			white-space: initial;
 		}
 	}
 	.menu-profile-popup-middle1 {
@@ -162,5 +160,17 @@
 	}
 	.menu-profile-popup-footer {
 		border-bottom: 1px solid #cccc;
+	}
+	.search-footer {
+		display: flex;
+		h5 {
+			font-size: 16px;
+			padding-left: 18px;
+		}
+	}
+	.search-footer:hover {
+		color: #0071ca;
+		background-color: #edf7ff;
+		cursor: pointer;
 	}
 }

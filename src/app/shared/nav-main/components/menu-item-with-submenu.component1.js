@@ -1,44 +1,53 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import PropTypes from 'prop-types';
-import SubMenuBarComponent from 'shared/nav-main/components/submenu-bar.component';
-import SubMenuItemComponent from 'shared/nav-main/components/submenu-item.component';
-import userPermissions from 'enums/user-permissions.enum';
-import planPermissions from 'enums/plan-permissions.enum';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import PropTypes from "prop-types";
+import SubMenuBarComponent from "shared/nav-main/components/submenu-bar.component";
+import SubMenuItemComponent from "shared/nav-main/components/submenu-item.component";
+import userPermissions from "enums/user-permissions.enum";
+import planPermissions from "enums/plan-permissions.enum";
 
-
-const buildSubmenuComponents = (permissions, canViewDunning, canViewTimesheet, noInventory, submenuItems, activeSubmenuItem, resources) => {
+const buildSubmenuComponents = (
+	permissions,
+	canViewDunning,
+	canViewTimesheet,
+	noInventory,
+	submenuItems,
+	activeSubmenuItem,
+	resources
+) => {
 	const { canImportArticle, canImportContact, viewAccounting, canViewExpenses } = permissions;
 	// console.log('submenuItems', submenuItems)
 	if (!canImportArticle && !canImportContact) {
-		submenuItems = submenuItems.filter(item => item.name !== 'dataImport');
+		submenuItems = submenuItems.filter((item) => item.name !== "dataImport");
 	}
 
 	if (!canViewDunning) {
-		submenuItems = submenuItems.filter(item => item.name !== 'dunning');
+		submenuItems = submenuItems.filter((item) => item.name !== "dunning");
 	}
 
-	if(!canViewExpenses) {
-		submenuItems = submenuItems.filter(item => item.name !== 'expenditure' && item.name !== 'chartOfAccounts' && item.name !== 'cashAndBank');
+	if (!canViewExpenses) {
+		submenuItems = submenuItems.filter(
+			(item) => item.name !== "expenditure" && item.name !== "chartOfAccounts" && item.name !== "cashAndBank"
+		);
 	}
 	// In all case we need to show timesheet
 	// if (!canViewTimesheet) {
 	// 	submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
 	// }
 
-	if(noInventory) {
-		submenuItems = submenuItems.filter(item => item.name !== 'inventory');
+	if (noInventory) {
+		submenuItems = submenuItems.filter((item) => item.name !== "inventory");
 	}
 
-	return submenuItems.map(submenuItemData => {
-		const { name } = submenuItemData;		
+	return submenuItems.map((submenuItemData) => {
+		const { name } = submenuItemData;
 		let active;
 
 		if (name === activeSubmenuItem) {
 			active = true;
 		}
 
-		return <SubMenuItemComponent key={name} active={active} {...submenuItemData} resources={resources}/>;
+		return <SubMenuItemComponent key={name} active={active} {...submenuItemData} resources={resources} />;
 	});
 };
 
@@ -49,7 +58,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		const { activeSubmenuItem } = this.props;
 
 		this.state = {
-			submenuVisible: false,
+			submenuVisible: true,
 			activeSubmenuItem,
 			isCollapsedState: false,
 			canViewTextBlocks: null,
@@ -57,14 +66,14 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			canViewTimesheet: null,
 			planRestricted: null,
 			canChangeAccountData: null,
-			noInventory: null
+			noInventory: null,
 		};
 
 		this.windowResizeTimeout = null;
 		this.onWindowResize = this.onWindowResize.bind(this);
 
-		$(window).off('resize', this.onWindowResize);
-		$(window).on('resize', this.onWindowResize);
+		$(window).off("resize", this.onWindowResize);
+		$(window).on("resize", this.onWindowResize);
 	}
 
 	componentDidMount() {
@@ -77,8 +86,8 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			noInventory: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),
 		});
 		this.onWindowResize();
-		invoiz.on('triggerSubmenuHide', this.hideSubmenu, this);
-		invoiz.on('triggerSubmenuSwitch', this.switchSubmenu, this);
+		invoiz.on("triggerSubmenuHide", this.hideSubmenu, this);
+		invoiz.on("triggerSubmenuSwitch", this.switchSubmenu, this);
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -91,9 +100,9 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 
 	componentWillUnmount() {
-		invoiz.off('triggerSubmenuHide', this.hideSubmenu, this);
-		invoiz.off('triggerSubmenuSwitch', this.switchSubmenu, this);
-		$(window).off('resize', this.onWindowResize);
+		invoiz.off("triggerSubmenuHide", this.hideSubmenu, this);
+		invoiz.off("triggerSubmenuSwitch", this.switchSubmenu, this);
+		$(window).off("resize", this.onWindowResize);
 	}
 
 	hideSubmenu(noChangeTrigger) {
@@ -107,7 +116,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 
 	isSubmenuClick(evt) {
-		return evt && evt.nativeEvent.target && $(evt.nativeEvent.target).closest('.submenu').length > 0;
+		return evt && evt.nativeEvent.target && $(evt.nativeEvent.target).closest(".submenu").length > 0;
 	}
 
 	showSubmenu(evt, isClick, checkCollapsedState) {
@@ -120,7 +129,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		}
 
 		if (!isSubmenuClick && showSubmenu) {
-			invoiz.trigger('triggerSubmenuSwitch');
+			invoiz.trigger("triggerSubmenuSwitch");
 
 			this.setState({ submenuVisible: true }, () => {
 				const { onSubmenuVisiblityChanged } = this.props;
@@ -151,12 +160,10 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 
 	onWindowResize() {
 		clearTimeout(this.windowResizeTimeout);
-
 		this.windowResizeTimeout = setTimeout(() => {
 			if (this.refs.subMenuBarNormal || this.refs.subMenuBarCollapsed) {
-				this.setState({ isCollapsedState: !window.matchMedia('(min-width:1300px)').matches });
-
-				if (!window.matchMedia('(min-width:1300px)').matches) {
+				this.setState({ isCollapsedState: !window.matchMedia("(min-width:1300px)").matches });
+				if (!window.matchMedia("(min-width:1300px)").matches) {
 					this.hideSubmenu();
 				}
 			}
@@ -164,11 +171,28 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 
 	render() {
-		const { submenuVisible, activeSubmenuItem, isCollapsedState, canViewDunning, canViewTimesheet, noInventory, canView } = this.state;
-		const { title, name, submenuItems, icon, active, hasImprintAndPrivacy, resourceKey, resources, permissions } = this.props;
-		const submenuItemComponents = buildSubmenuComponents(permissions, canViewDunning, canViewTimesheet, noInventory, submenuItems, activeSubmenuItem, resources);
+		const {
+			submenuVisible,
+			activeSubmenuItem,
+			isCollapsedState,
+			canViewDunning,
+			canViewTimesheet,
+			noInventory,
+			canView,
+		} = this.state;
+		const { title, name, submenuItems, icon, active, hasImprintAndPrivacy, resourceKey, resources, permissions } =
+			this.props;
+		const submenuItemComponents = buildSubmenuComponents(
+			permissions,
+			canViewDunning,
+			canViewTimesheet,
+			noInventory,
+			submenuItems,
+			activeSubmenuItem,
+			resources
+		);
 		const iconClass = `icon icon-${icon}`;
-		const activeClass = active ? 'icon-arr_down menuItem-active' : 'icon-arr_right';
+		const activeClass = active ? "icon-arr_down menuItem-active" : "icon-arr_right";
 		const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass}`;
 
 		return isCollapsedState ? (
@@ -177,17 +201,16 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 					ref="subMenuBarCollapsed"
 					onMouseEnter={() => this.showSubmenu()}
 					onMouseLeave={() => this.hideSubmenu()}
-					onClick={e => this.navigateToFirstSubmenuItem(e)}
+					onClick={(e) => this.navigateToFirstSubmenuItem(e)}
 					className={className}
 					data-href={submenuItems[0].url}
 					data-qs-id={`global-menu-item-${name}`}
 				>
-				{resources.menuItems[resourceKey]}
-				{/* <span className="collapsed-title">
 					{resources.menuItems[resourceKey]}
-				</span>				 */}
-			</div>
-			<SubMenuBarComponent key={`sub-item-${name}`}
+					<span className="collapsed-title">{resources.menuItems[resourceKey]}</span>
+				</div>
+				<SubMenuBarComponent
+					key={`sub-item-${name}`}
 					visible={submenuVisible}
 					title={title}
 					name={name}
@@ -196,27 +219,23 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 					resources={resources}
 				>
 					{submenuItemComponents}
-			</SubMenuBarComponent>
+				</SubMenuBarComponent>
 			</li>
-			
 		) : (
 			<li key={name}>
-			<div
-				ref="subMenuBarNormal"
-				onClick={e => this.showSubmenu(e, true)}
-				className={className}
-				data-href={submenuItems[0].url}
-				data-qs-id={`global-menu-item-${name}`}
-			>
-				{/* {title} */}
-				{resources.menuItems[resourceKey]}
-				{/* <span className="collapsed-title">
-					
+				<div
+					ref="subMenuBarNormal"
+					onClick={(e) => this.showSubmenu(e, true)}
+					className={className}
+					data-href={submenuItems[0].url}
+					data-qs-id={`global-menu-item-${name}`}
+				>
+					{title}
 					{resources.menuItems[resourceKey]}
-				</span> */}
-				
-			</div>
-			<SubMenuBarComponent key={`sub-item-${name}`}
+					<span className="collapsed-title">{resources.menuItems[resourceKey]}</span>
+				</div>
+				<SubMenuBarComponent
+					key={`sub-item-${name}`}
 					visible={submenuVisible}
 					title={title}
 					name={name}
@@ -239,17 +258,17 @@ MenuItemWithSubmenuComponent1.propTypes = {
 	submenuItems: PropTypes.array,
 	activeSubmenuItem: PropTypes.string,
 	onSubmenuVisiblityChanged: PropTypes.func,
-	resourceKey: PropTypes.string
+	resourceKey: PropTypes.string,
 };
 
 MenuItemWithSubmenuComponent1.defaultProps = {
-	title: '',
-	url: '',
-	icon: '',
+	title: "",
+	url: "",
+	icon: "",
 	active: false,
 	submenuItems: [],
-	activeSubmenuItem: '',
-	resourceKey: ''
+	activeSubmenuItem: "",
+	resourceKey: "",
 };
 
 export default MenuItemWithSubmenuComponent1;

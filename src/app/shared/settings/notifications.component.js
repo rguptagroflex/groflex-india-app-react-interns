@@ -1,9 +1,9 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import config from 'config';
-import { notificationTypes } from 'helpers/constants';
-import OvalToggleComponent from 'shared/oval-toggle/oval-toggle.component';
-import userPermissions from 'enums/user-permissions.enum';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import config from "config";
+import { notificationTypes } from "helpers/constants";
+import OvalToggleComponent from "shared/oval-toggle/oval-toggle.component";
+import userPermissions from "enums/user-permissions.enum";
 
 class NotificationsComponent extends React.Component {
 	constructor(props) {
@@ -12,7 +12,7 @@ class NotificationsComponent extends React.Component {
 		this.state = {
 			notificateEmail: props.account.notificateEmail,
 			notificatePush: props.account.notificatePush,
-			canUpdateEmail: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_EMAIL_INTEGRATION)
+			canUpdateEmail: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_EMAIL_INTEGRATION),
 		};
 	}
 
@@ -34,9 +34,9 @@ class NotificationsComponent extends React.Component {
 
 		invoiz
 			.request(config.settings.endpoints.notification, {
-				method: 'POST',
+				method: "POST",
 				data,
-				auth: true
+				auth: true,
 			})
 			.then(() => {
 				invoiz.page.showToast(resources.notificationSaveSuccesMessage);
@@ -45,7 +45,7 @@ class NotificationsComponent extends React.Component {
 			.catch(() => {
 				invoiz.page.showToast({
 					message: resources.notificationSaveErrorMessage,
-					type: 'error'
+					type: "error",
 				});
 			});
 	}
@@ -55,7 +55,9 @@ class NotificationsComponent extends React.Component {
 		const { resources } = this.props;
 		return (
 			<div className="settings-notifications-component">
-				<div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
+				<div className="row u_pt_20">
+					{" "}
+					{/*u_pt_60 u_pb_40 */}
 					<div className="col-xs-12 text-h4 u_pb_20">{resources.str_notifications}</div>
 					<div className="col-xs-12">
 						<div className="u_pb_10 notifications-info">
@@ -77,7 +79,7 @@ class NotificationsComponent extends React.Component {
 									checked={notificateEmail}
 									labelText={resources.str_byEmail}
 									newStyle={true}
-									customClass={'toggle-email'}
+									customClass={"toggle-email"}
 								/>
 
 								{/* <OvalToggleComponent

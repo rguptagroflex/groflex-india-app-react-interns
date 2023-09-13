@@ -1,13 +1,13 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import PropTypes from 'prop-types';
-import MenuItemComponent from 'shared/nav-main/components/menu-item.component';
-import MenuItemWithSubmenuComponent from 'shared/nav-main/components/menu-item-with-submenu.component';
-import MenuItemWithSubmenuComponent1 from 'shared/nav-main/components/menu-item-with-submenu.component1';
-import config from 'config';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import PropTypes from "prop-types";
+import MenuItemComponent from "shared/nav-main/components/menu-item.component";
+import MenuItemWithSubmenuComponent from "shared/nav-main/components/menu-item-with-submenu.component";
+import MenuItemWithSubmenuComponent1 from "shared/nav-main/components/menu-item-with-submenu.component1";
+import config from "config";
 
-import userPermissions from 'enums/user-permissions.enum';
-import planPermissions from 'enums/plan-permissions.enum';
+import userPermissions from "enums/user-permissions.enum";
+import planPermissions from "enums/plan-permissions.enum";
 
 class MenuBarComponent extends React.Component {
 	constructor(props) {
@@ -17,7 +17,7 @@ class MenuBarComponent extends React.Component {
 		this.state = {
 			activeItem,
 			activeSubmenuItem,
-			canSeeEditGstReports: null,			
+			canSeeEditGstReports: null,
 			canImportArticle: null,
 			canImportContact: null,
 			canViewTextBlocks: null,
@@ -29,11 +29,11 @@ class MenuBarComponent extends React.Component {
 			canViewDashboard: null,
 			canViewStockMovement: null,
 			noGST: null,
-			menuItems: config.menuItemsData
+			menuItems: config.menuItemsData,
 		};
 	}
 
-	componentDidMount () {
+	componentDidMount() {
 		this.setState({
 			canSeeEditGstReports: invoiz.user && invoiz.user.hasPermission(userPermissions.MODIFY_SEE_GST_REPORTS),
 			canImportArticle: invoiz.user && invoiz.user.hasPermission(userPermissions.ARTICLE_IMPORT),
@@ -59,11 +59,11 @@ class MenuBarComponent extends React.Component {
 		if (activeItem !== currentActiveItem) {
 			Object.assign(newState, { activeItem });
 
-			const isMenuItemWithSubmenuActive = !!config.menuItemsData.find(menuItem => {
+			const isMenuItemWithSubmenuActive = !!config.menuItemsData.find((menuItem) => {
 				return menuItem.name === activeItem && !!menuItem.submenuItems;
 			});
 
-			config.menuItemsData.forEach(menuItem => {
+			config.menuItemsData.forEach((menuItem) => {
 				if (menuItem.submenuItems) {
 					if (
 						menuItem.name === activeItem &&
@@ -83,7 +83,7 @@ class MenuBarComponent extends React.Component {
 		}
 
 		if (activeSubmenuItem !== currentActiveSubmenuItem) {
-			Object.assign(newState, { activeSubmenuItem }); 
+			Object.assign(newState, { activeSubmenuItem });
 		}
 
 		this.setState(newState);
@@ -93,25 +93,35 @@ class MenuBarComponent extends React.Component {
 		});
 	}
 
-	buildPermittedItems () {
-		const { canSeeEditGstReports, canViewImprezzOffer, canViewOffer, canViewExpenses, viewAccounting, canViewPurchaseOrder, canViewDashboard, noGST, menuItems } = this.state;
+	buildPermittedItems() {
+		const {
+			canSeeEditGstReports,
+			canViewImprezzOffer,
+			canViewOffer,
+			canViewExpenses,
+			viewAccounting,
+			canViewPurchaseOrder,
+			canViewDashboard,
+			noGST,
+			menuItems,
+		} = this.state;
 		const permitteditems = [...config.menuItemsData];
 		// console.log('permitteditems', permitteditems, invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE))
 		//  if (!canSeeEditGstReports && !canViewExpenses && !canViewDashboard) {
 		// 	return permitteditems.filter(item => item.name !== 'documentExport');
-		//  } 
+		//  }
 		//  if (!canViewOffer && !canViewImprezzOffer && !canViewPurchaseOrder) {
 		// 	return permitteditems.filter(item => item.name !== 'offers' && item.name !== 'purchaseOrders');
-		//  } 
+		//  }
 		//  if (!canViewDashboard) {
-		// 	return permitteditems.filter(item => item.name !== 'dashboard');		  
+		// 	return permitteditems.filter(item => item.name !== 'dashboard');
 		//   }
-		//console.log('buildPermittedItems', canViewExpenses, viewAccounting) 
+		//console.log('buildPermittedItems', canViewExpenses, viewAccounting)
 		if (invoiz.user.rights != null && !canViewExpenses) {
-		  return permitteditems.filter(item => item.name !== 'expenditure');		  
+			return permitteditems.filter((item) => item.name !== "expenditure");
 		}
 		// if (!canSeeEditGstReports) {
-		// 	return permitteditems.filter(item => item.name !== 'documentExport');			
+		// 	return permitteditems.filter(item => item.name !== 'documentExport');
 		// }
 		// if (!canViewPurchaseOrder) {
 		// 	return permitteditems.filter(item => item.name !== 'purchaseOrders');
@@ -123,25 +133,38 @@ class MenuBarComponent extends React.Component {
 		return permitteditems;
 	}
 
-	buildMenuItems (items) {
-		const { activeItem, activeSubmenuItem, canImportArticle, canImportContact, canViewDunning, canViewExpenses } = this.state;
+	buildMenuItems(items) {
+		const { activeItem, activeSubmenuItem, canImportArticle, canImportContact, canViewDunning, canViewExpenses } =
+			this.state;
 		const { submenuVisible, onSubmenuChanged, resources } = this.props;
 		const permissions = {
 			canImportArticle,
 			canImportContact,
 			canViewDunning,
-			canViewExpenses
-			};
-		
+			canViewExpenses,
+		};
+
 		if (!canViewExpenses) {
-			items.push({ name: 'admin-panel', icon: 'expense', title: 'Accounting', url: '/settings/billing', resourceKey: 'accounting' });
+			items.push({
+				name: "admin-panel",
+				icon: "expense",
+				title: "Accounting",
+				url: "/settings/billing",
+				resourceKey: "accounting",
+			});
 		}
-		 //const items = [...config.menuItemsData];
+		//const items = [...config.menuItemsData];
 		if (invoiz.user.isAdmin) {
-			items.push({ name: 'admin-panel', icon: 'settings', title: 'Admin Panel', url: '/admin-panel', resourceKey: 'adminpanel' });
+			items.push({
+				name: "admin-panel",
+				icon: "settings",
+				title: "Admin Panel",
+				url: "/admin-panel",
+				resourceKey: "adminpanel",
+			});
 		}
-		
-		return items.map(menuItemData => {
+
+		return items.map((menuItemData) => {
 			const { name, submenuItems } = menuItemData;
 			const active = name === activeItem;
 			Object.assign(menuItemData, { active, submenuVisible });
@@ -159,36 +182,56 @@ class MenuBarComponent extends React.Component {
 					/>
 				);
 			}
-			return <MenuItemComponent key={name} {...menuItemData} resources={resources}/>;
+			return <MenuItemComponent key={name} {...menuItemData} resources={resources} />;
 		});
 	}
 
-	buildMenuItems2 (items) {
-		const { activeItem, activeSubmenuItem, canImportArticle, canImportContact, canViewDunning, canViewExpenses, viewAccounting } = this.state;
+	buildMenuItems2(items) {
+		const {
+			activeItem,
+			activeSubmenuItem,
+			canImportArticle,
+			canImportContact,
+			canViewDunning,
+			canViewExpenses,
+			viewAccounting,
+		} = this.state;
 		const { submenuVisible, onSubmenuChanged, resources } = this.props;
 		const permissions = {
 			canImportArticle,
 			canImportContact,
 			canViewDunning,
 			canViewExpenses,
-			viewAccounting
-			};
-		 //const items = [...config.menuItemsData];	
+			viewAccounting,
+		};
+		//const items = [...config.menuItemsData];
 		if (!canViewExpenses) {
-			items.push({ name: 'billing', icon: 'expense', title: 'Accounting', url: '/settings/billing', resourceKey: 'accounting' });
+			items.push({
+				name: "billing",
+				icon: "expense",
+				title: "Accounting",
+				url: "/settings/billing",
+				resourceKey: "accounting",
+			});
 		}
 
 		if (invoiz.user.isAdmin) {
-			items.push({ name: 'admin-panel', icon: 'settings', title: 'Admin Panel', url: '/admin-panel', resourceKey: 'adminpanel' });
+			items.push({
+				name: "admin-panel",
+				icon: "settings",
+				title: "Admin Panel",
+				url: "/admin-panel",
+				resourceKey: "adminpanel",
+			});
 		}
 
-		return items.map(menuItemData => {
+		return items.map((menuItemData) => {
 			const { name, submenuItems } = menuItemData;
 			const active = name === activeItem;
 			Object.assign(menuItemData, { active, submenuVisible });
 
 			if (submenuItems && submenuItems.length > 0) {
-				return (			
+				return (
 					<MenuItemWithSubmenuComponent1
 						ref={`menuItemWithSubmenu-${name}`}
 						key={name}
@@ -201,7 +244,11 @@ class MenuBarComponent extends React.Component {
 				);
 			}
 			// return <MenuItemComponent key={name} {...menuItemData} resources={resources}/>;
-			return <li key={name}><MenuItemComponent key={name} {...menuItemData} resources={resources}/></li>
+			return (
+				<li key={name}>
+					<MenuItemComponent key={name} {...menuItemData} resources={resources} />
+				</li>
+			);
 		});
 	}
 
@@ -212,7 +259,7 @@ class MenuBarComponent extends React.Component {
 		return (
 			<div className="menuBar_container">
 				{/* <div className={`menuBar_content ${submenuVisible ? 'submenu-visible' : ''}`}>{permittedItems}</div> */}
-				<ul className={`menuBar_content ${submenuVisible ? 'submenu-visible' : ''}`}>{permittedItems}</ul>
+				<ul className={`menuBar_content ${submenuVisible ? "submenu-visible" : ""}`}>{permittedItems}</ul>
 			</div>
 		);
 	}
@@ -222,13 +269,13 @@ MenuBarComponent.propTypes = {
 	activeItem: PropTypes.string,
 	activeSubmenuItem: PropTypes.string,
 	submenuVisible: PropTypes.bool,
-	onSubmenuChanged: PropTypes.func
+	onSubmenuChanged: PropTypes.func,
 };
 
 MenuBarComponent.defaultProps = {
-	activeItem: '',
-	activeSubmenuItem: '',
-	submenuVisible: false
+	activeItem: "",
+	activeSubmenuItem: "",
+	submenuVisible: false,
 };
 
 export default MenuBarComponent;

@@ -43,15 +43,18 @@ $newsfeed-width: 465px;
 			width: $newsfeed-width;
 			visibility: visible;
 			transition: visibility 0s, width 0.3s ease-out;
+			.ps__thumb-y {
+				background: #00a353;
+			}
 		}
 	}
 
 	&:after {
 		position: absolute;
 		left: 0;
-		@include triangle('left', 7, #ffffff);
+		@include triangle("left", 7, #ffffff);
 		transform: scaleY(1.3);
-		content: ' ';
+		content: " ";
 		z-index: 10001;
 		opacity: 0;
 		transition: all 0.3s;
@@ -113,9 +116,99 @@ $newsfeed-width: 465px;
 			}
 		}
 
+		.newsfeed-close {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			h4 {
+				margin-left: 24px;
+			}
+
+			p {
+				padding: 10px;
+				margin-right: 14px;
+				color: green;
+				cursor: pointer;
+				.MuiSvgIcon-root {
+					margin-top: 7px;
+				}
+			}
+		}
+
+		.newsfeed-icon {
+			height: 70px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.newsfeed-main {
+			display: flex;
+			padding-top: 24px;
+			padding-bottom: 24px;
+			border-bottom: 1px solid #c6c6c6;
+
+			.icon {
+				margin-left: 24px;
+			}
+			// ::-webkit-scrollbar-thumb {
+			// 	background: red;
+			// }
+		}
+
+		.newsfeed-expand {
+			color: #888787;
+		}
+		.newsfeed-date-time {
+			color: #c6c6c6;
+			font-size: 12px;
+		}
+
+		.notification-accordion {
+			box-shadow: 0 0 0;
+			.MuiSvgIcon-root {
+				color: #00a353;
+			}
+		}
+
+		.sortNotification {
+			display: flex;
+			justify-content: flex-end;
+			.sort-date {
+				margin-left: 24px;
+				margin-bottom: 25px;
+				border: 1px;
+				width: 128px;
+				height: 31px;
+				border-radius: 5px;
+				border-style: solid;
+				border-color: #c6c6c6;
+				input {
+					display: flex;
+					gap: 8px;
+					flex-direction: row-reverse;
+				}
+				input::-webkit-calendar-picker-indicator {
+					background-image: url("/assets/images/icons/calender.svg");
+				}
+			}
+
+			.notificationDropDown {
+				margin-right: 20px;
+				width: 100%;
+				.MuiSvgIcon-root {
+					color: #00a353;
+				}
+				.MuiSelect-select.MuiSelect-select {
+					padding-right: 12px;
+				}
+			}
+		}
+
 		.newsfeed-header {
 			&.large-top {
-				margin-top: 41px;
+				// margin-top: 41px;
+				margin-top: 0px;
 			}
 
 			div {
@@ -132,7 +225,7 @@ $newsfeed-width: 465px;
 			position: relative;
 			width: 100%;
 			height: 85px;
-			border-bottom: 1px $color-bg-dark solid;
+			// border-bottom: 1px $color-bg-dark solid;
 			transition: background-color 0.3s ease-out, border-color 0.3s ease-out;
 			cursor: pointer;
 
@@ -154,18 +247,22 @@ $newsfeed-width: 465px;
 			}
 
 			.newsfeed-item-left {
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100px;
-				height: 85px;
+				// position: absolute;
+				// top: 0;
+				// left: 0;
+				// width: 100px;
+				// height: 85px;
+				height: 70px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
 				@include rem(font-size, 13px);
 
 				.icon {
 					width: 45px;
 					height: 45px;
 					line-height: 45px;
-					margin: 20px 0 0 25px;
+					// margin: 20px 0 0 25px;
 					text-align: center;
 					border-radius: 50%;
 					color: #8c9092;
@@ -192,12 +289,16 @@ $newsfeed-width: 465px;
 					}
 
 					&.icon-small {
-						&:before { position: relative; left: 1px; }
+						&:before {
+							position: relative;
+							left: 1px;
+						}
 					}
 				}
 			}
 
 			.newsfeed-item-middle {
+				margin-right: 50px !important;
 				position: absolute;
 				top: 0;
 				left: 100px;
@@ -220,7 +321,7 @@ $newsfeed-width: 465px;
 				left: ($newsfeed-width - 130px);
 				width: 130px;
 				height: 85px;
-
+				color: #c6c6c6;
 				span {
 					position: absolute;
 					right: 20px;
@@ -230,5 +331,48 @@ $newsfeed-width: 465px;
 				}
 			}
 		}
+	}
+}
+
+.accordian-main {
+	width: 100%;
+	.accordian-head {
+		display: flex;
+		justify-content: space-between;
+		padding-left: 24px;
+		padding-right: 24px;
+
+		.accordian-head-sub {
+			display: flex;
+			gap: 12px;
+		}
+		.accordian-date {
+			color: #c6c6c6;
+			font-size: 13px;
+		}
+	}
+	.accordian-body {
+		margin-top: 8px;
+		padding-left: 24px;
+		padding-right: 24px;
+		margin-bottom: 8px;
+	}
+	.accordian-body-expanded {
+		margin-top: 8px;
+		padding-left: 24px;
+		padding-right: 24px;
+		margin-bottom: 8px;
+	}
+	.accordian-button {
+		display: flex;
+		gap: 12px;
+		padding-left: 24px;
+		padding-right: 24px;
+	}
+	.accordian-icon {
+		color: #00a353;
+	}
+	span {
+		margin-right: 35px;
 	}
 }

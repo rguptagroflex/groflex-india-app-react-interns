@@ -1,21 +1,23 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import config from 'config';
-import ModalService from 'services/modal.service';
-import ButtonComponent from 'shared/button/button.component';
-import TextInputComponent from 'shared/inputs/text-input/text-input.component';
-import { formatCurrency } from 'helpers/formatCurrency';
-import { formatClientDate } from 'helpers/formatDate';
-import Customer from 'models/customer.model';
-import ContactPerson from 'models/contact-person.model';
-
+import React from "react";
+import invoiz from "services/invoiz.service";
+import config from "config";
+import ModalService from "services/modal.service";
+import ButtonComponent from "shared/button/button.component";
+import TextInputComponent from "shared/inputs/text-input/text-input.component";
+import { formatCurrency } from "helpers/formatCurrency";
+import { formatClientDate } from "helpers/formatDate";
+import Customer from "models/customer.model";
+import ContactPerson from "models/contact-person.model";
+import CallMadeIcon from "@material-ui/icons/CallMade";
+import SearchIcon from "@material-ui/icons/Search";
+import CloseIcon from "@material-ui/icons/Close";
 const RESULT_TYPE = Object.freeze({
-	ARTICLE: 'article',
-	CUSTOMER: 'customer',
-	INVOICE: 'invoice',
-	OFFER: 'offer',
-	PURCHASE_ORDER: 'purchaseOrder',
-	EXPENSE: 'expense'
+	ARTICLE: "article",
+	CUSTOMER: "customer",
+	INVOICE: "invoice",
+	OFFER: "offer",
+	PURCHASE_ORDER: "purchaseOrder",
+	EXPENSE: "expense",
 });
 
 class GlobalSearchModalComponent extends React.Component {
@@ -27,17 +29,21 @@ class GlobalSearchModalComponent extends React.Component {
 			hasSearched: false,
 			isSearching: false,
 			results: {},
-			searchText: '',
+			searchText: "",
 			selectedResult: null,
 			selectedResultId: null,
-			selectedResultType: null
+			selectedResultType: null,
 		};
 
 		this.searchTimeout = null;
 	}
+	onOverlayClick() {
+		const { onOverlayClick } = this.props;
+		onOverlayClick(true);
+	}
 
 	render() {
-		const { resources } = this.props;
+		const { resources, isVisible } = this.props;
 		const { searchText, hasSearched, isSearching, hasResults } = this.state;
 
 		const resultList = this.createResultList();
@@ -46,50 +52,60 @@ class GlobalSearchModalComponent extends React.Component {
 		const redirectButton = this.createRedirectButton();
 
 		return (
-			<div>
-				<div className="modal-base-close" onClick={() => ModalService.close()} />
-
-				<div className="global-search-input">
-					<div className={`icon icon-search ${isSearching || hasResults ? 'active' : ''}`} />
-					<TextInputComponent
-						value={searchText}
-						id={'global-search-input'}
-						autoComplete={'off'}
-						placeholder={resources.globalSearchPlaceholder}
-						noInputBar={true}
-						onChange={ev => this.onSearchInput(ev.target.value)}
-					/>
-				</div>
-
-				{!hasResults && hasSearched && noResultsView}
-
-				{hasResults ? (
-					<div className="global-search-results">
-						{resultList}
-						{resultDetail}
+			<div className={`newsfeed-component ${isVisible ? "visible" : ""}`}>
+				<div className="newsfeed-overlay" onClick={this.onOverlayClick.bind(this)} />
+				<div className="newsfeed-items">
+					<div className="search-heading">
+						<h5>Search</h5>
+						<CloseIcon onClick={this.onOverlayClick.bind(this)} />
 					</div>
-				) : null}
 
-				{hasResults ? (
-					<div className="modal-base-footer">
-						<div className="modal-base-cancel">
-							<ButtonComponent
-								dataQsId="globalSearch-btn-cancel"
-								callback={() => ModalService.close()}
-								type="cancel"
-								label={resources.str_abortStop}
-							/>
+					{/* <div className="modal-base-close" onClick={() => ModalService.close()} /> */}
+
+					<div className="global-search-input">
+						{/* <div className={`icon icon-search ${isSearching || hasResults ? "active" : ""}`} /> */}
+						<SearchIcon />
+						<TextInputComponent
+							value={searchText}
+							id={"global-search-input"}
+							autoComplete={"off"}
+							placeholder={resources.globalSearchPlaceholder}
+							noInputBar={true}
+							onChange={(ev) => this.onSearchInput(ev.target.value)}
+						/>
+					</div>
+
+					{!hasResults && hasSearched && noResultsView}
+
+					{hasResults ? (
+						<div className="global-search-results">
+							<div className="search-result-heading">Search results</div>
+							{resultList}
+							{resultDetail}
 						</div>
+					) : null}
 
-						<div className="modal-base-confirm">{redirectButton}</div>
-					</div>
-				) : null}
+					{hasResults ? (
+						<div className="modal-base-footer">
+							<div className="modal-base-cancel">
+								{/* <ButtonComponent
+									dataQsId="globalSearch-btn-cancel"
+									callback={() => ModalService.close()}
+									type="cancel"
+									label={resources.str_abortStop}
+								/> */}
+							</div>
+
+							<div className="modal-base-confirm">{redirectButton}</div>
+						</div>
+					) : null}
+				</div>
 			</div>
 		);
 	}
 
 	onSearchInput(searchText) {
-		searchText = (searchText && searchText.trim()) || '';
+		searchText = (searchText && searchText.trim()) || "";
 		const validSearch = searchText.length >= 1;
 		this.setState({ searchText, isSearching: validSearch }, () => {
 			if (validSearch) {
@@ -98,11 +114,11 @@ class GlobalSearchModalComponent extends React.Component {
 					invoiz
 						.request(`${config.resourceHost}search/${searchText}`, {
 							auth: true,
-							isConcurrent: true
+							isConcurrent: true,
 						})
-						.then(res => {
+						.then((res) => {
 							const {
-								body: { data: results }
+								body: { data: results },
 							} = res;
 
 							this.processResults(results);
@@ -186,22 +202,34 @@ class GlobalSearchModalComponent extends React.Component {
 		if (articles.length > 0) {
 			const items = articles.map((article, index) => {
 				const className = `global-search-list-item ${
-					selectedResultType === RESULT_TYPE.ARTICLE && selectedResultId === article.id ? 'active' : ''
+					selectedResultType === RESULT_TYPE.ARTICLE && selectedResultId === article.id ? "active" : ""
 				}`;
 				return (
-					<div
-						onClick={() =>
-							this.setState({
-								selectedResult: article,
-								selectedResultId: article.id,
-								selectedResultType: RESULT_TYPE.ARTICLE
-							})
-						}
-						key={`global-search-list-item-article-${index}`}
-						className={className}
-					>
-						<div className="global-search-list-item-title">{article.title}</div>
-						<div className="global-search-list-item-description">{resources.str_articleNumber} {article.number}</div>
+					<div className="search-item-main">
+						<div
+							onClick={
+								() => invoiz.router.navigate(this.createRedirectButton(article, RESULT_TYPE.ARTICLE))
+
+								// () =>
+								// this.setState({
+								// 	selectedResult: article,
+								// 	selectedResultId: article.id,
+								// 	selectedResultType: RESULT_TYPE.ARTICLE,
+								// })
+							}
+							key={`global-search-list-item-article-${index}`}
+							className={className}
+						>
+							<i className="icon icon-article" />
+							<div className="search-item-content">
+								<div className="global-search-list-item-title">{article.title}</div>
+
+								<div className="global-search-list-item-description">
+									{resources.str_articleNumber} {article.number}
+								</div>
+							</div>
+						</div>
+						<CallMadeIcon />
 					</div>
 				);
 			});
@@ -209,7 +237,7 @@ class GlobalSearchModalComponent extends React.Component {
 			elements.push(
 				<div key={`global-search-list-category-article`} className="global-search-list-category">
 					<div className="global-search-list-headline">
-						<i className="icon icon-article" />
+						{/* <i className="icon icon-article" /> */}
 						<span className="global-search-list-headline-text">{resources.str_articles}</span>
 					</div>
 					<div className="global-search-list-items">{items}</div>
@@ -221,22 +249,33 @@ class GlobalSearchModalComponent extends React.Component {
 			const items = customers.map((obj, index) => {
 				const customer = new Customer(obj);
 				const className = `global-search-list-item ${
-					selectedResultType === RESULT_TYPE.CUSTOMER && selectedResultId === customer.id ? 'active' : ''
+					selectedResultType === RESULT_TYPE.CUSTOMER && selectedResultId === customer.id ? "active" : ""
 				}`;
 				return (
-					<div
-						onClick={() =>
-							this.setState({
-								selectedResult: customer,
-								selectedResultId: customer.id,
-								selectedResultType: RESULT_TYPE.CUSTOMER
-							})
-						}
-						key={`global-search-list-item-customer-${index}`}
-						className={className}
-					>
-						<div className="global-search-list-item-title">{customer.displayName}</div>
-						<div className="global-search-list-item-description">{resources.str_customerNumber} {customer.number}</div>
+					<div className="search-item-main">
+						<div
+							onClick={
+								() => invoiz.router.navigate(this.createRedirectButton(customer, RESULT_TYPE.CUSTOMER))
+								// () =>
+								// this.setState({
+								// 	selectedResult: customer,
+								// 	selectedResultId: customer.id,
+								// 	selectedResultType: RESULT_TYPE.CUSTOMER,
+								// })
+							}
+							key={`global-search-list-item-customer-${index}`}
+							className={className}
+						>
+							<i className="icon icon-customer" />
+							<div className="search-item-content">
+								<div className="global-search-list-item-title">{customer.displayName}</div>
+
+								<div className="global-search-list-item-description">
+									{resources.str_customerNumber} {customer.number}
+								</div>
+							</div>
+						</div>
+						<CallMadeIcon />
 					</div>
 				);
 			});
@@ -244,7 +283,7 @@ class GlobalSearchModalComponent extends React.Component {
 			elements.push(
 				<div key={`global-search-list-category-customer`} className="global-search-list-category">
 					<div className="global-search-list-headline">
-						<i className="icon icon-customer" />
+						{/* <i className="icon icon-customer" /> */}
 						<span className="global-search-list-headline-text">{resources.str_contacts}</span>
 					</div>
 					<div className="global-search-list-items">{items}</div>
@@ -255,22 +294,33 @@ class GlobalSearchModalComponent extends React.Component {
 		if (invoices.length > 0) {
 			const items = invoices.map((invoice, index) => {
 				const className = `global-search-list-item ${
-					selectedResultType === RESULT_TYPE.INVOICE && selectedResultId === invoice.id ? 'active' : ''
+					selectedResultType === RESULT_TYPE.INVOICE && selectedResultId === invoice.id ? "active" : ""
 				}`;
 				return (
-					<div
-						onClick={() =>
-							this.setState({
-								selectedResult: invoice,
-								selectedResultId: invoice.id,
-								selectedResultType: RESULT_TYPE.INVOICE
-							})
-						}
-						key={`global-search-list-item-invoice-${index}`}
-						className={className}
-					>
-						<div className="global-search-list-item-title" />
-						<div className="global-search-list-item-description">{resources.str_invoiceNumber} {invoice.number}</div>
+					<div className="search-item-main">
+						<div
+							onClick={
+								() => invoiz.router.navigate(this.createRedirectButton(invoice, RESULT_TYPE.INVOICE))
+								// () =>
+								// this.setState({
+								// 	selectedResult: invoice,
+								// 	selectedResultId: invoice.id,
+								// 	selectedResultType: RESULT_TYPE.INVOICE,
+								// })
+							}
+							key={`global-search-list-item-invoice-${index}`}
+							className={className}
+						>
+							<i className="icon icon-rechnung" />
+							<div className="search-item-content">
+								<div className="global-search-list-item-title" />
+
+								<div className="global-search-list-item-description">
+									{resources.str_invoiceNumber} {invoice.number}
+								</div>
+							</div>
+						</div>
+						<CallMadeIcon />
 					</div>
 				);
 			});
@@ -278,7 +328,7 @@ class GlobalSearchModalComponent extends React.Component {
 			elements.push(
 				<div key={`global-search-list-category-invoice`} className="global-search-list-category">
 					<div className="global-search-list-headline">
-						<i className="icon icon-rechnung" />
+						{/* <i className="icon icon-rechnung" /> */}
 						<span className="global-search-list-headline-text">{resources.str_bills}</span>
 					</div>
 					<div className="global-search-list-items">{items}</div>
@@ -289,22 +339,33 @@ class GlobalSearchModalComponent extends React.Component {
 		if (offers.length > 0) {
 			const items = offers.map((offer, index) => {
 				const className = `global-search-list-item ${
-					selectedResultType === RESULT_TYPE.OFFER && selectedResultId === offer.id ? 'active' : ''
+					selectedResultType === RESULT_TYPE.OFFER && selectedResultId === offer.id ? "active" : ""
 				}`;
 				return (
-					<div
-						onClick={() =>
-							this.setState({
-								selectedResult: offer,
-								selectedResultId: offer.id,
-								selectedResultType: RESULT_TYPE.OFFER
-							})
-						}
-						key={`global-search-list-item-offer-${index}`}
-						className={className}
-					>
-						<div className="global-search-list-item-title" />
-						<div className="global-search-list-item-description">{resources.str_offerNumber} {offer.number}</div>
+					<div className="search-item-main">
+						<div
+							onClick={
+								() => invoiz.router.navigate(this.createRedirectButton(offer, RESULT_TYPE.OFFER))
+								// () =>
+								// this.setState({
+								// 	selectedResult: offer,
+								// 	selectedResultId: offer.id,
+								// 	selectedResultType: RESULT_TYPE.OFFER,
+								// })
+							}
+							key={`global-search-list-item-offer-${index}`}
+							className={className}
+						>
+							<i className="icon icon-offer" />
+							<div className="search-item-content">
+								<div className="global-search-list-item-title" />
+
+								<div className="global-search-list-item-description">
+									{resources.str_offerNumber} {offer.number}
+								</div>
+							</div>
+						</div>
+						<CallMadeIcon />
 					</div>
 				);
 			});
@@ -312,7 +373,7 @@ class GlobalSearchModalComponent extends React.Component {
 			elements.push(
 				<div key={`global-search-list-category-offer`} className="global-search-list-category">
 					<div className="global-search-list-headline">
-						<i className="icon icon-offer" />
+						{/* <i className="icon icon-offer" /> */}
 						<span className="global-search-list-headline-text">{resources.str_deals}</span>
 					</div>
 					<div className="global-search-list-items">{items}</div>
@@ -323,22 +384,36 @@ class GlobalSearchModalComponent extends React.Component {
 		if (purchaseOrders.length > 0) {
 			const items = purchaseOrders.map((purchaseOrder, index) => {
 				const className = `global-search-list-item ${
-					selectedResultType === RESULT_TYPE.OFFER && selectedResultId === purchaseOrder.id ? 'active' : ''
+					selectedResultType === RESULT_TYPE.OFFER && selectedResultId === purchaseOrder.id ? "active" : ""
 				}`;
 				return (
-					<div
-						onClick={() =>
-							this.setState({
-								selectedResult: purchaseOrder,
-								selectedResultId: purchaseOrder.id,
-								selectedResultType: RESULT_TYPE.PURCHASE_ORDER
-							})
-						}
-						key={`global-search-list-item-purchaseOrder-${index}`}
-						className={className}
-					>
-						<div className="global-search-list-item-title" />
-						<div className="global-search-list-item-description">{resources.str_purchaseOrderNumber} {purchaseOrder.number}</div>
+					<div className="search-item-main">
+						<div
+							onClick={
+								() =>
+									invoiz.router.navigate(
+										this.createRedirectButton(purchaseOrder, RESULT_TYPE.PURCHASE_ORDER)
+									)
+								// () =>
+								// this.setState({
+								// 	selectedResult: purchaseOrder,
+								// 	selectedResultId: purchaseOrder.id,
+								// 	selectedResultType: RESULT_TYPE.PURCHASE_ORDER,
+								// })
+							}
+							key={`global-search-list-item-purchaseOrder-${index}`}
+							className={className}
+						>
+							<i className="icon icon-order" />
+							<div className="search-item-content">
+								<div className="global-search-list-item-title" />
+
+								<div className="global-search-list-item-description">
+									{resources.str_purchaseOrderNumber} {purchaseOrder.number}
+								</div>
+							</div>
+						</div>
+						<CallMadeIcon />
 					</div>
 				);
 			});
@@ -346,7 +421,7 @@ class GlobalSearchModalComponent extends React.Component {
 			elements.push(
 				<div key={`global-search-list-category-purchaseOrder`} className="global-search-list-category">
 					<div className="global-search-list-headline">
-						<i className="icon icon-order" />
+						{/* <i className="icon icon-order" /> */}
 						<span className="global-search-list-headline-text">{resources.str_purchaseOrders}</span>
 					</div>
 					<div className="global-search-list-items">{items}</div>
@@ -357,22 +432,32 @@ class GlobalSearchModalComponent extends React.Component {
 		if (expenses.length > 0) {
 			const items = expenses.map((expense, index) => {
 				const className = `global-search-list-item ${
-					selectedResultType === RESULT_TYPE.EXPENSE && selectedResultId === expense.id ? 'active' : ''
+					selectedResultType === RESULT_TYPE.EXPENSE && selectedResultId === expense.id ? "active" : ""
 				}`;
 				return (
-					<div
-						onClick={() =>
-							this.setState({
-								selectedResult: expense,
-								selectedResultId: expense.id,
-								selectedResultType: RESULT_TYPE.EXPENSE
-							})
-						}
-						key={`global-search-list-item-expense-${index}`}
-						className={className}
-					>
-						<div className="global-search-list-item-title" />
-						<div className="global-search-list-item-description">{resources.str_expenseNumber} {expense.id}</div>
+					<div className="search-item-main">
+						<div
+							onClick={
+								() => console.log(this.createRedirectButton(expense, RESULT_TYPE.EXPENSE))
+								// this.setState({
+								// 	selectedResult: expense,
+								// 	selectedResultId: expense.id,
+								// 	selectedResultType: RESULT_TYPE.EXPENSE,
+								// })
+							}
+							key={`global-search-list-item-expense-${index}`}
+							className={className}
+						>
+							<i className="icon icon-expense" />
+							<div className="search-item-content">
+								<div className="global-search-list-item-title" />
+
+								<div className="global-search-list-item-description">
+									{resources.str_expenseNumber} {expense.id}
+								</div>
+							</div>
+						</div>
+						<CallMadeIcon />
 					</div>
 				);
 			});
@@ -380,7 +465,7 @@ class GlobalSearchModalComponent extends React.Component {
 			elements.push(
 				<div key={`global-search-list-category-expense`} className="global-search-list-category">
 					<div className="global-search-list-headline">
-						<i className="icon icon-expense" />
+						{/* <i className="icon icon-expense" /> */}
 						<span className="global-search-list-headline-text">{resources.str_expenditure}</span>
 					</div>
 					<div className="global-search-list-items">{items}</div>
@@ -391,8 +476,8 @@ class GlobalSearchModalComponent extends React.Component {
 		return <div className="global-search-list">{elements}</div>;
 	}
 
-	createRedirectButton() {
-		const { hasResults, selectedResult, selectedResultType } = this.state;
+	createRedirectButton(selectedResult, selectedResultType) {
+		const { hasResults } = this.state;
 		const { resources } = this.props;
 		if (!hasResults) {
 			return null;
@@ -430,18 +515,28 @@ class GlobalSearchModalComponent extends React.Component {
 				redirectUrl = `/expense/edit/${selectedResult.id}`;
 				break;
 		}
+		return redirectUrl;
 
-		return (
-			<ButtonComponent
-				buttonIcon="icon-arr_right"
-				dataQsId="globalSearch-btn-redirect"
-				callback={() => {
-					invoiz.router.navigate(redirectUrl);
-					ModalService.close();
-				}}
-				label={redirectLabel}
-			/>
-		);
+		// return (
+		// 	// <ButtonComponent
+		// 	// 	// buttonIcon="icon-arr_right"
+		// 	// 	dataQsId="globalSearch-btn-redirect"
+		// 	// 	callback={() => {
+		// 	// 		invoiz.router.navigate(redirectUrl);
+		// 	// 		ModalService.close();
+		// 	// 	}}
+		// 	// 	label={redirectLabel}
+		// 	// />
+		// 	<ButtonComponent
+		// 		// buttonIcon="icon-arr_right"
+		// 		// dataQsId="globalSearch-btn-redirect"
+		// 		callback={() => {
+		// 			invoiz.router.navigate(redirectUrl);
+		// 			ModalService.close();
+		// 		}}
+		// 		label={redirectLabel}
+		// 	/>
+		// );
 	}
 
 	createResultDetail() {
@@ -458,27 +553,35 @@ class GlobalSearchModalComponent extends React.Component {
 		switch (selectedResultType) {
 			case RESULT_TYPE.ARTICLE:
 				const { articles } = results;
-				const article = articles && articles.find(item => item.id === selectedResultId);
+				const article = articles && articles.find((item) => item.id === selectedResultId);
 
 				element = (
 					<div className="global-search-detail-content global-search-detail-article">
 						<div className="global-search-detail-title">{article.title}</div>
-						<div className="global-search-detail-description">{resources.str_articleNumber} {article.number}</div>
+						<div className="global-search-detail-description">
+							{resources.str_articleNumber} {article.number}
+						</div>
 						<div className="global-search-detail-description">{article.description}</div>
 
 						<div className="row">
 							<div className="col-xs-12">
-								{article.purchasePrice && (<div className="global-search-detail-item">
-									<div className="global-search-detail-item-label">
-										{!isSmallBusiness ? `${resources.str_purchasePriceNet}:` : `${resources.str_purchasePrice}:`}
+								{article.purchasePrice && (
+									<div className="global-search-detail-item">
+										<div className="global-search-detail-item-label">
+											{!isSmallBusiness
+												? `${resources.str_purchasePriceNet}:`
+												: `${resources.str_purchasePrice}:`}
+										</div>
+										<div className="global-search-detail-item-value">
+											{formatCurrency(article.purchasePrice)}
+										</div>
 									</div>
-									<div className="global-search-detail-item-value">
-										{formatCurrency(article.purchasePrice)}
-									</div>
-								</div> )}
+								)}
 								{article.purchasePriceGross && (
 									<div className="global-search-detail-item">
-										<div className="global-search-detail-item-label">{resources.str_purchasePriceGross}:</div>
+										<div className="global-search-detail-item-label">
+											{resources.str_purchasePriceGross}:
+										</div>
 										<div className="global-search-detail-item-value">
 											{formatCurrency(article.purchasePriceGross)}
 										</div>
@@ -487,7 +590,9 @@ class GlobalSearchModalComponent extends React.Component {
 
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">
-										{!isSmallBusiness ? `${resources.str_salesPriceNet}:` : `${resources.str_sellingPrice}:`}
+										{!isSmallBusiness
+											? `${resources.str_salesPriceNet}:`
+											: `${resources.str_sellingPrice}:`}
 									</div>
 									<div className="global-search-detail-item-value">
 										{formatCurrency(article.price)}
@@ -495,7 +600,9 @@ class GlobalSearchModalComponent extends React.Component {
 								</div>
 								{!isSmallBusiness ? (
 									<div className="global-search-detail-item">
-										<div className="global-search-detail-item-label">{resources.str_salesPriceGross}:</div>
+										<div className="global-search-detail-item-label">
+											{resources.str_salesPriceGross}:
+										</div>
 										<div className="global-search-detail-item-value">
 											{formatCurrency(article.priceGross)}
 										</div>
@@ -515,7 +622,7 @@ class GlobalSearchModalComponent extends React.Component {
 
 			case RESULT_TYPE.CUSTOMER:
 				const { customers } = results;
-				const customerObj = customers && customers.find(item => item.id === selectedResultId);
+				const customerObj = customers && customers.find((item) => item.id === selectedResultId);
 				const customer = new Customer(customerObj);
 				const contactPerson =
 					customer.contactPersons && customer.contactPersons.length > 0
@@ -525,7 +632,9 @@ class GlobalSearchModalComponent extends React.Component {
 				element = (
 					<div className="global-search-detail-content global-search-detail-customer">
 						<div className="global-search-detail-title">{customer.displayName}</div>
-						<div className="global-search-detail-description">{resources.str_customerNumber} {customer.number}</div>
+						<div className="global-search-detail-description">
+							{resources.str_customerNumber} {customer.number}
+						</div>
 
 						{customer.email && (
 							<div className="global-search-detail-item">
@@ -568,29 +677,30 @@ class GlobalSearchModalComponent extends React.Component {
 
 						{customer.address &&
 							(customer.address.zipCode || customer.address.street || customer.address.city) && (
-							<div className="global-search-detail-item global-search-detail-item-address">
-								<div className="global-search-detail-item-label">{resources.str_address}</div>
-								{customer.address.street ? (
-									<div className="global-search-detail-item-value">{customer.address.street}</div>
-								) : (
+								<div className="global-search-detail-item global-search-detail-item-address">
+									<div className="global-search-detail-item-label">{resources.str_address}</div>
+									{customer.address.street ? (
+										<div className="global-search-detail-item-value">{customer.address.street}</div>
+									) : (
+										<div className="global-search-detail-item-value">
+											{`${customer.address.zipCode} ` || null}
+											{customer.address.city || null}
+										</div>
+									)}
+								</div>
+							)}
+
+						{customer.address &&
+							customer.address.street &&
+							(customer.address.zipCode || customer.address.city) && (
+								<div className="global-search-detail-item">
+									<div className="global-search-detail-item-label" />
 									<div className="global-search-detail-item-value">
 										{`${customer.address.zipCode} ` || null}
 										{customer.address.city || null}
 									</div>
-								)}
-							</div>
-						)}
-
-						{customer.address &&
-							(customer.address.street && (customer.address.zipCode || customer.address.city)) && (
-							<div className="global-search-detail-item">
-								<div className="global-search-detail-item-label" />
-								<div className="global-search-detail-item-value">
-									{`${customer.address.zipCode} ` || null}
-									{customer.address.city || null}
 								</div>
-							</div>
-						)}
+							)}
 
 						{contactPerson ? (
 							<div className="global-search-detail-item global-search-detail-item-vertical global-search-detail-item-cp">
@@ -604,7 +714,9 @@ class GlobalSearchModalComponent extends React.Component {
 										<div className="global-search-detail-title">{contactPerson.displayName}</div>
 										{contactPerson.phone1 && (
 											<div className="global-search-detail-item">
-												<div className="global-search-detail-item-label">{resources.str_tel}</div>
+												<div className="global-search-detail-item-label">
+													{resources.str_tel}
+												</div>
 												<div className="global-search-detail-item-value">
 													{contactPerson.phone1}
 												</div>
@@ -612,7 +724,9 @@ class GlobalSearchModalComponent extends React.Component {
 										)}
 										{customer.email && (
 											<div className="global-search-detail-item">
-												<div className="global-search-detail-item-label">{resources.str_email}</div>
+												<div className="global-search-detail-item-label">
+													{resources.str_email}
+												</div>
 												<div className="global-search-detail-item-value">
 													<a href={`mailto:${contactPerson.email}`} target="_self">
 														{contactPerson.email}
@@ -630,11 +744,13 @@ class GlobalSearchModalComponent extends React.Component {
 
 			case RESULT_TYPE.INVOICE:
 				const { invoices } = results;
-				const invoice = invoices && invoices.find(item => item.id === selectedResultId);
+				const invoice = invoices && invoices.find((item) => item.id === selectedResultId);
 
 				element = (
 					<div className="global-search-detail-content global-search-detail-invoice">
-						<div className="global-search-detail-title">{resources.str_invoiceNumber} {invoice.number}</div>
+						<div className="global-search-detail-title">
+							{resources.str_invoiceNumber} {invoice.number}
+						</div>
 						<div className="global-search-detail-description"></div>
 						{/* <img className="global-search-detail-image" src="/assets/images/invoice-preview.png" /> */}
 						{/* <img className="global-search-detail-image" src={config.imageResourceHost + invoice.thumb} /> */}
@@ -647,11 +763,15 @@ class GlobalSearchModalComponent extends React.Component {
 								</div>
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_amount}</div>
-									<div className="global-search-detail-item-value">{formatCurrency(invoice.totalGross)}</div>
+									<div className="global-search-detail-item-value">
+										{formatCurrency(invoice.totalGross)}
+									</div>
 								</div>
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.invoiceDate}</div>
-									<div className="global-search-detail-item-value">{formatClientDate(invoice.date, 'DD.MM.YYYY')}</div>
+									<div className="global-search-detail-item-value">
+										{formatClientDate(invoice.date, "DD.MM.YYYY")}
+									</div>
 								</div>
 								{invoice.notes && (
 									<div className="global-search-detail-item global-search-detail-item-vertical">
@@ -661,18 +781,19 @@ class GlobalSearchModalComponent extends React.Component {
 								)}
 							</div>
 						</div>
-
 					</div>
 				);
 				break;
 
 			case RESULT_TYPE.OFFER:
 				const { offers } = results;
-				const offer = offers && offers.find(item => item.id === selectedResultId);
+				const offer = offers && offers.find((item) => item.id === selectedResultId);
 
 				element = (
 					<div className="global-search-detail-content global-search-detail-offer">
-						<div className="global-search-detail-title">{resources.str_offerNumber} {offer.number}</div>
+						<div className="global-search-detail-title">
+							{resources.str_offerNumber} {offer.number}
+						</div>
 						<div className="global-search-detail-description"></div>
 						{/* <img className="global-search-detail-image" src="/assets/images/invoice-preview.png" /> */}
 						{/* <img className="global-search-detail-image" src={config.imageResourceHost + offer.thumb} /> */}
@@ -685,11 +806,15 @@ class GlobalSearchModalComponent extends React.Component {
 								</div>
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_amount}</div>
-									<div className="global-search-detail-item-value">{formatCurrency(offer.totalGross)}</div>
+									<div className="global-search-detail-item-value">
+										{formatCurrency(offer.totalGross)}
+									</div>
 								</div>
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_offerDate}</div>
-									<div className="global-search-detail-item-value">{formatClientDate(offer.date, 'DD.MM.YYYY')}</div>
+									<div className="global-search-detail-item-value">
+										{formatClientDate(offer.date, "DD.MM.YYYY")}
+									</div>
 								</div>
 								{offer.notes && (
 									<div className="global-search-detail-item global-search-detail-item-vertical">
@@ -699,33 +824,42 @@ class GlobalSearchModalComponent extends React.Component {
 								)}
 							</div>
 						</div>
-
 					</div>
 				);
 				break;
 
 			case RESULT_TYPE.PURCHASE_ORDER:
 				const { purchaseOrders } = results;
-				const purchaseOrder = purchaseOrders && purchaseOrders.find(item => item.id === selectedResultId);
+				const purchaseOrder = purchaseOrders && purchaseOrders.find((item) => item.id === selectedResultId);
 
 				element = (
 					<div className="global-search-detail-content global-search-detail-purchaseOrder">
-						<div className="global-search-detail-title">{resources.str_purchaseOrderNumber} {purchaseOrder.number}</div>
+						<div className="global-search-detail-title">
+							{resources.str_purchaseOrderNumber} {purchaseOrder.number}
+						</div>
 						<div className="global-search-detail-description"></div>
 
 						<div className="row">
 							<div className="col-xs-12">
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_contact}</div>
-									<div className="global-search-detail-item-value">{purchaseOrder.customerData.name}</div>
+									<div className="global-search-detail-item-value">
+										{purchaseOrder.customerData.name}
+									</div>
 								</div>
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_amount}</div>
-									<div className="global-search-detail-item-value">{formatCurrency(purchaseOrder.totalGross)}</div>
+									<div className="global-search-detail-item-value">
+										{formatCurrency(purchaseOrder.totalGross)}
+									</div>
 								</div>
 								<div className="global-search-detail-item">
-									<div className="global-search-detail-item-label">{resources.str_purchaseOrderDate}</div>
-									<div className="global-search-detail-item-value">{formatClientDate(purchaseOrder.date, 'DD.MM.YYYY')}</div>
+									<div className="global-search-detail-item-label">
+										{resources.str_purchaseOrderDate}
+									</div>
+									<div className="global-search-detail-item-value">
+										{formatClientDate(purchaseOrder.date, "DD.MM.YYYY")}
+									</div>
 								</div>
 								{purchaseOrder.notes && (
 									<div className="global-search-detail-item global-search-detail-item-vertical">
@@ -735,18 +869,19 @@ class GlobalSearchModalComponent extends React.Component {
 								)}
 							</div>
 						</div>
-
 					</div>
 				);
 				break;
 
 			case RESULT_TYPE.EXPENSE:
 				const { expenses } = results;
-				const expense = expenses && expenses.find(item => item.id === selectedResultId);
+				const expense = expenses && expenses.find((item) => item.id === selectedResultId);
 
 				element = (
 					<div className="global-search-detail-content global-search-detail-expense">
-						<div className="global-search-detail-title">{resources.str_expenseNumber} {expense.id}</div>
+						<div className="global-search-detail-title">
+							{resources.str_expenseNumber} {expense.id}
+						</div>
 						<div className="global-search-detail-description"></div>
 						{/* <img className="global-search-detail-image" src="/assets/images/invoice-preview.png" /> */}
 						{/* <img className="global-search-detail-image" src={config.imageResourceHost + offer.thumb} /> */}
@@ -755,19 +890,24 @@ class GlobalSearchModalComponent extends React.Component {
 							<div className="col-xs-12">
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_contact}</div>
-									<div className="global-search-detail-item-value">{expense.customerData ? expense.customerData.name : ''}</div>
+									<div className="global-search-detail-item-value">
+										{expense.customerData ? expense.customerData.name : ""}
+									</div>
 								</div>
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_amount}</div>
-									<div className="global-search-detail-item-value">{formatCurrency(expense.totalGross)}</div>
+									<div className="global-search-detail-item-value">
+										{formatCurrency(expense.totalGross)}
+									</div>
 								</div>
 								<div className="global-search-detail-item">
 									<div className="global-search-detail-item-label">{resources.str_documentDate}</div>
-									<div className="global-search-detail-item-value">{formatClientDate(expense.date, 'DD.MM.YYYY')}</div>
+									<div className="global-search-detail-item-value">
+										{formatClientDate(expense.date, "DD.MM.YYYY")}
+									</div>
 								</div>
 							</div>
 						</div>
-
 					</div>
 				);
 				break;

@@ -4,6 +4,7 @@ import { fetchNewsfeedCount, updateNewsfeedCountReset } from "redux/ducks/newsfe
 import { userLoggedOut } from "redux/ducks/global";
 import invoiz from "services/invoiz.service";
 import config from "config";
+import SearchComponent from "../../search/search-component";
 
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
@@ -83,6 +84,10 @@ class MenuFooterComponent extends React.Component {
 		invoiz.trigger("triggerSubmenuHide");
 		invoiz.router.navigate(url);
 	}
+	onSearchClick() {
+		const { onSearchIconClick } = this.props;
+		onSearchIconClick();
+	}
 
 	render() {
 		const { submenuVisible, resources, activeItem, activeSubmenuItem } = this.props;
@@ -95,17 +100,21 @@ class MenuFooterComponent extends React.Component {
 
 		const iconClass = "icon icon-logout_outlined";
 		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? "menuItem-notFocused" : ""}`;
-		const notificationClass = `menuItem icon icon-bell`;
-		
+		const notificationClass = `menuItem icon icon-bell_2`;
 
 		return (
 			<div className="menuFooter">
+				<div className="search-footer" onClick={this.onSearchClick.bind(this)}>
+					<a className="menuHeader_search icon icon-search" />
+					<h5>Search</h5>
+				</div>
+
 				<div className={notificationClass} onClick={this.onNewsfeedClick.bind(this)}>
 					{resources.str_notification}{" "}
 					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null}
 				</div>
 				<div className="menuItem profile_logo">
-					<span className=" icon icon-user_outlined"></span> My Account
+					<span className=" icon icon-user_outlined"></span>My Account
 					<div className="menu-profile-popup">
 						<div className="menu-profile-popup-head">
 							<div className="icon icon-user_outlined"></div>
@@ -156,6 +165,7 @@ class MenuFooterComponent extends React.Component {
 								{"Teams"}
 							</a>
 						</div>
+
 						<div className="menu-profile-popup-middle2">
 							<a
 								className="menuItem small icon icon-help_outlined"
