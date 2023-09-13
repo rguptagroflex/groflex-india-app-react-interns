@@ -2,7 +2,6 @@
 @import "../../abstracts/mixins";
 
 .recurring-invoice-settings {
-
 	& > .row {
 		padding: 0 0 40px;
 
@@ -26,7 +25,7 @@
 			position: absolute;
 			padding-right: 32px;
 			top: 50%;
-			@include vendor-prefix('transform', 'translateY(-50%)');
+			@include vendor-prefix("transform", "translateY(-50%)");
 		}
 	}
 
@@ -48,13 +47,14 @@
 		}
 
 		.selectInput_bar {
-			&:after, &:before {
+			&:after,
+			&:before {
 				height: 1px;
 			}
 		}
 	}
 
-	.recurring-invoice-settings-email-row {
+	.recurring-invoice-settings-email {
 		margin-top: 20px;
 
 		.input_error {
@@ -76,5 +76,44 @@
 		color: $color-primary;
 		cursor: pointer;
 	}
+}
 
+//Design changes
+.recurring-invoice-settings {
+	width: 1000px !important;
+	.Select-value {
+		padding-left: 0;
+	}
+	padding: 0;
+	.row {
+		padding: 0;
+	}
+	.recurring-invoice-form {
+		margin: 0;
+		padding: 0 40px 40px 40px;
+		.Select-value {
+			padding-left: 0;
+		}
+	}
+
+	.recurring-invoice-settings-left {
+		padding: 20px 36px;
+		border-bottom: 1px solid #c6c6c6;
+	}
+
+	.recurring-invoice-settings-email {
+		margin-top: 0;
+		.input {
+			height: 45px;
+		}
+	}
+
+	.htmlInput_input {
+		border-radius: 4px;
+		padding: 12px;
+	}
+
+	.checkbox_label {
+		color: #888787;
+	}
 }

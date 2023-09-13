@@ -1,17 +1,20 @@
-import invoiz from 'services/invoiz.service';
-import q from 'q';
-import _ from 'lodash';
-import { fabric } from 'fabric';
-import React from 'react';
-import config from 'config';
-import SelectInputComponent from 'shared/inputs/select-input/select-input.component';
-import SpinnerInputComponent from 'shared/inputs/spinner-input/spinner-input.component';
-import LetterHeaderState from 'enums/letter/letter-header-state.enum';
-import CanvasColorPickerComponent from 'shared/canvas-color-picker/canvas-color-picker.component';
-import LoaderComponent from 'shared/loader/loader.component';
-import { FineUploaderBasic as Uploader } from 'fine-uploader';
-import PropTypes from 'prop-types';
-import LetterElement from 'models/letter/letter-element.model';
+import invoiz from "services/invoiz.service";
+import q from "q";
+import _ from "lodash";
+import { fabric } from "fabric";
+import React from "react";
+import config from "config";
+import SelectInputComponent from "shared/inputs/select-input/select-input.component";
+import SpinnerInputComponent from "shared/inputs/spinner-input/spinner-input.component";
+import LetterHeaderState from "enums/letter/letter-header-state.enum";
+import CanvasColorPickerComponent from "shared/canvas-color-picker/canvas-color-picker.component";
+import LoaderComponent from "shared/loader/loader.component";
+import { FineUploaderBasic as Uploader } from "fine-uploader";
+import PropTypes from "prop-types";
+import LetterElement from "models/letter/letter-element.model";
+import editSvgGreen from "../../../assets/images/icons/edit_icon_green.svg";
+import SVGInline from "react-svg-inline";
+import plusSvgGreen from "../../../assets/images/icons/plusSvgGreen.svg";
 
 import {
 	buildLetterHeaderPosition,
@@ -20,8 +23,8 @@ import {
 	fabricObjectToImageLetterElement,
 	fabricObjectToTextLetterElement,
 	fabricObjectToShapeLetterElement,
-	LetterFabricText
-} from 'helpers/letterHeaderHelpers';
+	LetterFabricText,
+} from "helpers/letterHeaderHelpers";
 
 const DEFAULT_FONT_SIZE = 18;
 const KEY_CODES = config.KEY_CODES;
@@ -35,11 +38,11 @@ const BOUNDING_BOX = {
 	left: OFFSET,
 	top: OFFSET,
 	width: CANVAS_WIDTH - OFFSET * 2,
-	height: CANVAS_HEIGHT - OFFSET * 2
+	height: CANVAS_HEIGHT - OFFSET * 2,
 };
 const CENTER = {
 	x: BOUNDING_BOX.left + BOUNDING_BOX.width / 2,
-	y: BOUNDING_BOX.top + BOUNDING_BOX.height / 2
+	y: BOUNDING_BOX.top + BOUNDING_BOX.height / 2,
 };
 const H_SNAP_POINTS = [OFFSET, CENTER.y, CANVAS_WIDTH - OFFSET, CENTER.y];
 const V_SNAP_POINTS = [CENTER.x, OFFSET, CENTER.x, CANVAS_HEIGHT - OFFSET];
@@ -68,7 +71,7 @@ class LetterHeaderComponent extends React.Component {
 			selectedFont: undefined,
 			selectedFontColor: undefined,
 			previousEl: undefined,
-			fabricObjects: []
+			fabricObjects: [],
 		};
 
 		this.uploader = undefined;
@@ -110,8 +113,8 @@ class LetterHeaderComponent extends React.Component {
 							width,
 							height,
 							html,
-							imageUrl
-						}
+							imageUrl,
+						},
 					} = item;
 
 					const position = buildLetterHeaderPosition({ x, y, width, height, sortId, type });
@@ -119,7 +122,7 @@ class LetterHeaderComponent extends React.Component {
 					let styles;
 
 					switch (item.type) {
-						case 'image':
+						case "image":
 							styles = position;
 							return (
 								<img
@@ -128,14 +131,14 @@ class LetterHeaderComponent extends React.Component {
 									key={`letter-header-item-${index}`}
 								/>
 							);
-						case 'text':
+						case "text":
 							const styling = buildLetterHeaderStyles({
 								font,
 								fontSize,
 								fontWeight,
 								italic,
 								underline,
-								color
+								color,
 							});
 							styles = Object.assign({}, position, styling);
 							return (
@@ -143,8 +146,8 @@ class LetterHeaderComponent extends React.Component {
 									{html}
 								</span>
 							);
-						case 'rectangle':
-							styles = Object.assign({}, position, { 'background-color': color });
+						case "rectangle":
+							styles = Object.assign({}, position, { "background-color": color });
 							return <div style={styles} key={`letter-header-item-${index}`} />;
 					}
 				});
@@ -165,13 +168,44 @@ class LetterHeaderComponent extends React.Component {
 						<span className="headerEmpty_subtitle">{resources.letterHeaderUploadCreateText}</span> */}
 						<div className="logo-upload-area letter-headerEmpty_title">
 							<label>
-								<p className="row1">
-									<img src="/assets/images/svg/impress_bild.svg" height="50" />
-								</p>
+								<h5 className="row1">
+									{/* <img src="/assets/images/svg/impress_bild.svg" height="50" /> */}
+									Add logo or text
+								</h5>
 								<p className="row2">
-									<span>{resources.str_logo}</span>{resources.str_hereSmall}
+									{/* <span>{resources.str_logo}</span>
+									{resources.str_hereSmall} */}
+									Upload company logo or add a text
 								</p>
-								<p className="row3"><span className="headerEmpty_subtitle">{resources.letterHeaderUploadCreateText}</span></p>
+								<p className="row3">
+									{/* <span className="headerEmpty_subtitle">
+										{resources.letterHeaderUploadCreateText}
+									</span> */}
+									<div className="btn1">
+										<div className="btn1-name">
+											<SVGInline
+												width="17px"
+												height="17px"
+												svg={editSvgGreen}
+												className="vertically-middle u_mr_6"
+											/>
+											<span>Upload</span>
+										</div>
+										<div className="btn1-subname">Or Drop a file</div>
+									</div>
+									<div className="or-div">OR</div>
+									<div className="btn2">
+										<div>
+											<SVGInline
+												width="17px"
+												height="17px"
+												svg={plusSvgGreen}
+												className="vertically-middle u_mr_6"
+											/>
+											<span>Enter text</span>
+										</div>
+									</div>
+								</p>
 							</label>
 						</div>
 					</div>
@@ -188,9 +222,9 @@ class LetterHeaderComponent extends React.Component {
 					</div>
 				);
 
-				this.setOpacity('hSnap', +this.state.hSnapVisible);
-				this.setOpacity('vSnap', +this.state.vSnapVisible);
-				this.setOpacity('wrapper', +this.state.wrapperVisible);
+				this.setOpacity("hSnap", +this.state.hSnapVisible);
+				this.setOpacity("vSnap", +this.state.vSnapVisible);
+				this.setOpacity("wrapper", +this.state.wrapperVisible);
 
 				const fontBoldControl = this.createFontBoldControl();
 				const fontUnderlineControl = this.createFontUnderlineControl();
@@ -203,14 +237,14 @@ class LetterHeaderComponent extends React.Component {
 						<LoaderComponent text="" visible={this.state.loading} />
 						<div
 							className={`headerEdit document-edit ${
-								this.state.wrapperVisible ? 'headerEdit-active' : ''
+								this.state.wrapperVisible ? "headerEdit-active" : ""
 							}`}
 						>
 							<canvas ref="canvas" />
 						</div>
 						<form ref="form" className="form letterHeader_tools">
 							<button ref="formSubmit" className="u_hidden" />
-							<div className={'letterHeaderFontTools'}>
+							<div className={"letterHeaderFontTools"}>
 								<div className="letterHeaderTools_fontStyle">
 									{fontBoldControl}
 									{fontUnderlineControl}
@@ -252,10 +286,12 @@ class LetterHeaderComponent extends React.Component {
 		}
 
 		return (
-			<div className="headerWrapper" onClick={event => this.onHeaderWrapperClick(event)}>
-				
+			<div className="headerWrapper" onClick={(event) => this.onHeaderWrapperClick(event)}>
 				{this.state.headerState !== LetterHeaderState.EDIT ? (
-					<div className="headerContainer header"><span className="edit-icon"/>{content}</div>
+					<div className="headerContainer header">
+						<span className="edit-icon" />
+						{content}
+					</div>
 				) : (
 					content
 				)}
@@ -264,14 +300,14 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	initEditMode() {
-		$(document).on('mousedown', this.onDocumentClick.bind(this));
-		$(document).on('keydown', this.onDocumentKeydown.bind(this));
-		invoiz.on('documentClicked', this.saveLetterElements.bind(this));
+		$(document).on("mousedown", this.onDocumentClick.bind(this));
+		$(document).on("keydown", this.onDocumentKeydown.bind(this));
+		invoiz.on("documentClicked", this.saveLetterElements.bind(this));
 
 		this.uploader = this.initUploader();
 		this.initCanvas();
 
-		letterElementsToFabricObjects(this.state.items).then(fabricObjects => {
+		letterElementsToFabricObjects(this.state.items).then((fabricObjects) => {
 			this.setState({ fabricObjects }, () => {
 				this.addFabricObjectsToCanvas();
 			});
@@ -279,9 +315,9 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	exitEditMode() {
-		invoiz.off('documentClicked', this.saveLetterElements.bind(this));
-		$(document).off('mousedown', this.onDocumentClick.bind(this));
-		$(document).off('keydown', this.onDocumentKeydown.bind(this));
+		invoiz.off("documentClicked", this.saveLetterElements.bind(this));
+		$(document).off("mousedown", this.onDocumentClick.bind(this));
+		$(document).off("keydown", this.onDocumentKeydown.bind(this));
 		this.removeDeselectHandlers();
 		this.canvas.clear().dispose();
 		this.uploader.reset();
@@ -306,19 +342,19 @@ class LetterHeaderComponent extends React.Component {
 					maxHeightImageError: resources.logoUploadMaxHeightError,
 					minSizeError: resources.logoUploadMinSizeError,
 					sizeError: resources.logoUploadMaxSizeError,
-					typeError: resources.logoUploadFileTypeError
+					typeError: resources.logoUploadFileTypeError,
 				},
 				callbacks: {
 					onError: (id, name, reason, xhr) => this.onUploadError(id, name, reason, xhr),
-					onSubmit: id => this.onFileSubmit(id),
-					onSubmitted: id => this.onFileSubmitted(id),
-					onComplete: (id, name, response) => this.onUploadComplete(id, name, response)
+					onSubmit: (id) => this.onFileSubmit(id),
+					onSubmitted: (id) => this.onFileSubmitted(id),
+					onComplete: (id, name, response) => this.onUploadComplete(id, name, response),
 				},
 				request: {
 					endpoint: config.letter.endpoints.saveLetterPaperImageUrl,
 					customHeaders: { Authorization: `Bearer ${invoiz.user.token}` },
-					inputName: 'image'
-				}
+					inputName: "image",
+				},
 			})
 		);
 	}
@@ -327,7 +363,7 @@ class LetterHeaderComponent extends React.Component {
 		this.canvas = new fabric.Canvas(this.refs.canvas, { selection: false })
 			.setWidth(CANVAS_WIDTH)
 			.setHeight(CANVAS_HEIGHT);
-		const lineOptions = { stroke: '#ddd', fill: 'transparent', selectable: false, opacity: 0 };
+		const lineOptions = { stroke: "#ddd", fill: "transparent", selectable: false, opacity: 0 };
 		const wrapperOptions = Object.assign({}, BOUNDING_BOX, lineOptions);
 		// Hack: Show border from wrapper container (Canvas renders 0.5 pixels)
 		wrapperOptions.width--;
@@ -339,28 +375,28 @@ class LetterHeaderComponent extends React.Component {
 		// initialize canvas with events
 		this.canvas
 			.add(this.wrapper, this.hSnap, this.vSnap)
-			.on('mouse:up', this.onCanvasMouseUp.bind(this))
-			.on('object:moving', this.onCanvasObjectMoving.bind(this))
-			.on('object:scaling', this.onCanvasObjectScaling.bind(this))
-			.on('object:selected', this.onCanvasObjectSelected.bind(this))
-			.on('selection:cleared', this.onCanvasSelectionCleared.bind(this));
+			.on("mouse:up", this.onCanvasMouseUp.bind(this))
+			.on("object:moving", this.onCanvasObjectMoving.bind(this))
+			.on("object:scaling", this.onCanvasObjectScaling.bind(this))
+			.on("object:selected", this.onCanvasObjectSelected.bind(this))
+			.on("selection:cleared", this.onCanvasSelectionCleared.bind(this));
 		this.addDeselectHandlers();
 	}
 
 	addDeselectHandlers() {
-		$('.canvas-container').on('mousedown', this.stopPropagation);
-		$('.headerEdit').on('mousedown', this.deactivateAll);
+		$(".canvas-container").on("mousedown", this.stopPropagation);
+		$(".headerEdit").on("mousedown", this.deactivateAll);
 	}
 
 	removeDeselectHandlers() {
-		$('.canvas-container').off('mousedown', this.stopPropagation);
-		$('.headerEdit').off('mousedown', this.deactivateAll);
+		$(".canvas-container").off("mousedown", this.stopPropagation);
+		$(".headerEdit").off("mousedown", this.deactivateAll);
 	}
 
 	addFabricObjectsToCanvas() {
 		const { fabricObjects } = this.state;
 
-		fabricObjects.forEach(fabricObject => {
+		fabricObjects.forEach((fabricObject) => {
 			fabricObject.setColor(fabricObject.color);
 			this.canvas.insertAt(fabricObject, fabricObject._sortId, false);
 		});
@@ -369,10 +405,10 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	addImage(url, uploadId) {
-		fabric.Image.fromURL(url, image => {
-			const images = this.canvas.getObjects('image');
-			_.forEach(images, img => {
-				img.setSrc('');
+		fabric.Image.fromURL(url, (image) => {
+			const images = this.canvas.getObjects("image");
+			_.forEach(images, (img) => {
+				img.setSrc("");
 				img.remove();
 			});
 
@@ -381,7 +417,7 @@ class LetterHeaderComponent extends React.Component {
 				height: image.height,
 				left: image.left + OFFSET,
 				top: image.top + OFFSET,
-				_sortId: 3
+				_sortId: 3,
 			};
 
 			const fabricImageOptions = _.assign(imageOptions, config.letter.fabricOptions);
@@ -404,7 +440,7 @@ class LetterHeaderComponent extends React.Component {
 			image
 				.set({
 					width: fitToWidth ? maxWidth : (image.width / image.height) * maxHeight,
-					height: fitToWidth ? (image.height / image.width) * maxWidth : maxHeight
+					height: fitToWidth ? (image.height / image.width) * maxWidth : maxHeight,
 				})
 				.setCoords();
 		}
@@ -412,7 +448,7 @@ class LetterHeaderComponent extends React.Component {
 		image
 			.set({
 				left: (CANVAS_WIDTH - image.width) / 2,
-				top: (CANVAS_HEIGHT - image.height) / 2
+				top: (CANVAS_HEIGHT - image.height) / 2,
 			})
 			.setCoords();
 
@@ -428,9 +464,9 @@ class LetterHeaderComponent extends React.Component {
 		fabricObjects = fabricObjects.slice(CANVAS_ZINDEX_OFFSET);
 
 		const textElements = fabricObjects.reduce((textElementList, obj, index) => {
-			const objectType = obj.get('type');
+			const objectType = obj.get("type");
 
-			if (objectType === 'i-text' && !obj._letterElementId) {
+			if (objectType === "i-text" && !obj._letterElementId) {
 				textElementList.push(obj);
 			}
 
@@ -442,13 +478,13 @@ class LetterHeaderComponent extends React.Component {
 		const defaultOptions = {
 			fontFamily: font.name,
 			fontSize: DEFAULT_FONT_SIZE,
-			fontStyle: 'normal',
+			fontStyle: "normal",
 			fontWeight: font.regular,
 			left: canvasCenterLeft,
 			top: canvasCenterTop,
 			lockScalingX: true,
 			lockScalingY: true,
-			hasControls: false
+			hasControls: false,
 		};
 
 		const fabricTextOptions = _.assign({}, defaultOptions, config.letter.fabricOptions);
@@ -480,7 +516,7 @@ class LetterHeaderComponent extends React.Component {
 	onEscapePress() {
 		this.setState(
 			{
-				headerState: this.state.items.length > 0 ? LetterHeaderState.DISPLAY : LetterHeaderState.EMPTY
+				headerState: this.state.items.length > 0 ? LetterHeaderState.DISPLAY : LetterHeaderState.EMPTY,
 			},
 			() => {
 				this.exitEditMode();
@@ -489,7 +525,7 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	onDocumentClick(event) {
-		if ($(event.target).closest('.headerWrapper').length === 0 && !this.isSaving) {
+		if ($(event.target).closest(".headerWrapper").length === 0 && !this.isSaving) {
 			this.isSaving = true;
 			this.saveLetterElements();
 		}
@@ -540,7 +576,7 @@ class LetterHeaderComponent extends React.Component {
 		const object = obj.target;
 		object.set({
 			padding: 0,
-			backgroundColor: 'rgba(255, 255, 255, 0.7)'
+			backgroundColor: "rgba(255, 255, 255, 0.7)",
 		});
 
 		// snap to center
@@ -551,8 +587,8 @@ class LetterHeaderComponent extends React.Component {
 		this.setState({ hSnapVisible: snapY, vSnapVisible: snapX, wrapperVisible: true });
 		object.setPositionByOrigin(
 			new fabric.Point(snapX ? CENTER.x : center.x, snapY ? CENTER.y : center.y),
-			'center',
-			'center'
+			"center",
+			"center"
 		);
 	}
 
@@ -564,7 +600,7 @@ class LetterHeaderComponent extends React.Component {
 		const object = obj.target;
 		object.set({
 			padding: 0,
-			backgroundColor: 'rgba(255, 255, 255, 0.7)'
+			backgroundColor: "rgba(255, 255, 255, 0.7)",
 		});
 
 		if (object.scaleY >= 7.2) {
@@ -581,7 +617,7 @@ class LetterHeaderComponent extends React.Component {
 
 		if (object) {
 			object.set({
-				backgroundColor: 'transparent'
+				backgroundColor: "transparent",
 			});
 
 			object.setCoords();
@@ -622,10 +658,10 @@ class LetterHeaderComponent extends React.Component {
 				selectedFont: font,
 				selectedFontSize: target.getFontSize(),
 				textIsBold: target.getFontWeight() === font.bold,
-				textIsItalic: target.getFontStyle() === 'italic',
-				textIsUnderlined: target.getTextDecoration() === 'underline',
+				textIsItalic: target.getFontStyle() === "italic",
+				textIsUnderlined: target.getTextDecoration() === "underline",
 				textSupportsItalic: font.italic,
-				textSupportsBold: font.bold
+				textSupportsBold: font.bold,
 			};
 		}
 
@@ -639,7 +675,7 @@ class LetterHeaderComponent extends React.Component {
 				deleteButtonActive: true,
 				previousEl: target,
 				textSelected,
-				canHaveColor
+				canHaveColor,
 			},
 			additionalState
 		);
@@ -662,13 +698,13 @@ class LetterHeaderComponent extends React.Component {
 				textIsItalic: false,
 				textIsUnderlined: false,
 				textSupportsBold: false,
-				textSupportsItalic: false
+				textSupportsItalic: false,
 			},
 			() => {
-				if (previousEl && previousEl.type === 'i-text') {
+				if (previousEl && previousEl.type === "i-text") {
 					// remove the active class from the font family select input because the blur event doesn't get triggered correctly
-					const fontFamilyInput = $('.fontFamilySelect');
-					fontFamilyInput.removeClass('selectInput-active');
+					const fontFamilyInput = $(".fontFamilySelect");
+					fontFamilyInput.removeClass("selectInput-active");
 
 					// set a invalid fontSize of the previous selected element to a valid size
 					const fontSize = previousEl.getFontSize();
@@ -684,7 +720,7 @@ class LetterHeaderComponent extends React.Component {
 
 	onUploadError(id, name, reason, xhr) {
 		if (name && reason) {
-			invoiz.page.showToast({ type: 'error', message: reason });
+			invoiz.page.showToast({ type: "error", message: reason });
 		}
 	}
 
@@ -710,7 +746,7 @@ class LetterHeaderComponent extends React.Component {
 			type: data.type,
 			metaData: data.metaData,
 			x: data.x,
-			y: data.y
+			y: data.y,
 		});
 		this.whenImageUploaded.resolve(letterElement);
 	}
@@ -739,20 +775,18 @@ class LetterHeaderComponent extends React.Component {
 		const selectedFont = _.find(this.fonts, { name }) || {};
 		selectedFont.selected = true;
 
-		if (name === '') {
+		if (name === "") {
 			return;
 		}
 
 		const obj = this.canvas.getActiveObject();
 		const currentTextIsBold = obj.getFontWeight() === selectedFont.bold;
-		const currentTextIsItalic = obj.getFontStyle() === 'italic';
+		const currentTextIsItalic = obj.getFontStyle() === "italic";
 		const textIsBold = !!selectedFont.bold && currentTextIsBold;
 		const textIsItalic = !!selectedFont.italic && currentTextIsItalic;
 		const fontWeight = textIsBold ? selectedFont.bold : selectedFont.regular;
-		obj.exitEditing()
-			.setFontFamily(selectedFont.name)
-			.setFontWeight(fontWeight);
-		obj.set('fontStyle', textIsItalic ? 'italic' : 'normal');
+		obj.exitEditing().setFontFamily(selectedFont.name).setFontWeight(fontWeight);
+		obj.set("fontStyle", textIsItalic ? "italic" : "normal");
 		obj._supportsBold = !!selectedFont.bold;
 		obj._supportsItalic = selectedFont.italic;
 
@@ -763,7 +797,7 @@ class LetterHeaderComponent extends React.Component {
 		if (!this.canvas) {
 			return;
 		}
-		let cleanedString = value.includes('px') ? value.replace('px', '') : value;
+		let cleanedString = value.includes("px") ? value.replace("px", "") : value;
 		let parsedValue = parseInt(cleanedString);
 		const textElement = this.canvas.getActiveObject();
 		if (!parsedValue || !textElement || !textElement.setFontSize) {
@@ -802,9 +836,9 @@ class LetterHeaderComponent extends React.Component {
 		}
 
 		const obj = this.canvas.getActiveObject();
-		const isDefault = obj.getTextDecoration() === '';
+		const isDefault = obj.getTextDecoration() === "";
 
-		obj.exitEditing().setTextDecoration(isDefault ? 'underline' : '');
+		obj.exitEditing().setTextDecoration(isDefault ? "underline" : "");
 
 		this.canvas.renderAll();
 	}
@@ -815,9 +849,9 @@ class LetterHeaderComponent extends React.Component {
 		}
 
 		const obj = this.canvas.getActiveObject();
-		const isDefault = obj.getFontStyle() === 'normal';
+		const isDefault = obj.getFontStyle() === "normal";
 
-		obj.exitEditing().setFontStyle(isDefault ? 'italic' : 'normal');
+		obj.exitEditing().setFontStyle(isDefault ? "italic" : "normal");
 
 		this.canvas.renderAll();
 	}
@@ -841,18 +875,18 @@ class LetterHeaderComponent extends React.Component {
 		fabricObjects = fabricObjects.slice(CANVAS_ZINDEX_OFFSET);
 		const parsedFabrics = this.parseFabricObjects(fabricObjects);
 
-		this.createImages().then(letterImage => {
+		this.createImages().then((letterImage) => {
 			if (letterImage) {
 				parsedFabrics.push(letterImage);
 			}
 
-			letterElementsToFabricObjects(parsedFabrics).then(fabricObjects => {
+			letterElementsToFabricObjects(parsedFabrics).then((fabricObjects) => {
 				this.exitEditMode();
 				this.props.onFinish(parsedFabrics);
 				this.setState({
 					fabricObjects,
 					items: parsedFabrics,
-					headerState: parsedFabrics.length > 0 ? LetterHeaderState.DISPLAY : LetterHeaderState.EMPTY
+					headerState: parsedFabrics.length > 0 ? LetterHeaderState.DISPLAY : LetterHeaderState.EMPTY,
 				});
 			});
 		});
@@ -861,27 +895,27 @@ class LetterHeaderComponent extends React.Component {
 	parseFabricObjects(fabricObjects) {
 		const letterElements = fabricObjects.reduce((letterElementList, obj, index) => {
 			const letterElementModel = obj._letterElementId
-				? this.state.items.find(item => {
-					return item.id === obj._letterElementId;
+				? this.state.items.find((item) => {
+						return item.id === obj._letterElementId;
 				  })
 				: undefined;
 			obj._sortId = index + CANVAS_ZINDEX_OFFSET;
 
-			const objectType = obj.get('type');
+			const objectType = obj.get("type");
 
 			switch (objectType) {
-				case 'image':
+				case "image":
 					if (!letterElementModel) {
 						return letterElementList;
 					}
 					const imageElement = fabricObjectToImageLetterElement(obj, letterElementModel);
 					letterElementList.push(imageElement);
 					break;
-				case 'i-text':
+				case "i-text":
 					const textElement = fabricObjectToTextLetterElement(obj, letterElementModel);
 					letterElementList.push(textElement);
 					break;
-				case 'rect':
+				case "rect":
 					const rectangleElement = fabricObjectToShapeLetterElement(obj, letterElementModel);
 					letterElementList.push(rectangleElement);
 					break;
@@ -901,22 +935,22 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	prepareImageUploads() {
-		const images = _.filter(this.canvas.getObjects('image'), image => !image._letterElementId);
+		const images = _.filter(this.canvas.getObjects("image"), (image) => !image._letterElementId);
 		if (!images.length) {
 			return false;
 		}
 
-		_.forEach(images, image => {
+		_.forEach(images, (image) => {
 			this.uploader.setParams(
 				{
 					sortId: image._sortId,
-					section: 'header',
+					section: "header",
 					x: parseFloat(image.left - OFFSET),
 					y: parseFloat(image.top - OFFSET),
 					metaData: {
 						width: parseFloat(image.getWidth()),
-						height: parseFloat(image.getHeight())
-					}
+						height: parseFloat(image.getHeight()),
+					},
 				},
 				image._uploadId
 			);
@@ -934,8 +968,8 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	createFontBoldControl() {
-		const activeClass = this.state.textIsBold ? 'active' : '';
-		const disabledClass = !this.state.textSupportsBold || !this.state.textSelected ? 'disabled' : '';
+		const activeClass = this.state.textIsBold ? "active" : "";
+		const disabledClass = !this.state.textSupportsBold || !this.state.textSelected ? "disabled" : "";
 
 		return (
 			<div
@@ -946,8 +980,8 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	createFontUnderlineControl() {
-		const activeClass = this.state.textIsUnderlined ? 'active' : '';
-		const disabledClass = !this.state.textSupportsBold || !this.state.textSelected ? 'disabled' : '';
+		const activeClass = this.state.textIsUnderlined ? "active" : "";
+		const disabledClass = !this.state.textSupportsBold || !this.state.textSelected ? "disabled" : "";
 
 		return (
 			<div
@@ -958,8 +992,8 @@ class LetterHeaderComponent extends React.Component {
 	}
 
 	createFontItalicControl() {
-		const activeClass = this.state.textIsItalic ? 'active' : '';
-		const disabledClass = !this.state.textSupportsItalic || !this.state.textSelected ? 'disabled' : '';
+		const activeClass = this.state.textIsItalic ? "active" : "";
+		const disabledClass = !this.state.textSupportsItalic || !this.state.textSelected ? "disabled" : "";
 
 		return (
 			<div
@@ -976,14 +1010,14 @@ class LetterHeaderComponent extends React.Component {
 				<SelectInputComponent
 					name="fontFamily"
 					containerClass="fontFamilySelect"
-					value={this.state.selectedFont ? this.state.selectedFont.name : ''}
+					value={this.state.selectedFont ? this.state.selectedFont.name : ""}
 					allowCreate={false}
 					disabled={!this.state.textSelected}
 					options={{
 						placeholder: resources.str_selectFont,
-						labelKey: 'name',
-						matchProp: 'name',
-						valueKey: 'name',
+						labelKey: "name",
+						matchProp: "name",
+						valueKey: "name",
 						loadOptions: (input, callback) => {
 							const fontOptions = this.fonts.map(({ name }) => {
 								return { name };
@@ -992,14 +1026,14 @@ class LetterHeaderComponent extends React.Component {
 						},
 						clearable: false,
 						backspaceRemoves: false,
-						containerClass: 'selectInput-leftLabel',
-						handleChange: value => this.onFontFamilyChange(value),
-						valueRenderer: option => {
+						containerClass: "selectInput-leftLabel",
+						handleChange: (value) => this.onFontFamilyChange(value),
+						valueRenderer: (option) => {
 							return <div style={{ fontFamily: option.name }}>{option.name}</div>;
 						},
-						optionRenderer: option => {
+						optionRenderer: (option) => {
 							return <div style={{ fontFamily: option.name }}>{option.name}</div>;
-						}
+						},
 					}}
 				/>
 			</div>
@@ -1008,7 +1042,7 @@ class LetterHeaderComponent extends React.Component {
 
 	createFontSizeControl() {
 		const { resources } = this.props;
-		const activeClass = this.state.textSelected ? '' : 'u_hidden';
+		const activeClass = this.state.textSelected ? "" : "u_hidden";
 
 		return (
 			<div className={`letterHeaderTools_fontSize ${activeClass}`}>
@@ -1022,7 +1056,7 @@ class LetterHeaderComponent extends React.Component {
 					hasBorder={true}
 					selectOnFocus={true}
 					value={this.state.selectedFontSize}
-					onChange={value => this.onFontSizeChange(value)}
+					onChange={(value) => this.onFontSizeChange(value)}
 				/>
 			</div>
 		);
@@ -1032,7 +1066,7 @@ class LetterHeaderComponent extends React.Component {
 LetterHeaderComponent.propTypes = {
 	items: PropTypes.array,
 	onCancel: PropTypes.func,
-	onFinish: PropTypes.func
+	onFinish: PropTypes.func,
 };
 
 export default LetterHeaderComponent;

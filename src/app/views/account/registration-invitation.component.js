@@ -25,6 +25,8 @@ class RegistrationInvitationComponent extends React.Component {
 				password: "",
 				passwordRetyped: "",
 			},
+			firstNameError: "",
+			lastNameError: "",
 			passwordError: "",
 			passwordInfo: "",
 			checkPassword: false,
@@ -156,7 +158,14 @@ class RegistrationInvitationComponent extends React.Component {
 	render() {
 		const { firstName, lastName, password, passwordRetyped } = this.state.formData;
 		const iconSrc = this.checkPasswordOnly() ? "/assets/images/svg/lock.svg" : "/assets/images/svg/lock_half.svg";
-
+		console.log(
+			!this.props.isExpired,
+			!this.props.invalidCode,
+			firstName,
+			lastName,
+			passwordRetyped,
+			this.checkPasswordValidity()
+		);
 		return (
 			<div className="landing-wrapper registration-invitation-wrapper">
 				{/* <div className="landing-sidebar">
@@ -205,12 +214,23 @@ class RegistrationInvitationComponent extends React.Component {
 								{/* <div className="row"> */}
 								{/* <div className="col-xs-12 col-md-6 u_mb_20"> */}
 								<TextInputExtendedComponent
+									errorMessage={this.state.firstNameError}
 									value={firstName}
-									name="fullName"
-									label="Full Name"
+									name="firstName"
+									label="First Name"
 									onKeyDown={this.onKeyDown}
 									onChange={(val) => {
 										this.onChange(val, "firstName");
+									}}
+								/>
+								<TextInputExtendedComponent
+									errorMessage={this.state.lastNameError}
+									value={lastName}
+									name="lastName"
+									label="Last Name"
+									onKeyDown={this.onKeyDown}
+									onChange={(val) => {
+										this.onChange(val, "lastName");
 									}}
 								/>
 
