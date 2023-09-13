@@ -316,7 +316,7 @@ class HistoryItemComponent extends React.Component {
 	// }
 
 	render() {
-		const { item } = this.props;
+		const { item, customerId } = this.props;
 		const { isOpen, showMore } = this.state;
 		const { historyType, displayType, isOwnEmail, icon, cancellationDate, formattedCancellationDate } = item;
 		const title = this.formatTitle(item);
@@ -328,105 +328,143 @@ class HistoryItemComponent extends React.Component {
 		// console.log(item, "ITEM");
 		// console.log(title, "TITLE");
 		return (
-			<div className="history-item-icon-and-content">
-				{/* <div
-					className={`history-icon-container ${
-						historyType === HistoryTypes.EMAIL
-							? "type-email"
-							: historyType === HistoryTypes.DOCUMENT
-							? "type-document"
-							: ""
-					} u_hc`}
-				>
-					<div className={`icon ${icon}`} />
-				</div> */}
-				<div className="history-content">
-					{/* <div className={`history-header ${historyType === HistoryTypes.TODO ? "todo-header" : ""}`}>
-						{displayType}
-					</div> */}
-					<React.Fragment>
-						<div className={`history-body ${!isOpen ? "truncated" : "not-truncated"}`}>
-							{/* <span className="history-date">{item && item.getDateSubstring}: </span> */}
-							<span className="history-date">{item && `${month} ${day}, ${year}`} </span>
-							{/* <span className="history-date">{item && `${month} ${day}, ${year}`} </span> */}
-							{/* <div className={historyType === "payment" ? "greenCircle" : "greyCircleSolid"} /> */}
-							<div className={this.props.index === 0 ? "greenCircle" : "greyCircleSolid"} />
-							<span
-								ref={this.textRef}
-								className={`history-text ${
-									historyType === HistoryTypes.TODO ? `history-text-done-todo` : ""
-								} ${isOwnEmail ? "history-text-own-email" : ""}`}
-							>
-								{" "}
-								{historyType === HistoryTypes.TODO || historyType === HistoryTypes.ACTIVITY ? (
-									<React.Fragment>
-										<span
-											className="payment-amount"
-											dangerouslySetInnerHTML={{ __html: title.join(" ") }}
-										/>
-										<span className="payment-time">
-											{date.toLocaleString("en-US", {
-												hour: "numeric",
-												minute: "numeric",
-												hour12: true,
-											})}
-										</span>
-									</React.Fragment>
-								) : (
-									// title.map((subItem, subIndex) => {
-									// 	return (
-									// 		<span key={`historyItem-${historyType}-${subIndex}-title`}>
-									// 			{subItem}&nbsp;
-									// 		</span>
-									// 	);
-									// })
-									<React.Fragment>
-										<span className="payment-amount">{title.join(" ")}</span>
-										<span className="payment-time">
-											{date.toLocaleString("en-US", {
-												hour: "numeric",
-												minute: "numeric",
-												hour12: true,
-											})}
-										</span>
-									</React.Fragment>
-								)}
-							</span>
+			customerId ? (
+				<div className="history-item-icon-and-content">
+					<div
+						className={`history-icon-container ${
+							historyType === HistoryTypes.EMAIL
+								? 'type-email'
+								: historyType === HistoryTypes.DOCUMENT
+								? 'type-document'
+								: ''
+						} u_hc`}
+					>
+						<div className={`icon ${icon}`} />
+					</div>
+					<div className="history-content">
+						<div className={`history-header ${historyType === HistoryTypes.TODO ? 'todo-header' : ''}`}>
+							{displayType}
 						</div>
-						{/* {(historyType === HistoryTypes.TODO || historyType === HistoryTypes.ACTIVITY) && showMore && (
-							<div
-								onClick={(e) => this.setState({ isOpen: !isOpen })}
-								className="text-semibold read-more-button"
-							>
-								{!isOpen ? 'mehr lesen ' : 'weniger lesen '}
-								<div className={`icon icon-arr_down read-more-icon ${!isOpen ? '' : 'up'}`} />
+						<React.Fragment>
+							<div className={`history-body ${!isOpen ? 'truncated' : 'not-truncated'}`}>
+								<span className="history-date">{item && item.getDateSubstring}: </span>
+								<span
+									ref={this.textRef}
+									className={`history-text ${
+										historyType === HistoryTypes.TODO ? `history-text-done-todo` : ''
+									} ${isOwnEmail ? 'history-text-own-email' : ''}`}
+								>
+									{' '}
+									{historyType === HistoryTypes.TODO || historyType === HistoryTypes.ACTIVITY ? (
+										<span dangerouslySetInnerHTML={{ __html: title }}></span>
+									) : (
+										title.map((subItem, subIndex) => {
+											return (
+												<span key={`historyItem-${historyType}-${subIndex}-title`}>
+													{subItem}&nbsp;
+												</span>
+											);
+										})
+									)}
+								</span>
 							</div>
-						)} */}
-						{(historyType === HistoryTypes.PAYMENT ||
-							historyType === HistoryTypes.TDS_CHARGE ||
-							historyType === HistoryTypes.DISCOUNT_CHARGE ||
-							historyType === HistoryTypes.BANK_CHARGE ||
-							historyType === HistoryTypes.MORE_SETTLE ||
-							historyType === HistoryTypes.MORE_SURCHARGE) &&
-							cancellationDate && (
+							{/* {(historyType === HistoryTypes.TODO || historyType === HistoryTypes.ACTIVITY) && showMore && (
+								<div
+									onClick={(e) => this.setState({ isOpen: !isOpen })}
+									className="text-semibold read-more-button"
+								>
+									{!isOpen ? 'mehr lesen ' : 'weniger lesen '}
+									<div className={`icon icon-arr_down read-more-icon ${!isOpen ? '' : 'up'}`} />
+								</div>
+							)} */}
+							{(historyType === HistoryTypes.PAYMENT || historyType === HistoryTypes.TDS_CHARGE || historyType === HistoryTypes.DISCOUNT_CHARGE || historyType === HistoryTypes.BANK_CHARGE || historyType === HistoryTypes.MORE_SETTLE
+				|| historyType === HistoryTypes.MORE_SURCHARGE) && cancellationDate && (
 								<div className="text-small">Cancelled on {formattedCancellationDate}</div>
 							)}
-					</React.Fragment>
-					<div className="history-buttons">
-						{this.state.actionButtons.map((button, index) => {
-							return (
-								<div
-									key={`history-item-action-${index}`}
-									onClick={button.clickAction}
-									className={`text-semibold action-text ${button.cssClass}`}
-								>
-									{button.label}
-								</div>
-							);
-						})}
+						</React.Fragment>
+						<div className="history-buttons">
+							{this.state.actionButtons.map((button, index) => {
+								return (
+									<div
+										key={`history-item-action-${index}`}
+										onClick={button.clickAction}
+										className={`text-semibold action-text ${button.cssClass}`}
+									>
+										{button.label}
+									</div>
+								);
+							})}
+						</div>
 					</div>
 				</div>
-			</div>
+				) : (
+				<div className="history-item-icon-and-content">
+					<div className="history-content">
+						<React.Fragment>
+							<div className={`history-body ${!isOpen ? "truncated" : "not-truncated"}`}>
+								<span className="history-date">{item && `${month} ${day}, ${year}`} </span>
+								<div className={this.props.index === 0 ? "greenCircle" : "greyCircleSolid"} />
+								<span
+									ref={this.textRef}
+									className={`history-text ${
+										historyType === HistoryTypes.TODO ? `history-text-done-todo` : ""
+									} ${isOwnEmail ? "history-text-own-email" : ""}`}
+								>
+									{" "}
+									{historyType === HistoryTypes.TODO || historyType === HistoryTypes.ACTIVITY ? (
+										<React.Fragment>
+											<span
+												className="payment-amount"
+												dangerouslySetInnerHTML={{ __html: title.join(" ") }}
+											/>
+											<span className="payment-time">
+												{date.toLocaleString("en-US", {
+													hour: "numeric",
+													minute: "numeric",
+													hour12: true,
+												})}
+											</span>
+										</React.Fragment>
+									) : (
+										<React.Fragment>
+											<span className="payment-amount">{title.join(" ")}</span>
+											<span className="payment-time">
+												{date.toLocaleString("en-US", {
+													hour: "numeric",
+													minute: "numeric",
+													hour12: true,
+												})}
+											</span>
+										</React.Fragment>
+									)}
+								</span>
+							</div>
+							{(historyType === HistoryTypes.PAYMENT ||
+								historyType === HistoryTypes.TDS_CHARGE ||
+								historyType === HistoryTypes.DISCOUNT_CHARGE ||
+								historyType === HistoryTypes.BANK_CHARGE ||
+								historyType === HistoryTypes.MORE_SETTLE ||
+								historyType === HistoryTypes.MORE_SURCHARGE) &&
+								cancellationDate && (
+									<div className="text-small">Cancelled on {formattedCancellationDate}</div>
+								)}
+						</React.Fragment>
+						<div className="history-buttons">
+							{this.state.actionButtons.map((button, index) => {
+								return (
+									<div
+										key={`history-item-action-${index}`}
+										onClick={button.clickAction}
+										className={`text-semibold action-text ${button.cssClass}`}
+									>
+										{button.label}
+									</div>
+								);
+							})}
+						</div>
+					</div>
+				</div>
+			)
 		);
 	}
 }
