@@ -694,7 +694,7 @@ class OfferDetailComponent extends React.Component {
 				)}
 
 				<div className="detail-view-head-container">
-					{timeline}
+					{/* {timeline} */}
 					{detailHeadContent}
 				</div>
 
