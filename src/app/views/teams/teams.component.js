@@ -28,17 +28,23 @@ import { formatCurrencySymbolDisplayInFront } from "helpers/formatCurrency";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import { formatDate, formatApiDate, formateClientDateMonthYear } from "helpers/formatDate";
 import q from "q";
+import { updateSubscriptionDetails } from "helpers/updateSubsciptionDetails";
 import config from "../../../config";
 
 import TeamsTopbarComponent from "./teams-topbar.component";
 import webStorageKeyEnum from "../../enums/web-storage-key.enum";
-import multiuserRoleType from "../../enums/multiuser-role-type.enum";
+import multiUserRoleType from "../../enums/multiuser-role-type.enum";
 import {
 	canExtendUsers,
 	isChargebeeSubscriber,
 	isRazorpaySubscriber,
 	isZohoSubscriber,
 } from "../../helpers/subscriptionHelpers";
+import TopbarComponent from "../../shared/topbar/topbar.component";
+import MissingProfileDataModalComponent from "../../shared/modals/missing-profile-data-modal.component";
+import UserInviteModalComponent from "../../shared/modals/user-invite/user-invite-modal.component";
+import ChangeUserRoleModal from "../../shared/modals/change-user-role-modal.component";
+import { handleNotificationErrorMessage } from "../../helpers/errorMessageNotification";
 
 class TeamsListComponent extends React.Component {
 	constructor(props) {
@@ -130,6 +136,25 @@ class TeamsListComponent extends React.Component {
 		});
 	}
 
+	openMissingProfileDataModal() {
+		const { resources } = this.props;
+		ModalService.open(
+			<MissingProfileDataModalComponent
+				onConfirm={() => this.fetchUserList()}
+				userData={this.state.owner[0]}
+				isLoading={this.state.isLoading}
+				resources={resources}
+			/>,
+			{
+				isClosable: true,
+				width: 500,
+				// height: 400,
+				padding: "10px 40px 20px",
+				borderRadius: "6px",
+			}
+		);
+	}
+
 	componentDidMount() {
 		this.fetchUserList()
 			.then(() => {
@@ -160,28 +185,118 @@ class TeamsListComponent extends React.Component {
 		this.isUnmounted = true;
 	}
 
+	openUpgradeModal() {
+		const { resources } = this.props;
+		// ModalService.open(<UpgradeModalComponent title={resources.str_timeToStart} resources={resources} />, {
+		// 	width: 1196,
+		// 	padding: 0,
+		// 	isCloseable: true
+		// });
+	}
+
+	inviteUser(inviteCAOnly) {
+		const {
+			currentUserCount,
+			maxUserCount,
+			canInviteUser,
+			isLoading,
+			canExtendUsers,
+			showOldPlans,
+			currentPaidUsers,
+		} = this.state;
+		const { resources } = this.props;
+		// eslint-disable-next-line no-lone-blocks
+		if (!canExtendUsers && currentPaidUsers === maxUserCount) {
+			// const message = showOldPlans ? lang.upgradeToHigherPlan : lang.upgradeToNewPlan;
+			// const title = showOldPlans ? 'Dein Unternehmen wächst!' : 'Plan veraltet';
+			const message = resources.str_upgradeNow;
+			const title = resources.str_manageTariff;
+
+			ModalService.open(message, {
+				headline: title,
+				cancelLabel: "Cancel",
+				confirmLabel: resources.str_selectPlanNow,
+				onConfirm: () => {
+					this.openUpgradeModal();
+				},
+			});
+		} else {
+			const owner = this.state.owner && this.state.owner[0];
+
+			ModalService.open(
+				<UserInviteModalComponent
+					owner={owner}
+					onConfirm={() => this.updateUserData()}
+					maxUserCount={maxUserCount}
+					userCount={currentPaidUsers}
+					canInviteUser={canInviteUser}
+					openUpgradeModal={() => this.openUpgradeModal()}
+					isLoading={isLoading}
+					resources={resources}
+					inviteCAOnly={inviteCAOnly}
+					refreshGrid={() => this.setState({ refreshData: !this.state.refreshData })}
+				/>,
+				{
+					isClosable: true,
+					width: 566,
+					// height: 585,
+					padding: "10px 40px 30px",
+					borderRadius: "6px",
+				}
+			);
+		}
+	}
+
+	onTopbarButtonClick(action, selectedRows) {
+		const { resources } = this.props;
+		switch (action) {
+			case "inviteUser":
+				this.inviteUser();
+				break;
+			case "inviteCaOnly":
+				this.inviteUser(true);
+		}
+	}
+
 	createTopbar() {
 		const { isLoading, selectedRows, canCreateCustomer, canDeleteCustomer } = this.state;
 
 		const topbarButtons = [];
 
 		if (!isLoading) {
+			if (!this.state.caRole.length > 0) {
+				topbarButtons.push({
+					type: "primary",
+					label: "Invite CA",
+					action: "inviteCaOnly",
+					disabled: false,
+				});
+			}
+
 			topbarButtons.push({
 				type: "primary",
 				label: "Invite New User",
+				action: "inviteUser",
+				disabled: false,
 				// buttonIcon: "icon-plus",
 				// action: "create",
-				action: "drop-down",
-				disabled: !canDeleteCustomer,
+				// disabled: !canCreateCustomer,
 				// rightIcon: "icon-arrow_solid_down",
 			});
 		}
 
 		const topbar = (
-			<TeamsTopbarComponent
+			// <TeamsTopbarComponent
+			// 	title={this.state.topbarHeading ? this.state.topbarHeading : "Teams"}
+			// 	viewIcon={`icon-users`}
+			// 	buttons={topbarButtons}
+			// 	buttonCallback={() => {}}
+			// />
+			<TopbarComponent
 				title={this.state.topbarHeading ? this.state.topbarHeading : "Teams"}
 				viewIcon={`icon-users`}
 				buttons={topbarButtons}
+				buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action, selectedRows)}
 			/>
 		);
 
@@ -427,7 +542,7 @@ class TeamsListComponent extends React.Component {
 	getRoleTitle(value) {
 		let title = "";
 		switch (value) {
-			case multiuserRoleType.ADMIN:
+			case multiUserRoleType.ADMIN:
 				title = "Admin";
 				break;
 			case multiUserRoleType.DATA_OPERATOR:
@@ -475,7 +590,11 @@ class TeamsListComponent extends React.Component {
 	}
 
 	updateUserRole(user, selectedRole) {
+		// console.log(this, "THIS PROPS ke pehle ka IN UPDATE USER ROLE MODAL");
+		// console.log(this.props, "THIS PROPS IN UPDATE USER ROLE MODAL");
+		// console.log(user, selectedRole, "user, selectedRole IN UPDATE USER ROLE MODAL");
 		const { resources } = this.props;
+
 		if (selectedRole === multiUserRoleType.OWNER) {
 			invoiz
 				.request(`${config.resourceHost}user/${user.id}/owner`, {
@@ -521,6 +640,7 @@ class TeamsListComponent extends React.Component {
 							selectedRole
 						)}`,
 					});
+					this.setState({ refreshData: !this.state.refreshData });
 				})
 				.catch((err) => {
 					console.log(err);
@@ -532,12 +652,49 @@ class TeamsListComponent extends React.Component {
 		const { resources } = this.props;
 
 		// console.log("teamMember", teamMember);
+
 		const { firstName, lastName, id, email, hasConfirmedEmail, role } = teamMember;
+		const { caRole, pendingSeatInvites } = this.state;
+
 		switch (entry.action) {
-			case "changeRole":
+			case "changeUserRole":
+				const step = 0;
+				ModalService.open(
+					<ChangeUserRoleModal
+						user={teamMember}
+						onConfirm={(user, selectedRole) => this.updateUserRole(user, selectedRole)}
+					/>,
+					{
+						isClosable: true,
+						width: 566,
+						padding: "10px 40px 30px",
+						borderRadius: "6px",
+					}
+				);
+				break;
 
 			case "inviteAgain":
-			case "delete":
+				invoiz
+					.request(`${config.resourceHost}user/resend/${teamMember.id}`, {
+						auth: true,
+						method: "POST",
+					})
+					.then(() => {
+						invoiz.showNotification({
+							message: `The invitation to ${teamMember.email} has been sent again.`,
+						});
+						if (teamMember.isExpired) {
+							this.fetchUserList();
+						}
+						this.setState({ refreshData: !this.state.refreshData });
+					})
+					.catch((error) => {
+						const meta = error.body && error.body.meta;
+						handleNotificationErrorMessage(meta);
+					});
+				break;
+
+			case "deleteUser":
 				ModalService.open(
 					`Are you sure that you would like to delete user ${
 						firstName && lastName ? `${firstName} ${lastName}` : `${email}`
@@ -546,8 +703,9 @@ class TeamsListComponent extends React.Component {
 						headline: "Delete user",
 						cancelLabel: "Cancel",
 						confirmLabel: "Delete user",
-						confirmButtonType: "danger",
-						confirmIcon: "icon-trashcan",
+						confirmButtonType: "primary",
+						// confirmButtonType: "danger",
+						// confirmIcon: "icon-trashcan",
 						onConfirm: () => {
 							invoiz
 								.request(`${config.resourceHost}tenant/user/${id}`, {
@@ -574,12 +732,220 @@ class TeamsListComponent extends React.Component {
 					}
 				);
 				break;
+
+			case "deleteCAUser":
+				const { firstName, lastName, id, email } = teamMember;
+				const { resources } = this.props;
+				ModalService.open(
+					`Are you sure that you would like to delete the Chartered Accountant ${
+						firstName && lastName ? `${firstName} ${lastName}` : `${email}`
+					} from this Groflex account? Please note you can always invite this user back later.`,
+					{
+						headline: "Delete Chartered Accountant",
+						cancelLabel: "Cancel",
+						confirmLabel: "Delete",
+						confirmButtonType: "primary",
+						// confirmButtonType: "danger",
+						// confirmIcon: "icon-trashcan",
+						onConfirm: () => {
+							invoiz
+								.request(`${config.resourceHost}tenant/user/${id}`, {
+									auth: true,
+									method: "DELETE",
+									data: {
+										pendingSeatInvites,
+									},
+								})
+								.then(() => {
+									invoiz.showNotification({
+										message: `The Chartered Accountant user was successfully deleted.`,
+									});
+									this.updateUserData(null, false, true);
+									ModalService.close();
+									this.setState({ caRole: [] });
+								})
+								.catch((error) => {
+									invoiz.showNotification({ type: "error", message: resources.defaultErrorMessage });
+									ModalService.close();
+								});
+						},
+						loadingOnConfirmUntilClose: true,
+					}
+				);
+
+			case "deletePaidUser":
+				this.setState(
+					{
+						isLoading: true,
+					},
+					() => {
+						updateSubscriptionDetails(() => {
+							const {
+								currentPaidUsers,
+								maxUserCount,
+								currentUserCount,
+								currentAddons,
+								pendingSeatInvites,
+							} = invoiz.user.subscriptionData;
+							this.setState(
+								{
+									pendingSeatInvites,
+									inviteUserFields: [],
+									currentAddons,
+									currentPaidUsers,
+									currentUserCount,
+									maxUserCount,
+									isLoading: false,
+								},
+								() => {
+									this.fetchUserList();
+								}
+							);
+						});
+					}
+				);
+		}
+	}
+
+	handlePopoverClick(entry) {
+		const { caRole, pendingSeatInvites } = this.state;
+		const { resources } = this.props;
+		if (entry.action === "deleteUser") {
+			const { firstName, lastName, id, email } = entry.user;
+
+			ModalService.open(
+				`Are you sure that you would like to delete user ${
+					firstName && lastName ? `${firstName} ${lastName}` : `${email}`
+				} from this Groflex account? Please note you can always invite this user back later.`,
+				{
+					headline: "Delete user",
+					cancelLabel: "Cancel",
+					confirmLabel: "Delete user",
+					confirmButtonType: "danger",
+					confirmIcon: "icon-trashcan",
+					onConfirm: () => {
+						invoiz
+							.request(`${config.resourceHost}tenant/user/${id}`, {
+								auth: true,
+								method: "DELETE",
+								data: {
+									pendingSeatInvites,
+								},
+							})
+							.then(() => {
+								invoiz.showNotification({
+									message: `The user was successfully deleted.`,
+								});
+								this.updateUserData();
+								ModalService.close();
+								this.setState({ caRole: [] });
+							})
+							.catch((error) => {
+								invoiz.showNotification({ type: "error", message: resources.defaultErrorMessage });
+								ModalService.close();
+							});
+					},
+					loadingOnConfirmUntilClose: true,
+				}
+			);
+		} else if (entry.action === "deleteCAUser") {
+			const { firstName, lastName, id, email } = entry.user;
+			const { resources } = this.props;
+			ModalService.open(
+				`Are you sure that you would like to delete the Chartered Accountant ${
+					firstName && lastName ? `${firstName} ${lastName}` : `${email}`
+				} from this Groflex account? Please note you can always invite this user back later.`,
+				{
+					headline: "Delete Chartered Accountant",
+					cancelLabel: "Cancel",
+					confirmLabel: "Delete",
+					confirmButtonType: "danger",
+					confirmIcon: "icon-trashcan",
+					onConfirm: () => {
+						invoiz
+							.request(`${config.resourceHost}tenant/user/${id}`, {
+								auth: true,
+								method: "DELETE",
+								data: {
+									pendingSeatInvites,
+								},
+							})
+							.then(() => {
+								invoiz.showNotification({
+									message: `The Chartered Accountant user was successfully deleted.`,
+								});
+								this.updateUserData(null, false, true);
+								ModalService.close();
+								this.setState({ caRole: [] });
+							})
+							.catch((error) => {
+								invoiz.showNotification({ type: "error", message: resources.defaultErrorMessage });
+								ModalService.close();
+							});
+					},
+					loadingOnConfirmUntilClose: true,
+				}
+			);
+		} else if (entry.action === "changeUserRole") {
+			const step = 0;
+			ModalService.open(<ChangeUserRoleModal user={entry.user} onConfirm={this.updateUserRole} />, {
+				isClosable: true,
+				width: 566,
+				padding: "10px 40px 30px",
+				borderRadius: "6px",
+			});
+		} else if (entry.action === "inviteAgain") {
+			invoiz
+				.request(`${config.resourceHost}user/resend/${entry.user.id}`, {
+					auth: true,
+					method: "POST",
+				})
+				.then(() => {
+					invoiz.showNotification({
+						message: `The invitation to ${entry.user.email} has been sent again.`,
+					});
+					if (entry.user.isExpired) {
+						this.fetchUserList();
+					}
+				})
+				.catch((error) => {
+					const meta = error.body && error.body.meta;
+					handleNotificationErrorMessage(meta);
+				});
+		} else if (entry.action === "deletePaidUser") {
+			this.setState(
+				{
+					isLoading: true,
+				},
+				() => {
+					updateSubscriptionDetails(() => {
+						const { currentPaidUsers, maxUserCount, currentUserCount, currentAddons, pendingSeatInvites } =
+							invoiz.user.subscriptionData;
+						this.setState(
+							{
+								pendingSeatInvites,
+								inviteUserFields: [],
+								currentAddons,
+								currentPaidUsers,
+								currentUserCount,
+								maxUserCount,
+								isLoading: false,
+							},
+							() => {
+								this.fetchUserList();
+							}
+						);
+					});
+				}
+			);
 		}
 	}
 
 	render() {
 		const { resources } = this.props;
 		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer } = this.state;
+		// console.log(this.state, "Teams component State");
+		// console.log(resources, "Teams component Resources");
 		return (
 			<div className="teams-list-component-wrapper">
 				{this.createTopbar()}
@@ -599,6 +965,7 @@ class TeamsListComponent extends React.Component {
 							if (rolesList && rolesList.length > 0) {
 								rolesList.forEach((role) => {
 									role.users.forEach((user) => {
+										if (user.isCurrent) return;
 										allUsersList.push(user);
 									});
 								});
@@ -608,6 +975,7 @@ class TeamsListComponent extends React.Component {
 							if (allUsersList && allUsersList.length > 0) {
 								return allUsersList;
 							}
+							return [];
 						}}
 						columnDefs={[
 							{
@@ -617,11 +985,12 @@ class TeamsListComponent extends React.Component {
 								comparator: localeCompare,
 								filter: "agSetColumnFilter",
 								cellRenderer: (evt) => {
-									const { firstName, lastName, isCurrent, hasConfirmedEmail, isExpired } = evt.data;
+									const { firstName, lastName, isCurrent, hasConfirmedEmail, isExpired, email } =
+										evt.data;
 									// console.log(evt, "evt from cellRenderer");
 									if (isCurrent) {
 										return `<b>${firstName} ${lastName} (You)</b>`;
-									} else if (!hasConfirmedEmail && !isExpired) {
+									} else if (!hasConfirmedEmail) {
 										return "-";
 									}
 									return `${firstName} ${lastName}`;
@@ -667,7 +1036,7 @@ class TeamsListComponent extends React.Component {
 						]}
 						actionCellPopup={{
 							popupEntriesFunc: (item) => {
-								console.log(item, "action cell item");
+								// console.log(item, "action cell item");
 								const entries = [];
 								if (item) {
 									const { hasConfirmedEmail, isCurrent, isExpired } = item;
@@ -675,21 +1044,27 @@ class TeamsListComponent extends React.Component {
 										entries.push({
 											dataQsId: `teams-list-item-dropdown-entry-change-role`,
 											label: "Change role",
-											action: "changeRole",
+											action: "changeUserRole",
 										});
 									}
-									if (!hasConfirmedEmail && !isExpired) {
+									if (!hasConfirmedEmail) {
 										entries.push({
 											dataQsId: `teams-list-item-dropdown-entry-invite-again`,
 											label: "Invite again",
 											action: "inviteAgain",
 										});
 									}
-									if (!isCurrent) {
+									if (item.role[0] === "charteredaccountant") {
+										entries.push({
+											dataQsId: `teams-list-item-dropdown-entry-deleteCAUser`,
+											label: "Delete Chartered Accountant",
+											action: "deleteCAUser",
+										});
+									} else {
 										entries.push({
 											dataQsId: `teams-list-item-dropdown-entry-delete`,
 											label: "Delete user",
-											action: "delete",
+											action: "deleteUser",
 										});
 									}
 								}
@@ -712,6 +1087,28 @@ class TeamsListComponent extends React.Component {
 							if (!this.isUnmounted) {
 								this.setState({ selectedRows });
 							}
+						}}
+						emptyState={{
+							// iconClass: "icon-rechnung",
+							headline: "No team members yet",
+							// subHeadline: resources.createBillText,
+							buttons: (
+								<React.Fragment>
+									{/* <ButtonComponent
+										label="Los geht's"
+										buttonIcon="icon-plus"
+										dataQsId="empty-list-create-button"
+										callback={() => invoiz.router.navigate('/invoice/new')}
+									/> */}
+									<ButtonComponent
+										label={"Invite New User"}
+										// buttonIcon="icon-plus"
+										dataQsId="empty-list-create-button"
+										callback={() => this.inviteUser()}
+										// disabled={!canCreateCustomer}
+									/>
+								</React.Fragment>
+							),
 						}}
 					/>
 				</div>

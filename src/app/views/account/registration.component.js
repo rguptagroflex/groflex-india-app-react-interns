@@ -1688,7 +1688,8 @@ class RegistrationComponent extends React.Component {
 						) : null}
 						<ButtonComponent
 							callback={() => this.onSetMobileNo()}
-							disabled={this.state.mobileNo === ""}
+							// disabled={this.state.mobileNo === ""}
+							disabled={String(this.state.mobileNo).length < 10}
 							label={`Verify`}
 							dataQsId="registration-step-mobile"
 							loading={isMobileNoDisable}

@@ -4,8 +4,6 @@ import React from "react";
 import PopoverComponent from "shared/popover/popover.component";
 import CustomButtonComponent from "../transactions/custom-button.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
-import modalService from "../../services/modal.service";
-import MoneyInModalComponent from "../transactions/money-in-modal.component";
 
 class TeamsTopbarComponent extends React.Component {
 	constructor(props) {
@@ -15,13 +13,10 @@ class TeamsTopbarComponent extends React.Component {
 
 		this.state = {
 			topbarDropdown: false,
-			onDropDownClick: this.props.onDropDownClick || null,
 			backButtonRoute: this.props.backButtonRoute || null,
 			backButtonCallback: this.props.backButtonCallback || null,
 			hasCancelButton: this.props.hasCancelButton || null,
 			cancelButtonCallback: this.props.cancelButtonCallback || null,
-			dropdownEntries: this.props.dropdownEntries || null,
-			dropdownCallback: this.props.dropdownCallback || null,
 			// buttons,
 			buttonCallback: this.props.buttonCallback || null,
 			title: this.props.title || null,
@@ -30,14 +25,7 @@ class TeamsTopbarComponent extends React.Component {
 			viewIcon: this.props.viewIcon || null,
 			fullPageWidth: this.props.fullPageWidth || null,
 		};
-
-		this.openTopbarDropdown = this.openTopbarDropdown.bind(this);
-		this.closeTopbarDropdown = this.closeTopbarDropdown.bind(this);
 	}
-
-	// componentDidUpdate(){
-
-	// }
 
 	componentWillReceiveProps(props) {
 		// const buttons = this.createButtons(props, this.state.topbarDropdown);
@@ -59,14 +47,6 @@ class TeamsTopbarComponent extends React.Component {
 			viewIcon: props.viewIcon || null,
 			fullPageWidth: props.fullPageWidth || null,
 		});
-	}
-
-	openTopbarDropdown() {
-		this.setState({ ...this.state, topbarDropdown: true });
-	}
-
-	closeTopbarDropdown() {
-		this.setState({ ...this.state, topbarDropdown: false });
 	}
 
 	render() {
@@ -171,105 +151,9 @@ class TeamsTopbarComponent extends React.Component {
 								// customCssClass={button.customCssClass}
 								// rightIcon={"icon-arrow_solid_down"}
 							/>
-							{this.state.topbarDropdown ? (
-								<OnClickOutside onClickOutside={this.closeTopbarDropdown}>
-									<div
-										style={{
-											backgroundColor: "white",
-											border: "1px solid #C6C6C6",
-											borderRadius: "0px 0px 4px 4px",
-											borderWidth: "0px 1px 1px 1px",
-										}}
-									>
-										<div
-											onClick={() => {
-												this.closeTopbarDropdown();
-												this.props.openMoneyInModal();
-											}}
-											className="drop-down-opt"
-											style={{
-												cursor: "pointer",
-												margin: 0,
-												lineHeight: "25px",
-												borderBottom: "1px solid #C6C6C6",
-												padding: "7px 0 7px 15px",
-												color: "#747474",
-											}}
-										>
-											Money In
-										</div>
-										<div
-											onClick={() => {
-												this.closeTopbarDropdown();
-												this.props.openMoneyOutModal();
-											}}
-											className="drop-down-opt"
-											style={{
-												cursor: "pointer",
-												margin: 0,
-												lineHeight: "25px",
-												borderBottom: "1px solid #C6C6C6",
-												padding: "7px 0 7px 15px",
-												color: "#747474",
-											}}
-										>
-											Money Out
-										</div>
-										<div
-											onClick={() => {
-												invoiz.router.navigate("/invoices");
-											}}
-											className="drop-down-opt"
-											style={{
-												cursor: "pointer",
-												margin: 0,
-												lineHeight: "25px",
-												borderBottom: "1px solid #C6C6C6",
-												padding: "7px 0 7px 15px",
-												color: "#747474",
-											}}
-										>
-											Sales Income
-										</div>
-										<div
-											onClick={() => {
-												invoiz.router.navigate("/expense/new-purchase");
-											}}
-											className="drop-down-opt"
-											style={{
-												cursor: "pointer",
-												margin: 0,
-												lineHeight: "25px",
-												borderBottom: "1px solid #C6C6C6",
-												padding: "7px 0 7px 15px",
-												color: "#747474",
-											}}
-										>
-											Purchase
-										</div>
-										<div
-											onClick={() => {
-												invoiz.router.navigate("/expense/new-expense");
-											}}
-											className="drop-down-opt"
-											style={{
-												cursor: "pointer",
-												margin: 0,
-												lineHeight: "25px",
-												padding: "7px 0 7px 15px",
-												color: "#747474",
-											}}
-										>
-											Expenses
-										</div>
-									</div>
-								</OnClickOutside>
-							) : null}
 						</div>
 					</div>
 				</div>
-
-				{dropdownMenuButton}
 			</div>
 		);
 	}
@@ -280,16 +164,6 @@ class TeamsTopbarComponent extends React.Component {
 		}
 	}
 
-	handleDropdownClick(entry) {
-		if (typeof this.state.dropdownCallback === "function") {
-			this.state.dropdownCallback(entry);
-		}
-	}
-
-	onDropdownClick() {
-		this.refs["topbar-popover"].show();
-	}
-
 	onBackButtonClick() {
 		if (this.state.backButtonRoute) {
 			invoiz.router.navigate(this.state.backButtonRoute);
@@ -297,73 +171,6 @@ class TeamsTopbarComponent extends React.Component {
 			this.state.backButtonCallback();
 		}
 	}
-
-	onCancelButtonClick() {
-		if (this.state.cancelButtonCallback) {
-			this.state.cancelButtonCallback();
-		} else {
-			window.history.back();
-		}
-	}
-
-	// createButtons(props, dropDownActive) {
-	// 	const buttons = [];
-	// 	let dropDownOptions = null;
-	// if (dropDownActive) {
-	// 	console.log("True is true");
-	// 	dropDownOptions = (
-	// 		<div
-	// 			style={{
-	// 				backgroundColor: "white",
-	// 				border: "1px solid #C6C6C6",
-	// 				borderRadius: "0px 0px 4px 4px",
-	// 				borderWidth: "0px 1px 1px 1px",
-	// 			}}
-	// 		>
-	// 			<div
-	// 				style={{
-	// 					margin: 0,
-	// 					lineHeight: "25px",
-	// 					borderBottom: "1px solid #C6C6C6",
-	// 				}}
-	// 			>
-	// 				Hi htis is
-	// 			</div>
-	// 			<div style={{ margin: 0, lineHeight: "25px" }}>Hi htis is</div>
-	// 		</div>
-	// 	);
-	// }
-
-	// 	if (props.buttons) {
-	// 		props.buttons.forEach((button, i) => {
-	// 			buttons.push(
-	// 				<div style={{ display: "flex", flexDirection: "column" }}>
-	// 					<OnClickOutside onClickOutside={this.closeTopbarDropdown}>
-	// 						<CustomButtonComponent
-	// 							id={button.id}
-	// 							key={`topbar-button-${i}`}
-	// 							loading={button.loading}
-	// 							disabled={button.disabled}
-	// 							isWide={button.isWide}
-	// 							buttonIcon={button.buttonIcon}
-	// 							label={button.label}
-	// 							callback={(event) => {
-	// 								// this.handleButtonClick(event, button);
-	// 								console.log("Hua log bindndnd");
-	// 								this.openTopbarDropdown();
-	// 							}}
-	// 							type={button.type}
-	// 							dataQsId={button.dataQsId}
-	// 							customCssClass={button.customCssClass}
-	// 							rightIcon={button.rightIcon}
-	// 						/>
-	// 					</OnClickOutside>
-	// 				</div>
-	// 			);
-	// 		});
-	// 	}
-	// 	return buttons;
-	// }
 }
 
 export default TeamsTopbarComponent;
