@@ -414,7 +414,7 @@ class UserInviteModalComponent extends React.Component {
 		const inputs = this.createInputFields();
 		const headline = currentStep !== null && modalContent && modalContent[currentStep].headline;
 		const subheadline = currentStep !== null && modalContent && modalContent[currentStep].subheadline;
-		console.log(this.state, this.props, "state and props in user invite modal");
+		// console.log(this.state, this.props, "state and props in user invite modal");
 		return (
 			<div className="has-footer user-invite-modal">
 				<div className="user-invite-modal-content">

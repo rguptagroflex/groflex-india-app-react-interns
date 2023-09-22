@@ -980,6 +980,9 @@
 			}
 		}
 	}
+	.ag-center-cols-viewport {
+		width: calc(100% - 2px);
+	}
 }
 
 //List heading
