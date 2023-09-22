@@ -1,5 +1,5 @@
-import React from 'react';
-import SettingsUserComponent from 'views/settings/settings-user.component';
+import React from "react";
+import SettingsUserComponent from "views/settings/settings-user.component";
 
 class SettingsUserWrapper extends React.Component {
 	render() {

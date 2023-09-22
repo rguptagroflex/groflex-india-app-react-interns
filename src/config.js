@@ -215,6 +215,13 @@ const config = {
 		// 	]
 		// },
 		// {
+		// 	name: "documentExport",
+		// 	icon: "tax",
+		// 	title: "GST Export",
+		// 	url: "/document-export",
+		// 	resourceKey: "accountantExport",
+		// },
+		// {
 		// 	name: "inventory",
 		// 	title: "Abo-Rechnungen",
 		// 	url: "/inventory",
@@ -334,13 +341,7 @@ const config = {
 		},
 		// { name: 'expenses', icon: 'expense', title: 'Ausgaben', url: '/expenses', resourceKey: 'expense' },
 		// { name: 'purchaseOrders', icon: 'order', title: 'Purchase Orders', url: '/purchase-orders', resourceKey: 'purchaseOrder' },
-		// {
-		// 	name: "documentExport",
-		// 	icon: "tax",
-		// 	title: "GST Export",
-		// 	url: "/document-export",
-		// 	resourceKey: "accountantExport",
-		// },
+		
 		// {
 		// 	name: "teamMembers",
 		// 	icon: "user_user",
