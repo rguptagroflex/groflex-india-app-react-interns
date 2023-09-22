@@ -2,80 +2,86 @@
 @import "../../../abstracts/mixins";
 
 .detail-view-head-advanced-component {
-    display: flex;
-    margin: 0 auto 30px;
-    max-width: 1285px;
-    min-width: 920px;
+	display: flex;
+	margin: 0 auto 30px;
+	max-width: 1285px;
+	min-width: 920px;
 
-    .detail-view-head-advanced-infos {
-        padding-top: 6px;
-        width: 710px;
+	.detail-view-head-advanced-infos {
+		padding-top: 6px;
+		width: 710px;
 
-        .detail-view-head-advanced-infos-wrapper {
-            display: flex;
-        }
+		.detail-view-head-advanced-infos-wrapper {
+			display: flex;
+		}
 
-        .detail-view-head-advanced-infos-left {
-            display: flex;
-            max-width: 230px;
-            min-width: 150px;
-        }
+		.detail-view-head-advanced-infos-left {
+			display: flex;
+			max-width: 230px;
+			min-width: 150px;
+		}
 
-        .detail-view-head-advanced-infos-right {
-            display: flex;
-            flex: 1;
-            justify-content: flex-end;
-        }
+		.detail-view-head-advanced-infos-right {
+			display: flex;
+			flex: 1;
+			justify-content: flex-end;
+		}
 
-        .detail-view-head-advanced-infos-right-item {
-            text-align: right;
-        }
+		.detail-view-head-advanced-infos-right-item {
+			text-align: right;
+		}
 
-        .info-item-headline {
-            color: $color-text-lighter;
-            font-size: 11px;
-            text-transform: uppercase;
+		.info-item-headline {
+			color: $color-text-lighter;
+			font-size: 11px;
+			text-transform: uppercase;
 
-            .info-item-value {
-            a {
-                color: $color-primary;
+			.info-item-value {
+				a {
+					color: $color-primary;
 
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-        }
-        }
+					&:hover {
+						text-decoration: underline;
+					}
+				}
+			}
+		}
 
-        .info-item-value {
-            font-size: 18px;
-            font-weight: 600;
-            a {
-                color: $color-primary;
+		.info-item-value {
+			font-size: 18px;
+			font-weight: 600;
+			a {
+				color: $color-primary;
 
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-        }
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
 
-        .info-item-value,
-        .info-item-value a {
-            color: $color-primary;
-        }
-        
+		.info-item-value,
+		.info-item-value a {
+			color: $color-primary;
+		}
 
-        .info-item-sub-value,
-        .info-item-value-details {
-            font-size: 12px;
-        }
-    }
+		.info-item-sub-value,
+		.info-item-value-details {
+			font-size: 12px;
+		}
+	}
 
-    .detail-view-head-advanced-actions {
-        display: flex;
-        flex: 1;
-        justify-content: flex-end;
+	.detail-view-head-advanced-actions {
+		display: flex;
+		flex: 1;
+		justify-content: flex-end;
+	}
 
-
-    }
+	.icon-button {
+		border-radius: 4px !important;
+		border-color: #c6c6c6 !important;
+	}
+	.icon-arr_down {
+		color: #00a353 !important;
+		top: 0 !important;
+	}
 }

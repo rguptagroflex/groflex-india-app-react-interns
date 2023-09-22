@@ -1,5 +1,8 @@
 import React from "react";
+import SVGInline from "react-svg-inline";
 import IconButtonComponent from "shared/button/icon-button.component";
+import printerOutlined from "../../../assets/images/icons/printerOutlined.svg";
+import shareOutlined from "../../../assets/images/icons/shareOutlined.svg";
 
 const DetailViewHeadAdvancedComponent = (props) => {
 	const { actionCallback, actionElements, leftElements, rightElements, canvasWidth } = props;
@@ -71,7 +74,7 @@ const DetailViewHeadAdvancedComponent = (props) => {
 			<div className="detail-view-head-advanced-actions">
 				{actionElements &&
 					actionElements.map((element, index) => {
-						// console.log(element, "invoice info head actions", index);
+						console.log(element, "invoice info head actions", index);
 						let labelAction, hint;
 
 						if (element.labelAction) {
@@ -95,7 +98,13 @@ const DetailViewHeadAdvancedComponent = (props) => {
 								type="primary"
 								wrapperClass="u_ml_16"
 								callback={() => onControlClick(element.action, element.actionActive)}
-							/>
+							>
+								{element.icon === "icon-print2" ? (
+									<SVGInline svg={printerOutlined} width="15px" />
+								) : (
+									<SVGInline svg={shareOutlined} width="15px" />
+								)}
+							</IconButtonComponent>
 						);
 					})}
 			</div>
