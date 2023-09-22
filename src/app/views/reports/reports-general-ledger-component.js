@@ -22,11 +22,8 @@ const ReportsGeneralLedger = (props) => {
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState();
-	// const CustomCellRenderer = ({ value, colDef }) => (
-	// 	(<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>),
-	// 	(<span>{colDef.field === "debits" && value !== undefined ? `₹ ${value}` : value}</span>),
-	// 	(<span>{colDef.field === "credits" && value !== undefined ? `₹ ${value}` : value}</span>)
-	// );
+
+
 	const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 
 	const [columnDefs, setColumnDefs] = useState([
@@ -147,7 +144,7 @@ const ReportsGeneralLedger = (props) => {
 		invoiz
 			.request(
 				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-	
+
 				{ auth: true }
 			)
 			.then((res) => {
@@ -327,8 +324,6 @@ const ReportsGeneralLedger = (props) => {
 						marginLeft: "20px",
 						display: "flex",
 						flexDirection: "column",
-						// height:"32px",
-						// width:"1120px",
 						padding: "0px, 24px, 0px, 24px",
 						justifyContent: "space-between",
 					}}
@@ -345,6 +340,33 @@ const ReportsGeneralLedger = (props) => {
 							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
 							className="time-period-select"
 						>
+							<div style={{ width: "170px", marginTop: "35px" }}>
+								<SelectInputComponent
+									// title={resources.str_title}
+									// title={"A.K Enterprises"}
+									name="title"
+									title={
+										invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
+										invoiz.user.companyAddress.companyName.slice(1)
+									}
+									value={invoiz.user.companyAddress.companyName}
+									dataQsId={"customer-edit-title"}
+									// value={customer.title}
+									allowCreate={true}
+									notAsync={true}
+									options={{
+										// placeholder: resources.str_choose,
+										labelKey: "name",
+										valueKey: "name",
+										// handleChange: (value) => {
+										// 	if (!value || (value && !value.isDummy && value.name)) {
+										// 		this.onSalutationOrTitleChange(value, false);
+										// 	}
+										// },
+									}}
+									// loadedOptions={titleOptions}
+								/>
+							</div>
 							<div style={{ position: "relative", width: "100%", flex: "1" }}>
 								<SelectInputComponent
 									allowCreate={false}
@@ -400,7 +422,9 @@ const ReportsGeneralLedger = (props) => {
 									className="start-end-date-selector-group"
 									style={{ display: "flex" }}
 								>
-									<div style={{ marginRight: "10px" }}>
+									<div
+									// style={{ marginRight: "10px" }}
+									>
 										<DateInputComponent
 											name={"startDate"}
 											value={dateData.customStartDate.format("DD-MM-YYYY")}
@@ -427,63 +451,7 @@ const ReportsGeneralLedger = (props) => {
 						</div>
 					</div>
 
-					{/* <div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
-					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
-						}}
-					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
-					{/* </div> */}
+				
 					<div
 						style={{
 							display: "flex",
@@ -506,7 +474,7 @@ const ReportsGeneralLedger = (props) => {
 								alignItems: "center",
 								position: "relative",
 								borderRadius: "4px",
-								marginTop: "-70px",
+								marginTop: "-100px",
 							}}
 						>
 							<div

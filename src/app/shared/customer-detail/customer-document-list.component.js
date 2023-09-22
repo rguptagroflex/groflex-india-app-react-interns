@@ -108,8 +108,8 @@ class CustomerDocumentListComponent extends React.Component {
 		}
 		return (
 			<div
-				className="box-rounded customer-document-wrapper detail-wrap"
-				style={{ marginTop: "-20%", width: "96%" }}
+				className="box-rounded customer-document-wrapper detail-wrap "
+				style={{ marginTop: "-22%", width: "100%", marginLeft: "-100px" }}
 			>
 				<div className="pagebox_content customerDocument_container">
 					{errorOccurred ? (

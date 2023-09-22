@@ -77,86 +77,68 @@ class SettingsAccountComponent extends React.Component {
 								: `icon-user_outlined_black`
 						}
 					/>
-					{/* <div className="row">
-					<div className="tabs-container">
-						<TabsComponent activeTab={activeTab} 
-						setActiveTab={this.setActiveTab}
-						>
-							<TabsComponent.List>
-								{tabs.map((tab, index) => (
-									<div
-										key={index}
-										className={`tab-item ${activeTab === tab ? "active-tab" : ""}`}
-										onClick={() => this.setActiveTab(tab)}
-										style={{
-											marginRight: '10px',
-											cursor: 'pointer',
-											position: 'relative',
-											color: '#272D30'
-									}}
-									>
-										{tab}
-									</div>
-								))}
-							</TabsComponent.List>
-						</TabsComponent>
-					</div>
-				</div> */}
-					<div className="row">
-						<div className="tabs-container" style={{ display: "flex", marginLeft: "10px", gap: "10px" }}>
-							<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
-								<TabsComponent.List>
-									{tabs.map((tab, index) => (
-										<div
-											key={index}
-											className={`tab-item ${this.state.activeTab === tab ? "active-tab" : ""}`}
-											onClick={() => this.setActiveTab(tab)}
-											style={{
-												marginRight: "20px",
-												cursor: "pointer",
-												position: "relative",
-												color: this.state.activeTab === tab ? "#00A353" : "#272D30",
-											}}
-										>
-											{tab}
-											{this.state.activeTab === tab && (
-												<div>
-													<div
-														style={{
-															content: "",
-															display: "block",
-															position: "absolute",
-															bottom: "-7px",
-															left: "0",
-															width: "100%",
-															height: "2px",
-															backgroundColor: "#00A353",
-														}}
-													/>
-													<div
-														style={{
-															content: "",
-															display: "block",
-															position: "absolute",
-															bottom: "-8px",
-															left:
-																this.state.activeTab === "Account Details"
-																	? "0px"
-																	: "-160%",
-
-															width: "910px",
-															height: "1px",
-															background: "#C6C6C6",
-														}}
-													/>
-												</div>
-											)}
-										</div>
-									))}
-								</TabsComponent.List>
-							</TabsComponent>
+					
+					{pathName === "/settings/account" || pathName === "/settings/account-setting" ? (
+						<div className="row">
+							<div
+								className="tabs-container"
+								style={{ display: "flex", marginLeft: "10px", gap: "10px" }}
+							>
+								<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
+									<TabsComponent.List>
+										{tabs.map((tab, index) => (
+											<div
+												key={index}
+												className={`tab-item ${
+													this.state.activeTab === tab ? "active-tab" : ""
+												}`}
+												onClick={() => this.setActiveTab(tab)}
+												style={{
+													marginRight: "20px",
+													cursor: "pointer",
+													position: "relative",
+													color: this.state.activeTab === tab ? "#00A353" : "#272D30",
+												}}
+											>
+												{tab}
+												{this.state.activeTab === tab && (
+													<div>
+														<div
+															style={{
+																content: "",
+																display: "block",
+																position: "absolute",
+																bottom: "-7px",
+																left: "0",
+																width: "100%",
+																height: "2px",
+																backgroundColor: "#00A353",
+															}}
+														/>
+														<div
+															style={{
+																content: "",
+																display: "block",
+																position: "absolute",
+																bottom: "-8px",
+																left:
+																	this.state.activeTab === "Account Details"
+																		? "0px"
+																		: "-160%",
+																width: "910px",
+																height: "1px",
+																background: "#C6C6C6",
+															}}
+														/>
+													</div>
+												)}
+											</div>
+										))}
+									</TabsComponent.List>
+								</TabsComponent>
+							</div>
 						</div>
-					</div>
+					) : null}
 
 					<div>
 						{/* <h1>{resources.str_account}</h1> */}

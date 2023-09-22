@@ -418,7 +418,7 @@ class ArticleDetailComponent extends React.Component {
 					borderRadius: "10px",
 					border: "1.087px solid var(--grey-dark-c-6-c-6-c-6, #C6C6C6)",
 					background: "var(--font-colors-white-fffffff, #FFF)",
-					width: "780px",
+					width: "770px",
 					height: "422px",
 					flexShrink: " 0",
 				}}
@@ -615,7 +615,7 @@ class ArticleDetailComponent extends React.Component {
 					/>
 				)}
 				<div className="row">
-					<div className="tabs-container" style={{ display: "flex", marginLeft: "10px", marginTop: "30px" }}>
+					<div className="tabs-container" style={{ display: "flex", marginLeft: "-60px", marginTop: "30px" }}>
 						<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
 							<TabsComponent.List>
 								{tabs.map((tab, index) => (
@@ -671,7 +671,7 @@ class ArticleDetailComponent extends React.Component {
 				</div>
 				{activeTab === "Article Overview" && (
 					// <div>
-					<div className="row detail-wrap-article">
+					<div className="row detail-wrap-article" style={{ marginLeft: "-72px" }}>
 						<div className="col-xs-3">
 							<div className="row">{this.getBlock1Content()}</div>
 							<div className="row u_mt_16 u_p_16 detail-wrap notes-box">
@@ -830,7 +830,7 @@ class ArticleDetailComponent extends React.Component {
 													onChange={filter => this.onFilterList(filter)}
 													resources={resources}
 												/>
-											)}
+											)}getBlock1Content
 										</div> */}
 
 											<div className="article ">
@@ -872,7 +872,7 @@ class ArticleDetailComponent extends React.Component {
 				)}
 
 				{activeTab === "History" && (
-					<div className="detail-wrap u_p_16 u_mt_48 detail-history">
+					<div className="detail-wrap u_p_16 u_mt_48 detail-history" style={{marginLeft:"-70px"}}>
 						<div className="pagebox_heading text-h4">{resources.str_history}</div>
 						<div className="pagebox_content articleHistory_container">
 							{errorOccurred ? (

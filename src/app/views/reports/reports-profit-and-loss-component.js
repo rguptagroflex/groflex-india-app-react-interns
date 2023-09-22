@@ -10,6 +10,10 @@ import config from "../../../config";
 import ModalService from "../../services/modal.service";
 import OfferAction from "enums/offer/offer-action.enum";
 import moment from "moment";
+import SVGInline from "react-svg-inline";
+import Arrow from "../../../assets/images/icons/chevrons-down.svg";
+import ArrowSide from "../../../assets/images/icons/chevron.svg";
+
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 
 function ReportsProfitAndLoss() {
@@ -19,45 +23,67 @@ function ReportsProfitAndLoss() {
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-	const [rowData, setRowData] = useState();
+	const [rowData, setRowData] = useState([]);
+	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
 	const CustomCellRenderer = ({ value, colDef }) => (
 		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
 	);
-	const [columnDefs, setColumnDefs] = useState([
-		{
-			field: "chartOfAccount.accountTypeId",
-			rowGroup: true,
-			enableRowGroup: true,
-			filter: false,
-			hide: true,
-			valueFormatter: function (params) {
-				var value = params.value;
-				return value.charAt(0).toUpperCase() + value.slice(1);
-			},
-		},
-		{
-			headerName: "Account",
-			field: "chartOfAccount.accountSubTypeId",
-			filter: false,
-			valueFormatter: function (params) {
-				if (params.value) {
-					let formattedValue = params.value.replace(/([A-Z])/g, " $1");
-					formattedValue = formattedValue.replace(/([A-Z][a-z])/g, " $1");
-					formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
-					return formattedValue;
-				}
-				return params.value;
-			},
-			cellStyle: { whiteSpace: "normal" },
-			autoHeight: true,
-		},
-		{
-			headerName: "Account Code",
-			field: "chartOfAccount.accountCode",
-			filter: false,
-		},
-		{ field: "balance", filter: false, cellRendererFramework: CustomCellRenderer },
-	]);
+	useEffect(() => {
+		fetchData();
+	}, []);
+	const fetchData = async () => {
+		try {
+			const response = await invoiz.request(
+				`${config.resourceHost}accountingReport/profitandloss/2023-03-31T20:10:51.000Z/2023-08-09T20:10:51.000Z?type=json`,
+				{ auth: true }
+			);
+			const responseData = response.body.data;
+
+			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
+				const transactions = responseData.summaryData.transactions;
+				setRowData(transactions);
+			} else {
+				console.error("Data structure in the response is not as expected.");
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+	// const [columnDefs, setColumnDefs] = useState([
+	// 	{
+	// 		field: "chartOfAccount.accountTypeId",
+	// 		rowGroup: true,
+	// 		enableRowGroup: true,
+	// 		filter: false,
+	// 		hide: true,
+	// 		valueFormatter: function (params) {
+	// 			var value = params.value;
+	// 			return value.charAt(0).toUpperCase() + value.slice(1);
+	// 		},
+	// 	},
+	// 	{
+	// 		headerName: "Account",
+	// 		field: "chartOfAccount.accountSubTypeId",
+	// 		filter: false,
+	// 		valueFormatter: function (params) {
+	// 			if (params.value) {
+	// 				let formattedValue = params.value.replace(/([A-Z])/g, " $1");
+	// 				formattedValue = formattedValue.replace(/([A-Z][a-z])/g, " $1");
+	// 				formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
+	// 				return formattedValue;
+	// 			}
+	// 			return params.value;
+	// 		},
+	// 		cellStyle: { whiteSpace: "normal" },
+	// 		autoHeight: true,
+	// 	},
+	// 	{
+	// 		headerName: "Account Code",
+	// 		field: "chartOfAccount.accountCode",
+	// 		filter: false,
+	// 	},
+	// 	{ field: "balance", filter: false, cellRendererFramework: CustomCellRenderer },
+	// ]);
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
 	}, []);
@@ -82,6 +108,14 @@ function ReportsProfitAndLoss() {
 			api.setDomLayout();
 		}
 	}, []);
+	const toggleAccountType = (accountType) => {
+		// Check if the account type is expanded, and toggle it
+		if (expandedAccountTypes.includes(accountType)) {
+			setExpandedAccountTypes(expandedAccountTypes.filter((type) => type !== accountType));
+		} else {
+			setExpandedAccountTypes([...expandedAccountTypes, accountType]);
+		}
+	};
 
 	const onBtPrint = useCallback(() => {
 		if (gridRef.current) {
@@ -122,17 +156,17 @@ function ReportsProfitAndLoss() {
 	// 	.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 	// 	.join(" ");
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
-			});
-	}, []);
+	// const onGridReady = useCallback((params) => {
+	// 	invoiz
+	// 		.request(
+	// 			`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
+	// 			{ auth: true }
+	// 		)
+	// 		.then((res) => {
+	// 			console.log("response of data :", res.body.data);
+	// 			setRowData(res.body.data);
+	// 		});
+	// }, []);
 	const sendEmail = () => {
 		ModalService.open(<ProfitAndLossSendEmail />, {
 			modalClass: "edit-contact-person-modal-component",
@@ -201,6 +235,7 @@ function ReportsProfitAndLoss() {
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
+	const [showAccountType, setShowAccountType] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
 	const [dateData, setDateData] = useState({
@@ -399,63 +434,7 @@ function ReportsProfitAndLoss() {
 						</div>
 					</div>
 
-					{/* <div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
-					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
-						}}
-					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
-					{/* </div> */}
+			
 					<div
 						style={{
 							display: "flex",
@@ -595,7 +574,7 @@ function ReportsProfitAndLoss() {
 					)}
 				</div>
 
-				<div style={gridStyle} className="ag-theme-alpine">
+				{/* <div style={gridStyle} className="ag-theme-alpine">
 					<AgGridReact
 						ref={gridRef}
 						rowData={rowData}
@@ -609,6 +588,66 @@ function ReportsProfitAndLoss() {
 						onFirstDataRendered={onFirstDataRendered}
 						// gridOptions={gridOptions}
 					></AgGridReact>
+				</div> */}
+				<div className="table-container">
+					<table className="custom-table">
+						<thead style={{ height: "60px", background: "#F1F8FB" }}>
+							<tr>
+							
+							
+								<th colSpan="8">Account</th>
+								<th colSpan="8">Debits</th>
+							
+							</tr>
+						</thead>
+						
+						<tbody>
+							{rowData.map((transaction, index) => (
+								<React.Fragment key={index}>
+									<tr
+										key={`${index}-subtype`}
+										style={{ height: "50px", borderBottom: "1px solid  #DDDDDD" }}
+									>
+										<td
+										//  colSpan={2}
+										>
+											<SVGInline
+												// className="overlay-image"
+												svg={showAccountType ? Arrow : ArrowSide} // Use the appropriate icon based on showAccountType
+												alt={"Could not load image!"}
+												onClick={() => setShowAccountType(!showAccountType)} // Toggle showAccountType on click
+											/>
+										</td>
+										<td colSpan={14}>{transaction.accountTypeId}</td>
+									</tr>
+									{showAccountType && (
+										<tr
+											key={`${index}-details`}
+											style={{
+												height: "50px",
+												borderBottom: "1px solid  #DDDDDD",
+												paddingLeft: "7%",
+											}}
+										>
+											<td
+												style={{
+													paddingLeft: "7%",
+												}}
+												colSpan={6}
+											>
+												{transaction.accountSubTypeId}
+											</td>
+											<td
+												colSpan={6}
+											>
+												{transaction.debits}
+											</td>
+										</tr>
+									)}
+								</React.Fragment>
+							))}
+						</tbody>
+					</table>
 				</div>
 			</div>{" "}
 		</div>

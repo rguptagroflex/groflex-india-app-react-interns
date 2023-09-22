@@ -51,6 +51,10 @@
           .time-period-select {
               .date-input {
                   position: relative;
+                  width: 180px;
+    margin: 20px 0 0 20px;
+    border: 1px solid #c4c4c4;
+    border-radius: 4px;
                   
                   .input-icon {
                       position: absolute;
@@ -63,7 +67,7 @@
                  
 
                   .Select-value-label {
-                      padding-left: 18px;
+                      padding-left: 26px;
                   }
               }
           }
@@ -74,13 +78,14 @@
               .dateInput {
                   display: inline-block;
                   border: 1px solid #C4C4C4;
-                //   border-radius: 4px;
+                  border-radius: 4px;
                   margin-left: 20px;
                   width: 120px;
                   padding: 0 5px;
                   
               }
           }
+          
 
           .back-button {
               cursor: pointer;

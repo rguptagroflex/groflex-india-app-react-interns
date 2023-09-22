@@ -998,7 +998,7 @@ class CustomerDetailNewComponent extends React.Component {
 					buttons={topbarButtons}
 				/>
 				<div className="row">
-					<div className="tabs-container" style={{ display: "flex", marginLeft: "10px", marginTop: "30px" }}>
+					<div className="tabs-container" style={{ display: "flex", marginLeft: "-90px", marginTop: "30px" }}>
 						<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
 							<TabsComponent.List>
 								{tabs.map((tab, index) => (
@@ -1057,7 +1057,7 @@ class CustomerDetailNewComponent extends React.Component {
 				<div className="wrap-detail-contact">
 					{activeTab === "Contact Overview" && (
 						<div>
-							<div className="row">
+							<div className="row" style={{ marginLeft: "-100px" }}>
 								<div className="col-xs-3">
 									<CustomerMetadataComponent
 										customer={customer}
@@ -1124,7 +1124,7 @@ class CustomerDetailNewComponent extends React.Component {
 											<CustomerContactInformationComponent customer={customer} />
 										</div>
 									</div>
-									<div className="row u_mt_16 u_ml_12" style={{ width: "780px" }}>
+									<div className="row u_mt_16" style={{ width: "822px" }}>
 										<div className="col-xs-12 detail-wrap-column ">
 											<div className=" customer-sales-chart u_p_16">
 												<div className="row">
@@ -1293,7 +1293,7 @@ class CustomerDetailNewComponent extends React.Component {
 						</div>
 					)}
 					{activeTab === "Activities" && (
-						<div className="row" style={{ marginTop: "-50%", width: "95%", marginLeft: "-50px" }}>
+						<div className="row" style={{ marginTop: "-50%", width: "100%", marginLeft: "-190px" }}>
 							<div className="col-xs-12 detail-wrap">
 								<CustomerHistoryListWrapper
 									customer={customer}
