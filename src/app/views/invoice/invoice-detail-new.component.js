@@ -616,7 +616,8 @@ class InvoiceDetailNewComponent extends React.Component {
 		const handlePages = (page) => {
 			if (wrapper) {
 				const canvas = document.createElement("canvas");
-				canvas.width = wrapper.getBoundingClientRect().width;
+				// canvas.width = wrapper.getBoundingClientRect().width;
+				canvas.width = "658";
 				const context = canvas.getContext("2d");
 				const viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
 				canvas.height = viewport.height;
@@ -1853,6 +1854,7 @@ class InvoiceDetailNewComponent extends React.Component {
 								if (index === 0) return;
 								return (
 									<div
+										key={`invoice-info-item-${index}`}
 										style={{ color: item.headline === "payment overdue" ? "#FFAA2C" : null }}
 										className="date-of-invoice-container font-14px"
 									>

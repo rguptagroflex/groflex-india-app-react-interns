@@ -26,6 +26,8 @@ import { format } from "util";
 import { Link } from "react-router-dom";
 
 import userPermissions from "enums/user-permissions.enum";
+import abbreviationDateFormat from "../../helpers/abbreviationDateFormat";
+import { capitalize } from "lodash";
 
 const createTopbarDropdown = (offer, resources) => {
 	const items = [];
@@ -473,7 +475,8 @@ class OfferDetailComponent extends React.Component {
 						const handlePages = (page) => {
 							const wrapper = document.getElementById("invoice-detail-pdf-wrapper");
 							const canvas = document.createElement("canvas");
-							canvas.width = "925";
+							// canvas.width = "925";
+							canvas.width = "658";
 							const context = canvas.getContext("2d");
 							const viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
 							canvas.height = viewport.height;
@@ -647,7 +650,7 @@ class OfferDetailComponent extends React.Component {
 									}%0D%0AMit%20freundlichen%20Grüßen%0D%0A`}
 									className="icon icon-rounded icon-mail"
 								/>
- 							*/}
+							*/}
 							<a
 								href={`mailto:?subject=${resources.str_offerNumber}%20${this.state.offer.number}&body=${
 									this.state.offerTexts && this.state.offerTexts.email
@@ -670,6 +673,11 @@ class OfferDetailComponent extends React.Component {
 				/>
 			</div>
 		);
+
+		// console.log(headContents, "HEAD CONTENTS");
+		console.log(timelineEntries, "TIMELINE ENTRIES");
+		let newTimelineEntries = timelineEntries.filter((item) => item.done);
+		newTimelineEntries = newTimelineEntries.slice().reverse();
 
 		return (
 			<div className={`offer-detail-wrapper wrapper-has-topbar ${!timelineIsHorizontal ? "viewport-large" : ""}`}>
@@ -697,23 +705,86 @@ class OfferDetailComponent extends React.Component {
 					{/* {timeline} */}
 					{detailHeadContent}
 				</div>
+				<div className="detail-view-content-wrapper">
+					<div className="detail-view-content-left">
+						<div className="detail-view-document">
+							{badge}
+							<img className="detail-view-preview" src="/assets/images/invoice-preview.png" />
+							{images}
+							<div id="invoice-detail-pdf-wrapper" />
+						</div>
+					</div>
 
-				<div className="detail-view-document">
-					{badge}
-					<img className="detail-view-preview" src="/assets/images/invoice-preview.png" />
-					{images}
-					<div id="invoice-detail-pdf-wrapper" />
-				</div>
-
-				<div className="detail-view-box">
-					<NotesComponent
-						heading={resources.str_remarks}
-						data={{ notes: this.state.offer.notes }}
-						onSave={(value) => this.onNotesChange(value.notes)}
-						resources={resources}
-						placeholder={format(resources.defaultCommentsPlaceholderText, resources.str_quotationSmall)}
-						defaultFocus={true}
-					/>
+					<div className="detail-view-content-right">
+						{/* <div className="detail-view-box"> */}
+						<div className="invoice-info u_p_16">
+							<div className="invoice-info-label font-14px">Invoice Amount</div>
+							<h3 className="invoice-amount">{headContents.rightElements[0].value}</h3>
+							<div className="customer-name-container font-14px">
+								<div>Vendor</div>
+								<div className="customer-name">{headContents.leftElements[0].value}</div>
+							</div>
+							{headContents.rightElements.map((item, index) => {
+								if (index === 0) return;
+								return (
+									<div
+										key={`invoice-info-item-${index}`}
+										style={{ color: item.headline === "payment overdue" ? "#FFAA2C" : null }}
+										className="date-of-invoice-container font-14px"
+									>
+										<div>
+											{capitalize(item.headline) === "Quotation date"
+												? "Date of PO"
+												: capitalize(item.headline)}
+										</div>
+										{/* Last element is alway date */}
+										<div
+											className={
+												index === headContents.rightElements.length - 1
+													? "date-of-invoice"
+													: "invoice-info-item"
+											}
+										>
+											{index === headContents.rightElements.length - 1
+												? abbreviationDateFormat(item.value)
+												: item.value}
+										</div>
+									</div>
+								);
+							})}
+						</div>
+						<div className="offer-timeline-container box u_p_16">
+							<div className="text-semibold">Activities: </div>
+							<div className="offer-timeline-content u_pr_20">
+								{newTimelineEntries.map((item, index) => {
+									if (item.dateText) {
+										return (
+											<div key={`offer-timeline-item-${index}`} className="offer-timeline-item">
+												<span className="timeline-date">
+													{abbreviationDateFormat(item.dateText)}
+												</span>
+												<div className={index === 0 ? "greenCircle" : "greyCircleSolid"} />
+												<span className="timeline-text">{item.label}</span>
+											</div>
+										);
+									}
+								})}
+							</div>
+						</div>
+						<div className="detail-view-box box">
+							<NotesComponent
+								heading={resources.str_remarks}
+								data={{ notes: this.state.offer.notes }}
+								onSave={(value) => this.onNotesChange(value.notes)}
+								resources={resources}
+								placeholder={format(
+									resources.defaultCommentsPlaceholderText,
+									resources.str_quotationSmall
+								)}
+								defaultFocus={true}
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 		);
