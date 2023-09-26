@@ -60,7 +60,9 @@
 
 .offer-detail-wrapper {
 	.detail-view-head-container {
-		padding: 25px 20px 30px 20px;
+		// padding: 25px 20px 30px 20px;
+		padding: 25px 20px 50px 20px;
+
 		height: 100%;
 		.detail-view-head-wrapper {
 			display: flex;
@@ -73,6 +75,28 @@
 				display: flex;
 				justify-content: flex-end;
 				width: 658px;
+				.detail-view-head-controls-item {
+					border: 1px solid #c6c6c6;
+					background-color: white;
+					padding: 9px 12px;
+					border-radius: 4px;
+					margin-right: 10px;
+					.icon-arr_down {
+						margin-right: 0;
+					}
+				}
+				#detail-head-print-anchor {
+					margin-right: 0;
+					border-width: 1px 0 1px 1px;
+					border-radius: 4px 0 0 4px;
+					padding: 9px 6px 9px 12px;
+				}
+				#detail-head-print-settings-popover-anchor {
+					margin-right: 0;
+					border-width: 1px 1px 1px 0px;
+					border-radius: 0px 4px 4px 0px;
+					padding: 9px 12px 9px 6px;
+				}
 			}
 		}
 	}

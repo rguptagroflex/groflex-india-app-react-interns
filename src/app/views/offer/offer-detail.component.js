@@ -675,7 +675,7 @@ class OfferDetailComponent extends React.Component {
 		);
 
 		// console.log(headContents, "HEAD CONTENTS");
-		console.log(timelineEntries, "TIMELINE ENTRIES");
+		// console.log(timelineEntries, "TIMELINE ENTRIES");
 		let newTimelineEntries = timelineEntries.filter((item) => item.done);
 		newTimelineEntries = newTimelineEntries.slice().reverse();
 

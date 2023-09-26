@@ -1762,7 +1762,8 @@ class InvoiceDetailNewComponent extends React.Component {
 		const paymentAndDeliveryNoteContent = (
 			<React.Fragment>
 				{paymentTable.rows.length > 0 && (
-					<div className="detail-view-box-new u_mt_40 box">
+					// <div className="detail-view-box-new u_mt_40 box">
+					<div className="detail-view-box-new u_mt_16 box">
 						<ListComponent
 							title="Payments received"
 							columns={paymentTable.columns}

@@ -1,4 +1,8 @@
-import React from "react";
+import React from "react"; 
+import printerOutlined from "../../../assets/images/icons/printerOutlined.svg";
+import shareOutlined from "../../../assets/images/icons/shareOutlined.svg";
+import downloadOutlined from "../../../assets/images/icons/downloadOutlined.svg";
+import SVGInline from "react-svg-inline";
 
 class DetailViewHeadComponent extends React.Component {
 	constructor(props) {
@@ -56,7 +60,17 @@ class DetailViewHeadComponent extends React.Component {
 		});
 
 		this.state.actionElements.forEach((element, index) => {
-			const icon = <div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />;
+			// const icon = <div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />;
+			const icon =
+				element.action === "print" ? (
+					<SVGInline svg={printerOutlined} width="15px" className="vertically-middle" />
+				) : element.action === "email" ? (
+					<SVGInline svg={shareOutlined} width="15px" className="vertically-middle" />
+				) : element.action === "downloadPdf" ? (
+					<SVGInline svg={downloadOutlined} width="15px" className="vertically-middle" />
+				) : (
+					<div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />
+				);
 			actionElements.push(
 				<div
 					id={element.id}
@@ -73,7 +87,7 @@ class DetailViewHeadComponent extends React.Component {
 					) : (
 						<div>
 							{icon}
-							{element.name}
+							<span className="u_ml_6">{element.name}</span>
 						</div>
 					)}
 				</div>
