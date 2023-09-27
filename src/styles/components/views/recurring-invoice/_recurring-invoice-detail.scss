@@ -2,7 +2,6 @@
 @import "../../../abstracts/mixins";
 
 .recurring-invoice-detail-wrapper {
-
 	.detail-view-document {
 		margin: -100px auto 0;
 	}
@@ -64,5 +63,39 @@
 	}
 }
 
+// Design changes
 
-
+.recurring-invoice-detail-wrapper {
+	.detail-view-head-container {
+		height: 100px;
+		padding-top: 10px;
+		.detail-view-head-wrapper {
+			.detail-view-head-infos {
+				display: none;
+			}
+			.detail-view-head-controls {
+				width: 658px;
+				float: unset;
+				.detail-view-head-controls-item {
+					border: 1px solid #c6c6c6;
+					background-color: white;
+					padding: 9px 12px;
+					border-radius: 4px;
+					margin-right: 10px;
+				}
+			}
+		}
+		.recurring-invoice-detail-recipient-wrapper {
+			display: none;
+		}
+	}
+	.detail-view-content-wrapper {
+		.detail-view-content-left {
+			width: 100%;
+			margin-right: 16px;
+			.detail-view-box-new {
+				width: 658px;
+			}
+		}
+	}
+}

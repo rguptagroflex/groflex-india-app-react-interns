@@ -1,4 +1,4 @@
-import React from "react"; 
+import React from "react";
 import printerOutlined from "../../../assets/images/icons/printerOutlined.svg";
 import shareOutlined from "../../../assets/images/icons/shareOutlined.svg";
 import downloadOutlined from "../../../assets/images/icons/downloadOutlined.svg";
@@ -33,6 +33,7 @@ class DetailViewHeadComponent extends React.Component {
 		const leftElements = [];
 		const rightElements = [];
 		const actionElements = [];
+		console.log(this.props.actionElements, "action element in head detail");
 
 		this.state.leftElements.forEach((element, index) => {
 			leftElements.push(
@@ -62,11 +63,11 @@ class DetailViewHeadComponent extends React.Component {
 		this.state.actionElements.forEach((element, index) => {
 			// const icon = <div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />;
 			const icon =
-				element.action === "print" ? (
+				String(element.action).toLowerCase() === "print" ? (
 					<SVGInline svg={printerOutlined} width="15px" className="vertically-middle" />
-				) : element.action === "email" ? (
+				) : String(element.action).toLowerCase() === "email" ? (
 					<SVGInline svg={shareOutlined} width="15px" className="vertically-middle" />
-				) : element.action === "downloadPdf" ? (
+				) : String(element.action).toLowerCase() === "downloadpdf" ? (
 					<SVGInline svg={downloadOutlined} width="15px" className="vertically-middle" />
 				) : (
 					<div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />
@@ -96,11 +97,11 @@ class DetailViewHeadComponent extends React.Component {
 
 		const head = (
 			<div className="detail-view-head-wrapper">
-				{/* <div className="detail-view-head-infos">
+				<div className="detail-view-head-infos">
 					<div className="detail-view-head-left-side">{leftElements}</div>
 
 					<div className="detail-view-head-right-side">{rightElements}</div>
-				</div> */}
+				</div>
 
 				<div className="detail-view-head-controls">{actionElements}</div>
 			</div>

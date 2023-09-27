@@ -61,7 +61,7 @@
 .offer-detail-wrapper {
 	.detail-view-head-container {
 		// padding: 25px 20px 30px 20px;
-		padding: 25px 20px 50px 20px;
+		padding: 20px 20px 50px 20px;
 
 		height: 100%;
 		.detail-view-head-wrapper {
@@ -70,6 +70,9 @@
 			width: 100%;
 			max-width: 1285px;
 			min-width: 920px;
+			.detail-view-head-infos {
+				display: none;
+			}
 			.detail-view-head-controls {
 				top: 0;
 				display: flex;
@@ -83,6 +86,7 @@
 					margin-right: 10px;
 					.icon-arr_down {
 						margin-right: 0;
+						color: $color-primary;
 					}
 				}
 				#detail-head-print-anchor {
