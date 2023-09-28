@@ -33,7 +33,7 @@ class DetailViewHeadComponent extends React.Component {
 		const leftElements = [];
 		const rightElements = [];
 		const actionElements = [];
-		console.log(this.props.actionElements, "action element in head detail");
+		// console.log(this.props.actionElements, "action element in head detail");
 
 		this.state.leftElements.forEach((element, index) => {
 			leftElements.push(
