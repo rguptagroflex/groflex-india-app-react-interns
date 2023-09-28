@@ -7,7 +7,7 @@
 		font-size: 22px;
 		font-weight: 600;
 	}
-	
+
 	.headline {
 		margin: 22px 0 20px 0;
 		font-weight: 600;
@@ -20,6 +20,7 @@
 	.checkbox_label {
 		padding-left: 8px;
 		white-space: nowrap;
+		color: #272d30;
 	}
 
 	.reset-controls {
@@ -33,9 +34,9 @@
 			cursor: pointer;
 			display: inline-block;
 		}
-		
+
 		.form_input {
-			.checkbox_label  {
+			.checkbox_label {
 				padding-top: 2px;
 				font-size: 12px;
 			}
@@ -49,11 +50,22 @@
 		.checkbox-col {
 			display: flex;
 			flex-direction: column;
-	
+
 			.form_input {
 				height: 40px;
 				margin-right: 14px;
 			}
+		}
+	}
+	.modal-base-footer {
+		display: flex;
+		// flex-direction: row-reverse;
+		gap: 16px;
+		.modal-base-confirm {
+			float: none;
+		}
+		.modal-base-cancel {
+			float: none;
 		}
 	}
 }

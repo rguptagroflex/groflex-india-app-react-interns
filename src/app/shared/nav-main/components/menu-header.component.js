@@ -79,9 +79,9 @@ class MenuHeaderComponent extends React.Component {
 				{adminIndicator}
 				<div className="menuHeader_logo">
 					<Link className={`logo`} to="/">
-						<SVGInline width="138px" height="50px" svg={groflexLogo} />
+						{/* <SVGInline width="138px" height="50px" svg={groflexLogo} /> */}
 						{/* <div className="icon icon-groflex_short_icon" /> */}
-						{/* <img src={imprezzLogoSmall} alt="BigCo Inc. logo" height="24px" width="30px" /> */}
+						<img src={imprezzLogoSmall} alt="BigCo Inc. logo" height="24px" width="30px" />
 					</Link>
 					<Link className={`logo`} to="/">
 						<div className="imprezz-small-image-div">

@@ -2,7 +2,6 @@
 @import "../../../abstracts/mixins";
 
 .recurring-invoice-detail-wrapper {
-
 	.detail-view-document {
 		margin: -100px auto 0;
 	}
@@ -64,5 +63,9 @@
 	}
 }
 
-
-
+.alignRecurringLeft {
+	left: 271px;
+	position: absolute;
+	right: 32px;
+	margin-top: -21px;
+}

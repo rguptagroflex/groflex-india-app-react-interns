@@ -211,7 +211,7 @@ const config = {
 		// 			url: '/inventory', //url: '/inventory/stock-movement',
 		// 			mainSubmenuItem: 'inventory',
 		// 			resourceKey: 'stockMovement'
-		// 		}				
+		// 		}
 		// 	]
 		// },
 		// {
@@ -341,7 +341,7 @@ const config = {
 		},
 		// { name: 'expenses', icon: 'expense', title: 'Ausgaben', url: '/expenses', resourceKey: 'expense' },
 		// { name: 'purchaseOrders', icon: 'order', title: 'Purchase Orders', url: '/purchase-orders', resourceKey: 'purchaseOrder' },
-		
+
 		// {
 		// 	name: "teamMembers",
 		// 	icon: "user_user",

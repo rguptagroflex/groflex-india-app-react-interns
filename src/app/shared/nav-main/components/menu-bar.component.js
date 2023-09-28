@@ -70,13 +70,13 @@ class MenuBarComponent extends React.Component {
 						this.refs &&
 						this.refs[`menuItemWithSubmenu-${menuItem.name}`]
 					) {
-						this.refs[`menuItemWithSubmenu-${menuItem.name}`].showSubmenu(null, false, true);
+						// this.refs[`menuItemWithSubmenu-${menuItem.name}`].showSubmenu(null, false, true);
 					} else if (
 						menuItem.name !== activeItem &&
 						this.refs &&
 						this.refs[`menuItemWithSubmenu-${menuItem.name}`]
 					) {
-						this.refs[`menuItemWithSubmenu-${menuItem.name}`].hideSubmenu(isMenuItemWithSubmenuActive);
+						// this.refs[`menuItemWithSubmenu-${menuItem.name}`].hideSubmenu(isMenuItemWithSubmenuActive);
 					}
 				}
 			});
@@ -240,6 +240,8 @@ class MenuBarComponent extends React.Component {
 						{...menuItemData}
 						resources={resources}
 						permissions={permissions}
+
+						// activeName={activeItem}
 					/>
 				);
 			}

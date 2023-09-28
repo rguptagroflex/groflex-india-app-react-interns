@@ -50,6 +50,8 @@
 	.icon {
 		&:before {
 			padding-top: 6px !important;
+			fill: none;
+			color: #888787;
 		}
 	}
 
@@ -106,9 +108,11 @@
 
 			&:hover {
 				color: $color-menu-hover !important; //$color-white
+				// color: red;
 
 				&::before {
-					color: $color-menu-hover !important; //$color-white
+					// color: $color-menu-hover !important; //$color-white
+					color: #00a353;
 				}
 			}
 		}

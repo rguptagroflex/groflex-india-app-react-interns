@@ -1,30 +1,30 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import config from 'config';
-import moment from 'moment';
-import { createDetailViewInvoiceListObjects } from 'helpers/invoice/createDetailViewInvoiceListObjects';
-import RecurringInvoiceAction from 'enums/recurring-invoice/recurring-invoice-action.enum';
-import ListComponent from 'shared/list/list.component';
-import NotesComponent from 'shared/notes/notes.component';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import DetailViewHeadComponent from 'shared/detail-view/detail-view-head.component';
-import { copyAndEditTransaction } from 'helpers/transaction/copyAndEditTransaction';
-import ButtonComponent from 'shared/button/button.component';
-import { formatCurrency } from 'helpers/formatCurrency';
-import RecurringInvoiceState from 'enums/recurring-invoice/recurring-invoice-state.enum';
-import ModalService from 'services/modal.service';
-import { updateSubscriptionDetails } from 'helpers/updateSubsciptionDetails';
-import { handleTransactionErrors } from 'helpers/errors';
-import { printPdf } from 'helpers/printPdf';
-import { downloadPdf } from 'helpers/downloadPdf';
-import LoadingService from 'services/loading.service';
-import { errorCodes } from 'helpers/constants';
-import { Link } from 'react-router-dom';
-import InvoiceAction from 'enums/invoice/invoice-action.enum';
-import { formatApiDate } from 'helpers/formatDate';
-import { format } from 'util';
-
-import userPermissions from 'enums/user-permissions.enum';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import config from "config";
+import moment from "moment";
+import { createDetailViewInvoiceListObjects } from "helpers/invoice/createDetailViewInvoiceListObjects";
+import RecurringInvoiceAction from "enums/recurring-invoice/recurring-invoice-action.enum";
+import ListComponent from "shared/list/list.component";
+import NotesComponent from "shared/notes/notes.component";
+import TopbarComponent from "shared/topbar/topbar.component";
+import DetailViewHeadComponent from "shared/detail-view/detail-view-head.component";
+import { copyAndEditTransaction } from "helpers/transaction/copyAndEditTransaction";
+import ButtonComponent from "shared/button/button.component";
+import { formatCurrency } from "helpers/formatCurrency";
+import RecurringInvoiceState from "enums/recurring-invoice/recurring-invoice-state.enum";
+import ModalService from "services/modal.service";
+import { updateSubscriptionDetails } from "helpers/updateSubsciptionDetails";
+import { handleTransactionErrors } from "helpers/errors";
+import { printPdf } from "helpers/printPdf";
+import { downloadPdf } from "helpers/downloadPdf";
+import LoadingService from "services/loading.service";
+import { errorCodes } from "helpers/constants";
+import { Link } from "react-router-dom";
+import InvoiceAction from "enums/invoice/invoice-action.enum";
+import { formatApiDate } from "helpers/formatDate";
+import { format } from "util";
+import { connect, Provider } from "react-redux";
+import userPermissions from "enums/user-permissions.enum";
 
 const createTopbarButtons = (recInvoice, resources) => {
 	const buttons = [];
@@ -32,28 +32,28 @@ const createTopbarButtons = (recInvoice, resources) => {
 	switch (recInvoice.state) {
 		case RecurringInvoiceState.DRAFT:
 			buttons.push({
-				type: 'default',
+				type: "default",
 				label: resources.str_toEdit,
-				buttonIcon: 'icon-edit2',
+				buttonIcon: "icon-edit2",
 				action: RecurringInvoiceAction.EDIT,
-				dataQsId: 'recurringInvoiceDetail-topbar-btn-edit'
+				dataQsId: "recurringInvoiceDetail-topbar-btn-edit",
 			});
 			buttons.push({
-				type: 'primary',
+				type: "primary",
 				label: resources.str_startSubscription,
-				buttonIcon: 'icon-reload',
+				buttonIcon: "icon-reload",
 				action: RecurringInvoiceAction.START_SUBSCRIPTION,
-				dataQsId: 'recurringInvoiceDetail-topbar-btn-start'
+				dataQsId: "recurringInvoiceDetail-topbar-btn-start",
 			});
 			break;
 
 		case RecurringInvoiceState.STARTED:
 			buttons.push({
-				type: 'primary',
+				type: "primary",
 				label: resources.str_endSubscription,
-				buttonIcon: 'icon-close',
+				buttonIcon: "icon-close",
 				action: RecurringInvoiceAction.END_SUBSCRIPTION,
-				dataQsId: 'recurringInvoiceDetail-topbar-btn-close'
+				dataQsId: "recurringInvoiceDetail-topbar-btn-close",
 			});
 			break;
 	}
@@ -70,13 +70,13 @@ const createTopbarDropdown = (recInvoice, resources) => {
 				{
 					label: resources.str_copy_edit,
 					action: RecurringInvoiceAction.COPY_AND_EDIT,
-					dataQsId: 'recurringInvoice-topbar-popoverItem-copyAndEdit'
+					dataQsId: "recurringInvoice-topbar-popoverItem-copyAndEdit",
 				},
 				{
 					label: resources.str_clear,
 					action: RecurringInvoiceAction.DELETE,
-					dataQsId: 'recurringInvoice-topbar-popoverItem-delete'
-				}
+					dataQsId: "recurringInvoice-topbar-popoverItem-delete",
+				},
 			]);
 			break;
 
@@ -85,8 +85,8 @@ const createTopbarDropdown = (recInvoice, resources) => {
 				{
 					label: resources.str_copy_edit,
 					action: RecurringInvoiceAction.COPY_AND_EDIT,
-					dataQsId: 'recurringInvoice-topbar-popoverItem-copyAndEdit'
-				}
+					dataQsId: "recurringInvoice-topbar-popoverItem-copyAndEdit",
+				},
 			]);
 			break;
 
@@ -95,8 +95,8 @@ const createTopbarDropdown = (recInvoice, resources) => {
 				{
 					label: resources.str_copy_edit,
 					action: InvoiceAction.COPY_AND_EDIT,
-					dataQsId: 'recurringInvoice-topbar-popoverItem-copyAndEdit'
-				}
+					dataQsId: "recurringInvoice-topbar-popoverItem-copyAndEdit",
+				},
 			]);
 			break;
 	}
@@ -108,23 +108,23 @@ const createDetailViewHeadObjects = (recInvoice, activeAction, resources) => {
 	const object = {
 		leftElements: [],
 		rightElements: [],
-		actionElements: []
+		actionElements: [],
 	};
 
 	object.actionElements.push(
 		{
 			name: resources.str_pdf,
-			icon: 'icon-pdf',
+			icon: "icon-pdf",
 			action: RecurringInvoiceAction.DOWNLOAD_PDF,
 			actionActive: activeAction === RecurringInvoiceAction.DOWNLOAD_PDF,
-			dataQsId: 'recurringInvoice-head-action-downloadPdf'
+			dataQsId: "recurringInvoice-head-action-downloadPdf",
 		},
 		{
 			name: resources.str_print,
-			icon: 'icon-print2',
+			icon: "icon-print2",
 			action: RecurringInvoiceAction.PRINT,
 			actionActive: activeAction === RecurringInvoiceAction.PRINT,
-			dataQsId: 'recurringInvoice-head-action-print'
+			dataQsId: "recurringInvoice-head-action-print",
 		}
 	);
 
@@ -132,7 +132,7 @@ const createDetailViewHeadObjects = (recInvoice, activeAction, resources) => {
 
 	object.leftElements.push({
 		headline: resources.str_customer,
-		value: <Link to={'/customer/' + customerId}>{recInvoice.name}</Link>
+		value: <Link to={"/customer/" + customerId}>{recInvoice.name}</Link>,
 	});
 
 	const totalGross = recInvoice.template.invoice.totalGross;
@@ -141,19 +141,19 @@ const createDetailViewHeadObjects = (recInvoice, activeAction, resources) => {
 	object.rightElements.push(
 		{
 			headline: resources.str_amount,
-			value: amount
+			value: amount,
 		},
 		{
 			headline: resources.str_aboStart,
-			value: recInvoice.displayStartDate
+			value: recInvoice.displayStartDate,
 		},
 		{
 			headline: resources.str_repeat,
-			value: recInvoice.displayRecurrence
+			value: recInvoice.displayRecurrence,
 		},
 		{
 			headline: resources.str_next,
-			value: recInvoice.displayNextDate
+			value: recInvoice.displayNextDate,
 		}
 	);
 
@@ -163,12 +163,14 @@ const createDetailViewHeadObjects = (recInvoice, activeAction, resources) => {
 const createTopbarPermissionButtons = (topbarButtons, permissions, resources) => {
 	const { canUpdateRecurringInvoice, canStartRecurringInvoice, canFinishRecurringInvoice } = permissions;
 	if (canUpdateRecurringInvoice && canStartRecurringInvoice) {
-		topbarButtons.filter(btn => btn.label === resources.str_toEdit && btn.label === resources.str_startSubscription);
+		topbarButtons.filter(
+			(btn) => btn.label === resources.str_toEdit && btn.label === resources.str_startSubscription
+		);
 		return topbarButtons;
 	}
 
 	if (canFinishRecurringInvoice) {
-		topbarButtons.filter(btn => btn.label === resources.str_endSubscription);
+		topbarButtons.filter((btn) => btn.label === resources.str_endSubscription);
 		return topbarButtons;
 	}
 };
@@ -193,8 +195,17 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			canDeleteRecurringInvoice: null,
 			canViewRecurringInvoice: null,
 			canStartRecurringInvoice: null,
-			canFinishRecurringInvoice: null
+			canFinishRecurringInvoice: null,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentDidMount() {
@@ -206,42 +217,58 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			canPrintInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.PRINT_INVOICE),
 			canSendInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.SEND_INVOICE),
 			canCopyInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.COPY_LINK_INVOICE),
-			canCreateRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_RECURRING_INVOICE),
-			canDeleteRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_RECURRING_INVOICE),
-			canUpdateRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_RECURRING_INVOICE),
+			canCreateRecurringInvoice:
+				invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_RECURRING_INVOICE),
+			canDeleteRecurringInvoice:
+				invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_RECURRING_INVOICE),
+			canUpdateRecurringInvoice:
+				invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_RECURRING_INVOICE),
 			canViewRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_RECURRING_INVOICE),
 			canStartRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.START_RECURRING_INVOICE),
-			canFinishRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.FINISH_RECURRING_INVOICE)
+			canFinishRecurringInvoice:
+				invoiz.user && invoiz.user.hasPermission(userPermissions.FINISH_RECURRING_INVOICE),
 		});
 	}
 
 	render() {
 		const { resources } = this.props;
-		const { canCopyInvoice, canDownloadInvoice, canPrintInvoice, canSendInvoice, canStartRecurringInvoice, canUpdateRecurringInvoice, canDeleteRecurringInvoice } = this.state;
+		const {
+			canCopyInvoice,
+			canDownloadInvoice,
+			canPrintInvoice,
+			canSendInvoice,
+			canStartRecurringInvoice,
+			canUpdateRecurringInvoice,
+			canDeleteRecurringInvoice,
+			submenuVisible,
+		} = this.state;
 		const topbarButtons = createTopbarButtons(this.state.recInvoice, resources);
 		const topbarPermittedButtons = createTopbarPermissionButtons(topbarButtons, this.state, resources);
 		const topbarDropdownItems = createTopbarDropdown(this.state.recInvoice, resources);
 		const activeAction = this.state.downloading
 			? RecurringInvoiceAction.DOWNLOAD_PDF
 			: this.state.printing
-				? RecurringInvoiceAction.PRINT
-				: null;
+			? RecurringInvoiceAction.PRINT
+			: null;
 		const headContents = createDetailViewHeadObjects(this.state.recInvoice, activeAction, resources);
 		const invoicesTable = createDetailViewInvoiceListObjects(this.state.recInvoice.invoices);
 
-		const detailHeadContent = (
-			 (canSendInvoice && canDownloadInvoice && canCopyInvoice && canPrintInvoice) ? <DetailViewHeadComponent
-				controlActionCallback={action => this.onHeadControlClick(action)}
-				actionElements={headContents.actionElements}
-				leftElements={headContents.leftElements}
-				rightElements={headContents.rightElements}
-			/> : <DetailViewHeadComponent
-				controlActionCallback={action => this.onHeadControlClick(action)}
-				// actionElements={headContents.actionElements}
-				leftElements={headContents.leftElements}
-				rightElements={headContents.rightElements}
-			/>
-		);
+		const detailHeadContent =
+			canSendInvoice && canDownloadInvoice && canCopyInvoice && canPrintInvoice ? (
+				<DetailViewHeadComponent
+					controlActionCallback={(action) => this.onHeadControlClick(action)}
+					actionElements={headContents.actionElements}
+					leftElements={headContents.leftElements}
+					rightElements={headContents.rightElements}
+				/>
+			) : (
+				<DetailViewHeadComponent
+					controlActionCallback={(action) => this.onHeadControlClick(action)}
+					// actionElements={headContents.actionElements}
+					leftElements={headContents.leftElements}
+					rightElements={headContents.rightElements}
+				/>
+			);
 
 		let emptyFallbackElement = null;
 
@@ -250,7 +277,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 				<div>
 					<h3>{resources.recurringStartNow}</h3>
 					<ButtonComponent
-						buttonIcon={'icon-reload'}
+						buttonIcon={"icon-reload"}
 						label={resources.str_startSubscription}
 						callback={() => this.startSubscription()}
 						disabled={!canStartRecurringInvoice}
@@ -259,72 +286,77 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			);
 		}
 
-		return (
-			<div className="recurring-invoice-detail-wrapper wrapper-has-topbar">
-				{ canUpdateRecurringInvoice && canDeleteRecurringInvoice ? <TopbarComponent
-					title={resources.str_subscriptionAccount}
-					buttonCallback={(event, button) => this.handleTopbarButtonClick(event, button)}
-					backButtonRoute={'invoices/recurringInvoice'}
-					dropdownEntries={topbarDropdownItems.length > 0 ? topbarDropdownItems : null}
-					dropdownCallback={entry => this.handleTopbarDropdownClick(entry)}
-					buttons={topbarPermittedButtons}
-				/> : <TopbarComponent
-				title={resources.str_subscriptionAccount}
-				buttonCallback={(event, button) => this.handleTopbarButtonClick(event, button)}
-				backButtonRoute={'invoices/recurringInvoice'}
-				buttons={topbarPermittedButtons}
-			/> }				
+		const classLeft = submenuVisible ? "alignRecurringLeft" : "";
 
+		return (
+			<div className={`recurring-invoice-detail-wrapper wrapper-has-topbar ${classLeft}`}>
+				{canUpdateRecurringInvoice && canDeleteRecurringInvoice ? (
+					<TopbarComponent
+						title={resources.str_subscriptionAccount}
+						buttonCallback={(event, button) => this.handleTopbarButtonClick(event, button)}
+						backButtonRoute={"invoices/recurringInvoice"}
+						dropdownEntries={topbarDropdownItems.length > 0 ? topbarDropdownItems : null}
+						dropdownCallback={(entry) => this.handleTopbarDropdownClick(entry)}
+						buttons={topbarPermittedButtons}
+					/>
+				) : (
+					<TopbarComponent
+						title={resources.str_subscriptionAccount}
+						buttonCallback={(event, button) => this.handleTopbarButtonClick(event, button)}
+						backButtonRoute={"invoices/recurringInvoice"}
+						buttons={topbarPermittedButtons}
+					/>
+				)}
 				<div className="detail-view-head-container">
 					{detailHeadContent}
 
 					<div className="recurring-invoice-detail-recipient-wrapper">
 						<div className="recurring-invoice-detail-recipient">
-						<span class="icon icon-mail"></span><span>{resources.str_willBeSentOn}:</span> {this.state.recInvoice.recipient}
+							<span class="icon icon-mail"></span>
+							<span>{resources.str_willBeSentOn}:</span> {this.state.recInvoice.recipient}
 						</div>
 					</div>
 				</div>
-
-				<div className="detail-view-document" style={{ visibility: 'hidden' }} />
+				<div className="detail-view-document" style={{ visibility: "hidden" }} />
 				<div className="detail-view-content-wrapper">
 					<div className="detail-view-content-left">
-					<div className="detail-view-box-new u_mt_20">
-					<ListComponent
-						title={resources.str_createdBills}
-						clickable={true}
-						rowCallback={id => this.onInvoiceRowClick(id)}
-						columns={invoicesTable.columns}
-						rows={invoicesTable.rows}
-						placeholderRow={{
-							cells: [
-								{ value: resources.str_automAward },
-								{ value: this.state.recInvoice.displayStartDate },
-								{ value: resources.str_draft },
-								{ value: formatCurrency(this.state.recInvoice.template.invoice.totalGross) }
-							]
-						}}
-						emptyFallbackElement={emptyFallbackElement}
-						tableId={`invoices`}
-						resources={resources}
-					/>
-					</div>
+						<div className="detail-view-box-new u_mt_20">
+							<ListComponent
+								title={resources.str_createdBills}
+								clickable={true}
+								rowCallback={(id) => this.onInvoiceRowClick(id)}
+								columns={invoicesTable.columns}
+								rows={invoicesTable.rows}
+								placeholderRow={{
+									cells: [
+										{ value: resources.str_automAward },
+										{ value: this.state.recInvoice.displayStartDate },
+										{ value: resources.str_draft },
+										{ value: formatCurrency(this.state.recInvoice.template.invoice.totalGross) },
+									],
+								}}
+								emptyFallbackElement={emptyFallbackElement}
+								tableId={`invoices`}
+								resources={resources}
+							/>
+						</div>
 					</div>
 					<div className="detail-view-content-right">
-					<div className="detail-view-box-new u_mt_20">
-					<NotesComponent
-						heading={resources.str_remarks}
-						data={{ notes: this.state.recInvoice.notes }}
-						onSave={value => this.onNotesChange(value.notes)}
-						resources={resources}
-						placeholder={format(resources.defaultCommentsPlaceholderText, resources.str_recurringInvoiceSmall)}
-						defaultFocus={true}
-					/>
-				</div>
+						<div className="detail-view-box-new u_mt_20">
+							<NotesComponent
+								heading={resources.str_remarks}
+								data={{ notes: this.state.recInvoice.notes }}
+								onSave={(value) => this.onNotesChange(value.notes)}
+								resources={resources}
+								placeholder={format(
+									resources.defaultCommentsPlaceholderText,
+									resources.str_recurringInvoiceSmall
+								)}
+								defaultFocus={true}
+							/>
+						</div>
 					</div>
 				</div>
-				
-
-				
 			</div>
 		);
 	}
@@ -339,13 +371,13 @@ class RecurringInvoiceDetailComponent extends React.Component {
 							`${config.resourceHost}invoice/${this.state.recInvoice.template.invoice.id}/document`,
 							{
 								auth: true,
-								method: 'POST',
+								method: "POST",
 								data: {
-									isPrint: false
-								}
+									isPrint: false,
+								},
 							}
 						)
-						.then(response => {
+						.then((response) => {
 							const { path } = response.body.data;
 							downloadPdf({
 								pdfUrl: config.imageResourceHost + path,
@@ -353,7 +385,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 								isPost: false,
 								callback: () => {
 									this.setState({ downloading: false });
-								}
+								},
 							});
 						});
 				});
@@ -366,20 +398,20 @@ class RecurringInvoiceDetailComponent extends React.Component {
 							`${config.resourceHost}invoice/${this.state.recInvoice.template.invoice.id}/document`,
 							{
 								auth: true,
-								method: 'POST',
+								method: "POST",
 								data: {
-									isPrint: true
-								}
+									isPrint: true,
+								},
 							}
 						)
-						.then(response => {
+						.then((response) => {
 							const { path } = response.body.data;
 							printPdf({
 								pdfUrl: config.imageResourceHost + path,
 								isPost: false,
 								callback: () => {
 									this.setState({ printing: false });
-								}
+								},
 							});
 						});
 				});
@@ -390,10 +422,10 @@ class RecurringInvoiceDetailComponent extends React.Component {
 	onNotesChange(notes) {
 		invoiz.request(`${config.recurringInvoice.resourceUrl}/${this.state.recInvoice.id}/notes`, {
 			auth: true,
-			method: 'PUT',
+			method: "PUT",
 			data: {
-				notes
-			}
+				notes,
+			},
 		});
 	}
 
@@ -415,7 +447,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			},
 			onCopyError: () => {
 				LoadingService.hide();
-			}
+			},
 		});
 	}
 
@@ -425,28 +457,28 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			headline: resources.recurringDeleteInvoiceText,
 			cancelLabel: resources.str_abortStop,
 			confirmLabel: resources.str_clear,
-			confirmIcon: 'icon-trashcan',
-			confirmButtonType: 'secondary',
+			confirmIcon: "icon-trashcan",
+			confirmButtonType: "secondary",
 			onConfirm: () => {
 				invoiz
 					.request(`${config.offer.resourceUrl}/${this.state.recInvoice.id}`, {
 						auth: true,
-						method: 'DELETE'
+						method: "DELETE",
 					})
 					.then(() => {
 						ModalService.close();
 						invoiz.showNotification(resources.recurringDeleteSuccessMessage);
-						invoiz.router.navigate('/invoices/recurringInvoice');
+						invoiz.router.navigate("/invoices/recurringInvoice");
 					})
-					.catch(xhr => {
+					.catch((xhr) => {
 						if (xhr) {
 							invoiz.showNotification({
-								type: 'error',
-								message: resources.defaultErrorMessage
+								type: "error",
+								message: resources.defaultErrorMessage,
 							});
 						}
 					});
-			}
+			},
 		});
 	}
 
@@ -465,14 +497,14 @@ class RecurringInvoiceDetailComponent extends React.Component {
 		ModalService.open(resources.recurringLockModalContentText, {
 			headline: resources.recurringLockModalHeading,
 			confirmLabel: resources.str_startNow,
-			confirmIcon: 'icon-check',
+			confirmIcon: "icon-check",
 			cancelLabel: resources.str_abortStop,
 			loadingOnConfirmUntilClose: true,
 			onConfirm: () => {
 				invoiz
 					.request(`${config.recurringInvoice.resourceUrl}/${this.state.recInvoice.id}/start`, {
 						auth: true,
-						method: 'PUT'
+						method: "PUT",
 					})
 					.then(() => {
 						ModalService.close();
@@ -480,18 +512,18 @@ class RecurringInvoiceDetailComponent extends React.Component {
 						invoiz.page.showToast({ message: resources.recurringInvoiceStartSuccessMessage });
 					})
 					.then(updateSubscriptionDetails())
-					.catch(error => {
+					.catch((error) => {
 						ModalService.close();
 						if (error.body.meta.number && error.body.meta.number[0].code === errorCodes.TOO_MANY) {
 							invoiz.page.showToast({
-								type: 'error',
-								message: resources.invoiceNumberRangeExceedMessage
+								type: "error",
+								message: resources.invoiceNumberRangeExceedMessage,
 							});
 							return;
 						}
 						handleTransactionErrors(error.body.meta);
 					});
-			}
+			},
 		});
 	}
 
@@ -518,30 +550,30 @@ class RecurringInvoiceDetailComponent extends React.Component {
 				width: 500,
 				headline: resources.recurringFinishConfirmCaption,
 				cancelLabel: resources.str_abortStop,
-				confirmIcon: 'icon-check',
+				confirmIcon: "icon-check",
 				confirmLabel: resources.str_breakUp,
-				confirmButtonType: 'secondary',
+				confirmButtonType: "secondary",
 				onConfirm: () => {
 					ModalService.close();
 					invoiz
 						.request(`${config.recurringInvoice.resourceUrl}/${this.state.recInvoice.id}/finish`, {
 							auth: true,
-							method: 'PUT'
+							method: "PUT",
 						})
 						.then(() => {
 							updateSubscriptionDetails();
 							invoiz.router.reload();
 							invoiz.page.showToast({ message: resources.recurringInvoiceFinishSuccessMessage });
 						})
-						.catch(xhr => {
+						.catch((xhr) => {
 							if (xhr) {
 								invoiz.page.showToast({
-									type: 'error',
-									message: resources.recurringInvoiceFinishErrorMessage
+									type: "error",
+									message: resources.recurringInvoiceFinishErrorMessage,
 								});
 							}
 						});
-				}
+				},
 			}
 		);
 	}
@@ -579,4 +611,15 @@ class RecurringInvoiceDetailComponent extends React.Component {
 	}
 }
 
-export default RecurringInvoiceDetailComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(RecurringInvoiceDetailComponent);
+
+// export default RecurringInvoiceDetailComponent;

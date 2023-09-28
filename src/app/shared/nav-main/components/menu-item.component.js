@@ -6,9 +6,12 @@ const MenuItemComponent = (props) => {
 	const { name, url, icon, active, submenuVisible, resourceKey, resources } = props;
 
 	const iconClass = `icon icon-${icon}`;
+	// console.log("Icon: ", icon);
+
 	const activeClass = active ? "menuItem-active" : "";
 	const submenuVisibleClass = submenuVisible ? "menuItem-notFocused" : "";
 	const className = `menuItem ${iconClass} ${activeClass} ${submenuVisibleClass}`;
+	// const className = `menuItem  ${activeClass} ${submenuVisibleClass}`;
 
 	const navigateToPage = (url) => {
 		invoiz.trigger("updateNewsfeedCount");
@@ -20,7 +23,8 @@ const MenuItemComponent = (props) => {
 		// }
 		invoiz.router.navigate(url);
 	};
-
+	// console.log(menuIcons[icon]);
+	console.log(icon);
 	return (
 		<a
 			className={className}
@@ -28,8 +32,7 @@ const MenuItemComponent = (props) => {
 			data-href={url}
 			data-qs-id={`global-menu-item-${name}`}
 		>
-			{resources.menuItems[resourceKey]}
-			{/* <span className="collapsed-title">{resources.menuItems[resourceKey]}</span> */}
+			{/* <SVGInline svg={menuIcons[icon]} width="24px" height="24px" /> */}
 		</a>
 	);
 };

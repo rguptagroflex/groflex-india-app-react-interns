@@ -55,6 +55,7 @@ class TransactionsListComponent extends React.Component {
 			canCreateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CUSTOMER),
 			canUpdateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_CUSTOMER),
 			canDeleteCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_CUSTOMER),
+			submenuVisible: this.props.isSubmenuVisible,
 		};
 	}
 
@@ -89,6 +90,13 @@ class TransactionsListComponent extends React.Component {
 
 	componentWillUnmount() {
 		this.isUnmounted = true;
+	}
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	createTopbar() {
@@ -249,9 +257,10 @@ class TransactionsListComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, transactions } = this.state;
+		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, transactions, submenuVisible } = this.state;
+		const classLeft = submenuVisible ? "alignLeftContent" : "";
 		return (
-			<div className="transaction-list-component-wrapper">
+			<div className={`transaction-list-component-wrapper ${classLeft}`}>
 				{this.createTopbar()}
 
 				<div className="transaction-list-wrapper">
@@ -364,9 +373,9 @@ class TransactionsListComponent extends React.Component {
 								filter: "agSetColumnFilter",
 								...ListAdvancedDefaultSettings.TEXT_FILTER_OPTIONS,
 								cellRenderer: (evt) => {
-									if (evt.value == 'invoice') {
+									if (evt.value == "invoice") {
 										return "Invoice";
-									} else if (evt.value == 'expense') {
+									} else if (evt.value == "expense") {
 										return "Expense";
 									}
 								},
@@ -610,9 +619,18 @@ class TransactionsListComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 	return {
 		resources,
+		isSubmenuVisible,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
 	};
 };
 
-export default connect(mapStateToProps)(TransactionsListComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsListComponent);

@@ -1,17 +1,19 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import PropTypes from 'prop-types';
+import invoiz from "services/invoiz.service";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { submenuVisible } from "../../../redux/ducks/global";
+const SubmenuItemComponent = ({ url, active, name, resourceKey, resources, submenuVisible }) => {
+	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
-const SubmenuItemComponent = ({ url, active, name, resourceKey, resources }) => {
-	const className = `submenuItem ${active ? 'submenuItem-active' : ''}`;
-
-	const navigateToPage = url => {
+	const navigateToPage = (url) => {
+		submenuVisible(true);
 		// if (url === '/offers') {
 		// 	invoiz.offerListNaviagtion = true;
 		// } else {
 		// 	invoiz.offerListNaviagtion = false;
 		// }
-		invoiz.trigger('updateNewsfeedCount');
+		invoiz.trigger("updateNewsfeedCount");
 		invoiz.router.navigate(url);
 	};
 
@@ -19,7 +21,6 @@ const SubmenuItemComponent = ({ url, active, name, resourceKey, resources }) => 
 		<li className={className}>
 			<a onClick={() => navigateToPage(url)} data-href={url} data-qs-id={`global-submenu-item-${name}`}>
 				{resources.subMenuItems[resourceKey]}
-				{/* {title} */}
 			</a>
 		</li>
 	);
@@ -28,13 +29,23 @@ const SubmenuItemComponent = ({ url, active, name, resourceKey, resources }) => 
 SubmenuItemComponent.propTypes = {
 	url: PropTypes.string,
 	active: PropTypes.bool,
-	resourceKey: PropTypes.string
+	resourceKey: PropTypes.string,
 };
 
 SubmenuItemComponent.defaultProps = {
-	url: '',
+	url: "",
 	active: false,
-	resourceKey: ''
+	resourceKey: "",
 };
 
-export default SubmenuItemComponent;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(null, mapDispatchToProps)(SubmenuItemComponent);
+
+// export default SubmenuItemComponent;

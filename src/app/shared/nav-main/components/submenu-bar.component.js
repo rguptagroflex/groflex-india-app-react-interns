@@ -1,9 +1,43 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import CloseIcon from "@material-ui/icons/Close";
+import { connect } from "react-redux";
+import { submenuVisible } from "../../../redux/ducks/global";
+import arrowLeft from "assets/images/svg/semicircular-left-arrow.svg";
+import collapse from "assets/images/icons/collapse.svg";
+import SVGInline from "react-svg-inline";
+const SubmenuBarComponent = ({
+	title,
+	name,
+	visible,
+	hasImprintAndPrivacy,
+	children,
+	resourceKey,
+	resources,
+	visibleOnclick,
+	hideSubmenu,
+	submenuVisible,
+	isSubmenuVisible,
+	submenuClick,
+	submenuItemClicked,
+	submenuCloseIconClicked,
+	submenuActive,
+	showSubmenu,
+	active,
+}) => {
+	// console.log("Slected Key", selectedName);
 
-const SubmenuBarComponent = ({ title, name, visible, hasImprintAndPrivacy, children, resourceKey, resources }) => {
-	const visibleClass = visible ? 'submenu-visible' : 'u_hidden';
-	const className = `submenu submenu-${name} ${visibleClass}`;
+	const [iconClose, setIconClose] = useState(visible);
+	const hoverClass = active ? "submenuStatic" : "submenuHover";
+
+	useEffect(() => {
+		setIconClose(visible);
+	}, [visible]);
+	const visibleClass = visible || submenuClick ? "submenu-visible" : "u_hidden";
+
+	// const visibleClass = "submenu-visible";
+	// console.log("key ", resourceKey);
+	const className = `submenu submenu-${name} ${visibleClass} ${hoverClass}`;
 
 	const imprint = (
 		<div className="submenuImprint">
@@ -20,24 +54,70 @@ const SubmenuBarComponent = ({ title, name, visible, hasImprintAndPrivacy, child
 		</div>
 	);
 
+	const onCloseClick = () => {
+		hideSubmenu();
+		submenuCloseIconClicked();
+		submenuVisible(false);
+	};
+	const subMenuOverlay = () => {
+		setIconClose(false);
+	};
+
+	// const onMouseHover = () => {
+	// 	hideSubmenu();
+	// };
+
+	const ulClicked = () => {
+		alert("click");
+	};
 	return (
-		<div className={className}>
-			{/* <h5 className="submenuTitle">{resources.menuItems[resourceKey].toUpperCase()}</h5> */}
-			{/* {title.toUpperCase()} */}
-			<ul className="submenuList">{children}</ul>
-			{hasImprintAndPrivacy ? imprint : null}
+		<div>
+			<div className={className} onMouseLeave={() => hideSubmenu()} onMouseEnter={() => showSubmenu()}>
+				{/* <div onClick={() => onCloseClick()} className=" icon icon-back_arrow submenu-close" /> */}
+
+				<div onClick={() => onCloseClick()} className="submenu-close">
+					<SVGInline svg={collapse} width="24px" height="24px" onClick={() => onCloseClick()} />
+				</div>
+
+				{/* <div onClick={() => onCloseClick()} className=" icon icon-collapse submenu-close" /> */}
+				<div className="submenuTitle">
+					{resources.menuItems[resourceKey].charAt(0).toUpperCase() +
+						resources.menuItems[resourceKey].slice(1)}
+				</div>
+				<div onClick={() => submenuItemClicked()}>
+					<ul className="submenuList">{children}</ul>
+				</div>
+				{hasImprintAndPrivacy ? imprint : null}
+			</div>
 		</div>
 	);
 };
 
 SubmenuBarComponent.propTypes = {
 	title: PropTypes.string,
-	visible: PropTypes.bool
+	visible: PropTypes.bool,
 };
 
 SubmenuBarComponent.defaultProps = {
-	title: '',
-	visible: false
+	title: "",
+	visible: false,
 };
 
-export default SubmenuBarComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+// export default SubmenuBarComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(SubmenuBarComponent);

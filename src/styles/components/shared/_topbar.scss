@@ -40,7 +40,7 @@
 		.icon {
 			&:before {
 				vertical-align: top;
-			}		
+			}
 		}
 	}
 
@@ -66,12 +66,12 @@
 			font-size: 24px;
 			line-height: 22px;
 		}
-		
+
 		.icon {
 			&:before {
 				vertical-align: top;
 				color: $color-black;
-			}		
+			}
 		}
 	}
 
@@ -116,10 +116,10 @@
 			line-height: 65px;
 
 			.button {
-				@include vendor-prefix('transition', 'none');
+				@include vendor-prefix("transition", "none");
 
 				&:hover {
-					@include vendor-prefix('transition', 'all .1s ease-in-out');
+					@include vendor-prefix("transition", "all .1s ease-in-out");
 				}
 			}
 
@@ -145,4 +145,26 @@
 			font-size: 22px;
 		}
 	}
+}
+
+.alignLeft {
+	left: 307px;
+	background: #f2f2f2;
+}
+
+.alignLeftContent {
+	left: 227px;
+	position: absolute;
+	right: 32px;
+	// width: calc(100% - 227px);
+}
+
+.alignLeftEdit {
+	left: 100px;
+	position: relative;
+}
+
+.alignLeftDetail {
+	left: 121px;
+	position: relative;
 }

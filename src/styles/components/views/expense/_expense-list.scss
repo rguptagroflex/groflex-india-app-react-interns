@@ -104,7 +104,6 @@
 						color: $color-success;
 					}
 					&.icon-attachment {
-						
 					}
 				}
 			}
@@ -143,4 +142,11 @@
 			}
 		}
 	}
+}
+
+.alignLeftExpense {
+	position: absolute;
+	width: calc(100% - 289px);
+	left: 257px;
+	right: 32px;
 }

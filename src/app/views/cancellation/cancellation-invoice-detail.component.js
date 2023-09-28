@@ -13,6 +13,7 @@ import { printPdf } from "helpers/printPdf";
 import { downloadPdf } from "helpers/downloadPdf";
 import { formatCurrency } from "helpers/formatCurrency";
 import { formatApiDate, formatClientDate } from "helpers/formatDate";
+import { connect } from "react-redux";
 
 const createDetailViewHeadObjects = (cancellation, activeAction, resources) => {
 	const object = {
@@ -120,8 +121,17 @@ class CancellationInvoiceDetailComponent extends React.Component {
 			letterPaperType: cancellation.printCustomDocument
 				? TransactionPrintSetting.CUSTOM_LETTER_PAPER
 				: TransactionPrintSetting.DEFAULT_LETTER_PAPER,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
 		this.pdfWrapper = React.createRef();
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentDidMount() {
@@ -177,7 +187,7 @@ class CancellationInvoiceDetailComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { cancellation } = this.state;
+		const { cancellation, submenuVisible } = this.state;
 		const activeAction = this.state.downloading
 			? CancellationInvoiceAction.DOWNLOAD_PDF
 			: this.state.printing
@@ -223,8 +233,10 @@ class CancellationInvoiceDetailComponent extends React.Component {
 			});
 		});
 
+		const classLeft = submenuVisible ? "alignLeftDebit" : "";
+
 		return (
-			<div className="cancellation-invoice-detail-wrapper wrapper-has-topbar">
+			<div className={`cancellation-invoice-detail-wrapper wrapper-has-topbar ${classLeft}`}>
 				<TopbarComponent
 					title={`${
 						cancellation.metaData.type === "invoice" ? resources.str_invoiceCancellation : `Debit note`
@@ -236,17 +248,17 @@ class CancellationInvoiceDetailComponent extends React.Component {
 				/>
 				<div className="detail-view-head-wrapper-new">
 					{/* <div className="detail-view-head-container"> */}
-						<DetailViewHeadPrintPopoverComponent
-							printSettingUrl={`${config.resourceHost}cancellation/${this.state.cancellation.id}/print/setting`}
-							letterPaperType={letterPaperType}
-							letterPaperChangeCallback={(letterPaperType) => {
-								this.setState({ letterPaperType });
-							}}
-							ref="detail-head-print-settings-popover"
-							resources={resources}
-						/>
-						{/* <div className="detail-view-background"></div> */}
-						{detailHeadContent}
+					<DetailViewHeadPrintPopoverComponent
+						printSettingUrl={`${config.resourceHost}cancellation/${this.state.cancellation.id}/print/setting`}
+						letterPaperType={letterPaperType}
+						letterPaperChangeCallback={(letterPaperType) => {
+							this.setState({ letterPaperType });
+						}}
+						ref="detail-head-print-settings-popover"
+						resources={resources}
+					/>
+					{/* <div className="detail-view-background"></div> */}
+					{detailHeadContent}
 					{/* </div> */}
 				</div>
 				<div className="detail-view-content-wrapper">
@@ -255,7 +267,11 @@ class CancellationInvoiceDetailComponent extends React.Component {
 							{/* {images} */}
 
 							<img className="detail-view-preview" src="/assets/images/invoice-preview.png" />
-							<div id="invoice-detail-pdf-wrapper" className="detail-view-pdf-wrapper" ref={this.pdfWrapper}/>
+							<div
+								id="invoice-detail-pdf-wrapper"
+								className="detail-view-pdf-wrapper"
+								ref={this.pdfWrapper}
+							/>
 						</div>
 					</div>
 
@@ -292,7 +308,6 @@ class CancellationInvoiceDetailComponent extends React.Component {
 							const { path } = response.body.data;
 							const title = this.state.cancellation.number;
 							downloadPdf({
-								
 								pdfUrl: config.imageResourceHost + path,
 								title: `${resources.str_invoiceCancellation} ${title}`,
 								isPost: false,
@@ -334,4 +349,14 @@ class CancellationInvoiceDetailComponent extends React.Component {
 	}
 }
 
-export default CancellationInvoiceDetailComponent;
+const mapStateToProps = (state) => {
+	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps)(CancellationInvoiceDetailComponent);
+// export default CancellationInvoiceDetailComponent;

@@ -9,6 +9,7 @@ $newsfeed-width: 465px;
 	height: 100%;
 	visibility: hidden;
 	transition: visibility 0s 0.3s;
+	z-index: 20000;
 
 	@include breakpoint-lg {
 		@include rem(left, $menu-width);

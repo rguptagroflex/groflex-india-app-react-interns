@@ -18,7 +18,7 @@ import LetterPositionsTotalComponent from "shared/letter/letter-positions-total.
 import LetterFooterComponent from "shared/letter/letter-footer.component";
 import LetterPayConditionsComponent from "shared/letter/letter-pay-conditions.component";
 import LetterPaymentComponent from "shared/letter/letter-payment.component";
-
+import { connect, Provider } from "react-redux";
 import Customer from "models/customer.model";
 import { handleTransactionFormErrors } from "helpers/errors";
 import { generateUuid } from "helpers/generateUuid";
@@ -107,6 +107,7 @@ class TransactionEditComponent extends React.Component {
 			isReloadingLetterHeader: false,
 			canCreateOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_OFFER),
 			canCreateChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CHALLAN),
+			submenuVisible: this.props.isSubmenuVisible,
 		};
 		this.footerOriginalValues = props.letter.footer.map((column) => column.metaData.html);
 		this.onDocumentClick = this.onDocumentClick.bind(this);
@@ -146,6 +147,14 @@ class TransactionEditComponent extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener("click", this.onDocumentClick);
 		changeDetection.unbindEventListeners();
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	getInvoizPayPage() {
@@ -282,6 +291,7 @@ class TransactionEditComponent extends React.Component {
 			recurringInvoice,
 			project,
 			paymentSetting,
+			submenuVisible,
 			// ,initialInvoizPayData
 		} = this.state;
 		const { isRecurring, isProject, isDeposit, isClosing, isOffer, resources, isPurchaseOrder, isDeliveryChallan } =
@@ -338,12 +348,13 @@ class TransactionEditComponent extends React.Component {
 			paymentSetting.usePayPal = transaction.useAdvancedPaymentPayPal;
 			paymentSetting.useTransfer = transaction.useAdvancedPaymentTransfer;
 		}
+		const classLeft = submenuVisible ? "alignLeftEdit" : "";
 
 		return (
 			<div className="transaction-edit-component-wrapper wrapper-has-topbar-with-margin">
 				{topbar}
 
-				<div className="transaction-edit-wrapper">
+				<div className={`transaction-edit-wrapper ${classLeft}`}>
 					{isRecurring ? (
 						<RecurringInvoiceSettingsComponent
 							onChange={(recurringInvoice) => this.setState({ recurringInvoice })}
@@ -351,7 +362,6 @@ class TransactionEditComponent extends React.Component {
 							resources={resources}
 						/>
 					) : null}
-
 					{isProject ? (
 						<ProjectSettingsComponent
 							onChange={(project) => this.setState({ project })}
@@ -359,7 +369,6 @@ class TransactionEditComponent extends React.Component {
 							resources={resources}
 						/>
 					) : null}
-
 					<div className="box transaction-form-page" id="letter-form-measure">
 						<div className="transaction-form-header">
 							{/* <LetterHeaderComponent
@@ -661,7 +670,6 @@ class TransactionEditComponent extends React.Component {
 							</div>
 						</div>
 					</div>
-
 					{/* {isOffer ? null : (
 						<div className="row">
 							<div className="col-xs-12">
@@ -728,7 +736,6 @@ class TransactionEditComponent extends React.Component {
 							</div>
 						</div>
 					)} */}
-
 					{/* {isOffer ? null : (
 						<div className="box transaction-invoiz-page">
 							<div className="row">
@@ -736,7 +743,6 @@ class TransactionEditComponent extends React.Component {
 							</div>
 						</div>
 					)} */}
-
 					<div className="box transaction-notes">
 						<div className="transaction-notes-description">
 							<div className="transaction-notes-headline">{resources.str_remarks}</div>
@@ -1367,7 +1373,7 @@ class TransactionEditComponent extends React.Component {
 					return { ...col };
 				});
 
-				requestData.columns = requestData.columns.filter(c => c.name != 'SNo');
+				requestData.columns = requestData.columns.filter((c) => c.name != "SNo");
 
 				delete requestData.deliveryPeriodStartDate;
 				delete requestData.deliveryPeriodEndDate;
@@ -1634,4 +1640,21 @@ class TransactionEditComponent extends React.Component {
 	}
 }
 
-export default TransactionEditComponent;
+const mapStateToProps = (state) => {
+	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+// export default TransactionEditComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionEditComponent);

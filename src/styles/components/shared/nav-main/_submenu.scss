@@ -25,7 +25,7 @@
 // 			}
 // 		}
 // 	}
-	
+
 // 	&.submenu-offers {
 // 		.submenuList {
 // 			margin-bottom: 130px;
@@ -92,7 +92,7 @@
 		margin-bottom: 0;
 	}
 
-	>a {
+	> a {
 		cursor: pointer;
 		color: $color-menu-text; //$submenu-text-color;
 
@@ -107,15 +107,20 @@
 }
 
 .submenuItem-active {
-	>a {
-		color: $color-menu-active-item; //#fff;
+	> a {
+		// color: $color-menu-active-item; //#fff;
+		color: #00a353;
 		font-weight: 600;
 	}
 }
 
 .submenuTitle {
 	font-size: 17px;
-	color: #fff;
+	// color: #fff;
+	color: #272d30;
+	// font-family: Inter;
+	font-size: 18px;
+	font-weight: 500;
 	margin-top: 0;
 	@include rem(margin-bottom, 50);
 	@include rem(margin-left, 18);
@@ -126,13 +131,13 @@
 }
 
 .submenu {
-    height: 100%;
-    cursor: default;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding-left: 38px;
-    padding-top: 25px;
+	height: 100%;
+	cursor: default;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding-left: 38px;
+	padding-top: 25px;
 
 	&.submenu-invoices {
 		.submenuList {
@@ -167,4 +172,11 @@
 		padding-left: 15px;
 		left: 84px;
 	}
+}
+
+.submenuHover {
+	z-index: 2 !important;
+}
+.submenuStatic {
+	z-index: 1 !important;
 }

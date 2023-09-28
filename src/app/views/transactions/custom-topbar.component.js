@@ -6,7 +6,7 @@ import CustomButtonComponent from "./custom-button.component";
 import OnClickOutside from "../../shared/on-click-outside/on-click-outside.component";
 import ModalService from "../../services/modal.service";
 import MoneyInModalComponent from "./money-in-modal.component";
-
+import { connect } from "react-redux";
 class CustomTopbarComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -29,6 +29,7 @@ class CustomTopbarComponent extends React.Component {
 			subtitle: this.props.subtitle || null,
 			viewIcon: this.props.viewIcon || null,
 			fullPageWidth: this.props.fullPageWidth || null,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
 
 		this.openTopbarDropdown = this.openTopbarDropdown.bind(this);
@@ -38,6 +39,13 @@ class CustomTopbarComponent extends React.Component {
 	// componentDidUpdate(){
 
 	// }
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
+	}
 
 	componentWillReceiveProps(props) {
 		// const buttons = this.createButtons(props, this.state.topbarDropdown);
@@ -70,6 +78,7 @@ class CustomTopbarComponent extends React.Component {
 	}
 
 	render() {
+		const { submenuVisible } = this.state;
 		let backButton = null;
 		let viewIcon = null;
 		if (this.state.backButtonRoute || this.state.backButtonCallback) {
@@ -122,13 +131,13 @@ class CustomTopbarComponent extends React.Component {
 				</div>
 			);
 		}
+		const classLeft = submenuVisible ? "alignLeft" : "";
 
 		// console.log(this.state, "TOPBAR STATE");
 		return (
-			<div className={`topbar-wrapper ${this.state.fullPageWidth ? "full-page-width" : ""}`}>
+			<div className={`topbar-wrapper ${this.state.fullPageWidth ? "full-page-width" : ""} ${classLeft}`}>
 				{backButton}
 				{viewIcon}
-
 				<div
 					className={`topbar-content ${!backButton ? "no-back-button" : ""} ${
 						!dropdownMenuButton ? "no-dropdown-menu-button" : ""
@@ -268,7 +277,6 @@ class CustomTopbarComponent extends React.Component {
 						</div>
 					</div>
 				</div>
-
 				{dropdownMenuButton}
 			</div>
 		);
@@ -366,4 +374,21 @@ class CustomTopbarComponent extends React.Component {
 	// }
 }
 
-export default CustomTopbarComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomTopbarComponent);
+// export default CustomTopbarComponent;

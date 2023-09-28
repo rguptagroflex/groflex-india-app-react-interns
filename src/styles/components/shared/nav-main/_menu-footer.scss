@@ -5,9 +5,9 @@
 	position: absolute;
 	border: 0;
 
-	&:hover {
-		background-color: $color-menu-background;
-	}
+	// &:hover {
+	// 	background-color: $color-menu-background;
+	// }
 
 	// .menuItem {
 	// 	// border: 0px;
@@ -40,6 +40,14 @@
 	.icon {
 		&:before {
 			padding-top: 6px !important;
+			color: #888787;
+		}
+		&:before:hover {
+			color: #272d30 !important;
+		}
+		&:hover {
+			// border-left: 0px !important;
+			color: #272d30 !important;
 		}
 	}
 
@@ -55,19 +63,24 @@
 		color: $color-primary;
 
 		&:hover {
+			border-left: 5px solid;
 			color: $color-primary;
 		}
 
 		.icon.icon-user_outlined {
-			background: $color-primary;
+			// background: $color-primary;
 			color: #ffff;
 			margin-left: 14px;
-			border-radius: 14px;
+			// border-radius: 14px;
 			margin-right: 13px;
 			width: 27px;
 			height: 27px;
 			padding-left: 5.5px;
 			padding-top: 1.5px;
+			// border: 3px solid #888787;
+			// border-radius: 100% !important;
+			// width: 40%;
+			// height: 61%;
 		}
 		@include breakpoint-md {
 			.icon.icon-user_outlined {
@@ -86,30 +99,42 @@
 	.menu-profile-popup {
 		display: none;
 		position: fixed;
-		bottom: 30px;
-		left: 230px;
+		bottom: 10px;
+		left: 76px;
 		width: 245px;
 		padding: 0px 0px 10px 1px;
 		background-color: white;
 		box-shadow: 0px 2px 8px 1px #e3e3e3;
 		border-radius: 4px;
 		flex-direction: column;
-		z-index: 1;
+		z-index: 100000;
+
+		.small {
+			color: #888787 !important;
+			margin-top: 8px;
+			margin-bottom: 8px;
+			border-bottom: 0px !important;
+		}
+		.small:hover {
+			color: #272d30 !important;
+		}
 
 		@include breakpoint-md {
 			left: 50px;
 		}
 		.icon.icon-user_outlined {
-			background: $color-primary;
+			// background: $color-primary;
+			background: white;
 			color: #ffff;
 			margin-left: 19px;
 			border-radius: 15px;
 			margin-right: 8px;
 			width: 30px;
 			height: 30px;
-			padding-left: 8px;
+			// padding-left: 8px;
+			padding-left: 5px;
 			padding-right: 0px;
-			padding-top: 3px;
+			// padding-top: 3px;
 		}
 		.menuItem.small {
 			height: 35px;
@@ -152,10 +177,10 @@
 
 		.menuItem:link,
 		.menuItem:visited {
-			color: #000000 !important;
+			// color: #000000 !important;
 		}
 		.menuItem:hover {
-			color: $color-menu-hover !important;
+			// color: $color-menu-hover !important;
 		}
 	}
 	.menu-profile-popup-footer {
@@ -167,10 +192,21 @@
 			font-size: 16px;
 			padding-left: 18px;
 		}
+		.menuHeader_search {
+			margin-top: 0px;
+		}
+	}
+	.search-footer:hover .menuHeader_search {
+		color: #00a353;
 	}
 	.search-footer:hover {
 		color: #0071ca;
-		background-color: #edf7ff;
+		// background-color: #edf7ff;
+		background-color: #fff;
 		cursor: pointer;
+		// border-left: 5px solid #00a353;
+		.menuHeader_search {
+			// border-left: 5px solid;
+		}
 	}
 }

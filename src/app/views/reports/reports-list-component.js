@@ -1,23 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import TopbarComponent from "../../shared/topbar/topbar.component";
 import invoiz from "../../services/invoiz.service";
+import { useDispatch, useSelector } from "react-redux";
+import store from "../../redux/store";
+import { connect, Provider } from "react-redux";
+const ReportsListComponent = (props) => {
+	// const isSubmenuVisible = useSelector((state) => state.global.isSubmenuVisible);
+	// const [submenVisible, setSubmenuVisible] = useState(isSubmenuVisible);
 
-function ReportsListComponent() {
+	// useEffect(() => {
+	// 	setSubmenuVisible(isSubmenuVisible);
+	// }, [isSubmenuVisible]);
+
+	// const classLeft = submenVisible ? "leftAlignReport" : "";
+
+	const { isSubmenuVisible } = store.getState().global;
+	const submenVisible = props.isSubmenuVisible;
+	// console.log("reports ", submenVisible);
+	// console.log("Store: ", isSubmenuVisible);
+
+	const classLeft = submenVisible ? "leftAlignReport" : "";
+	const classHeading = submenVisible ? "leftAlignHeading" : "";
+
 	return (
 		<div>
 			<div>
 				<TopbarComponent title={"Reports"} viewIcon={`icon-banking`} />
 			</div>
-			<div style={{display: "block",
+			<div
+				style={{
+					display: "block",
 					position: "absolute",
 					left: "38%",
 					right: "38%",
 					fontSize: "17px",
 					padding: "10px",
-					fontWeight: "600"}}>
-						<span>All Reports Comming Soon..!</span>
-					</div>
+					fontWeight: "600",
+				}}
+			>
+				{/* <span>All Reports Comming Soon..!</span> */}
+			</div>
 			<div
+				className={`${classLeft}`}
 				style={{
 					height: "375px",
 					width: "80vw",
@@ -29,6 +53,7 @@ function ReportsListComponent() {
 					fontWeight: "600",
 				}}
 			>
+				<span style={{ marginLeft: "44%" }}>All Reports Comming Soon..!</span>
 				<div>
 					<div
 						style={{
@@ -236,6 +261,15 @@ function ReportsListComponent() {
 			</div>
 		</div>
 	);
-}
+};
 
-export default ReportsListComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportsListComponent);
+// export default ReportsListComponent;

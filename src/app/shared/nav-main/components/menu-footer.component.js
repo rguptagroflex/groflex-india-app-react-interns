@@ -5,7 +5,6 @@ import { userLoggedOut } from "redux/ducks/global";
 import invoiz from "services/invoiz.service";
 import config from "config";
 import SearchComponent from "../../search/search-component";
-
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -99,31 +98,33 @@ class MenuFooterComponent extends React.Component {
 		}
 
 		const iconClass = "icon icon-logout_outlined";
+		// const iconClass = "icon icon-logout_new";
 		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? "menuItem-notFocused" : ""}`;
 		const notificationClass = `menuItem icon icon-bell_2`;
 
 		return (
 			<div className="menuFooter">
 				<div className="search-footer" onClick={this.onSearchClick.bind(this)}>
-					<a className="menuHeader_search icon icon-search" />
-					<h5>Search</h5>
+					<div className="menuHeader_search icon icon-search" />
+					{/* <h5>Search</h5> */}
 				</div>
 
 				<div className={notificationClass} onClick={this.onNewsfeedClick.bind(this)}>
-					{resources.str_notification}{" "}
+					{/* {resources.str_notification}{" "} */}
 					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null}
 				</div>
 				<div className="menuItem profile_logo">
-					<span className=" icon icon-user_outlined"></span>My Account
+					<span className=" icon icon-user_outlined"></span>
 					<div className="menu-profile-popup">
 						<div className="menu-profile-popup-head">
 							<div className="icon icon-user_outlined"></div>
+
 							<div className="text-info">
 								{this.state.tenant.companyAddress.companyName || "Business Name"}
 							</div>
 						</div>
 						<div className="menu-profile-popup-middle1">
-							<a
+							{/* <a
 								className={`menuItem small icon icon-user_outlined_black ${
 									activeSubmenuItem == "account" ? "menuItem-active" : ""
 								}`}
@@ -132,7 +133,7 @@ class MenuFooterComponent extends React.Component {
 								data-qs-id={`global-menu-item-Account-details`}
 							>
 								{"Account details"}
-							</a>
+							</a> */}
 							<a
 								className={`menuItem small icon icon-settings_outlined ${
 									activeSubmenuItem == "account-setting" ? "menuItem-active" : ""
@@ -141,10 +142,11 @@ class MenuFooterComponent extends React.Component {
 								data-href="/settings/account-setting"
 								data-qs-id={`global-menu-item-Setting`}
 							>
-								{"Setting"}
+								{/* {"Setting"} */}
+								{"Account Settings"}
 							</a>
 
-							<a
+							{/* <a
 								className={`menuItem small icon icon-credit_card ${
 									activeSubmenuItem == "billing" ? "menuItem-active" : ""
 								}`}
@@ -153,9 +155,9 @@ class MenuFooterComponent extends React.Component {
 								data-qs-id={`global-menu-item-Your-billing`}
 							>
 								{"Your billing"}
-							</a>
+							</a> */}
 							<a
-								className={`menuItem small icon icon-teams ${
+								className={`menuItem small icon icon-help_outlined ${
 									activeSubmenuItem == "user" ? "menuItem-active" : ""
 								}`}
 								onClick={() => this.navigateToPage("/settings/user")}
@@ -172,14 +174,16 @@ class MenuFooterComponent extends React.Component {
 								href="https://groflex.in"
 								target="_blank"
 							>
-								{"Groflex Help Center"}
+								{/* {"Groflex Help Center"} */}
+								{"Help"}
 							</a>
 							<a
 								className="menuItem small icon icon-vpn_policy"
 								href="https://groflex.in/privacy-policy"
 								target="_blank"
 							>
-								{"Terms & Conditions"}
+								{/* {"Terms & Conditions"} */}
+								{"Privacy Policy"}
 							</a>
 						</div>
 						<div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>
