@@ -27,6 +27,7 @@ import { format } from "util";
 import userPermissions from "enums/user-permissions.enum";
 import { capitalize } from "lodash";
 import abbreviationDateFormat from "../../helpers/abbreviationDateFormat";
+import RecurringInvoiceList2Component from "./recurring-invoice-list-2.component";
 
 const createTopbarButtons = (recInvoice, resources) => {
 	const buttons = [];
@@ -278,6 +279,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			);
 		}
 		// console.log(headContents, "headContents");
+		// console.log(invoicesTable, "invoicesTable");
 		return (
 			<div className="recurring-invoice-detail-wrapper wrapper-has-topbar">
 				{canUpdateRecurringInvoice && canDeleteRecurringInvoice ? (
@@ -313,7 +315,17 @@ class RecurringInvoiceDetailComponent extends React.Component {
 				<div className="detail-view-content-wrapper">
 					<div className="detail-view-content-left">
 						<div className="detail-view-box-new u_mt_20 box">
-							<ListComponent
+							<RecurringInvoiceList2Component
+								invoicesList={invoicesTable}
+								onRowClick={(id) => this.onInvoiceRowClick(id)}
+								placeholderInfo={[
+									{ value: resources.str_automAward },
+									{ value: this.state.recInvoice.displayStartDate },
+									{ value: resources.str_draft },
+									{ value: formatCurrency(this.state.recInvoice.template.invoice.totalGross) },
+								]}
+							/>
+							{/* <ListComponent
 								title={resources.str_createdBills}
 								clickable={true}
 								rowCallback={(id) => this.onInvoiceRowClick(id)}
@@ -330,7 +342,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 								emptyFallbackElement={emptyFallbackElement}
 								tableId={`invoices`}
 								resources={resources}
-							/>
+							/> */}
 						</div>
 					</div>
 					<div className="detail-view-content-right">
@@ -367,7 +379,8 @@ class RecurringInvoiceDetailComponent extends React.Component {
 													: "invoice-info-item"
 											}
 										>
-											{index === headContents.rightElements.length - 1
+											{index === headContents.rightElements.length - 1 ||
+											capitalize(item.headline) === "Subscription start"
 												? item.value.includes("-")
 													? abbreviationDateFormat(item.value)
 													: item.value
