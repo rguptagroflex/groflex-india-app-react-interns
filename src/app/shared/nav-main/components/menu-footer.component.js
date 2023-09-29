@@ -165,7 +165,7 @@ class MenuFooterComponent extends React.Component {
 								{"Your billing"}
 							</a> */}
 							<a
-								className={`menuItem small icon icon-help_outlined ${
+								className={`menuItem small icon icon-teams ${
 									activeSubmenuItem == "user" ? "menuItem-active" : ""
 								}`}
 								onClick={() => this.navigateToPage("/settings/user")}

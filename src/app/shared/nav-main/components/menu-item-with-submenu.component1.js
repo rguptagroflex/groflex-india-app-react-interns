@@ -6,7 +6,8 @@ import SubMenuItemComponent from "shared/nav-main/components/submenu-item.compon
 import userPermissions from "enums/user-permissions.enum";
 import planPermissions from "enums/plan-permissions.enum";
 import { connect } from "react-redux";
-import collapse from "assets/images/icons/collapse.svg";
+import sales from "assets/images/icons/sales_new.svg";
+import expense from "assets/images/icons/accounting_icon.svg";
 import SVGInline from "react-svg-inline";
 // import store from "../../redux/store";
 const buildSubmenuComponents = (
@@ -249,10 +250,13 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		// console.log("Store: ", isSubmenuVisible);
 		const submenuActive = activeClass === "menuItem-active";
 
-		const menuIcons = {};
+		const menuIcons = {
+			sales: sales,
+			expense: expense,
+		};
 
-		const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
-		// const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
+		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
+		const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
 		console.log(submenuItems);
 		return (
 			<li key={name} id={name}>
@@ -270,7 +274,9 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						// onMouseLeave={() => {
 						// 	this.hideSubmenu();
 						// }}
-					></div>
+					>
+						<SVGInline svg={menuIcons[icon]} width="24px" height="24px" className="menuItemIcon" />
+					</div>
 
 					<SubMenuBarComponent
 						key={`sub-item-${isSubmenuVisible.name}`}

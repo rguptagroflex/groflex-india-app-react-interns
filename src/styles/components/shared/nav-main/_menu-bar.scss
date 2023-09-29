@@ -21,6 +21,9 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
+	.SVGInline:hover {
+		stroke: red !important;
+	}
 }
 
 // @mixin collapsed-menu-item {
@@ -48,7 +51,7 @@
 	width: 100%;
 	.menuItem {
 		justify-content: center;
-		margin-bottom: 10px;
+		// margin-bottom: 10px;
 	}
 	.menuItem:hover {
 		background-color: #fff;

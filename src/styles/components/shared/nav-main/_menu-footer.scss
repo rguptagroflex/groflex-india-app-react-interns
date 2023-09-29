@@ -127,6 +127,7 @@
 		}
 		.small:hover {
 			color: #272d30 !important;
+			background: #ecfcf4;
 		}
 
 		@include breakpoint-md {
@@ -173,6 +174,8 @@
 
 		.icon-user_outlined {
 			background-color: #000;
+			border: 2px solid #888787;
+			padding-left: 7px;
 		}
 
 		.text-info {
