@@ -718,7 +718,7 @@ class OfferDetailComponent extends React.Component {
 					<div className="detail-view-content-right">
 						{/* <div className="detail-view-box"> */}
 						<div className="invoice-info u_p_16">
-							<div className="invoice-info-label font-14px">Invoice Amount</div>
+							<div className="invoice-info-label font-14px">Quotation Amount</div>
 							<h3 className="invoice-amount">{headContents.rightElements[0].value}</h3>
 							<div className="customer-name-container font-14px">
 								<div>Vendor</div>

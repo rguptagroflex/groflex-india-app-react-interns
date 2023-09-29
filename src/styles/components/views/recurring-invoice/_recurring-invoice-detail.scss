@@ -92,9 +92,53 @@
 	.detail-view-content-wrapper {
 		.detail-view-content-left {
 			width: 100%;
+			max-width: 658px !important;
 			margin-right: 16px;
 			.detail-view-box-new {
 				width: 658px;
+			}
+		}
+		.detail-view-content-right {
+			margin-top: 20px;
+			.invoice-info {
+				background-color: #fff;
+				// height: 100%;
+				width: 100%;
+				border-radius: 8px;
+				border: 1px solid #c6c6c6;
+				margin-bottom: 16px;
+				.sub-ended {
+					color: #d94339;
+				}
+				.invoice-info-label {
+					color: #888787;
+					font-weight: 600;
+				}
+				.invoice-amount {
+					margin: 10px 0;
+				}
+				.customer-name-container,
+				.date-of-invoice-container {
+					display: flex;
+					justify-content: space-between;
+					font-weight: 600;
+				}
+				.invoice-info-item {
+					margin-bottom: 4px;
+				}
+				.customer-name-container {
+					margin-bottom: 4px;
+					.customer-name {
+						a {
+							color: $color-primary;
+						}
+					}
+				}
+				.date-of-invoice-container {
+					.date-of-invoice {
+						color: #888787;
+					}
+				}
 			}
 		}
 	}

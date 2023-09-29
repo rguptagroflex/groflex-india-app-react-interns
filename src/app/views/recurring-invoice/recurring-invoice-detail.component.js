@@ -25,6 +25,8 @@ import { formatApiDate } from "helpers/formatDate";
 import { format } from "util";
 
 import userPermissions from "enums/user-permissions.enum";
+import { capitalize } from "lodash";
+import abbreviationDateFormat from "../../helpers/abbreviationDateFormat";
 
 const createTopbarButtons = (recInvoice, resources) => {
 	const buttons = [];
@@ -275,7 +277,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 				</div>
 			);
 		}
-
+		// console.log(headContents, "headContents");
 		return (
 			<div className="recurring-invoice-detail-wrapper wrapper-has-topbar">
 				{canUpdateRecurringInvoice && canDeleteRecurringInvoice ? (
@@ -332,6 +334,50 @@ class RecurringInvoiceDetailComponent extends React.Component {
 						</div>
 					</div>
 					<div className="detail-view-content-right">
+						{/* recurring Invoice info */}
+						<div className="invoice-info u_p_16">
+							<div className="invoice-info-label font-14px">Recurring Invoice Amount:</div>
+							<h3 className="invoice-amount">{headContents.rightElements[0].value}</h3>
+							<div className="customer-name-container font-14px">
+								<div>Customer</div>
+								<div className="customer-name">{headContents.leftElements[0].value}</div>
+							</div>
+							{headContents.rightElements.map((item, index) => {
+								if (index === 0) return;
+								return (
+									<div
+										key={`invoice-info-item-${index}`}
+										style={{ color: item.headline === "payment overdue" ? "#FFAA2C" : null }}
+										className="date-of-invoice-container font-14px"
+									>
+										<div>
+											{capitalize(item.headline) === "Subscription start"
+												? "Subscription date"
+												: capitalize(item.headline)}
+										</div>
+										{/* Last element is not always always date */}
+										<div
+											className={
+												index === headContents.rightElements.length - 1
+													? item.value.includes("-")
+														? "date-of-invoice"
+														: item.value === "Subscription ended"
+														? "sub-ended"
+														: "invoice-info-item"
+													: "invoice-info-item"
+											}
+										>
+											{index === headContents.rightElements.length - 1
+												? item.value.includes("-")
+													? abbreviationDateFormat(item.value)
+													: item.value
+												: item.value}
+										</div>
+									</div>
+								);
+							})}
+						</div>
+						{/* Recurring Invoice info ends here */}
 						<div className="detail-view-box-new u_mt_20 u_p_16 box">
 							<NotesComponent
 								heading={resources.str_remarks}
