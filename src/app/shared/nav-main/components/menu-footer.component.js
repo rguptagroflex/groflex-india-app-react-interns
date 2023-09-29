@@ -5,6 +5,10 @@ import { userLoggedOut } from "redux/ducks/global";
 import invoiz from "services/invoiz.service";
 import config from "config";
 import SearchComponent from "../../search/search-component";
+import SVGInline from "react-svg-inline";
+import bell from "assets/images/icons/bell_2.svg";
+import profile from "assets/images/icons/profile_new.svg";
+import search from "assets/images/icons/search_new.svg";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -100,21 +104,25 @@ class MenuFooterComponent extends React.Component {
 		const iconClass = "icon icon-logout_outlined";
 		// const iconClass = "icon icon-logout_new";
 		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? "menuItem-notFocused" : ""}`;
-		const notificationClass = `menuItem icon icon-bell_2`;
+		// const notificationClass = `menuItem icon icon-bell_2`;
+		const notificationClass = `menuItem notificationIcon`;
 
 		return (
 			<div className="menuFooter">
-				<div className="search-footer" onClick={this.onSearchClick.bind(this)}>
-					<div className="menuHeader_search icon icon-search" />
+				<div className="search-footer menuItem" onClick={this.onSearchClick.bind(this)}>
+					{/* <div className="menuHeader_search icon icon-search" /> */}
+					<SVGInline svg={search} width="24px" height="24px" />
 					{/* <h5>Search</h5> */}
 				</div>
 
 				<div className={notificationClass} onClick={this.onNewsfeedClick.bind(this)}>
 					{/* {resources.str_notification}{" "} */}
+					<SVGInline svg={bell} width="24px" height="24px" />
 					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null}
 				</div>
 				<div className="menuItem profile_logo">
-					<span className=" icon icon-user_outlined"></span>
+					{/* <span className=" icon icon-user_outlined"></span> */}
+					<SVGInline svg={profile} width="24px" height="24px" />
 					<div className="menu-profile-popup">
 						<div className="menu-profile-popup-head">
 							<div className="icon icon-user_outlined"></div>

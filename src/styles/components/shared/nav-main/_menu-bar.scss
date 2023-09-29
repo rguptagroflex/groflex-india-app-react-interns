@@ -46,6 +46,13 @@
 
 .menuBar_content {
 	width: 100%;
+	.menuItem {
+		justify-content: center;
+		margin-bottom: 10px;
+	}
+	.menuItem:hover {
+		background-color: #fff;
+	}
 
 	.icon {
 		&:before {

@@ -4,6 +4,14 @@
 .menuFooter {
 	position: absolute;
 	border: 0;
+	.notificationIcon {
+		display: flex;
+		justify-content: center;
+		margin-bottom: 10px;
+	}
+	.notificationIcon:hover {
+		background-color: #fff;
+	}
 
 	// &:hover {
 	// 	background-color: $color-menu-background;
@@ -61,9 +69,11 @@
 
 	.profile_logo {
 		color: $color-primary;
+		justify-content: center;
+		margin-bottom: 10px;
 
 		&:hover {
-			border-left: 5px solid;
+			// border-left: 5px solid;
 			color: $color-primary;
 		}
 
@@ -150,6 +160,7 @@
 		.menu-profile-popup {
 			display: flex;
 		}
+		background-color: #fff;
 	}
 
 	.menu-profile-popup-head {
@@ -187,7 +198,13 @@
 		border-bottom: 1px solid #cccc;
 	}
 	.search-footer {
+		margin-bottom: 10px;
+		height: 50px;
 		display: flex;
+		justify-content: center;
+		.SVGInline {
+			margin-top: 10px;
+		}
 		h5 {
 			font-size: 16px;
 			padding-left: 18px;
