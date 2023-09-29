@@ -8,6 +8,8 @@ import planPermissions from "enums/plan-permissions.enum";
 import { connect } from "react-redux";
 import sales from "assets/images/icons/sales_new.svg";
 import expense from "assets/images/icons/accounting_icon.svg";
+import sales_hover from "assets/images/icons/sales_hover.svg";
+import expense_hover from "assets/images/icons/expense_hover.svg";
 import SVGInline from "react-svg-inline";
 // import store from "../../redux/store";
 const buildSubmenuComponents = (
@@ -73,6 +75,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			noInventory: null,
 			submenuVisibleOnclick: false,
 			submenuClick: false,
+			iconHoverActive: false,
 		};
 
 		this.windowResizeTimeout = null;
@@ -84,6 +87,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.hideSubmenu = this.hideSubmenu.bind(this);
 		this.submenuItemClicked = this.submenuItemClicked.bind(this);
 		this.submenuCloseIconClicked = this.submenuCloseIconClicked.bind(this);
+		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
 	}
 
 	componentDidUpdate(prevProps) {
@@ -137,6 +141,12 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 	isSubmenuClick(evt) {
 		return evt && evt.nativeEvent.target && $(evt.nativeEvent.target).closest(".submenu").length > 0;
+	}
+
+	iconChangeOnHover() {
+		const { iconHoverActive } = this.state;
+		this.setState({ iconHoverActive: !iconHoverActive });
+		// console.log("Icon type:", iconHoverActive);
 	}
 
 	// showSubmenu(evt, isClick, checkCollapsedState) {
@@ -218,6 +228,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			canView,
 			submenuVisibleOnclick,
 			submenuClick,
+			iconHoverActive,
 		} = this.state;
 		const {
 			title,
@@ -251,8 +262,8 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		const submenuActive = activeClass === "menuItem-active";
 
 		const menuIcons = {
-			sales: sales,
-			expense: expense,
+			sales: iconHoverActive ? sales_hover : sales,
+			expense: iconHoverActive ? expense_hover : expense,
 		};
 
 		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
@@ -270,6 +281,10 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						data-qs-id={`global-menu-item-${name}`}
 						onMouseEnter={() => {
 							this.showSubmenu();
+							this.iconChangeOnHover();
+						}}
+						onMouseLeave={() => {
+							this.iconChangeOnHover();
 						}}
 						// onMouseLeave={() => {
 						// 	this.hideSubmenu();

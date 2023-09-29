@@ -8,6 +8,7 @@ import SearchComponent from "../../search/search-component";
 import SVGInline from "react-svg-inline";
 import bell from "assets/images/icons/bell_2.svg";
 import profile from "assets/images/icons/profile_new.svg";
+import profile_hover from "assets/images/icons/profile_hover.svg";
 import search from "assets/images/icons/search_new.svg";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
@@ -17,9 +18,11 @@ class MenuFooterComponent extends React.Component {
 			tenant: {
 				companyAddress: {},
 			},
+			iconHoverActive: false,
 		};
 
 		this.navigateToPage = this.navigateToPage.bind(this);
+		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
 	}
 
 	componentDidMount() {
@@ -92,10 +95,17 @@ class MenuFooterComponent extends React.Component {
 		onSearchIconClick();
 	}
 
+	iconChangeOnHover() {
+		const { iconHoverActive } = this.state;
+		this.setState({ iconHoverActive: !iconHoverActive });
+		console.log("Icon type:", iconHoverActive);
+	}
+
 	render() {
 		const { submenuVisible, resources, activeItem, activeSubmenuItem } = this.props;
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
+		const { iconHoverActive } = this.state;
 
 		if (resetNewsFeedCount) {
 			newsfeedUnreadCount = 0;
@@ -120,9 +130,22 @@ class MenuFooterComponent extends React.Component {
 					<SVGInline svg={bell} width="24px" height="24px" />
 					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null}
 				</div>
-				<div className="menuItem profile_logo">
+				<div
+					className="menuItem profile_logo"
+					onMouseLeave={() => {
+						this.iconChangeOnHover();
+					}}
+					onMouseEnter={() => {
+						this.iconChangeOnHover();
+					}}
+				>
 					{/* <span className=" icon icon-user_outlined"></span> */}
-					<SVGInline svg={profile} width="24px" height="24px" />
+					{iconHoverActive ? (
+						<SVGInline svg={profile_hover} width="24px" height="24px" />
+					) : (
+						<SVGInline svg={profile} width="24px" height="24px" />
+					)}
+					{/* <SVGInline svg={profile} width="24px" height="24px" /> */}
 					<div className="menu-profile-popup">
 						<div className="menu-profile-popup-head">
 							<div className="icon icon-user_outlined"></div>
