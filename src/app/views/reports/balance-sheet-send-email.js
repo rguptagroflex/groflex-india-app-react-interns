@@ -101,6 +101,9 @@ class balanceSheetSendEmail extends React.Component {
 	}
 
 	componentDidMount() {
+		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
+		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
+		document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
 		if (this.state.customerId) {
 			invoiz
 				.request(`${config.customer.resourceUrl}/${this.state.customerId}`, { auth: true })
@@ -417,7 +420,11 @@ class balanceSheetSendEmail extends React.Component {
 
 		return (
 			<div className="email-view-wrapper wrapper-has-topbar-with-margin">
-				<div style={{ marginTop: "-120px", marginBottom: "-120px" }}>
+				<div
+				//  style={{ marginTop: "-120px", marginBottom: "-120px" }}
+				className="add-chart-modal-container"
+					style={{ minHeight: "200px" }}
+				 >
 					{/* <TopbarComponent
 					backButtonCallback={() => this.navigateToDetails()}
 					buttons={[
@@ -445,14 +452,34 @@ class balanceSheetSendEmail extends React.Component {
 					)}
 				</TopbarComponent> */}
 
-					<div className="email-view-headline">
+					{/* <div className="email-view-headline"> */}
 						{/* <h1>Send your General Ledger by email</h1> */}
 						{/* <h2>Send your General Ledger by email</h2> */}
-						<div className="email-view-textarea-label">Send your Balance Sheet by email</div>
-					</div>
+						<div
+						style={{
+							padding: "20px",
+							boxShadow: "0px 1px 4px 0px #0000001F",
+						}}
+						className="modal-base-headline"
+						//  className="email-view-textarea-label"
+						 >Send Balance Sheet</div>
+					{/* </div> */}
+					<div
+						style={{
+							borderTop: "1px solid #C6C6C6",
+						}}
+					>
+						<div
+							style={{
+								padding: "20px",
+								// padding: "35px 30px",
+								borderRadius: "8px",
+								backgroundColor: "white",
+							}}
+						>
 
 					<div className="row">
-						<div className="col-xs-6">
+						<div className="col-xs-12">
 							<div className="email-view-select">
 								{/* <div className="email-view-select-label">{resources.str_emailAddress}</div> */}
 								<div className="email-view-select-label">E-Mail Address</div>
@@ -465,7 +492,9 @@ class balanceSheetSendEmail extends React.Component {
 								/>
 							</div>
 						</div>
-						<div className="col-xs-6">
+						</div>
+						<div className="row u_mt_20">
+						<div className="col-xs-12">
 							<TextInputExtendedComponent
 								value={this.state.regard}
 								required={true}
@@ -489,8 +518,12 @@ class balanceSheetSendEmail extends React.Component {
 					<div className="row">
 						<div className="col-xs-12">
 							{/* <div className="email-view-textarea-label">{resources.emailViewPreviewEmailText}</div> */}
-							<div className="email-view-textarea-label">Description</div>
-							<div className="email-view-textarea">
+							<div 
+							// className="email-view-textarea-label"
+							className="textarea_label"
+							style={{ marginTop: "5px", color: "#747474" }}
+							>Message</div>
+							{/* <div className="email-view-textarea">
 								<div className="email-view-textarea-inner">
 									<HtmlInputComponent
 										displayBlueLine={false}
@@ -522,10 +555,17 @@ class balanceSheetSendEmail extends React.Component {
 								</div>
 								<div className="email-view-textarea-footer">
 									{/* <span>{resources.str_poweredBy}</span> */}
-									<span>{"powered by"}</span>
+									{/* <span>{"powered by"}</span>
 									<SVGInline width="45px" svg={imprezzLogo} />
 								</div>
-							</div>
+							</div> */}
+								<textarea
+										style={{ borderRadius: "8px" }}
+										className="textarea_input"
+										rows="5"
+										onTextChange={(val) => this.setState({ emailTextAdditional: val })}
+										value={this.state.emailTextAdditional}
+									/>
 						</div>
 					</div>
 
@@ -550,20 +590,24 @@ class balanceSheetSendEmail extends React.Component {
 					<div className="row">
 						<div className="col-xs-12">
 							{/* <div className="email-view-textarea-label">{resources.str_attachments}</div> */}
-							<div className="email-view-textarea-label">{"Attachments"}</div>
+							<div
+							//  className="email-view-textarea-label"
+							className="textarea_label"
+							style={{ color: "#747474", marginTop: "20px" }}
+							 >{"Attachments"}</div>
 							<div className="email-view-attachments">
 								<div className="row">
 									<div className="col-xs-7">
 										<div className="expense-receipt-list">
 											{this.state.additionalDefaultAttachmentName ? (
-												<div className="expenseEdit_fileListRow">
+												<div style={{ marginTop: "-20px" }} className="expenseEdit_fileListRow">
 													<div className="expenseEdit_fileIcon icon icon-attachment" />
 													<div className="list_item">
 														{this.state.additionalDefaultAttachmentName}.pdf
 													</div>
 												</div>
 											) : null}
-											<div className="expenseEdit_fileListRow">
+											<div style={{ marginTop: "-20px" }} className="expenseEdit_fileListRow">
 												<div className="expenseEdit_fileIcon icon icon-attachment" />
 												<div className="list_item">{this.state.defaultAttachmentName}.pdf</div>
 											</div>
@@ -572,21 +616,27 @@ class balanceSheetSendEmail extends React.Component {
 
 										{this.state.uploadedAttachments.length < 10 ? (
 											<div
+											style={{
+												width: "585px",
+												borderRadius: "4px",
+												border: "1px solid #ccc",
+												height: "50px",
+											}}
 												id="emailView-attachment-dropbox"
 												className="drop-box text-center u_mb_4"
 												data-qs-id="expense-edit-receipt-upload"
 											>
-												<label className="text-muted">
+												<label className="text-muted"  style={{ marginTop: " -6px" }}>
 													<p>
 														{/* {resources.emaillViewAttachmentDragText} */}
 														{"Drag & drop an attachment here"}
 														{/*
 														 &amp;
 														  {resources.emaillViewDropOrClickText}, */}
-														{"Drop here or click"}
-														<br />
+														{/* {"Drop here or click"} */}
+														{/* <br /> */}
 														{/* {resources.emaillViewSelectAttachment} */}
-														{"or click to select an attachment"}
+														{/* {"or click to select an attachment"} */}
 													</p>
 													<input
 														className="u_hidden"
@@ -597,8 +647,15 @@ class balanceSheetSendEmail extends React.Component {
 											</div>
 										) : null}
 									</div>
+									</div>
+									</div>
 								</div>
-								<div style={{ position: "relative", marginTop: "10px" }} className="modal-base-footer">
+								<div style={{ 
+									// position: "relative",
+								 marginTop: "10px" }} className="modal-base-footer">
+										<div className="modal-base-confirm">
+										<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Send"} />
+									</div>
 									<div className="modal-base-cancel">
 										<ButtonComponent
 											callback={() => ModalService.close()}
@@ -607,9 +664,7 @@ class balanceSheetSendEmail extends React.Component {
 											onClick={() => onTopbarButtonClick("send")}
 										/>
 									</div>
-									<div className="modal-base-confirm">
-										<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Send"} />
-									</div>
+								
 								</div>
 							</div>
 						</div>

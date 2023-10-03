@@ -1,18 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import TextInputLabelComponent from 'shared/inputs/text-input/text-input-label.component';
-import TextInputHintComponent from 'shared/inputs/text-input/text-input-hint.component';
-import TextInputErrorComponent from 'shared/inputs/text-input/text-input-error.component';
-import sanitizeText from 'helpers/sanitizeText';
-import sanitizeNumber from 'helpers/sanitizeNumber';
-import { formatNumber } from 'helpers/formatNumber';
-import config from 'config';
+import React from "react";
+import PropTypes from "prop-types";
+import TextInputLabelComponent from "shared/inputs/text-input/text-input-label.component";
+import TextInputHintComponent from "shared/inputs/text-input/text-input-hint.component";
+import TextInputErrorComponent from "shared/inputs/text-input/text-input-error.component";
+import sanitizeText from "helpers/sanitizeText";
+import sanitizeNumber from "helpers/sanitizeNumber";
+import { formatNumber } from "helpers/formatNumber";
+import config from "config";
 
 class NumberInputComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			value: this.props.defaultNonZero ? '' : 0
+			value: this.props.defaultNonZero ? "" : 0,
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleFocus = this.handleFocus.bind(this);
@@ -21,15 +21,15 @@ class NumberInputComponent extends React.Component {
 	}
 
 	componentWillMount() {
-		const defaultValue = this.props.value || this.props.min.toString() || '0';
+		const defaultValue = this.props.value || this.props.min.toString() || "0";
 		this.writeValueToInput(defaultValue, { silent: true });
 	}
 
 	// this might be relevant for some use-cases in the future
-	componentWillReceiveProps (nextProps) {
-	  if (nextProps.value) {
-	    this.writeValueToInput(nextProps.value, { silent: true })
-	  }
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.value) {
+			this.writeValueToInput(nextProps.value, { silent: true });
+		}
 	}
 
 	handleChange({ target: { value, name } }) {
@@ -45,7 +45,7 @@ class NumberInputComponent extends React.Component {
 		if (this.props.isDecimal) {
 			newState.value = formatNumber(newState.value, this.props);
 		}
-		this.setState(newState, function() {
+		this.setState(newState, function () {
 			if (this.props.selectOnFocus) {
 				target.select();
 			}
@@ -58,7 +58,7 @@ class NumberInputComponent extends React.Component {
 
 	handleBlur(event) {
 		let {
-			target: { value }
+			target: { value },
 		} = event;
 		const { max, min, name, required } = this.props;
 
@@ -87,7 +87,7 @@ class NumberInputComponent extends React.Component {
 	setValue(value, silent, name) {
 		const { required } = this.props;
 		const inputInvalid = required && isNaN(parseInt(value));
-		this.setState({ value, inputInvalid }, function() {
+		this.setState({ value, inputInvalid }, function () {
 			if (this.props.onChange && !silent) {
 				this.props.onChange(sanitizeNumber(value, this.props).value, name);
 			}
@@ -108,25 +108,27 @@ class NumberInputComponent extends React.Component {
 			placeholder,
 			hintMessage,
 			dataQsId,
-			maxLength
+			maxLength,
 		} = this.props;
 		const { inputInvalid } = this.state;
 
-		let inputStyle = '';
+		let inputStyle = "";
 		if (leftLabel && hasBorder) {
-			inputStyle = ' input-leftLabel input-boxBorder';
+			inputStyle = " input-leftLabel input-boxBorder";
 		} else if (leftLabel && !hasBorder) {
-			inputStyle = ' input-leftLabel';
+			inputStyle = " input-leftLabel";
 		} else if (!leftLabel && hasBorder) {
-			inputStyle = ' input-boxBorder';
+			inputStyle = " input-boxBorder";
 		}
 
-		const inputClass = `input${errorMessage || inputInvalid ? ' input-invalid' : ''} ${this.state.value === '' && !placeholder ? 'input-empty ' : ''}`;
+		const inputClass = `input${errorMessage || inputInvalid ? " input-invalid" : ""} ${
+			this.state.value === "" && !placeholder ? "input-empty " : ""
+		}`;
 
 		return (
 			<div className={`form_input ${className}${inputStyle}`} data-qs-id={dataQsId}>
 				<input
-					type={'text'}
+					type={"text"}
 					disabled={disabled}
 					placeholder={placeholder}
 					name={name}
@@ -139,6 +141,7 @@ class NumberInputComponent extends React.Component {
 					onBlur={this.handleBlur}
 					onKeyDown={this.handleKeyDown}
 					value={this.state.value}
+					style={{ paddingLeft: "5px" }}
 				/>
 				<span className="input_bar" />
 				<TextInputLabelComponent className="input_label" text={label} />
@@ -174,29 +177,29 @@ NumberInputComponent.propTypes = {
 	leftLabel: PropTypes.bool,
 	hasBorder: PropTypes.bool,
 	onChange: PropTypes.func,
-	className: PropTypes.string
+	className: PropTypes.string,
 };
 
 NumberInputComponent.defaultProps = {
 	value: 0,
-	name: '',
-	label: '',
-	placeholder: '',
-	errorMessage: '',
+	name: "",
+	label: "",
+	placeholder: "",
+	errorMessage: "",
 	focused: false,
-	errorClass: '',
-	hintMessage: '',
+	errorClass: "",
+	hintMessage: "",
 	precision: config.currencyFormat.precision,
 	min: NaN,
 	max: NaN,
 	decimal: config.currencyFormat.decimal,
-	thousand: '',
+	thousand: "",
 	format: config.currencyFormat.format,
 	selectOnFocus: false,
 	disabled: false,
 	leftLabel: false,
 	hasBorder: false,
-	className: ''
+	className: "",
 };
 
 export default NumberInputComponent;

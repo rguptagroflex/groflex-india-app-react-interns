@@ -2,6 +2,8 @@ import invoiz from "services/invoiz.service";
 import React from "react";
 import _ from "lodash";
 import lang from "lang";
+
+import TabsComponent from "../../shared/tabs/tabs.component";
 import TopbarComponent from "shared/topbar/topbar.component";
 import BarChartMonthsComponent from "shared/charts/bar-chart-months.component";
 import config from "config";
@@ -32,12 +34,20 @@ import ModalService from "services/modal.service";
 import PayIncoming from "assets/images/svg/pay-incoming.svg";
 import PayOutgoing from "assets/images/svg/pay-outgoing.svg";
 import SVGInline from "react-svg-inline";
+import ReceivablePayment from "../../../assets/images/icons/receive-payment-svgrepo-com 1.svg";
+import Ellipse from "../../../assets/images/icons/Ellipse 16.svg";
+import Coin from "../../../assets/images/icons/coins-stacked-04-svgrepo-com 1.svg";
+import CreditNote from "../../../assets/images/icons/simple-notes-svgrepo-com 1.svg";
+import IconQuoatation from "../../../assets/images/icons/icon_balance.svg";
+import iconOpening from "../../../assets/images/icons/invoice-svgrepo-com 1.svg";
+import EllipseGreen from "../../../assets/images/icons/Ellipse_green 16.svg";
+import Quotataion from "../../../assets/images/icons/open_quotation.svg";
 
 const TopbarActions = {
 	EDIT: 1,
 	FETCH_EMAILS: 2,
 };
-
+const tabs = ["Contact Overview", "Activities", "Documents"];
 class CustomerDetailNewComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -46,6 +56,10 @@ class CustomerDetailNewComponent extends React.Component {
 		const payCondition = this.props.payCondition || {};
 
 		this.carousel = null;
+		this.state = {
+			activeTab: "Contact Overview",
+		};
+		// this.setActiveTab = this.setActiveTab.bind(this);
 
 		this.chartData = _.cloneDeep(customer.salesOrExpensesVolumeData.chartData);
 		//this.chartData.splice(0, 6);
@@ -122,6 +136,9 @@ class CustomerDetailNewComponent extends React.Component {
 
 		invoiz.on("userModelSubscriptionDataSet", this.updateHistoryListFilterItems, this);
 	}
+	setActiveTab(tab) {
+		this.setState({ activeTab: tab });
+	}
 
 	componentWillUnmount() {
 		$(".layout-wrapper").removeClass("is-scrollable");
@@ -134,10 +151,7 @@ class CustomerDetailNewComponent extends React.Component {
 		this.setState({
 			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
 		});
-	}
-
-	setActiveTab(tab) {
-		this.setState({ activeTab: tab });
+		this.setState({ activeTab: "Contact Overview" });
 	}
 
 	onSaveNotesClick({ notes, notesAlert }) {
@@ -158,7 +172,7 @@ class CustomerDetailNewComponent extends React.Component {
 				this.setState({ customer: customerUpdated });
 			})
 			.catch(() => {
-				invoiz.page.showToast({ message: lang.defaultErrorMessage });
+				// invoiz.page.showToast({ message: lang.defaultErrorMessage });
 			});
 	}
 
@@ -207,10 +221,14 @@ class CustomerDetailNewComponent extends React.Component {
 		return (
 			<React.Fragment>
 				<div className="text-h4">Conditions</div>
-				<div className="row u_mt_20">
-					<div className="col-xs-6">
+
+				<div
+					className="row u_mt_20 condition-box u_pt_20 u_pb_20 u_ml_2"
+					style={{ display: " inline-flex", padding: "16px", alignItems: "flex-start", gap: "32px" }}
+				>
+					<div className="col-xs-6 " style={{ maxWidth: "33%" }}>
 						<div className="text-muted text-medium u_mb_6">Payment terms</div>
-						<div className="text-h6 border-right">{payCondition.name}</div>
+						<div className="text-h6 ">{payCondition.name}</div>
 					</div>
 					<div className="col-xs-6 col-no-gutter-left">
 						<div className="text-muted text-medium u_mb_6">Discount</div>
@@ -220,138 +238,319 @@ class CustomerDetailNewComponent extends React.Component {
 			</React.Fragment>
 		);
 	}
+	renderOpeningBalance() {
+		const { customer } = this.state;
+		const formattedOpeningBalance = formatCurrencyMinusPlus(customer.openingBalance);
+
+		return (
+			<div className="opening-balance-container">
+				<div style={{ marginTop: "-10%" }}>
+					<SVGInline svg={IconQuoatation} alt={"Could not load image!"} />
+				</div>
+				<div className="text-muted text-medium u_mb_6">
+					<span>Opening </span>
+					<br />
+					<span>balance</span>
+				</div>
+				<div className="text-h6 text-primary">{formattedOpeningBalance}</div>
+			</div>
+		);
+	}
+
+	renderOutstandingReceivables() {
+		const { customer } = this.state;
+		console.log("renderOutstandingReceivables:", customer.outstandingAmount);
+		const formattedOutstandingReceivables = formatCurrencyMinusPlus(
+			customer.salesOrExpensesVolumeData.outstandingAmount
+		);
+
+		return (
+			<div className="outstanding-receivables-container">
+				<SVGInline className="overlay-image-red" svg={ReceivablePayment} alt={"Could not load image!"} />
+				<div className="text-muted text-medium u_mb_6 u_mt_10">
+					<span>Outstanding</span>
+					<br />
+					<span>receivables</span>
+				</div>
+				<div className="text-h6 text-primary">
+					{/* {formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)} */}
+					{formattedOutstandingReceivables}
+				</div>
+			</div>
+		);
+	}
+	renderExcessPayment() {
+		const { customer } = this.state;
+		console.log("renderExcessPayment:", customer.balance);
+		const formattedOutstandingReceivables = formatCurrencyMinusPlus(customer.balance);
+
+		return (
+			<div className="excess-payment-container">
+				<SVGInline className="overlay-image-red" svg={Coin} alt={"Could not load image!"} />
+				<div className="text-muted text-medium u_mb_6 u_mt_10">
+					<span>Excess</span>
+					<br />
+					<span>payment</span>
+				</div>
+				<div className="text-h6 text-primary">
+					{/* {formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)} */}
+					{formattedOutstandingReceivables}
+				</div>
+			</div>
+		);
+	}
+
+	renderOpenQuotationSection(customer, index) {
+		if (!customer || typeof customer.balance === "undefined" || typeof customer.openingBalance === "undefined") {
+			console.log("Data not available for rendering Open Quotation section");
+			return null;
+		}
+
+		console.log("Customer:", customer);
+		const { balance, openingBalance } = customer;
+		const balanceSumValue = balance + openingBalance;
+		console.log("balanceSumValue:", balanceSumValue);
+
+		return (
+			<div key={index} className="open-quotation-container">
+				<SVGInline className="overlay-image" svg={Quotataion} alt={"Could not load image!"} />
+				<div className="text-muted text-medium u_mb_6 u_mt_10">
+					<span>Open</span>
+					<br />
+					<span>quotations</span>
+				</div>
+				<div className="row">
+					<div className="col-xs-12 col-gutter-right-30">
+						<div className={`text-h6 text-primary `}>{formatCurrencyMinusPlus(balanceSumValue)}</div>
+					</div>
+				</div>
+				{index < this.salesOrExpensesData.length - 1 && <hr className="u_mt_20 u_mb_20" />}
+			</div>
+		);
+	}
+
+	renderCreditNotesSection(customer) {
+		if (!customer) {
+			return null;
+		}
+
+		const creditsOrDebitsSum =
+			customer.type === "customer"
+				? formatCurrencyMinusPlus(this.state.customer.credits)
+				: formatCurrencyMinusPlus(this.state.customer.debits);
+
+		return (
+			<div className="credit-notes-container">
+				<SVGInline className="overlay-image-red" svg={CreditNote} alt={"Could not load image!"} />
+				<div className="text-muted text-medium u_mb_6 u_mt_10">
+					<span>Credit</span>
+					<br />
+					<span>notes</span>
+				</div>
+				<div className="text-h6 text-primary ">{creditsOrDebitsSum}</div>
+			</div>
+		);
+	}
+
+	renderOpenInvoicesSection(customer, index) {
+		console.log("renderOpenInvoicesSection:", customer);
+		if (!customer) {
+			console.log("Customer is undefined or null");
+			return null;
+		}
+
+		return (
+			<div key={index} className="open-invoice-container">
+				<SVGInline className="overlay-image" svg={iconOpening} alt={"Could not load image!"} />
+				<div className="text-muted text-medium u_mb_6 u_mt_10">
+					<span>Open</span>
+					<br />
+					<span>invoices</span>
+				</div>
+				<div className="text-h6 text-primary">
+					{formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)}
+				</div>
+			</div>
+		);
+	}
 
 	getSalesOrExpenses() {
 		const { customer } = this.state;
+		console.log("Sales or Expenses Data:", this.salesOrExpensesData);
+
 		return this.salesOrExpensesData.map((category, index) => {
-			let onTitleClick = category.title;
-			let openInvoicesOrExpensesSum =
-				customer.type === `customer`
-					? formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)
-					: formatCurrency(
-							customer.salesOrExpensesVolumeData.openExpensesTurnOver +
-								customer.salesOrExpensesVolumeData.totalPurchasesTurnOver
-					  );
-			let creditsOrDebitsSum =
-				customer.type === `customer`
-					? formatCurrencyMinusPlus(this.state.customer.credits)
-					: formatCurrencyMinusPlus(this.state.customer.debits);
-			let totalBalanceSum =
-				customer.type === `customer`
-					? formatCurrencyMinusPlus(
-							customer.salesOrExpensesVolumeData.outstandingAmount +
-								parseInt(this.state.customer.credits) +
-								this.state.customer.balance +
-								this.state.customer.openingBalance
-					  )
-					: formatCurrencyMinusPlus(
-							customer.salesOrExpensesVolumeData.openExpensesTurnOver +
-								customer.salesOrExpensesVolumeData.totalPurchasesTurnOver +
-								this.state.customer.debits +
-								this.state.customer.balance +
-								this.state.customer.openingBalance
-					  );
-			const balanceSumValue =
-				customer.salesOrExpensesVolumeData.outstandingAmount +
-				parseInt(this.state.customer.credits) +
-				this.state.customer.balance +
-				this.state.customer.openingBalance;
-			let balanceSubtitleRow1 = customer.type === `customer` ? `Open invoices` : `Open expenditures`;
-			let balanceSubtitleRow2 = customer.type === `customer` ? `Credit notes` : `Debit notes`;
-			if (category.title) {
-				return (
-					<div key={index} className="">
-						{customer.type === `customer` &&
-						(category.title === `Outstanding payable` ||
-							category.title === `Outstanding receivable` ||
-							category.title === `Balance`) ? (
-							<div className="balance-field">
-								<div className="text-h6 u_mb_10">{category.title}</div>
-							</div>
-						) : (
-							<div className="text-h6 u_mb_10">{category.title}</div>
-						)}
-						{customer.type === `customer` &&
-						(category.title === `Outstanding payable` ||
-							category.title === `Outstanding receivable` ||
-							category.title === `Balance`) ? (
-							<div className="row">
-								<div className="col-xs-7 col-gutter-right-30">
-									{/* <div className="text-muted text-medium u_mb_6">Sum of receivables and payables</div> */}
-									<div className={`text-h4 text-primary text-truncate`}>
-										{`${totalBalanceSum}`}
-										{
-											<SVGInline
-												height="21px"
-												width="26px"
-												svg={`${
-													balanceSumValue > 0
-														? PayIncoming
-														: balanceSumValue === 0
-														? ""
-														: PayOutgoing
-												}`}
-											/>
-										}
-									</div>
-								</div>
-								<div className="col-xs-6 col-gutter-right-30 u_mt_12">
-									<div className="text-muted text-medium u_mb_6">Opening Balance</div>
-									<div className="text-h4 text-primary text-truncate border-right u_mr_10">
-										{formatCurrencyMinusPlus(customer.openingBalance)}
-									</div>
-								</div>
-								<div className="col-xs-5 col-no-gutter-left u_mt_12">
-									<div className="text-muted text-medium u_mb_6">Excess payments</div>
-									<div className="text-h4 text-primary text-truncate">
-										{formatCurrencyMinusPlus(customer.balance)}
-									</div>
-								</div>
-								<div
-									className="col-xs-6 col-gutter-right-30 u_mt_12 box-clickable"
-									onClick={() => {
-										this.onSalesOrExpensesClick(balanceSubtitleRow1, category.count);
-									}}
-								>
-									<div className="text-muted text-medium u_mb_6">{balanceSubtitleRow1}</div>
-									<div className="text-h4 text-primary text-truncate border-right u_mr_10">
-										{openInvoicesOrExpensesSum}
-									</div>
-								</div>
-								<div
-									className="col-xs-5 col-no-gutter-left u_mt_12 box-clickable"
-									onClick={() => {
-										this.onSalesOrExpensesClick(balanceSubtitleRow2, category.count);
-									}}
-								>
-									<div className="text-muted text-medium u_mb_6">{balanceSubtitleRow2}</div>
-									<div className="text-h4 text-primary text-truncate">{creditsOrDebitsSum}</div>
-								</div>
-							</div>
-						) : (
-							<div
-								className="row"
-								onClick={() => {
-									this.onSalesOrExpensesClick(onTitleClick, category.count);
-								}}
-							>
-								<div className="col-xs-6 col-gutter-right-30 box-clickable">
-									<div className="text-muted text-medium u_mb_6">Amount</div>
-									<div className="text-h4 border-right text-primary text-truncate u_mr_10">
-										{formatCurrency(category.amount)}
-									</div>
-								</div>
-								<div className="col-xs-5 col-no-gutter-left box-clickable">
-									<div className="text-muted text-medium u_mb_6">Number</div>
-									<div className="text-h4">{category.count}</div>
-								</div>
-							</div>
-						)}
-						{index < this.salesOrExpensesData.length - 1 && <hr className="u_mt_20 u_mb_20" />}
-					</div>
-				);
+			if (category.title === "Credit notes") {
+				return this.renderCreditNotesSection(customer, index); // Pass the customer object here
+			} else if (category.title === "Open quotation") {
+				return this.renderOpenQuotationSection(customer, index); // Pass the customer object here
+			} else if (category.title === "Open invoices") {
+				return this.renderOpenInvoicesSection(customer, index); // Pass the customer object here
 			}
 		});
+	}
+
+	// /////////////////
+
+	// getSalesOrExpenses() {
+	// 	const { customer } = this.state;
+	// 	console.log("Sales or Expenses Data:", this.salesOrExpensesData);
+	// 	return this.salesOrExpensesData.map((category, index) => {
+	// 		let onTitleClick = category.title;
+	// 		let openInvoicesOrExpensesSum =
+	// 			customer.type === `customer`
+	// 				? formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)
+	// 				: formatCurrency(
+	// 						customer.salesOrExpensesVolumeData.openExpensesTurnOver +
+	// 							customer.salesOrExpensesVolumeData.totalPurchasesTurnOver
+	// 				  );
+	// 		let creditsOrDebitsSum =
+	// 			customer.type === `customer`
+	// 				? formatCurrencyMinusPlus(this.state.customer.credits)
+	// 				: formatCurrencyMinusPlus(this.state.customer.debits);
+	// 		let totalBalanceSum =
+	// 			customer.type === `customer`
+	// 				? formatCurrencyMinusPlus(
+	// 						customer.salesOrExpensesVolumeData.outstandingAmount +
+	// 							parseInt(this.state.customer.credits) +
+	// 							this.state.customer.balance +
+	// 							this.state.customer.openingBalance
+	// 				  )
+	// 				: formatCurrencyMinusPlus(
+	// 						customer.salesOrExpensesVolumeData.openExpensesTurnOver +
+	// 							customer.salesOrExpensesVolumeData.totalPurchasesTurnOver +
+	// 							this.state.customer.debits +
+	// 							this.state.customer.balance +
+	// 							this.state.customer.openingBalance
+	// 				  );
+	// 		const balanceSumValue =
+	// 			customer.salesOrExpensesVolumeData.outstandingAmount +
+	// 			parseInt(this.state.customer.credits) +
+	// 			this.state.customer.balance +
+	// 			this.state.customer.openingBalance;
+	// 		let balanceSubtitleRow1 = customer.type === `customer` ? `Open invoices` : `Open expenditures`;
+	// 		let balanceSubtitleRow2 = customer.type === `customer` ? `Credit notes` : `Debit notes`;
+	// 		if (category.title) {
+	// 			return (
+	// 				<div key={index} className="">
+	// 					{customer.type === `customer` &&
+	// 					(category.title === `Outstanding payable` ||
+	// 						category.title === `Outstanding receivable` ||
+	// 						category.title === `Balance`) ? (
+	// 						<div className="balance-field">
+	// 							<div className="text-h6 u_mb_10">{category.title}</div>
+	// 						</div>
+	// 					) : (
+	// 						<div className="text-h6 u_mb_10">{category.title}</div>
+	// 					)}
+	// 					{customer.type === `customer` &&
+	// 					(category.title === `Outstanding payable` ||
+	// 						category.title === `Outstanding receivable` ||
+	// 						category.title === `Balance`) ? (
+	// 						<div className="row">
+	// 							<div className="col-xs-7 col-gutter-right-30">
+	// 								{/* <div className="text-muted text-medium u_mb_6">Sum of receivables and payables</div> */}
+	// 								<div className={`text-h4 text-primary text-truncate`}>
+	// 									{`${totalBalanceSum}`}
+	// 									{
+	// 										<SVGInline
+	// 											height="21px"
+	// 											width="26px"
+	// 											svg={`${
+	// 												balanceSumValue > 0
+	// 													? PayIncoming
+	// 													: balanceSumValue === 0
+	// 													? ""
+	// 													: PayOutgoing
+	// 											}`}
+	// 										/>
+	// 									}
+	// 								</div>
+	// 							</div>
+	// 							<div className="col-xs-6 col-gutter-right-30 u_mt_12">
+	// 								<div className="text-muted text-medium u_mb_6">Opening Balance</div>
+	// 								<div className="text-h4 text-primary text-truncate border-right u_mr_10">
+	// 									{formatCurrencyMinusPlus(customer.openingBalance)}
+	// 								</div>
+	// 							</div>
+	// 							<div className="col-xs-5 col-no-gutter-left u_mt_12">
+	// 								<div className="text-muted text-medium u_mb_6">Excess payments</div>
+	// 								<div className="text-h4 text-primary text-truncate">
+	// 									{formatCurrencyMinusPlus(customer.balance)}
+	// 								</div>
+	// 							</div>
+	// 							<div
+	// 								className="col-xs-6 col-gutter-right-30 u_mt_12 box-clickable"
+	// 								onClick={() => {
+	// 									this.onSalesOrExpensesClick(balanceSubtitleRow1, category.count);
+	// 								}}
+	// 							>
+	// 								<div className="text-muted text-medium u_mb_6">{balanceSubtitleRow1}</div>
+	// 								<div className="text-h4 text-primary text-truncate border-right u_mr_10">
+	// 									{openInvoicesOrExpensesSum}
+	// 								</div>
+	// 							</div>
+	// 							<div
+	// 								className="col-xs-5 col-no-gutter-left u_mt_12 box-clickable"
+	// 								onClick={() => {
+	// 									this.onSalesOrExpensesClick(balanceSubtitleRow2, category.count);
+	// 								}}
+	// 							>
+	// 								<div className="text-muted text-medium u_mb_6">{balanceSubtitleRow2}</div>
+	// 								<div className="text-h4 text-primary text-truncate">{creditsOrDebitsSum}</div>
+	// 							</div>
+	// 						</div>
+	// 					) : (
+	// 						<div
+	// 							className="row"
+	// 							onClick={() => {
+	// 								this.onSalesOrExpensesClick(onTitleClick, category.count);
+	// 							}}
+	// 						>
+	// 							<div className="col-xs-6 col-gutter-right-30 box-clickable">
+	// 								<div className="text-muted text-medium u_mb_6">Amount</div>
+	// 								<div className="text-h4 border-right text-primary text-truncate u_mr_10">
+	// 									{formatCurrency(category.amount)}
+	// 								</div>
+	// 							</div>
+	// 							<div className="col-xs-5 col-no-gutter-left box-clickable">
+	// 								<div className="text-muted text-medium u_mb_6">Number</div>
+	// 								<div className="text-h4">{category.count}</div>
+	// 							</div>
+	// 						</div>
+	// 					)}
+	// 					{index < this.salesOrExpensesData.length - 1 && <hr className="u_mt_20 u_mb_20" />}
+	// 				</div>
+	// 			);
+	// 		}
+	// 	});
+	// }
+	getTotalRevenue() {
+		const { customer } = this.state;
+		const totalRevenue =
+			customer.type === "customer"
+				? customer.salesOrExpensesVolumeData.outstandingAmount
+				: customer.salesOrExpensesVolumeData.openExpensesTurnOver +
+				  customer.salesOrExpensesVolumeData.totalPurchasesTurnOver;
+
+		return (
+			<div className="total-revenue-box">
+				<div className="text-h6 u_mb_10">Total Revenue</div>
+				<div className="row">
+					<div className="col-xs-12 col-gutter-right-30">
+						<div className="text-h4 text-primary text-truncate">
+							{formatCurrency(totalRevenue)}
+							{
+								<SVGInline
+									height="21px"
+									width="26px"
+									svg={`${totalRevenue > 0 ? PayIncoming : totalRevenue === 0 ? "" : PayOutgoing}`}
+								/>
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		);
 	}
 
 	onSalesOrExpensesClick(category, count) {
@@ -784,9 +983,12 @@ class CustomerDetailNewComponent extends React.Component {
 	}
 
 	render() {
-		const { customer, activeTab, forceReloadChild, activityOptions, activityCategories, canViewExpense } = this.state;
+		const { customer, forceReloadChild, activityOptions, activityCategories, canViewExpense } = this.state;
+		const { activeTab } = this.state;
+
 		const { resources } = this.props;
 		const topbarButtons = this.createTopbarButtons();
+
 		return (
 			<div className="customer-detail-wrapper wrapper-has-topbar">
 				<TopbarComponent
@@ -795,34 +997,182 @@ class CustomerDetailNewComponent extends React.Component {
 					buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
 					buttons={topbarButtons}
 				/>
-
 				<div className="row">
-					<div className="col-xs-4 col-gutter-right-30">
-						<CustomerMetadataComponent
-							customer={customer}
-							bulkPayment={this.bulkPayment}
-							issueRefund={this.bulkRefund}
-						/>						
-						{/* <CustomerContactInformationComponent customer={customer} /> */}
-					</div>
-					<div className="col-xs-8 col-no-gutter-left flexible-height">
-						<div className="row">
-							<CustomerContactInformationComponent customer={customer} />
-						</div>
-						<div className={`row ${
-											canViewExpense && customer.type === "customer" ? '':'opacityLedger' 
-										}`}							
-						>
-							{
-								((
-									<div className="box box-rounded col-no-gutter-bottom customer-statements">
-										{false && <div className="customer-statements-container-blank"></div>}
-										<LedgerComponent customerId={customer.id} resources={resources} />
+					<div className="tabs-container" style={{ display: "flex", marginLeft: "-90px", marginTop: "30px" }}>
+						<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
+							<TabsComponent.List>
+								{tabs.map((tab, index) => (
+									<div
+										key={index}
+										className={`tab-item ${this.state.activeTab === tab ? "active-tab" : ""}`}
+										onClick={() => this.setActiveTab(tab)}
+										style={{
+											marginRight: "20px",
+											cursor: "pointer",
+											position: "relative",
+											color: this.state.activeTab === tab ? "#00A353" : "#272D30",
+										}}
+									>
+										{tab}
+										{this.state.activeTab === tab && (
+											<div>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-7px",
+														left: "0",
+														width: "100%",
+														height: "3px",
+														backgroundColor: "#00A353",
+													}}
+												/>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-8px",
+														left:
+															this.state.activeTab === "Contact Overview"
+																? "0px"
+																: this.state.activeTab === "Activities"
+																? "-220%"
+																: "-280%",
+
+														width: "1112px",
+														height: "1px",
+														background: "#C6C6C6",
+													}}
+												/>
+											</div>
+										)}
 									</div>
-								))
-							}
-						</div>
-						{/* {!forceReloadChild && (
+								))}
+							</TabsComponent.List>
+						</TabsComponent>
+					</div>
+				</div>
+				<div className="wrap-detail-contact">
+					{activeTab === "Contact Overview" && (
+						<div>
+							<div className="row" style={{ marginLeft: "-100px" }}>
+								<div className="col-xs-3">
+									<CustomerMetadataComponent
+										customer={customer}
+										bulkPayment={this.bulkPayment}
+										issueRefund={this.bulkRefund}
+										className="u_ml_2"
+									/>
+									<div className="row u_mt_16">
+										<div className=" box-rounded customer-notes detail-wrap">
+											<NotesComponent
+												data={customer}
+												heading={resources.str_remarks}
+												// placeholder={resources.customerDetailCommentsAboutCustomer}
+												// notesAlertLabel={resources.str_seeNoteConfirmationMessage}
+												// showToggleInput={true}
+												onSave={({ notes, notesAlert }) =>
+													this.onSaveNotesClick({ notes, notesAlert })
+												}
+												resources={resources}
+												defaultFocus={true}
+											/>
+										</div>
+										<div
+											className=" box-rounded customer-conditions detail-wrap u_mt_20 "
+											style={{
+												display: "flex",
+												width: "291px",
+												padding: "16px",
+												flexDirection: "column",
+												alignItems: "flex-start",
+												gap: "8px",
+											}}
+										>
+											{this.getConditions()}
+										</div>
+									</div>
+								</div>
+								<div className="col-xs-9">
+									<div className="row wrap-colums-detail">
+										<div className="col-xs-6 detail-wrap-column">
+											<div className="row u_m_16 row-box-col">
+												<div className=" col-xs-4 box-column">
+													{" "}
+													{this.renderOpenQuotationSection(customer)}
+												</div>
+												<div className="col-xs-4 box-column">{this.renderOpeningBalance()}</div>
+												<div className="col-xs-4 box-column">
+													{this.renderOpenInvoicesSection(customer)}
+												</div>
+											</div>
+
+											<div className="row u_m_16 row-box-col">
+												<div className=" col-xs-4 box-column">
+													{this.renderOutstandingReceivables()}
+												</div>
+												<div className="col-xs-4 box-column">{this.renderExcessPayment()}</div>
+												<div className="col-xs- box-column">
+													{" "}
+													{this.renderCreditNotesSection(this.state.customer)}
+												</div>
+											</div>
+										</div>
+										<div className="col-xs-6 ">
+											<CustomerContactInformationComponent customer={customer} />
+										</div>
+									</div>
+									<div className="row u_mt_16" style={{ width: "822px" }}>
+										<div className="col-xs-12 detail-wrap-column ">
+											<div className=" customer-sales-chart u_p_16">
+												<div className="row">
+													<div className=" col-xs-9 ">
+														<div className="text-h4">
+															{customer.type === "customer"
+																? `Sales overview`
+																: `Expenditure overview`}
+														</div>
+														<div className="text-muted u_mt_16 u_mb_40">
+															{customer.type === "customer"
+																? `Sales over the last 12 months`
+																: `Expenditure over the last 12 months`}
+														</div>
+													</div>
+													<div className=" col-xs-2 detail-wrap-revenue total-revenue ">
+														{" "}
+														{this.getTotalRevenue()}
+													</div>
+												</div>
+
+												<BarChartMonthsComponent
+													target="customerSalesVolumeStats"
+													data={this.chartData}
+													// height="320px"
+													// showTooltip={true}
+													// onMouseEnter={this.onMouseEnter}
+													// onMouseMove={this.onMouseMove}
+												/>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								{/* /////////////////////////////////////
+				<div className="col-xs-7 col-no-gutter-left flexible-height">
+					<div className="row">
+						<CustomerContactInformationComponent customer={customer} />
+					</div>
+					<div className={`row ${canViewExpense && customer.type === "customer" ? "" : "opacityLedger"}`}>
+						{
+							<div className="box box-rounded col-no-gutter-bottom customer-statements">
+								{false && <div className="customer-statements-container-blank"></div>}
+								<LedgerComponent customerId={customer.id} resources={resources} />
+							</div>
+						}
+					</div>
+					{/* {!forceReloadChild && (
 							<div className="box box-rounded customer-todos-activities u_p_0">
 								<div className="customer-tabs u_vc">
 									<div
@@ -901,86 +1251,73 @@ class CustomerDetailNewComponent extends React.Component {
 								</div>
 							</div>
 						)} */}
-					</div>
-				</div>
-				<div className="row">
-					<div className="col-xs-12">
-						{customer.contactPersons && !!customer.contactPersons.length && (
-							<CustomerContactPersonsComponent contactPersons={customer.contactPersons} />
-						)}
-					</div>
-				</div>
-				<div className="row">
-					<div className="col-xs-7 col-no-gutter-left">
-						<div className="box box-rounded customer-sales-chart">
-							<div className="text-h4">
-								{customer.type === "customer" ? `Sales overview` : `Expenditure overview`}
+								{/* </div> */}
+								{/* //////////////////////////////////// */}
 							</div>
-							<div className="text-muted u_mt_10 u_mb_40">
-								{customer.type === "customer"
-									? `Sales over the last 12 months`
-									: `Expenditure over the last 12 months`}
+						</div>
+					)}
+					{/* {activeTab === "Activities" && (
+						<div className="row">
+							<div className="col-xs-12">
+								{customer.contactPersons && !!customer.contactPersons.length && (
+									<CustomerContactPersonsComponent contactPersons={customer.contactPersons} />
+								)}
 							</div>
-							<BarChartMonthsComponent
-								target="customerSalesVolumeStats"
-								data={this.chartData}
-								// height="320px"
-								// showTooltip={true}
-								// onMouseEnter={this.onMouseEnter}
-								// onMouseMove={this.onMouseMove}
-							/>
 						</div>
-					</div>
-					<div className="col-xs-5 col-no-gutter-left customer-statements-adjustment-1">
-						<div className="box box-rounded customer-sales">{this.getSalesOrExpenses()}</div>
-						{/* <div className="box box-rounded customer-conditions">{this.getConditions()}</div>
-						<div className="box box-rounded customer-notes">
-							<NotesComponent
-							data={customer}
-							heading={resources.str_remarks}
-							placeholder={resources.customerDetailCommentsAboutCustomer}
-							notesAlertLabel={resources.str_seeNoteConfirmationMessage}
-							showToggleInput={true}
-							onSave={({ notes, notesAlert }) => this.onSaveNotesClick({ notes, notesAlert })}
-							resources={resources}
-							defaultFocus={true}
-							/>
-						</div> */}
-					</div>
-				</div>
-				<div className="row">
-					<div className="col-xs-7 col-no-gutter-left">
-						<div className="box box-rounded customer-notes">
-							<NotesComponent
-								data={customer}
-								heading={resources.str_remarks}
-								placeholder={resources.customerDetailCommentsAboutCustomer}
-								notesAlertLabel={resources.str_seeNoteConfirmationMessage}
-								showToggleInput={true}
-								onSave={({ notes, notesAlert }) => this.onSaveNotesClick({ notes, notesAlert })}
-								resources={resources}
-								defaultFocus={true}
-							/>
+					)} */}
+					{activeTab === "Ledger" && (
+						<div className="row">
+							<div className="col-xs-7 col-no-gutter-left">
+								<div className="box box-rounded customer-sales-chart">
+									<div className="text-h4">
+										{customer.type === "customer" ? `Sales overview` : `Expenditure overview`}
+									</div>
+									<div className="text-muted u_mt_10 u_mb_40">
+										{customer.type === "customer"
+											? `Sales over the last 12 months`
+											: `Expenditure over the last 12 months`}
+									</div>
+									<BarChartMonthsComponent
+										target="customerSalesVolumeStats"
+										data={this.chartData}
+										// height="320px"
+										// showTooltip={true}
+										// onMouseEnter={this.onMouseEnter}
+										// onMouseMove={this.onMouseMove}
+									/>
+								</div>
+							</div>
+							<div className="col-xs-5 col-no-gutter-left customer-statements-adjustment-1">
+								<div className="box box-rounded customer-sales">{this.getSalesOrExpenses()}</div>
+							</div>
 						</div>
-					</div>
-					<div className="col-xs-5 col-no-gutter-left">
-						<div className="box box-rounded customer-conditions">{this.getConditions()}</div>
-					</div>
-				</div>
-				<div className="row">
-					<div className="col-xs-6 col-no-gutter-left">
-						<CustomerHistoryListWrapper
-							customer={customer}
-							forceReload={this.state.forceReloadChild}
-							emailStatus={this.state.emailStatus}
-							fetchingEmails={this.state.fetchingEmails}
-							//checkEmailStatus={this.checkEmailStatus}
-							isImapActivated={this.props.isImapActivated}
-						/>
-					</div>
-					<div className="col-xs-6 col-no-gutter-left">
-						<CustomerDocumentListWrapper customer={customer} />
-					</div>
+					)}
+					{activeTab === "Activities" && (
+						<div className="row" style={{ marginTop: "-50%", width: "100%", marginLeft: "-190px" }}>
+							<div className="col-xs-12 detail-wrap">
+								<CustomerHistoryListWrapper
+									customer={customer}
+									forceReload={this.state.forceReloadChild}
+									emailStatus={this.state.emailStatus}
+									fetchingEmails={this.state.fetchingEmails}
+									//checkEmailStatus={this.checkEmailStatus}
+									isImapActivated={this.props.isImapActivated}
+								/>
+							</div>
+							{/* // <div className="row"> */}
+							{/* <div className="col-xs-12 " style={{ padding: "10px" }}>
+								{customer.contactPersons && !!customer.contactPersons.length && (
+									<CustomerContactPersonsComponent contactPersons={customer.contactPersons} />
+								)}
+							</div> */}
+						</div>
+					)}
+					{activeTab === "Documents" && (
+						<div className="col-xs-12 col-no-gutter-left">
+							<CustomerDocumentListWrapper customer={customer} />
+						</div>
+					)}
+					{/* </div> */}
 				</div>
 			</div>
 		);

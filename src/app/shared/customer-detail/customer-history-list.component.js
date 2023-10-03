@@ -453,7 +453,7 @@ class CustomerHistoryListComponent extends React.Component {
 		);
 		const finishedButShow = emailStatus === 'finished' && emailStatusChangedToFinished;
 		return (
-			<div className="box box-rounded flex-grow history-list">
+			<div className="box-rounded flex-grow history-list">
 				{meta.count === 0 ? (
 					<div className="history-empty-list-box">{emptyListContent}</div>
 				) : (

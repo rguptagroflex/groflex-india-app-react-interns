@@ -10,6 +10,10 @@ import config from "../../../config";
 import ModalService from "../../services/modal.service";
 import OfferAction from "enums/offer/offer-action.enum";
 import moment from "moment";
+import SVGInline from "react-svg-inline";
+import Arrow from "../../../assets/images/icons/chevrons-down.svg";
+import ArrowSide from "../../../assets/images/icons/chevron.svg";
+
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 
 function ReportsProfitAndLoss() {
@@ -19,31 +23,67 @@ function ReportsProfitAndLoss() {
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-	const [rowData, setRowData] = useState();
-	const [columnDefs, setColumnDefs] = useState([
-			{
-			headerName: "Account",
-			field: "chartOfAccount.accountSubTypeId",
-			filter: false,
-			valueFormatter: function (params) {
-				if (params.value) {
-					let formattedValue = params.value.replace(/([A-Z])/g, " $1");
-					formattedValue = formattedValue.replace(/([A-Z][a-z])/g, " $1");
-					formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
-					return formattedValue;
-				}
-				return params.value;
-			},
-			cellStyle: { whiteSpace: "normal" },
-			autoHeight: true,
-		},
-		{
-			headerName: "Account Code",
-			field: "chartOfAccount.accountCode",
-			filter: false,
-		},
-		{ field: "Total", filter: false },
-	]);
+	const [rowData, setRowData] = useState([]);
+	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
+	const CustomCellRenderer = ({ value, colDef }) => (
+		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
+	);
+	useEffect(() => {
+		fetchData();
+	}, []);
+	const fetchData = async () => {
+		try {
+			const response = await invoiz.request(
+				`${config.resourceHost}accountingReport/profitandloss/2023-03-31T20:10:51.000Z/2023-08-09T20:10:51.000Z?type=json`,
+				{ auth: true }
+			);
+			const responseData = response.body.data;
+
+			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
+				const transactions = responseData.summaryData.transactions;
+				setRowData(transactions);
+			} else {
+				console.error("Data structure in the response is not as expected.");
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+	// const [columnDefs, setColumnDefs] = useState([
+	// 	{
+	// 		field: "chartOfAccount.accountTypeId",
+	// 		rowGroup: true,
+	// 		enableRowGroup: true,
+	// 		filter: false,
+	// 		hide: true,
+	// 		valueFormatter: function (params) {
+	// 			var value = params.value;
+	// 			return value.charAt(0).toUpperCase() + value.slice(1);
+	// 		},
+	// 	},
+	// 	{
+	// 		headerName: "Account",
+	// 		field: "chartOfAccount.accountSubTypeId",
+	// 		filter: false,
+	// 		valueFormatter: function (params) {
+	// 			if (params.value) {
+	// 				let formattedValue = params.value.replace(/([A-Z])/g, " $1");
+	// 				formattedValue = formattedValue.replace(/([A-Z][a-z])/g, " $1");
+	// 				formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
+	// 				return formattedValue;
+	// 			}
+	// 			return params.value;
+	// 		},
+	// 		cellStyle: { whiteSpace: "normal" },
+	// 		autoHeight: true,
+	// 	},
+	// 	{
+	// 		headerName: "Account Code",
+	// 		field: "chartOfAccount.accountCode",
+	// 		filter: false,
+	// 	},
+	// 	{ field: "balance", filter: false, cellRendererFramework: CustomCellRenderer },
+	// ]);
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
 	}, []);
@@ -68,6 +108,14 @@ function ReportsProfitAndLoss() {
 			api.setDomLayout();
 		}
 	}, []);
+	const toggleAccountType = (accountType) => {
+		// Check if the account type is expanded, and toggle it
+		if (expandedAccountTypes.includes(accountType)) {
+			setExpandedAccountTypes(expandedAccountTypes.filter((type) => type !== accountType));
+		} else {
+			setExpandedAccountTypes([...expandedAccountTypes, accountType]);
+		}
+	};
 
 	const onBtPrint = useCallback(() => {
 		if (gridRef.current) {
@@ -108,17 +156,17 @@ function ReportsProfitAndLoss() {
 	// 	.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 	// 	.join(" ");
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
-			});
-	}, []);
+	// const onGridReady = useCallback((params) => {
+	// 	invoiz
+	// 		.request(
+	// 			`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
+	// 			{ auth: true }
+	// 		)
+	// 		.then((res) => {
+	// 			console.log("response of data :", res.body.data);
+	// 			setRowData(res.body.data);
+	// 		});
+	// }, []);
 	const sendEmail = () => {
 		ModalService.open(<ProfitAndLossSendEmail />, {
 			modalClass: "edit-contact-person-modal-component",
@@ -126,7 +174,7 @@ function ReportsProfitAndLoss() {
 		});
 	};
 	const activeAction = OfferAction.PRINT;
-		const onDate = (value) => {
+	const onDate = (value) => {
 		let startDate = "";
 		let endDate = "";
 
@@ -187,8 +235,9 @@ function ReportsProfitAndLoss() {
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
+	const [showAccountType, setShowAccountType] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(null);
-const [selectedDateFilter, setSelectedDateFilter] = useState("");
+	const [selectedDateFilter, setSelectedDateFilter] = useState("");
 	const [dateData, setDateData] = useState({
 		currentMonthName: moment().format("MMMM"),
 		lastMonthName: moment().subtract(1, "months").format("MMMM"),
@@ -234,7 +283,7 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 
 				break;
 			default:
-					onDate(option.value);
+				onDate(option.value);
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: false,
@@ -262,173 +311,252 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 				}}
 			/>
 			<div
-				className="general-ledger-component"
 				style={{
-					marginTop: "90px",
-					marginLeft: "50px",
-					display: "flex",
-					flexDirection: "column",
-				}}
-			>
-				<div
-					className="time-period-select-container"
-					style={{
-						width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-					 display: "flex", justifyContent: "space-between" }}
-				>
-					<div style={{ flex: "1.5", display: "flex", alignItems: "center" }} className="time-period-select">
-						<div style={{ position: "relative", width: "100%" , flex: "1"}}>
-							<SelectInputComponent
-								allowCreate={false}
-								notAsync={true}
-								loadedOptions={dateOptions}
-								value={dateData.dateFilterValue}
-								icon={calenderIcon}
-								containerClass="date-input"
-								options={{
-									clearable: false,
-									noResultsText: false,
-									labelKey: "label",
-									valueKey: "value",
-									matchProp: "label",
-									placeholder: "Select Date",
-								// 	handleChange: (option) => {
-								// 		updateSelectedDate(option);
-								// 	},
-								// }}
-									handleChange: handleChange,
-
-									formatOptionLabel: ({ value, label }) => {
-										if (value === "custom" && dateData.showCustomDateRangeSelector) {
-											return (
-												<div>
-													{label}
-													<div
-														style={{
-															whiteSpace: "normal",
-															overflow: "hidden",
-															textOverflow: "ellipsis",
-														}}
-													>
-														Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
-														<br />
-														End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
-													</div>
-												</div>
-											);
-										} else {
-											return label;
-										}
-									},
-								}}
-								style={{ position: "absolute", width: "100%" }}
-							/>
-						</div>
-						{dateData.showCustomDateRangeSelector && (
-							<div
-								id="general-ledger-date-picker-container"
-								className="start-end-date-selector-group"
-								style={{ display: "flex" }}
-							>
-								<div style={{ marginRight: "10px" }}>
-									<DateInputComponent
-										name={"startDate"}
-										value={dateData.customStartDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"Start Date"}
-										noBorder={true}
-										onChange={handleStartDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
-								<div>
-									<DateInputComponent
-										name={"endDate"}
-										value={dateData.customEndDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"End Date"}
-										noBorder={true}
-										onChange={handleEndDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
-							</div>
-						)}
-					</div>
-				</div>
-
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
-					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
-						}}
-					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
-				</div>
-			</div>
-			<div
-				style={{
-					width: "80vw",
-					height: "500px",
+					// height: "500px",
+					height: "1186px",
+					width: "1120px",
 					backgroundColor: "#fff",
+					border: "1px solid #ccc",
 					marginTop: "30px",
 					marginLeft: "50px",
 					marginRight: "50px",
 					fontWeight: "600",
+					borderRadius: "8px",
+					marginTop: "130px",
 				}}
 			>
-				<div className="general-heading" style={{ 
-					// width: "80vw",
-				 padding: "20px" }}>
+				<div
+					className="general-ledger-component"
+					style={{
+						// marginTop: "90px",
+						// marginLeft: "50px",
+						// display: "flex",
+						// flexDirection: "column",
+						marginTop: "20px",
+						marginLeft: "20px",
+						display: "flex",
+						flexDirection: "column",
+						// height:"32px",
+						// width:"1120px",
+						padding: "0px, 24px, 0px, 24px",
+						justifyContent: "space-between",
+					}}
+				>
+					<div
+						className="time-period-select-container"
+						style={{
+							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
+							display: "flex",
+							justifyContent: "space-between",
+						}}
+					>
+						<div
+							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
+							className="time-period-select"
+						>
+							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+								<SelectInputComponent
+									allowCreate={false}
+									notAsync={true}
+									loadedOptions={dateOptions}
+									value={dateData.dateFilterValue}
+									icon={calenderIcon}
+									containerClass="date-input"
+									options={{
+										clearable: false,
+										noResultsText: false,
+										labelKey: "label",
+										valueKey: "value",
+										matchProp: "label",
+										placeholder: "Select Date",
+										// 	handleChange: (option) => {
+										// 		updateSelectedDate(option);
+										// 	},
+										// }}
+										handleChange: handleChange,
+
+										formatOptionLabel: ({ value, label }) => {
+											if (value === "custom" && dateData.showCustomDateRangeSelector) {
+												return (
+													<div>
+														{label}
+														<div
+															style={{
+																whiteSpace: "normal",
+																overflow: "hidden",
+																textOverflow: "ellipsis",
+															}}
+														>
+															Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
+															<br />
+															End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
+														</div>
+													</div>
+												);
+											} else {
+												return label;
+											}
+										},
+									}}
+									style={{ position: "absolute", width: "100%" }}
+								/>
+							</div>
+							{dateData.showCustomDateRangeSelector && (
+								<div
+									id="general-ledger-date-picker-container"
+									className="start-end-date-selector-group"
+									style={{ display: "flex" }}
+								>
+									<div style={{ marginRight: "10px" }}>
+										<DateInputComponent
+											name={"startDate"}
+											value={dateData.customStartDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"Start Date"}
+											noBorder={true}
+											onChange={handleStartDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+									<div>
+										<DateInputComponent
+											name={"endDate"}
+											value={dateData.customEndDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"End Date"}
+											noBorder={true}
+											onChange={handleEndDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+
+			
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "flex-end",
+							padding: " 0px 16px 0px 16px",
+							height: "32px",
+							/* width: 326px; */
+
+							position: "relative",
+							borderRadius: "4px",
+							gap: "16px",
+						}}
+					>
+						<div
+							style={{
+								border: "1px solid #ccc",
+								padding: "10px",
+								display: "flex",
+								alignItems: "center",
+								position: "relative",
+								borderRadius: "4px",
+								marginTop: "-70px",
+							}}
+						>
+							<div
+								className="icon-mail"
+								onClick={sendEmail}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									width: "101 px",
+									height: " 18px",
+									marginRight: "20px",
+								}}
+							>
+								<span
+									className="pdf_mail"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Send email
+								</span>
+							</div>
+							<div
+								style={{
+									borderLeft: "1px solid #ccc",
+									height: "100%",
+									position: "absolute",
+									left: "44%",
+									top: "0",
+									bottom: "0",
+									transform: "translateX(-50%)",
+								}}
+							></div>
+							<div
+								className="icon-print2"
+								onClick={onBtPrint}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									// marginLeft: "10px",
+									width: "101 px",
+									height: " 18px",
+									marginRight: "20px",
+									marginLeft: "5px",
+								}}
+							>
+								<span
+									className="pdf_print"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Print
+								</span>
+							</div>
+							<div
+								style={{
+									borderLeft: "1px solid #ccc",
+									height: "100%",
+									position: "absolute",
+									left: "70%",
+									top: "0",
+									bottom: "0",
+									transform: "translateX(-50%)",
+								}}
+							></div>
+
+							<div
+								className="icon-download"
+								onClick={onBtExport}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									// marginLeft: "10px",
+									width: "101 px",
+									height: " 18px",
+								}}
+							>
+								<span
+									className="download"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Export
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div
+					className="general-heading"
+					style={{
+						// padding: "20px",
+						marginLeft: "20px",
+						marginBottom: "30px",
+					}}
+				>
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -437,7 +565,7 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 						</h3>
 					</div>
 					{selectedDate && selectedDate.startDate && selectedDate.endDate && (
-						<p>
+						<p style={{ color: "#888787" }}>
 							<span>From </span>
 							<span className="date">{moment(selectedDate.startDate).format("DD MMMM YYYY")}</span>
 							<span> to </span>
@@ -446,7 +574,7 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 					)}
 				</div>
 
-				<div style={gridStyle} className="ag-theme-alpine">
+				{/* <div style={gridStyle} className="ag-theme-alpine">
 					<AgGridReact
 						ref={gridRef}
 						rowData={rowData}
@@ -460,6 +588,66 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 						onFirstDataRendered={onFirstDataRendered}
 						// gridOptions={gridOptions}
 					></AgGridReact>
+				</div> */}
+				<div className="table-container">
+					<table className="custom-table">
+						<thead style={{ height: "60px", background: "#F1F8FB" }}>
+							<tr>
+							
+							
+								<th colSpan="8">Account</th>
+								<th colSpan="8">Debits</th>
+							
+							</tr>
+						</thead>
+						
+						<tbody>
+							{rowData.map((transaction, index) => (
+								<React.Fragment key={index}>
+									<tr
+										key={`${index}-subtype`}
+										style={{ height: "50px", borderBottom: "1px solid  #DDDDDD" }}
+									>
+										<td
+										//  colSpan={2}
+										>
+											<SVGInline
+												// className="overlay-image"
+												svg={showAccountType ? Arrow : ArrowSide} // Use the appropriate icon based on showAccountType
+												alt={"Could not load image!"}
+												onClick={() => setShowAccountType(!showAccountType)} // Toggle showAccountType on click
+											/>
+										</td>
+										<td colSpan={14}>{transaction.accountTypeId}</td>
+									</tr>
+									{showAccountType && (
+										<tr
+											key={`${index}-details`}
+											style={{
+												height: "50px",
+												borderBottom: "1px solid  #DDDDDD",
+												paddingLeft: "7%",
+											}}
+										>
+											<td
+												style={{
+													paddingLeft: "7%",
+												}}
+												colSpan={6}
+											>
+												{transaction.accountSubTypeId}
+											</td>
+											<td
+												colSpan={6}
+											>
+												{transaction.debits}
+											</td>
+										</tr>
+									)}
+								</React.Fragment>
+							))}
+						</tbody>
+					</table>
 				</div>
 			</div>{" "}
 		</div>

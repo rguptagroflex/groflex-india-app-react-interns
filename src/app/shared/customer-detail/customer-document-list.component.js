@@ -1,21 +1,21 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
+import invoiz from "services/invoiz.service";
+import React from "react";
 
-import LoaderComponent from 'shared/loader/loader.component';
+import LoaderComponent from "shared/loader/loader.component";
 import userPermissions from "enums/user-permissions.enum";
-import ButtonComponent from 'shared/button/button.component';
-import ListComponent from 'shared/list/list.component';
-import PaginationComponent from 'shared/pagination/pagination.component';
-import FilterComponent from 'shared/filter/filter.component';
+import ButtonComponent from "shared/button/button.component";
+import ListComponent from "shared/list/list.component";
+import PaginationComponent from "shared/pagination/pagination.component";
+import FilterComponent from "shared/filter/filter.component";
 
 import {
 	fetchCustomerDocumentList,
 	filterCustomerDocumentList,
 	sortCustomerDocumentList,
 	paginateCustomerDocumentList,
-	updateFilterItems
-} from 'redux/ducks/customer/customerDocumentList';
-import { connect } from 'react-redux';
+	updateFilterItems,
+} from "redux/ducks/customer/customerDocumentList";
+import { connect } from "react-redux";
 
 class CustomerDocumentListComponent extends React.Component {
 	constructor(props) {
@@ -24,7 +24,7 @@ class CustomerDocumentListComponent extends React.Component {
 		this.state = {
 			isLoading: true,
 			customer: props.customer,
-			canViewExpense: false
+			canViewExpense: false,
 		};
 	}
 
@@ -42,7 +42,7 @@ class CustomerDocumentListComponent extends React.Component {
 		const rows = [];
 
 		if (customerDocumentItems) {
-			customerDocumentItems.forEach(customerDocumentItem => {
+			customerDocumentItems.forEach((customerDocumentItem) => {
 				rows.push({
 					id: customerDocumentItem.id,
 					customerDocumentItem,
@@ -54,13 +54,13 @@ class CustomerDocumentListComponent extends React.Component {
 						{ value: customerDocumentItem.displayPrice },
 						{
 							value:
-								customerDocumentItem.type === 'deliveryNote' ? (
+								customerDocumentItem.type === "deliveryNote" ? (
 									<span>&mdash;</span>
 								) : (
 									customerDocumentItem.displayTotalGross
-								)
-						}
-					]
+								),
+						},
+					],
 				});
 			});
 		}
@@ -97,7 +97,7 @@ class CustomerDocumentListComponent extends React.Component {
 			errorOccurred,
 			columns,
 			customerDocumentListData: { customerDocumentItems },
-			resources
+			resources,
 		} = this.props;
 		const { canViewExpense } = this.state;
 		let permittedfilterItems;
@@ -107,7 +107,10 @@ class CustomerDocumentListComponent extends React.Component {
 			permittedfilterItems = filterItems;
 		}
 		return (
-			<div className="box box-rounded customer-document-wrapper">
+			<div
+				className="box-rounded customer-document-wrapper detail-wrap "
+				style={{ marginTop: "-22%", width: "100%", marginLeft: "-100px" }}
+			>
 				<div className="pagebox_content customerDocument_container">
 					{errorOccurred ? (
 						<div className="customer-document-error">
@@ -115,7 +118,7 @@ class CustomerDocumentListComponent extends React.Component {
 								<h1>An error occurred!</h1>
 							</div>
 							<div>
-								<ButtonComponent callback={() => invoiz.router.reload()} label={'Reload'} />
+								<ButtonComponent callback={() => invoiz.router.reload()} label={"Reload"} />
 							</div>
 						</div>
 					) : (
@@ -125,7 +128,7 @@ class CustomerDocumentListComponent extends React.Component {
 								{isLoading ? null : (
 									<FilterComponent
 										items={permittedfilterItems}
-										onChange={filter => this.onFilterDocumentList(filter)}
+										onChange={(filter) => this.onFilterDocumentList(filter)}
 										resources={resources}
 									/>
 								)}
@@ -142,8 +145,8 @@ class CustomerDocumentListComponent extends React.Component {
 											sortable={true}
 											columns={columns}
 											rows={this.createCustomerDocumentTableRows(customerDocumentItems)}
-											columnCallback={column => this.onSort(column)}
-											emptyFallbackElement={'No documents available'}
+											columnCallback={(column) => this.onSort(column)}
+											emptyFallbackElement={"No documents available"}
 											resources={resources}
 										/>
 
@@ -152,7 +155,7 @@ class CustomerDocumentListComponent extends React.Component {
 												<PaginationComponent
 													currentPage={currentPage}
 													totalPages={totalPages}
-													onPaginate={page => this.onPaginateDocument(page)}
+													onPaginate={(page) => this.onPaginateDocument(page)}
 												/>
 											</div>
 										) : null}
@@ -168,16 +171,9 @@ class CustomerDocumentListComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const {
-		isLoading,
-		errorOccurred,
-		currentPage,
-		totalPages,
-		filterItems,
-		customerDocumentListData,
-		columns
-	} = state.customer.customerDocumentList
-	
+	const { isLoading, errorOccurred, currentPage, totalPages, filterItems, customerDocumentListData, columns } =
+		state.customer.customerDocumentList;
+
 	const { resources } = state.language.lang;
 
 	return {
@@ -188,11 +184,11 @@ const mapStateToProps = (state) => {
 		totalPages,
 		filterItems,
 		customerDocumentListData,
-		resources
+		resources,
 	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchCustomerDocumentList: (customerId, reset) => {
 			dispatch(fetchCustomerDocumentList(customerId, reset));
@@ -208,7 +204,7 @@ const mapDispatchToProps = dispatch => {
 		},
 		updateFilterItems: (customerType) => {
 			dispatch(updateFilterItems(customerType));
-		}
+		},
 	};
 };
 

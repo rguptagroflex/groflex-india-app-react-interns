@@ -810,7 +810,7 @@
 	"str_standard_a4_quotation_des": "Enter data and send. Get approval online and convert directly to invoices. Easy.",
 	"str_standard_invoices": "Standard invoice",
 	"str_standard_invoices_des": "Enter data get your invoices ready and send directly via email. Get paid faster.",
-	"str_hsnSacCode": "HSN / SAC Code",
+	"str_hsnSacCode": "HSN Code",
 	"str_enterPaymentConditions": "Geben Sie hier die Zahlungsbedingungen ein",
 	"str_enterDeliveryConditions": "Geben Sie hier die Lieferbedingungen ein",
 	"str_enterSupportOptions": "Geben Sie hier Support-Optionen ein",

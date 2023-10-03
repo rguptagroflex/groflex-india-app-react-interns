@@ -96,7 +96,6 @@ class MenuFooterComponent extends React.Component {
 		const iconClass = "icon icon-logout_outlined";
 		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? "menuItem-notFocused" : ""}`;
 		const notificationClass = `menuItem icon icon-bell`;
-		
 
 		return (
 			<div className="menuFooter">
@@ -115,16 +114,19 @@ class MenuFooterComponent extends React.Component {
 						</div>
 						<div className="menu-profile-popup-middle1">
 							<a
-								className={`menuItem small icon icon-user_outlined_black ${
+							// menuItem small icon icon-user_outlined_black
+								className={`menuItem small icon icon-settings_outlined ${
 									activeSubmenuItem == "account" ? "menuItem-active" : ""
 								}`}
 								onClick={() => this.navigateToPage("/settings/account")}
 								data-href="/settings/account"
-								data-qs-id={`global-menu-item-Account-details`}
+								data-qs-id={`global-menu-item-Setting`}
+								// Account-details
 							>
-								{"Account details"}
+								{/* {"Account details"} */}
+								{"Account Settings"}
 							</a>
-							<a
+							{/* <a
 								className={`menuItem small icon icon-settings_outlined ${
 									activeSubmenuItem == "account-setting" ? "menuItem-active" : ""
 								}`}
@@ -134,6 +136,7 @@ class MenuFooterComponent extends React.Component {
 							>
 								{"Setting"}
 							</a>
+							*/}
 
 							<a
 								className={`menuItem small icon icon-credit_card ${
@@ -144,7 +147,7 @@ class MenuFooterComponent extends React.Component {
 								data-qs-id={`global-menu-item-Your-billing`}
 							>
 								{"Your billing"}
-							</a>
+							</a> 
 							<a
 								className={`menuItem small icon icon-teams ${
 									activeSubmenuItem == "user" ? "menuItem-active" : ""

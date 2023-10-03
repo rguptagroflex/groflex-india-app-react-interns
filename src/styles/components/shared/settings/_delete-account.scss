@@ -2,6 +2,13 @@
 @import "../../../abstracts/_mixins";
 
 .settings-deleteaccount-component {
+    display: inline-flex;
+				flex-direction: column;
+				align-items: flex-end;
+				gap: 16px;
+				border-radius: 8px;
+				border: 1px solid #C6C6C6;
+				background: #FFF;
     .deleteaccount-info {
         margin-bottom: 20px;
     }

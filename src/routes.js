@@ -873,7 +873,7 @@ const routes = [
 		exact: true,
 		title: "Kunden-Details",
 		menuItem: "customers",
-		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.ONLY_SIDE_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		// pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.ONLY_SIDE_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
 		resourceKey: "customerDetails",
 	},
 

@@ -24,6 +24,8 @@
 		&.row > :first-child {
 		word-wrap: break-word;
 		padding-right: 8px;
+		border: 1px solid var(--grey-dark-c-6-c-6-c-6, #C6C6C6);
+		background: var(--font-colors-white-fffffff, #FFF);
 		}
 	}
 	

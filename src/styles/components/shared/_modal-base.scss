@@ -72,14 +72,17 @@
 				border-top: 1px solid $color-modal-footer-border;
 
 				.modal-base-cancel {
-					// float: right; //float: left;
-					// margin-right: 25px; //margin-left: -40px;
-					float: left;
-					margin-left: -3px;
+					float: right;
+					margin-right: 10px;
+					border: 1px solid green;
+					border-radius: 8px;
+					color:green ;
 				}
-
 				.modal-base-confirm {
 					float: right;
+				}
+				.modal-base-cancel .button {
+					color: green;
 				}
 			}
 
@@ -133,6 +136,7 @@ body.has-modal {
 		.modal-base {
 			.modal-base-view {
 				@include vendor-prefix('transform', translate(round($menu-width / 2), 75px));
+				
 			}
 
 			&.modal-base-show .modal-base-view{

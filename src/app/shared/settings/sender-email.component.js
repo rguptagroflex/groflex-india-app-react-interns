@@ -134,9 +134,9 @@ class SenderEmailComponent extends React.Component {
 		const { senderEmailError, canUpdateEmail } = this.state;
 		const { resources } = this.props;
 		return (
-			<div className="settings-senderemail-component">
-				<div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
-					<div className="col-xs-4 text-h4 u_pb_20">{resources.str_emailSender}</div>
+			<div className="settings-senderemail-component u_p_20">
+				<div className="row "> {/*u_pt_60 u_pb_40  u_pt_20*/}
+					<div className="col-xs-12 text-h4 u_pb_20">{resources.str_emailSender}</div>
 					<div className="col-xs-12">
 						{/* <div className="col-xs-12"> */}
 							<div className="row">
@@ -144,7 +144,7 @@ class SenderEmailComponent extends React.Component {
 									{resources.senderEmailInfo}
 								</div>
 
-								<div className="col-xs-6 sender-email-name-input">
+								<div className="col-xs-12 sender-email-name-input u_mt_16">
 									<TextInputComponent
 										name={'senderEmailName'}
 										value={this.state.senderEmailName}
@@ -160,7 +160,7 @@ class SenderEmailComponent extends React.Component {
 									/>
 								</div>
 
-								<div className="col-xs-6 sender-email-input">
+								<div className="col-xs-12 sender-email-input">
 									<TextInputComponent
 										name={'senderEmail'}
 										value={this.state.senderEmail}

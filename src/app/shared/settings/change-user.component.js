@@ -193,7 +193,7 @@ class ChangeUserComponent extends React.Component {
 		const { resources } = this.props;
 
 		ModalService.open(<ChangeEmailModal accountEmail={email} resources={resources} />, {
-			headline: 'Change e-mail address',
+			headline: 'Change Email Address',
 			isCloseable: false,
 			width: 520,
 			padding: 40,
@@ -232,9 +232,9 @@ class ChangeUserComponent extends React.Component {
 		}
 
 		return (
-			<div className="settings-change-user-component">
-				 <div className="row "> {/*u_pt_60 u_pb_40 */}
-					<div className="col-xs-12 text-h4 u_pb_20">{'Profile'}</div> {/* {title} */}
+			<div className="settings-change-user-component u_p_20 ">
+				 <div className="row " style={{width:"102%"}}> {/*u_pt_60 u_pb_40 */}
+					<div className="col-xs-12 text-h4 u_pb_20">{'Profile info'}</div> {/* {title} */}
 					<div className="col-xs-12">
 						{/* <div className="col-xs-12"> */}
 							<div className="row">
@@ -276,7 +276,7 @@ class ChangeUserComponent extends React.Component {
 								<div className="col-xs-6">
 									{!isGoogleAccount && !isAppleAccount && (
 										<div className="form_input update-email-link">
-											<a onClick={() => this.onEditEmailBtnClick()}>Change e-mail address</a>
+											<a onClick={() => this.onEditEmailBtnClick()}>Change Email Address</a>
 										</div>
 									)}
 								</div>

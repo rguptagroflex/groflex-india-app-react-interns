@@ -54,17 +54,20 @@ class NotificationsComponent extends React.Component {
 		const { notificateEmail, notificatePush, canUpdateEmail } = this.state;
 		const { resources } = this.props;
 		return (
-			<div className="settings-notifications-component">
-				<div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
+			<div className="settings-notifications-component u_p_20">
+				<div className="row "> {/*u_pt_60 u_pb_40  u_pt_20*/}
 					<div className="col-xs-12 text-h4 u_pb_20">{resources.str_notifications}</div>
-					<div className="col-xs-12">
+					{/* <div className="col-xs-12"> */}
+					<div className="col-xs-10">
 						<div className="u_pb_10 notifications-info">
 							<span>{resources.notificationSettingInfo}</span>
 						</div>
+						</div>
 
-						<div className="col-xs-6">
+						<div className="col-xs-2">
 							<div className="row">
 								<OvalToggleComponent
+							
 									labelLeft
 									onChange={() => {
 										if (canUpdateEmail) {
@@ -75,7 +78,7 @@ class NotificationsComponent extends React.Component {
 										}
 									}}
 									checked={notificateEmail}
-									labelText={resources.str_byEmail}
+									// labelText={resources.str_byEmail}
 									newStyle={true}
 									customClass={'toggle-email'}
 								/>
@@ -95,7 +98,7 @@ class NotificationsComponent extends React.Component {
 								/> */}
 							</div>
 						</div>
-					</div>
+					{/* </div> */}
 				</div>
 			</div>
 		);
