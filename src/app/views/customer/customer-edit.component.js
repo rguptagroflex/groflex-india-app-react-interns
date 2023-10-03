@@ -107,7 +107,7 @@ class CustomerEditComponent extends React.Component {
 		}
 
 		if (customer && customer.id !== undefined && customer.address && customer.address.countryIso !== "IN") {
-			this.refreshRates(false);
+			// this.refreshRates(false);
 		}
 	}
 
@@ -285,7 +285,7 @@ class CustomerEditComponent extends React.Component {
 								/>
 							</div>
 						</div>
-						<span className="icon icon-refresh_large" onClick={() => this.refreshRates(true)} />
+						{/* <span className="icon icon-refresh_large" onClick={() => this.refreshRates(true)} /> */}
 					</div>
 					<div className="row col-xs-12">
 						<CheckboxInputComponent
@@ -1083,8 +1083,8 @@ class CustomerEditComponent extends React.Component {
 			return;
 		} else {
 			customer.baseCurrency = option.value;
-			const exRateValue = currencyRates.find((item) => item.from === option.value);
-			customer.exchangeRate = exRateValue.value;
+			// const exRateValue = currencyRates.find((item) => item.from === option.value);
+			// customer.exchangeRate = exRateValue.value;
 			this.setState({ customer, defaultExchangeRateToggle: false });
 		}
 	}
@@ -1179,7 +1179,7 @@ class CustomerEditComponent extends React.Component {
 		customer.address[key] = value.iso2;
 		if (value.iso2 !== "IN") {
 			customer.indiaState = {};
-			this.refreshRates(false, value);
+			// this.refreshRates(false, value);
 			// {
 			// 	id: null,
 			// 	stateName: null
