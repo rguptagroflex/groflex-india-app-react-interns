@@ -10,6 +10,8 @@ import bell from "assets/images/icons/bell_2.svg";
 import profile from "assets/images/icons/profile_new.svg";
 import profile_hover from "assets/images/icons/profile_hover.svg";
 import search from "assets/images/icons/search_new.svg";
+import search_hover from "assets/images/icons/search_hover.svg";
+import bell_hover from "assets/images/icons/bell_new.svg";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -18,11 +20,15 @@ class MenuFooterComponent extends React.Component {
 			tenant: {
 				companyAddress: {},
 			},
-			iconHoverActive: false,
+			profileHoverActive: false,
+			searchHoverActive: false,
+			notificationHoverActive: false,
 		};
 
 		this.navigateToPage = this.navigateToPage.bind(this);
 		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
+		this.searchIconHover = this.searchIconHover.bind(this);
+		this.notificationIconHover = this.notificationIconHover.bind(this);
 	}
 
 	componentDidMount() {
@@ -96,16 +102,25 @@ class MenuFooterComponent extends React.Component {
 	}
 
 	iconChangeOnHover() {
-		const { iconHoverActive } = this.state;
-		this.setState({ iconHoverActive: !iconHoverActive });
-		console.log("Icon type:", iconHoverActive);
+		const { profileHoverActive } = this.state;
+		this.setState({ profileHoverActive: !profileHoverActive });
+	}
+
+	searchIconHover() {
+		const { searchHoverActive } = this.state;
+		this.setState({ searchHoverActive: !searchHoverActive });
+	}
+
+	notificationIconHover() {
+		const { notificationHoverActive } = this.state;
+		this.setState({ notificationHoverActive: !notificationHoverActive });
 	}
 
 	render() {
 		const { submenuVisible, resources, activeItem, activeSubmenuItem } = this.props;
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
-		const { iconHoverActive } = this.state;
+		const { profileHoverActive, notificationHoverActive, searchHoverActive } = this.state;
 
 		if (resetNewsFeedCount) {
 			newsfeedUnreadCount = 0;
@@ -119,16 +134,56 @@ class MenuFooterComponent extends React.Component {
 
 		return (
 			<div className="menuFooter">
-				<div className="search-footer menuItem" onClick={this.onSearchClick.bind(this)}>
+				<div
+					className="search-footer menuItem"
+					onClick={this.onSearchClick.bind(this)}
+					onMouseLeave={() => {
+						this.searchIconHover();
+					}}
+					onMouseEnter={() => {
+						this.searchIconHover();
+					}}
+				>
 					{/* <div className="menuHeader_search icon icon-search" /> */}
-					<SVGInline svg={search} width="24px" height="24px" />
+
+					{searchHoverActive ? (
+						<SVGInline svg={search_hover} width="24px" height="24px" />
+					) : (
+						<SVGInline svg={search} width="24px" height="24px" />
+					)}
+					{/* <SVGInline svg={search} width="24px" height="24px" /> */}
 					{/* <h5>Search</h5> */}
 				</div>
 
-				<div className={notificationClass} onClick={this.onNewsfeedClick.bind(this)}>
+				<div
+					className={notificationClass}
+					onClick={this.onNewsfeedClick.bind(this)}
+					onMouseLeave={() => {
+						this.notificationIconHover();
+					}}
+					onMouseEnter={() => {
+						this.notificationIconHover();
+					}}
+				>
 					{/* {resources.str_notification}{" "} */}
-					<SVGInline svg={bell} width="24px" height="24px" />
-					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null}
+					{notificationHoverActive ? (
+						<div>
+							<SVGInline svg={bell_hover} width="24px" height="24px" />
+							{newsfeedUnreadCount > 0 ? (
+								<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
+							) : null}
+						</div>
+					) : (
+						<div>
+							<SVGInline svg={bell} width="24px" height="24px" />
+							{newsfeedUnreadCount > 0 ? (
+								<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
+							) : null}
+						</div>
+					)}
+					{/* <SVGInline svg={bell} width="24px" height="24px" />
+
+					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null} */}
 				</div>
 				<div
 					className="menuItem profile_logo"
@@ -140,7 +195,7 @@ class MenuFooterComponent extends React.Component {
 					}}
 				>
 					{/* <span className=" icon icon-user_outlined"></span> */}
-					{iconHoverActive ? (
+					{profileHoverActive ? (
 						<SVGInline svg={profile_hover} width="24px" height="24px" />
 					) : (
 						<SVGInline svg={profile} width="24px" height="24px" />
