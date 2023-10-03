@@ -12,11 +12,11 @@ const RecurringInvoiceList2Component = ({ invoicesList, onRowClick, placeholderI
 		notStarted = true;
 		onlyOneItem = newInvoicesList.length === 1;
 	}
-	console.log("invoicesList", invoicesList);
-	console.log("placeholderInfo", placeholderInfo);
-	console.log(newInvoicesList, "newInvoicesList");
-	console.log(notStarted, "notStarted");
-	console.log(onlyOneItem, "onlyOneItem");
+	// console.log("invoicesList", invoicesList);
+	// console.log("placeholderInfo", placeholderInfo);
+	// console.log(newInvoicesList, "newInvoicesList");
+	// console.log(notStarted, "notStarted");
+	// console.log(onlyOneItem, "onlyOneItem");
 	return (
 		<div className="recurring-invoice-list">
 			<h4 className="recurring-title">Invoices Created</h4>

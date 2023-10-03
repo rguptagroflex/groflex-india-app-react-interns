@@ -12,9 +12,10 @@
 
 		.timetracking-watch-text {
 			position: absolute;
-			top: 75px;
+			// top: 75px;
+			top: 44px;
 			left: 50%;
-			@include vendor-prefix('transform', translateX(-50%));
+			@include vendor-prefix("transform", translateX(-50%));
 		}
 	}
 }

@@ -64,11 +64,11 @@ class DetailViewHeadComponent extends React.Component {
 			// const icon = <div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />;
 			const icon =
 				String(element.action).toLowerCase() === "print" ? (
-					<SVGInline svg={printerOutlined} width="15px" className="vertically-middle" />
+					<SVGInline svg={printerOutlined} width="16px" className="vertically-middle" />
 				) : String(element.action).toLowerCase() === "email" ? (
-					<SVGInline svg={shareOutlined} width="15px" className="vertically-middle" />
+					<SVGInline svg={shareOutlined} width="16px" className="vertically-middle" />
 				) : String(element.action).toLowerCase() === "downloadpdf" ? (
-					<SVGInline svg={downloadOutlined} width="15px" className="vertically-middle" />
+					<SVGInline svg={downloadOutlined} width="16px" className="vertically-middle" />
 				) : (
 					<div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />
 				);
