@@ -5,7 +5,7 @@ import accounting from "accounting";
 import config from "config";
 import { convertMinutesToTimeString } from "helpers/timetracking";
 import timetrackingWatchIcon from "assets/images/svg/timetracking-watch-2.svg";
-import alarmOutlined from "assets/images/icons/alarmOutlined.svg";
+import alarmOutlined from "assets/images/svg/alarmOutlined.svg";
 import SVGInline from "react-svg-inline";
 import ListComponent from "shared/list/list.component";
 
