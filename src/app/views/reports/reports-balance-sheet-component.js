@@ -621,7 +621,6 @@ const ReportBalanceSheet = (props) => {
 	// 		});
 	// }, []);
 	useEffect(() => {
-		
 		fetchData();
 	}, []);
 	const [responseData, setResponseData] = useState(null);
@@ -929,7 +928,6 @@ const ReportBalanceSheet = (props) => {
 						</div>
 					</div>
 
-				
 					<div
 						style={{
 							display: "flex",
@@ -1092,7 +1090,7 @@ const ReportBalanceSheet = (props) => {
 								<th colSpan="9">Total</th>
 							</tr>
 						</thead>
-						
+
 						<tbody>
 							{rowData.map((transaction, index) => (
 								<React.Fragment key={index}>
@@ -1140,8 +1138,7 @@ const ReportBalanceSheet = (props) => {
 													.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
 													.join(" ")}
 											</td>
-											<td	colSpan={3}
-											>
+											<td colSpan={3}>
 												{/* {responseData && responseData.summaryData.assetsTotal} */}
 												{transaction.accountTypeId === "assets"
 													? transaction.debits

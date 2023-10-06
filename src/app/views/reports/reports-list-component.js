@@ -6,7 +6,7 @@ import Vector from "../../../assets/images/icons/Reports.svg";
 
 function ReportsListComponent() {
 	return (
-		<div>
+		<div className="reports-component">
 			<div>
 				<TopbarComponent title={"Reports"} viewIcon={`icon-banking`} />
 			</div>
@@ -21,41 +21,43 @@ function ReportsListComponent() {
 					padding: "10px",
 					fontWeight: "600",
 				}}
-			>
-			</div>
+			></div>
 			<div
-				style={{
-					height: "365px",
-					border: "1px solid #ccc",
-					borderRadius: "8px",
-					margin: " 120px 60px 25px",
-					backgroundColor: "#fff",
-					fontWeight: "600",
-					width: "1120px",
-				}}
+				className="reports-content-wrapper"
+				// style={{
+				// 	height: "365px",
+				// 	border: "1px solid #ccc",
+				// 	borderRadius: "8px",
+				// 	margin: " 120px 60px 25px",
+				// 	backgroundColor: "#fff",
+				// 	fontWeight: "600",
+				// 	width: "1120px",
+				// }}
 			>
 				<div>
-					<div>
+					<div className="reports-content-main">
 						<div
-							style={{
-								display: "grid",
-								height: "2vh",
-								gridTemplateColumns: "repeat(2,1fr)",
-								justifyItems: "center",
-								alignItems: "center",
-								padding: "25px",
-							}}
+							className="reports-content-top"
+							// style={{
+							// 	display: "grid",
+							// 	height: "2vh",
+							// 	gridTemplateColumns: "repeat(2,1fr)",
+							// 	justifyItems: "center",
+							// 	alignItems: "center",
+							// 	padding: "25px",
+							// }}
 						>
 							<div
-								style={{
-									height: "144px",
-									width: "512px",
-									border: "1px solid  #F2F2F2",
-									color: "#00A353",
-									borderRadius: "4px",
-									padding: "20px",
-									borderColor: "#C6C6C6",
-								}}
+								className="reports-content-top-left"
+								// style={{
+								// 	height: "144px",
+								// 	width: "512px",
+								// 	border: "1px solid  #F2F2F2",
+								// 	color: "#00A353",
+								// 	borderRadius: "4px",
+								// 	padding: "20px",
+								// 	borderColor: "#C6C6C6",
+								// }}
 							>
 								<div
 									style={{
@@ -90,15 +92,16 @@ function ReportsListComponent() {
 								</p>
 							</div>
 							<div
-								style={{
-									height: "144px",
-									width: "512px",
-									border: "1px solid  #F2F2F2",
-									color: "#00A353",
-									padding: "20px",
-									borderColor: "#C6C6C6",
-									borderRadius: "4px",
-								}}
+								className="reports-content-top-right"
+								// style={{
+								// 	height: "144px",
+								// 	width: "512px",
+								// 	border: "1px solid  #F2F2F2",
+								// 	color: "#00A353",
+								// 	padding: "20px",
+								// 	borderColor: "#C6C6C6",
+								// 	borderRadius: "4px",
+								// }}
 							>
 								<div
 									style={{
@@ -134,26 +137,28 @@ function ReportsListComponent() {
 							</div>
 						</div>
 						<div
-							style={{
-								display: "grid",
-								height: "2vh",
-								gridTemplateColumns: "repeat(2,1fr)",
-								justifyItems: "center",
-								alignItems: "center",
-								padding: "25px",
-								marginTop: "120px",
-							}}
+							className="reports-content-middle"
+							// style={{
+							// 	display: "grid",
+							// 	height: "2vh",
+							// 	gridTemplateColumns: "repeat(2,1fr)",
+							// 	justifyItems: "center",
+							// 	alignItems: "center",
+							// 	padding: "25px",
+							// 	marginTop: "120px",
+							// }}
 						>
 							<div
-								style={{
-									height: "144px",
-									width: "512px",
-									borderRadius: "4px",
-									border: "1px solid  #F2F2F2",
-									color: "#00A353",
-									padding: "20px",
-									borderColor: "#C6C6C6",
-								}}
+								className="reports-content-middle-left"
+								// style={{
+								// 	height: "144px",
+								// 	width: "512px",
+								// 	borderRadius: "4px",
+								// 	border: "1px solid  #F2F2F2",
+								// 	color: "#00A353",
+								// 	padding: "20px",
+								// 	borderColor: "#C6C6C6",
+								// }}
 							>
 								<div
 									style={{
@@ -181,15 +186,16 @@ function ReportsListComponent() {
 								</p>
 							</div>
 							<div
-								style={{
-									height: "144px",
-									width: "512px",
-									border: "1px solid  #F2F2F2",
-									borderRadius: "4px",
-									color: "#00A353",
-									padding: "20px",
-									borderColor: "#C6C6C6",
-								}}
+								className="reports-content-middle-right"
+								// style={{
+								// 	height: "144px",
+								// 	width: "512px",
+								// 	border: "1px solid  #F2F2F2",
+								// 	borderRadius: "4px",
+								// 	color: "#00A353",
+								// 	padding: "20px",
+								// 	borderColor: "#C6C6C6",
+								// }}
 							>
 								<div
 									style={{
@@ -218,18 +224,17 @@ function ReportsListComponent() {
 							</div>
 						</div>
 						<div
-							style={{
-								display: "grid",
-								height: "2vh",
-								gridTemplateColumns: "repeat(2,1fr)",
-								justifyItems: "center",
-								alignItems: "center",
-								padding: "50px",
-								marginTop: "60px",
-							}}
-						>
-							
-						</div>
+							className="reports-content-bottom"
+							// style={{
+							// 	display: "grid",
+							// 	height: "2vh",
+							// 	gridTemplateColumns: "repeat(2,1fr)",
+							// 	justifyItems: "center",
+							// 	alignItems: "center",
+							// 	padding: "50px",
+							// 	marginTop: "60px",
+							// }}
+						></div>
 					</div>
 				</div>
 			</div>
