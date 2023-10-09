@@ -23,7 +23,10 @@ const ReportsGeneralLedger = (props) => {
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState();
 
-	const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
+	// const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
+	const CustomCellRenderer = ({ value, colDef }) => (
+		<span>{value !== undefined ? (value !== "-" ? `₹ ${value}` : `${value}`) : ""}</span>
+	);
 
 	const [columnDefs, setColumnDefs] = useState([
 		{
@@ -42,6 +45,7 @@ const ReportsGeneralLedger = (props) => {
 			filter: false,
 			valueFormatter: function (params) {
 				var value = params.value;
+				console.log("Date: ", value);
 				var date = new Date(value);
 
 				if (!isNaN(date.getTime())) {
@@ -54,7 +58,8 @@ const ReportsGeneralLedger = (props) => {
 
 					return day + "/" + month + "/" + year;
 				} else {
-					return "";
+					// return "";
+					return value;
 				}
 			},
 		},
@@ -164,6 +169,7 @@ const ReportsGeneralLedger = (props) => {
 				var expenseTotalDebit = 0;
 				var netMovementLiability = 0;
 				var netMovementAssets = 0;
+				var netMovementExpenses = 0;
 
 				res.body.data.forEach((item) => {
 					if (item.chartOfAccount.accountTypeId === "liability") {
@@ -180,22 +186,26 @@ const ReportsGeneralLedger = (props) => {
 
 				netMovementLiability = liablityTotalCredit - liablityTotalDebit;
 				netMovementAssets = assetsTotalCredit - assetsTotalDebit;
+				netMovementExpenses = expenseTotalCredit - expenseTotalDebit;
 
 				const resultTotal = [
 					{
 						chartOfAccount: { accountTypeId: "liability" },
 						credits: liablityTotalCredit,
 						debits: liablityTotalDebit,
+						date: "Total for Liabilities",
 					},
 					{
 						chartOfAccount: { accountTypeId: "assets" },
 						credits: assetsTotalCredit,
 						debits: assetsTotalDebit,
+						date: "Total for Assets",
 					},
 					{
 						chartOfAccount: { accountTypeId: "expenses" },
 						credits: expenseTotalCredit,
 						debits: expenseTotalDebit,
+						date: "Total for Expenses",
 					},
 				];
 
@@ -204,11 +214,19 @@ const ReportsGeneralLedger = (props) => {
 						chartOfAccount: { accountTypeId: "liability" },
 						credits: netMovementLiability > 0 ? netMovementLiability : "-",
 						debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
+						date: "Net Movement",
 					},
 					{
 						chartOfAccount: { accountTypeId: "assets" },
 						credits: netMovementAssets > 0 ? netMovementAssets : "-",
 						debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
+						date: "Net Movement",
+					},
+					{
+						chartOfAccount: { accountTypeId: "expenses" },
+						credits: netMovementExpenses > 0 ? netMovementExpenses : "-",
+						debits: netMovementExpenses < 0 ? Math.abs(netMovementExpenses) : "-",
+						date: "Net Movement",
 					},
 				];
 
@@ -216,6 +234,7 @@ const ReportsGeneralLedger = (props) => {
 				console.log("New array", result);
 				console.log("response of data :", res.body.data);
 				// setRowData(res.body.data);
+				console.log("Net array: ", result);
 				setRowData(result);
 			});
 	}, []);
