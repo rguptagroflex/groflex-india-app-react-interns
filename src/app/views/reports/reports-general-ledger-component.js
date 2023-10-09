@@ -23,7 +23,6 @@ const ReportsGeneralLedger = (props) => {
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState();
 
-
 	const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 
 	const [columnDefs, setColumnDefs] = useState([
@@ -148,8 +147,59 @@ const ReportsGeneralLedger = (props) => {
 				{ auth: true }
 			)
 			.then((res) => {
+				// const resultTotal = {
+				// 	totalCredits: res.body.data[0].credits + res.body.data[1].credits + res.body.data[2].credits,
+				// };
+				// const result = {
+				// 	...res.body.data[0],
+				// 	...resultTotal,
+				// };
+				// console.log("Total: ", result);
+
+				var assetsTotalCredit = 0;
+				var liablityTotalCredit = 0;
+				var expenseTotalCredit = 0;
+				var assetsTotalDebit = 0;
+				var liablityTotalDebit = 0;
+				var expenseTotalDebit = 0;
+				var netMovement = 0;
+
+				res.body.data.forEach((item) => {
+					if (item.chartOfAccount.accountTypeId === "liability") {
+						liablityTotalCredit += item.credits;
+						liablityTotalDebit += item.debits;
+					} else if (item.chartOfAccount.accountTypeId === "assets") {
+						assetsTotalCredit += item.credits;
+						assetsTotalDebit += item.debits;
+					} else if (item.chartOfAccount.accountTypeId === "expenses") {
+						expenseTotalCredit += item.credits;
+						expenseTotalDebit += item.debits;
+					}
+				});
+
+				const resultTotal = [
+					{
+						chartOfAccount: { accountTypeId: "liability" },
+						credits: liablityTotalCredit,
+						debits: liablityTotalDebit,
+					},
+					{
+						chartOfAccount: { accountTypeId: "assets" },
+						credits: assetsTotalCredit,
+						debits: assetsTotalDebit,
+					},
+					{
+						chartOfAccount: { accountTypeId: "expenses" },
+						credits: expenseTotalCredit,
+						debits: expenseTotalDebit,
+					},
+				];
+
+				const result = [...res.body.data, ...resultTotal];
+				console.log("New array", result);
 				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
+				// setRowData(res.body.data);
+				setRowData(result);
 			});
 	}, []);
 	const [startDate, setStartDate] = useState("");
@@ -294,7 +344,7 @@ const ReportsGeneralLedger = (props) => {
 	};
 
 	return (
-		<div style={containerStyle}>
+		<div style={containerStyle} className="general-ledger-component-main">
 			<TopbarComponent
 				title={"General Ledger"}
 				hasCancelButton={true}
@@ -303,6 +353,7 @@ const ReportsGeneralLedger = (props) => {
 				}}
 			/>
 			<div
+				className="general-ledger-content"
 				style={{
 					// height: "500px",
 					height: "1186px",
@@ -318,7 +369,7 @@ const ReportsGeneralLedger = (props) => {
 				}}
 			>
 				<div
-					className="general-ledger-component"
+					className="general-ledger-component general-ledger-content-top"
 					style={{
 						marginTop: "20px",
 						marginLeft: "20px",
@@ -451,7 +502,6 @@ const ReportsGeneralLedger = (props) => {
 						</div>
 					</div>
 
-				
 					<div
 						style={{
 							display: "flex",
@@ -566,7 +616,7 @@ const ReportsGeneralLedger = (props) => {
 					</div>
 				</div>
 				<div
-					className="general-heading"
+					className="general-heading general-ledger-content-middle"
 					style={{
 						// width: "80vw",
 						// padding: "20px",
@@ -591,7 +641,9 @@ const ReportsGeneralLedger = (props) => {
 					)}
 				</div>
 
-				<div style={gridStyle} className="ag-theme-alpine">
+				<div style={gridStyle} className="ag-theme-alpine general-ledger-content-bottom">
+					{console.log("Row Data", rowData)}
+					{console.log("Col: ", columnDefs)}
 					<AgGridReact
 						ref={gridRef}
 						rowData={rowData}
