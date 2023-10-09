@@ -162,7 +162,8 @@ const ReportsGeneralLedger = (props) => {
 				var assetsTotalDebit = 0;
 				var liablityTotalDebit = 0;
 				var expenseTotalDebit = 0;
-				var netMovement = 0;
+				var netMovementLiability = 0;
+				var netMovementAssets = 0;
 
 				res.body.data.forEach((item) => {
 					if (item.chartOfAccount.accountTypeId === "liability") {
@@ -176,6 +177,9 @@ const ReportsGeneralLedger = (props) => {
 						expenseTotalDebit += item.debits;
 					}
 				});
+
+				netMovementLiability = liablityTotalCredit - liablityTotalDebit;
+				netMovementAssets = assetsTotalCredit - assetsTotalDebit;
 
 				const resultTotal = [
 					{
@@ -195,7 +199,20 @@ const ReportsGeneralLedger = (props) => {
 					},
 				];
 
-				const result = [...res.body.data, ...resultTotal];
+				const resultNetMovement = [
+					{
+						chartOfAccount: { accountTypeId: "liability" },
+						credits: netMovementLiability > 0 ? netMovementLiability : "-",
+						debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
+					},
+					{
+						chartOfAccount: { accountTypeId: "assets" },
+						credits: netMovementAssets > 0 ? netMovementAssets : "-",
+						debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
+					},
+				];
+
+				const result = [...res.body.data, ...resultTotal, ...resultNetMovement];
 				console.log("New array", result);
 				console.log("response of data :", res.body.data);
 				// setRowData(res.body.data);
