@@ -189,7 +189,7 @@ class TimetrackingBillingComponent extends React.Component {
 											<div className="total-amount">
 												<div className="text-h5">Total amount</div>
 												<div className="amount-value text-h5 color-primary">
-													{totalMoney.split(" ").slice().reverse().join("")}
+													{totalMoney.split(" ").slice().reverse().join(" ")}
 												</div>
 											</div>
 										</div>

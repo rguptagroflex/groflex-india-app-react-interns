@@ -507,6 +507,7 @@ const routes = [
 		menuItem: "invoices",
 		submenuItem: "timetracking",
 		resourceKey: "billedTimes",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
 	},
 	{
 		path: "/timetracking/billing/customer/:id",

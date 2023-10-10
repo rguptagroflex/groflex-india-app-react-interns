@@ -161,7 +161,7 @@ class TimetrackingEditComponent extends React.Component {
 				</div>
 			);
 
-		console.log(timeTracking.customer, "hoursMinutes");
+		// console.log(timeTracking.customer, "hoursMinutes");
 		return (
 			<div className="timetracking-edit-component-wrapper">
 				{topbar}
@@ -178,10 +178,13 @@ class TimetrackingEditComponent extends React.Component {
 								notAsync={true}
 								options={{
 									clearable: false,
-									searchable: false,
+									searchable: true,
 									labelKey: "name",
 									valueKey: "value",
-									handleChange: (option) => this.onCustomerChange(option.customer),
+									handleChange: (option) => {
+										if (!option) return;
+										this.onCustomerChange(option.customer);
+									},
 								}}
 								title={resources.str_customer}
 								value={(timeTracking.customer && timeTracking.customer.id) || null}
