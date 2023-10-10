@@ -45,7 +45,7 @@ const ReportsGeneralLedger = (props) => {
 			filter: false,
 			valueFormatter: function (params) {
 				var value = params.value;
-				console.log("Date: ", value);
+
 				var date = new Date(value);
 
 				if (!isNaN(date.getTime())) {
@@ -143,101 +143,113 @@ const ReportsGeneralLedger = (props) => {
 			minWidth: 200,
 		};
 	}, []);
+	const [selectedDate, setSelectedDate] = useState(moment().month("April").startOf("month").format("DD MMM YYYY"));
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
+	const onGridReady = useEffect(
+		(params) => {
+			invoiz
+				.request(
+					`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
 
-				{ auth: true }
-			)
-			.then((res) => {
-				// const resultTotal = {
-				// 	totalCredits: res.body.data[0].credits + res.body.data[1].credits + res.body.data[2].credits,
-				// };
-				// const result = {
-				// 	...res.body.data[0],
-				// 	...resultTotal,
-				// };
-				// console.log("Total: ", result);
+					{ auth: true }
+				)
+				.then((res) => {
+					console.log("Start Date ", Date.parse(selectedDate.startDate));
 
-				var assetsTotalCredit = 0;
-				var liablityTotalCredit = 0;
-				var expenseTotalCredit = 0;
-				var assetsTotalDebit = 0;
-				var liablityTotalDebit = 0;
-				var expenseTotalDebit = 0;
-				var netMovementLiability = 0;
-				var netMovementAssets = 0;
-				var netMovementExpenses = 0;
+					let assetsTotalCredit = 0;
+					let liablityTotalCredit = 0;
+					let expenseTotalCredit = 0;
+					let assetsTotalDebit = 0;
+					let liablityTotalDebit = 0;
+					let expenseTotalDebit = 0;
+					let netMovementLiability = 0;
+					let netMovementAssets = 0;
+					let netMovementExpenses = 0;
 
-				res.body.data.forEach((item) => {
-					if (item.chartOfAccount.accountTypeId === "liability") {
-						liablityTotalCredit += item.credits;
-						liablityTotalDebit += item.debits;
-					} else if (item.chartOfAccount.accountTypeId === "assets") {
-						assetsTotalCredit += item.credits;
-						assetsTotalDebit += item.debits;
-					} else if (item.chartOfAccount.accountTypeId === "expenses") {
-						expenseTotalCredit += item.credits;
-						expenseTotalDebit += item.debits;
+					let filterdResponse = [];
+					res.body.data.forEach((item) => {
+						console.log("api date: ", Date.parse(item.date));
+						if (
+							Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
+							Date.parse(item.date) <= Date.parse(selectedDate.endDate)
+						) {
+							filterdResponse.push(item);
+						}
+					});
+					console.log("Filtered Array: ", filterdResponse);
+
+					filterdResponse.forEach((item) => {
+						if (item.chartOfAccount.accountTypeId === "liability") {
+							liablityTotalCredit += item.credits;
+							liablityTotalDebit += item.debits;
+						} else if (item.chartOfAccount.accountTypeId === "assets") {
+							assetsTotalCredit += item.credits;
+							assetsTotalDebit += item.debits;
+						} else if (item.chartOfAccount.accountTypeId === "expenses") {
+							expenseTotalCredit += item.credits;
+							expenseTotalDebit += item.debits;
+						}
+					});
+
+					netMovementLiability = liablityTotalCredit - liablityTotalDebit;
+					netMovementAssets = assetsTotalCredit - assetsTotalDebit;
+					netMovementExpenses = expenseTotalCredit - expenseTotalDebit;
+
+					const resultTotal = [
+						{
+							chartOfAccount: { accountTypeId: "liability" },
+							credits: liablityTotalCredit,
+							debits: liablityTotalDebit,
+							date: "Total for Liabilities",
+						},
+						{
+							chartOfAccount: { accountTypeId: "assets" },
+							credits: assetsTotalCredit,
+							debits: assetsTotalDebit,
+							date: "Total for Assets",
+						},
+						{
+							chartOfAccount: { accountTypeId: "expenses" },
+							credits: expenseTotalCredit,
+							debits: expenseTotalDebit,
+							date: "Total for Expenses",
+						},
+					];
+
+					const resultNetMovement = [
+						{
+							chartOfAccount: { accountTypeId: "liability" },
+							credits: netMovementLiability > 0 ? netMovementLiability : "-",
+							debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
+							date: "Net Movement",
+						},
+						{
+							chartOfAccount: { accountTypeId: "assets" },
+							credits: netMovementAssets > 0 ? netMovementAssets : "-",
+							debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
+							date: "Net Movement",
+						},
+						{
+							chartOfAccount: { accountTypeId: "expenses" },
+							credits: netMovementExpenses > 0 ? netMovementExpenses : "-",
+							debits: netMovementExpenses < 0 ? Math.abs(netMovementExpenses) : "-",
+							date: "Net Movement",
+						},
+					];
+					let result = [];
+
+					if (filterdResponse.length !== 0) {
+						result = [...filterdResponse, ...resultTotal, ...resultNetMovement];
 					}
+
+					console.log("response of data :", res.body.data);
+					// setRowData(res.body.data);
+
+					setRowData(result);
 				});
-
-				netMovementLiability = liablityTotalCredit - liablityTotalDebit;
-				netMovementAssets = assetsTotalCredit - assetsTotalDebit;
-				netMovementExpenses = expenseTotalCredit - expenseTotalDebit;
-
-				const resultTotal = [
-					{
-						chartOfAccount: { accountTypeId: "liability" },
-						credits: liablityTotalCredit,
-						debits: liablityTotalDebit,
-						date: "Total for Liabilities",
-					},
-					{
-						chartOfAccount: { accountTypeId: "assets" },
-						credits: assetsTotalCredit,
-						debits: assetsTotalDebit,
-						date: "Total for Assets",
-					},
-					{
-						chartOfAccount: { accountTypeId: "expenses" },
-						credits: expenseTotalCredit,
-						debits: expenseTotalDebit,
-						date: "Total for Expenses",
-					},
-				];
-
-				const resultNetMovement = [
-					{
-						chartOfAccount: { accountTypeId: "liability" },
-						credits: netMovementLiability > 0 ? netMovementLiability : "-",
-						debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
-						date: "Net Movement",
-					},
-					{
-						chartOfAccount: { accountTypeId: "assets" },
-						credits: netMovementAssets > 0 ? netMovementAssets : "-",
-						debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
-						date: "Net Movement",
-					},
-					{
-						chartOfAccount: { accountTypeId: "expenses" },
-						credits: netMovementExpenses > 0 ? netMovementExpenses : "-",
-						debits: netMovementExpenses < 0 ? Math.abs(netMovementExpenses) : "-",
-						date: "Net Movement",
-					},
-				];
-
-				const result = [...res.body.data, ...resultTotal, ...resultNetMovement];
-				console.log("New array", result);
-				console.log("response of data :", res.body.data);
-				// setRowData(res.body.data);
-				console.log("Net array: ", result);
-				setRowData(result);
-			});
-	}, []);
+		},
+		[selectedDate]
+	);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const onDate = (value) => {
@@ -295,7 +307,7 @@ const ReportsGeneralLedger = (props) => {
 				break;
 		}
 		setSelectedDate({ startDate, endDate });
-		console.log("startDate", startDate);
+		// console.log("startDate", startDate);
 		return { startDate, endDate };
 	};
 
@@ -309,7 +321,6 @@ const ReportsGeneralLedger = (props) => {
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
-	const [selectedDate, setSelectedDate] = useState(null);
 
 	const [showDateFilter, setShowDateFilter] = useState(props.showDateFilter || false);
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
@@ -328,6 +339,7 @@ const ReportsGeneralLedger = (props) => {
 		activeChartData: { series: [] },
 		selectedDateFilterType: DateFilterType.FISCAL_YEAR,
 	});
+
 	const dateOptions = [
 		{ label: dateData.currentMonthName, value: "currMonth", group: "month" },
 		{ label: dateData.lastMonthName, value: "lastMonth", group: "month" },
@@ -678,8 +690,6 @@ const ReportsGeneralLedger = (props) => {
 				</div>
 
 				<div style={gridStyle} className="ag-theme-alpine general-ledger-content-bottom">
-					{console.log("Row Data", rowData)}
-					{console.log("Col: ", columnDefs)}
 					<AgGridReact
 						ref={gridRef}
 						rowData={rowData}
