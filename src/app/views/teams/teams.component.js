@@ -688,7 +688,7 @@ class TeamsListComponent extends React.Component {
 	render() {
 		const { resources } = this.props;
 		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer } = this.state;
-		console.log(this.state, "Teams component State");
+		// console.log(this.state, "Teams component State");
 		// console.log(resources, "Teams component Resources");
 		return (
 			<div className="teams-list-component-wrapper">

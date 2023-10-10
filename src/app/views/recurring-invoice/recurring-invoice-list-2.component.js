@@ -22,7 +22,7 @@ const RecurringInvoiceList2Component = ({ invoicesList, onRowClick, placeholderI
 			<h4 className="recurring-title">Invoices Created</h4>
 			{newInvoicesList.map((invoice, index) => {
 				return (
-					<React.Fragment>
+					<React.Fragment key={`recurring-invoive-fragment-${index}`}>
 						<div
 							style={{
 								color: notStarted ? "#aaa" : "inherit",
@@ -61,7 +61,11 @@ const RecurringInvoiceList2Component = ({ invoicesList, onRowClick, placeholderI
 								</div>
 							</div>
 						</div>
-						{onlyOneItem || index === newInvoicesList.length - 1 ? "" : <div className="divider" />}
+						{onlyOneItem || index === newInvoicesList.length - 1 ? (
+							""
+						) : (
+							<div className="divider" key={`divider-${index}`} />
+						)}
 					</React.Fragment>
 				);
 			})}
