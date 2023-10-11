@@ -1057,7 +1057,7 @@ class CustomerDetailNewComponent extends React.Component {
 				<div className="wrap-detail-contact">
 					{activeTab === "Contact Overview" && (
 						<div>
-							<div className="row" style={{ marginLeft: "-100px" }}>
+							<div className="row contact-overview" style={{ marginLeft: "-100px" }}>
 								<div className="col-xs-3">
 									<CustomerMetadataComponent
 										customer={customer}
@@ -1124,6 +1124,10 @@ class CustomerDetailNewComponent extends React.Component {
 											<CustomerContactInformationComponent customer={customer} />
 										</div>
 									</div>
+									<div className="contact-ledger-component">
+										<LedgerComponent customerId={customer.id} resources={resources} />
+									</div>
+
 									<div className="row u_mt_16" style={{ width: "822px" }}>
 										<div className="col-xs-12 detail-wrap-column ">
 											<div className=" customer-sales-chart u_p_16">
@@ -1293,7 +1297,7 @@ class CustomerDetailNewComponent extends React.Component {
 						</div>
 					)}
 					{activeTab === "Activities" && (
-						<div className="row" style={{ marginTop: "-50%", width: "100%", marginLeft: "-190px" }}>
+						<div className="row contact-activities">
 							<div className="col-xs-12 detail-wrap">
 								<CustomerHistoryListWrapper
 									customer={customer}

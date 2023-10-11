@@ -138,23 +138,23 @@ const CustomerMetadataComponent = (props) => {
 	// console.log("buttons data: ", buttonData);
 	return (
 		<div
-			style={{ 
-				// minHeight: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between" 
+			style={{
+				// minHeight: "100%", display: "flex", flexDirection: "column", justifyContent: "space-between"
 				display: "flex",
 				width: "291px",
-				padding:" 16px",
+				padding: " 16px",
 				flexDirection: "column",
 				alignItems: "center",
 				gap: "16px",
 				// height:"100%"
- 
 			}}
 			className=" box-rounded customer-metadata row"
 		>
 			<div className="row">
-				<div className="customer-avatar col-xs-6 u_ml_48 " style={{width: "112px",
-height: "112px",
-flexShrink: "0" }}>
+				<div
+					className="customer-avatar col-xs-6 u_ml_48 "
+					style={{ width: "112px", height: "112px", flexShrink: "0" }}
+				>
 					{customer.kind === "person" &&
 						customer.salutation === "Familie" &&
 						(customer.address.countryIso === `IN` ? (
@@ -200,22 +200,31 @@ flexShrink: "0" }}>
 						}`}
 					</div>
 				</div> */}
-				<div className="row " style={{display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center",justifyContent: "center"}}>
-    <div
-        id="customer-detail-metadata-name"
-        style={{margin: "0 auto", maxWidth: "calc(100% - 40px)",flexGrow: "1"}}
-        className={`u_mb_10  ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
-    >
-        {customer.name}
-    </div>
-    <div className="text-muted u_p_16" style={{margin: "0 auto"}}>
-        {`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
-            customer.address.countryIso !== `IN`
-                ? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
-                : ``
-        }`}
-    </div>
-</div>
+				<div
+					className="row "
+					style={{
+						display: "flex",
+						// flexDirection: "column",
+						alignItems: "center",
+						textAlign: "center",
+						justifyContent: "center",
+					}}
+				>
+					<div
+						id="customer-detail-metadata-name"
+						style={{ margin: "0 auto", maxWidth: "calc(100% - 40px)", flexGrow: "1" }}
+						className={`u_mb_10  ${customer.name.length < 26 ? "text-h3" : "text-h5"}`}
+					>
+						{customer.name}
+					</div>
+					<div className="text-muted u_p_16" style={{ margin: "0 auto" }}>
+						{`${customer.custNoString} ${customer.category && "|"} ${customer.category} ${
+							customer.address.countryIso !== `IN`
+								? ` | Currency: 1 ${customer.baseCurrency} - ${customer.exchangeRate} INR`
+								: ``
+						}`}
+					</div>
+				</div>
 
 				{/* </div> */}
 			</div>

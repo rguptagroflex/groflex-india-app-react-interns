@@ -674,6 +674,7 @@ const ReportsGeneralLedger = (props) => {
 				>
 					<div>
 						<h3>
+							{console.log(invoiz.user.companyAddress.companyName)}
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
 								invoiz.user.companyAddress.companyName.slice(1)}{" "}
 							General Ledger
