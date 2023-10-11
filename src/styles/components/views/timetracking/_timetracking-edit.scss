@@ -2,7 +2,6 @@
 @import "../../../abstracts/_variables";
 
 .timetracking-edit-component-wrapper {
-
 	.row {
 		margin-bottom: 40px;
 
@@ -25,5 +24,23 @@
 	.dateInput_input {
 		border-color: $color-input-bar;
 	}
+}
 
+//Design Changes
+.timetracking-edit-component-wrapper {
+	.wrapper-has-topbar-with-margin {
+		padding: 21px;
+		.time-tracking-title {
+			margin: 0 0 20px 0;
+		}
+		.divider {
+			height: 1px;
+			border-top: 0.5px solid #c6c6c6;
+			width: calc(100% + 42px);
+			margin: 0px -21px 20px -21px;
+		}
+		.row {
+			margin-bottom: 10px;
+		}
+	}
 }

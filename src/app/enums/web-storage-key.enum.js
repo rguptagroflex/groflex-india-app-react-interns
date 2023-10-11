@@ -38,6 +38,7 @@ const WebStorageKey = {
 	HIDE_FOOTER: "hideFooter",
 	CHARTOFACCOUNT_LIST_SETTING: "chartofaccountListSettings",
 	TRANSACTIONS_LIST_SETTING: "transactionsListSettings",
+	TEAMS_LIST_SETTING: "teamsListSettings",
 };
 
 export default Object.freeze(WebStorageKey);

@@ -2,7 +2,6 @@
 @import "../../../abstracts/_variables";
 
 .timetracking-billing-component {
-
 	.timetracking-watch-wrapper {
 		position: relative;
 		text-align: center;
@@ -18,7 +17,7 @@
 			// top: 75px;
 			top: 70px;
 			left: 50%;
-			@include vendor-prefix('transform', translateX(-50%));
+			@include vendor-prefix("transform", translateX(-50%));
 		}
 	}
 
@@ -26,5 +25,106 @@
 		position: relative;
 		top: 3px;
 	}
+}
 
+//Design changes
+.timetracking-billing-component {
+	.customer-and-time-tracking {
+		width: 100%;
+	}
+	.detail-view-content-left {
+		margin-right: 16px;
+		padding: 16px;
+		.text-h5 {
+			margin-bottom: 15px;
+		}
+
+		.left-content-wrapper {
+			height: 135px;
+			.first-half {
+				// width: 42%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				padding-right: 10px;
+				.sub-info-box:nth-child(2) {
+					word-wrap: break-word;
+				}
+				.sub-info-box:first-child {
+					margin-bottom: 18px;
+				}
+				.sub-info-box {
+					.sub-info-title {
+						color: #888787;
+						font-weight: 600;
+						margin-bottom: 9px;
+					}
+				}
+			}
+			.second-half {
+				// width: 58%;
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				padding-left: 10px;
+				.sub-info-box {
+					.sub-info-title {
+						color: #888787;
+						font-weight: 600;
+						margin-bottom: 9px;
+					}
+				}
+			}
+		}
+	}
+	.detail-view-content-right {
+		padding: 16px;
+		.filter-date-picker-container {
+			height: 55px;
+			display: flex;
+			align-content: center;
+			flex-wrap: wrap;
+		}
+		.total-hours-amount-container {
+			display: flex;
+			.total-hours,
+			.total-amount {
+				.text-h5:first-child {
+					margin-bottom: 8px;
+				}
+			}
+			.total-amount {
+				margin-left: 80px;
+			}
+		}
+		.timetracking-watch-wrapper {
+			top: -11px;
+			.timetracking-watch-text {
+				.text-h1 {
+					color: #0071ca;
+				}
+			}
+		}
+	}
+	.timetracking-list-wrapper {
+		// width: 100%;
+		// height: 100%;
+		.list-advanced-component {
+			padding: 0 27px 0 13px;
+			.list-advanced-head {
+				position: inherit;
+				display: none;
+			}
+			.ag-grid-container {
+				.ag-root-wrapper {
+					.ag-root-wrapper-body {
+						.ag-root {
+							border-radius: 4px 4px 4px 4px !important;
+							border-top: 1px solid #c6c6c6;
+						}
+					}
+				}
+			}
+		}
+	}
 }

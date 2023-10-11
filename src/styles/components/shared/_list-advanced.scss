@@ -980,6 +980,9 @@
 			}
 		}
 	}
+	.ag-center-cols-viewport {
+		width: calc(100% - 2px);
+	}
 }
 
 //List heading
@@ -997,16 +1000,15 @@
 
 //List container
 .ag-grid-container {
-	// .ag-root-wrapper-body {
-	// 	border: 1px solid #c6c6c6 !important;
-	// 	border-radius: 0 0 4px 4px !important;
-	// 	border-top: none !important;
-	// }
 	.ag-root {
-		box-shadow: none !important;
-		border: 1px solid #c6c6c6 !important;
-		border-radius: 0 0 4px 4px !important;
-		border-top: none !important;
+		// box-shadow: none !important;
+		// border: 1px solid #c6c6c6 !important;
+		// border-radius: 0 0 4px 4px !important;
+		// border-top: none !important;
+		box-shadow: none;
+		border: 1px solid #c6c6c6;
+		border-radius: 0 0 4px 4px;
+		border-top: none;
 	}
 }
 

@@ -1,5 +1,9 @@
 import React from "react";
+import SVGInline from "react-svg-inline";
 import IconButtonComponent from "shared/button/icon-button.component";
+import printerOutlined from "../../../assets/images/icons/printerOutlined.svg";
+import shareOutlined from "../../../assets/images/icons/shareOutlined.svg";
+import downloadOutlined from "../../../assets/images/icons/downloadOutlined.svg";
 
 const DetailViewHeadAdvancedComponent = (props) => {
 	const { actionCallback, actionElements, leftElements, rightElements, canvasWidth } = props;
@@ -95,7 +99,15 @@ const DetailViewHeadAdvancedComponent = (props) => {
 								type="primary"
 								wrapperClass="u_ml_16"
 								callback={() => onControlClick(element.action, element.actionActive)}
-							/>
+							>
+								{element.action === "print" ? (
+									<SVGInline svg={printerOutlined} width="15px" />
+								) : element.action === "email" ? (
+									<SVGInline svg={shareOutlined} width="15px" />
+								) : element.action === "downloadPdf" ? (
+									<SVGInline svg={downloadOutlined} width="15px" />
+								) : null}
+							</IconButtonComponent>
 						);
 					})}
 			</div>

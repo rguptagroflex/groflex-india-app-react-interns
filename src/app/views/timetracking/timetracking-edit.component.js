@@ -1,16 +1,16 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import TopbarComponent from 'shared/topbar/topbar.component';
-import config from 'config';
-import accounting from 'accounting';
-import moment from 'moment';
-import { convertStringToTimeObject, isValid24HourTimeObject } from 'helpers/timetracking';
-import ChangeDetection from 'helpers/changeDetection';
-import CurrencyInputComponent from 'shared/inputs/currency-input/currency-input.component';
-import DateInputComponent from 'shared/inputs/date-input/date-input.component';
-import SelectInputComponent from 'shared/inputs/select-input/select-input.component';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
-import userPermissions from 'enums/user-permissions.enum';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import TopbarComponent from "shared/topbar/topbar.component";
+import config from "config";
+import accounting from "accounting";
+import moment from "moment";
+import { convertStringToTimeObject, isValid24HourTimeObject } from "helpers/timetracking";
+import ChangeDetection from "helpers/changeDetection";
+import CurrencyInputComponent from "shared/inputs/currency-input/currency-input.component";
+import DateInputComponent from "shared/inputs/date-input/date-input.component";
+import SelectInputComponent from "shared/inputs/select-input/select-input.component";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
+import userPermissions from "enums/user-permissions.enum";
 
 const changeDetection = new ChangeDetection();
 
@@ -18,7 +18,7 @@ const ZERO_TIMEOBJECT = {
 	hour: 0,
 	minute: 0,
 	second: 0,
-	millisecond: 0
+	millisecond: 0,
 };
 
 class TimetrackingEditComponent extends React.Component {
@@ -29,7 +29,7 @@ class TimetrackingEditComponent extends React.Component {
 
 		if (!timeTracking.id) {
 			if (customerId) {
-				timeTracking.customer = customers.find(customer => customer.id === customerId);
+				timeTracking.customer = customers.find((customer) => customer.id === customerId);
 			}
 
 			timeTracking.timeType = config.timeTypes.FROM_TO;
@@ -40,12 +40,15 @@ class TimetrackingEditComponent extends React.Component {
 			fromError: null,
 			toError: null,
 			hourMinError: null,
-			hoursMinutes: '00:00'
+			hoursMinutes: "00:00",
 		};
 	}
 
 	componentDidMount() {
-		if (!invoiz.user.hasPermission(userPermissions.VIEW_TIMESHEET) && !invoiz.user.hasPermission(userPermissions.UPDATE_TIMESHEET)) {
+		if (
+			!invoiz.user.hasPermission(userPermissions.VIEW_TIMESHEET) &&
+			!invoiz.user.hasPermission(userPermissions.UPDATE_TIMESHEET)
+		) {
 			invoiz.user.logout(true);
 		}
 		const { timeTracking } = this.state;
@@ -58,7 +61,7 @@ class TimetrackingEditComponent extends React.Component {
 
 				return {
 					original,
-					current
+					current,
 				};
 			});
 		}, 0);
@@ -76,26 +79,29 @@ class TimetrackingEditComponent extends React.Component {
 		// 	return { name: customer.name, value: customer.id, customer };
 		// });
 
-		const customerOptions = customers.reduce(function(filtered, customer) {
+		const customerOptions = customers.reduce(function (filtered, customer) {
 			if (customer.address.countryIso === `IN` || !customer.baseCurrency) {
-				const filteredCustomer = { name: customer.name, value: customer.id, customer }
-				filtered.push(filteredCustomer)
+				const filteredCustomer = { name: customer.name, value: customer.id, customer };
+				filtered.push(filteredCustomer);
 			}
 			return filtered;
-		  }, []);
+		}, []);
 		const trackingTypeOptions = [
 			{
 				name: resources.str_fromTo,
-				value: config.timeTypes.FROM_TO
+				value: config.timeTypes.FROM_TO,
 			},
 			{
 				name: resources.str_hoursMin,
-				value: config.timeTypes.H_MIN
-			}
+				value: config.timeTypes.H_MIN,
+			},
 		];
 
 		const saveDisabled =
-			!timeTracking.customer || !timeTracking.durationInMinutes || (timeTracking.timeType === config.timeTypes.FROM_TO && (fromError || toError)) || hourMinError;
+			!timeTracking.customer ||
+			!timeTracking.durationInMinutes ||
+			(timeTracking.timeType === config.timeTypes.FROM_TO && (fromError || toError)) ||
+			hourMinError;
 		const topbar = (
 			<TopbarComponent
 				title={timeTracking.id ? resources.str_editRecordedTime : resources.str_recordTime}
@@ -104,13 +110,13 @@ class TimetrackingEditComponent extends React.Component {
 				buttonCallback={(evt, button) => this.onTopbarButtonClick(button.action)}
 				buttons={[
 					{
-						type: 'primary',
+						type: "primary",
 						label: resources.str_toSave,
 						disabled: saveDisabled,
-						buttonIcon: 'icon-check',
-						action: 'save',
-						dataQsId: 'timetracking-topbar-button-save'
-					}
+						buttonIcon: "icon-check",
+						action: "save",
+						dataQsId: "timetracking-topbar-button-save",
+					},
 				]}
 			/>
 		);
@@ -155,11 +161,16 @@ class TimetrackingEditComponent extends React.Component {
 				</div>
 			);
 
+		// console.log(timeTracking.customer, "hoursMinutes");
 		return (
 			<div className="timetracking-edit-component-wrapper">
 				{topbar}
 
 				<div className={`box wrapper-has-topbar-with-margin`}>
+					<h4 className="time-tracking-title">
+						{timeTracking.customer ? "Edit recorded time" : "Record time"}
+					</h4>
+					<div className="divider" />
 					<div className="row">
 						<div className="timetracking-edit-customer col-xs-6">
 							<SelectInputComponent
@@ -167,10 +178,13 @@ class TimetrackingEditComponent extends React.Component {
 								notAsync={true}
 								options={{
 									clearable: false,
-									searchable: false,
-									labelKey: 'name',
-									valueKey: 'value',
-									handleChange: option => this.onCustomerChange(option.customer)
+									searchable: true,
+									labelKey: "name",
+									valueKey: "value",
+									handleChange: (option) => {
+										if (!option) return;
+										this.onCustomerChange(option.customer);
+									},
 								}}
 								title={resources.str_customer}
 								value={(timeTracking.customer && timeTracking.customer.id) || null}
@@ -198,7 +212,7 @@ class TimetrackingEditComponent extends React.Component {
 										dataQsId="timetracking-edit-pricePerHour"
 										value={timeTracking.pricePerHour}
 										selectOnFocus={true}
-										onBlur={value => this.onPriceChange(value)}
+										onBlur={(value) => this.onPriceChange(value)}
 										label={resources.str_hourlyRateNet}
 										willReceiveNewValueProps={true}
 									/>
@@ -215,9 +229,9 @@ class TimetrackingEditComponent extends React.Component {
 								options={{
 									clearable: false,
 									searchable: false,
-									labelKey: 'name',
-									valueKey: 'value',
-									handleChange: option => this.onTimetypeChange(option.value)
+									labelKey: "name",
+									valueKey: "value",
+									handleChange: (option) => this.onTimetypeChange(option.value),
 								}}
 								title={resources.str_type}
 								value={timeTracking.timeType || config.timeTypes.FROM_TO}
@@ -237,7 +251,7 @@ class TimetrackingEditComponent extends React.Component {
 									className="textarea_input"
 									rows="4"
 									value={timeTracking.taskDescription}
-									onChange={event => {
+									onChange={(event) => {
 										const { timeTracking } = this.state;
 										timeTracking.taskDescription = event.target.value;
 										this.setState({ timeTracking });
@@ -255,11 +269,11 @@ class TimetrackingEditComponent extends React.Component {
 	onDateChange(value) {
 		const { timeTracking } = this.state;
 
-		const setFormattedDateTime = function(date, dateTime) {
+		const setFormattedDateTime = function (date, dateTime) {
 			return moment(date, config.dateFormat.client)
 				.add({
-					hour: moment(dateTime).get('hour'),
-					minute: moment(dateTime).get('minute')
+					hour: moment(dateTime).get("hour"),
+					minute: moment(dateTime).get("minute"),
 				})
 				.format(config.datetimeFormat.api);
 		};
@@ -272,7 +286,7 @@ class TimetrackingEditComponent extends React.Component {
 
 	onPriceChange(value) {
 		const { timeTracking } = this.state;
-		value = value.toString().replace(/-/gi, '');
+		value = value.toString().replace(/-/gi, "");
 		// value = accounting.unformat(value, ',');
 		value = accounting.unformat(value, config.currencyFormat.decimal);
 		timeTracking.pricePerHour = value;
@@ -285,17 +299,13 @@ class TimetrackingEditComponent extends React.Component {
 		const timeObj = convertStringToTimeObject(value);
 		const minutes = timeObj.minute;
 		timeTracking.durationInMinutes = timeObj.hour * 60 + minutes;
-		timeTracking.startDate = moment()
-			.set(ZERO_TIMEOBJECT)
-			.format(config.datetimeFormat.api);
-		timeTracking.endDate = moment()
-			.set(ZERO_TIMEOBJECT)
-			.format(config.datetimeFormat.api);
+		timeTracking.startDate = moment().set(ZERO_TIMEOBJECT).format(config.datetimeFormat.api);
+		timeTracking.endDate = moment().set(ZERO_TIMEOBJECT).format(config.datetimeFormat.api);
 
 		this.setState({
 			hourMinError: minutes > 59 ? resources.timeTracking.VALIDATION_TIMESTRING_FORMAT : null,
 			hoursMinutes: value,
-			timeTracking
+			timeTracking,
 		});
 	}
 
@@ -336,7 +346,7 @@ class TimetrackingEditComponent extends React.Component {
 			timeTracking,
 			fromError: isStart ? error : null,
 			toError: !isStart ? error : null,
-			hoursMinutes: `${hours}:${minutes}`
+			hoursMinutes: `${hours}:${minutes}`,
 		});
 	}
 
@@ -358,7 +368,7 @@ class TimetrackingEditComponent extends React.Component {
 
 	onTopbarButtonClick(action) {
 		switch (action) {
-			case 'save':
+			case "save":
 				this.onSave();
 				break;
 		}
@@ -373,14 +383,14 @@ class TimetrackingEditComponent extends React.Component {
 		if (timeTracking.timeType === config.timeTypes.H_MIN) {
 			timeTracking.startDate = timeTracking.endDate;
 		}
-		const url = `${config.resourceHost}trackedTime${timeTracking.id ? `/${timeTracking.id}` : ''}`;
-		const method = timeTracking.id ? 'PUT' : 'POST';
+		const url = `${config.resourceHost}trackedTime${timeTracking.id ? `/${timeTracking.id}` : ""}`;
+		const method = timeTracking.id ? "PUT" : "POST";
 
 		invoiz
 			.request(url, {
 				auth: true,
 				method,
-				data: timeTracking
+				data: timeTracking,
 			})
 			.then(() => {
 				invoiz.router.navigate(`/timetracking/billing/customer/${timeTracking.customer.id}`);

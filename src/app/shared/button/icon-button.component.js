@@ -15,7 +15,8 @@ const IconButtonComponent = (props) => {
 					callback && callback();
 				}}
 			>
-				<div className={`icon ${icon}`}></div>
+				{/* <div className={`icon ${icon}`}></div> */}
+				{props.children ? props.children : <div className={`icon ${icon}`}></div>}
 			</button>
 			{label && (
 				<div

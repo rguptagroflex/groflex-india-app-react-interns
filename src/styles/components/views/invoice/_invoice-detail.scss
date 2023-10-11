@@ -156,6 +156,7 @@
 	}
 
 	.detail-view-box-new {
+		// width: 658px;
 		.list-component {
 			.text-h4 {
 				padding-bottom: 5px;
@@ -217,22 +218,63 @@
 
 //Design changes
 .invoice-detail-wrapper {
-	.detail-view-head-advanced-component {
-		.detail-view-head-advanced-actions {
-			flex: unset;
-			width: 658px;
-			padding-right: 15px;
-			.popover-wrapper {
-				.popover-entry {
-					&:hover {
-						background-color: #ecfcf4;
-					}
+	max-width: 1250px;
+	margin: 0 auto;
+	// .detail-view-head-advanced-component {
+	// 	.detail-view-head-advanced-actions {
+	// 		flex: unset;
+	// 		width: 658px;
+	// 		padding-right: 15px;
+	// 		.popover-wrapper {
+	// 			.popover-entry {
+	// 				&:hover {
+	// 					background-color: #ecfcf4;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
+	.detail-view-head-wrapper-new {
+		padding: 0 20px;
+		max-width: 1285px;
+		min-width: 920px;
+		height: 45px;
+		margin-top: 100px;
+		.detail-view-head-wrapper {
+			width: 100%;
+			.detail-view-head-infos {
+				display: none;
+			}
+			.detail-view-head-controls {
+				top: 0;
+				width: 658px;
+				justify-content: flex-end;
+				display: flex;
+				.detail-view-head-controls-item {
+					border: 1px solid #c6c6c6;
+					background-color: white;
+					padding: 9px 12px;
+					border-radius: 4px;
+					margin-right: 10px;
+				}
+				.item-print {
+					margin-right: 0;
+					border-width: 1px 0 1px 1px;
+					border-radius: 4px 0 0 4px;
+					padding: 9px 6px 9px 12px;
+				}
+				.item-print-settings {
+					margin-right: 0;
+					border-width: 1px 1px 1px 0px;
+					border-radius: 0px 4px 4px 0px;
+					padding: 9px 5px 9px 6px;
 				}
 			}
 		}
 	}
 
 	.detail-view-content-wrapper {
+		margin: 30px auto 0;
 		.detail-view-content-left {
 			margin-right: 16px;
 			canvas {

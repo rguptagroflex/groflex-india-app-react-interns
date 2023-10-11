@@ -41,13 +41,13 @@
 	margin: -305px auto 0;
 	background: $color-bg-medium;
 	border: 1px solid $color-line-light;
-	@include vendor-prefix('box-shadow', $box-shadow-subscription-box);
+	@include vendor-prefix("box-shadow", $box-shadow-subscription-box);
 
 	.detail-view-badge {
 		position: absolute;
 		top: -17px;
 		left: 50%;
-		@include vendor-prefix('transform', 'translateX(-50%)');
+		@include vendor-prefix("transform", "translateX(-50%)");
 	}
 }
 
@@ -58,13 +58,13 @@
 	margin: -305px auto 0;
 	background: $color-bg-medium;
 	border: 1px solid $color-line-light;
-	@include vendor-prefix('box-shadow', $box-shadow-subscription-box);
+	@include vendor-prefix("box-shadow", $box-shadow-subscription-box);
 
 	.detail-view-badge {
 		position: absolute;
 		top: -17px;
 		left: 50%;
-		@include vendor-prefix('transform', 'translateX(-50%)');
+		@include vendor-prefix("transform", "translateX(-50%)");
 		z-index: 3;
 	}
 
@@ -82,7 +82,7 @@
 	#expense-detail-pdf-wrapper,
 	#invoice-detail-pdf-wrapper {
 		width: 925px;
-    	z-index: 2;
+		z-index: 2;
 		position: relative;
 		margin-bottom: -4px;
 	}
@@ -121,7 +121,7 @@
 	padding: 40px;
 	background: $color-white;
 	border: 1px solid $color-line-light;
-	@include vendor-prefix('box-shadow', $box-shadow-subscription-box);
+	@include vendor-prefix("box-shadow", $box-shadow-subscription-box);
 }
 
 .detail-view-badge {
@@ -135,54 +135,54 @@
 	font-size: 13px;
 	font-weight: 600;
 	letter-spacing: 2px;
-	@include vendor-prefix('user-select', 'none');
+	@include vendor-prefix("user-select", "none");
 
 	&.detail-view-badge-rejected {
-		color: $badge-color-alert!important; // $color-white!important;
-		background: $color-white!important; // $badge-color-alert!important;
-		border: 1px solid $badge-color-alert!important; // 0 none!important;
+		color: $badge-color-alert !important; // $color-white!important;
+		background: $color-white !important; // $badge-color-alert!important;
+		border: 1px solid $badge-color-alert !important; // 0 none!important;
 	}
 
 	&.detail-view-badge-accepted {
-		background: $color-white!important; //$badge-color-light!important;
-		color: $color-blue-light!important;
-		border: 1px solid $color-blue-light!important; // 0 none!important;
+		background: $color-white !important; //$badge-color-light!important;
+		color: $color-blue-light !important;
+		border: 1px solid $color-blue-light !important; // 0 none!important;
 	}
 
 	&.detail-view-badge-expensed {
-		color: $badge-color-success!important; //$color-white!important;
-		background: $color-white!important;// $badge-color-success!important;
-		border: 1px solid $badge-color-success!important; // 0 none!important;
+		color: $badge-color-success !important; //$color-white!important;
+		background: $color-white !important; // $badge-color-success!important;
+		border: 1px solid $badge-color-success !important; // 0 none!important;
 	}
 
 	&.detail-view-badge-invoiced {
-		color: $badge-color-success!important; //$color-white!important;
-		background: $color-white!important; //$badge-color-success!important;
-		border: 1px solid $badge-color-success!important; // 0 none!important;
+		color: $badge-color-success !important; //$color-white!important;
+		background: $color-white !important; //$badge-color-success!important;
+		border: 1px solid $badge-color-success !important; // 0 none!important;
 	}
 
 	&.detail-view-badge-overdue {
-		color: $badge-color-alert!important; //$color-white!important;
-		background: color-white!important; //$badge-color-alert!important;
-		border: 1px solid $badge-color-alert!important; // 0 none!important;
+		color: $badge-color-alert !important; //$color-white!important;
+		background: color-white !important; //$badge-color-alert!important;
+		border: 1px solid $badge-color-alert !important; // 0 none!important;
 	}
 
 	&.detail-view-badge-draft {
-		background: $color-white!important;
-		color: $color-text-light!important;
-		border: 1px solid $color-line-light!important;
+		background: $color-white !important;
+		color: $color-text-light !important;
+		border: 1px solid $color-line-light !important;
 	}
 
 	&.detail-view-badge-paid {
-		color: $badge-color-success!important; //$color-white!important;
-		background: $color-white!important; // $badge-color-success!important;
-		border: 1px solid $badge-color-success!important; // 0 none!important;
+		color: $badge-color-success !important; //$color-white!important;
+		background: $color-white !important; // $badge-color-success!important;
+		border: 1px solid $badge-color-success !important; // 0 none!important;
 	}
 
 	&.detail-view-badge-cancelled {
-		color: $color-text-muted!important;// $color-text-placeholder!important;
-		background: $color-white!important;// $color-dot-disabled!important;
-		border: 1px solid $color-text-muted!important; // 0 none!important;
+		color: $color-text-muted !important; // $color-text-placeholder!important;
+		background: $color-white !important; // $color-dot-disabled!important;
+		border: 1px solid $color-text-muted !important; // 0 none!important;
 	}
 
 	.icon {
@@ -240,8 +240,8 @@
 
 .detail-view-content-wrapper {
 	display: flex;
-    margin: 10px auto 0;
-    max-width: 1325px;
+	margin: 10px auto 0;
+	max-width: 1325px;
 	min-width: 960px;
 	padding: 0 20px;
 	z-index: 2;
