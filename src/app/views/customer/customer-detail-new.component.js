@@ -261,7 +261,8 @@ class CustomerDetailNewComponent extends React.Component {
 		const { customer } = this.state;
 		console.log("renderOutstandingReceivables:", customer.outstandingAmount);
 		const formattedOutstandingReceivables = formatCurrencyMinusPlus(
-			customer.salesOrExpensesVolumeData.outstandingAmount
+			// customer.salesOrExpensesVolumeData.outstandingAmount
+			customer.outstandingAmount
 		);
 
 		return (
@@ -368,7 +369,10 @@ class CustomerDetailNewComponent extends React.Component {
 					<span>invoices</span>
 				</div>
 				<div className="text-h6 text-primary">
-					{formatCurrency(customer.salesOrExpensesVolumeData.outstandingAmount)}
+					{formatCurrency(
+						// customer.salesOrExpensesVolumeData.outstandingAmount
+						customer.outstandingAmount
+					)}
 				</div>
 			</div>
 		);
