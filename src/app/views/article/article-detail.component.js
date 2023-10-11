@@ -304,7 +304,10 @@ class ArticleDetailComponent extends React.Component {
 									<div className="col-xs-6">
 										<div className="item-article">
 											<div className="item_label">{resources.str_hsnSacCode}</div>
-											<div className="item_text">{article.displayHsnSacCode}</div>
+											<div className="item_text">
+												{article.displayHsnSacCode === "N/A" ? "-" : article.displayHsnSacCode}
+											</div>
+											{console.log("HSN: ", article.displayHsnSacCode)}
 										</div>
 									</div>
 									<div className="col-xs-6">
@@ -474,7 +477,7 @@ class ArticleDetailComponent extends React.Component {
 						<span>Total Orders</span>
 						<br />
 					</div>
-					<div className="text-h6 text-primary">{salesVolumeData.invoiceCount}</div>
+					<div className="text-h6 text-primary">{formatCurrency(salesVolumeData.invoiceCount)}</div>
 				</div>
 			</div>
 		);
@@ -716,8 +719,12 @@ class ArticleDetailComponent extends React.Component {
 								<div className="col-xs-5 u_ml_16 detail-wrap detail-information u_mt_48">
 									<div className="detail-information-content">
 										<div className="content-information">
-											<div className="title is-4 mb-2 mt-4">Coming Soon</div>
-											<div>Launching new Inventory features very soon </div>
+											<div className="title is-4 mb-2 mt-4">
+												<h4>Coming Soon</h4>
+											</div>
+											<div className="article-detail-information-text">
+												Launching new Inventory features very soon{" "}
+											</div>
 										</div>
 										<div
 											style={{
@@ -872,7 +879,7 @@ class ArticleDetailComponent extends React.Component {
 				)}
 
 				{activeTab === "History" && (
-					<div className="detail-wrap u_p_16 u_mt_48 detail-history" style={{marginLeft:"-70px"}}>
+					<div className="detail-wrap u_p_16 u_mt_48 detail-history" style={{ marginLeft: "-70px" }}>
 						<div className="pagebox_heading text-h4">{resources.str_history}</div>
 						<div className="pagebox_content articleHistory_container">
 							{errorOccurred ? (
