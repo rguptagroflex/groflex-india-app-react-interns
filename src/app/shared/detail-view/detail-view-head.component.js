@@ -1,34 +1,39 @@
-import React from 'react';
+import React from "react";
+import printerOutlined from "../../../assets/images/icons/printerOutlined.svg";
+import shareOutlined from "../../../assets/images/icons/shareOutlined.svg";
+import downloadOutlined from "../../../assets/images/icons/downloadOutlined.svg";
+import SVGInline from "react-svg-inline";
 
 class DetailViewHeadComponent extends React.Component {
-	constructor (props) {
+	constructor(props) {
 		super(props);
 
 		this.state = {
 			leftElements: this.props.leftElements || [],
 			rightElements: this.props.rightElements || [],
-			actionElements: this.props.actionElements || []
+			actionElements: this.props.actionElements || [],
 		};
 	}
 
-	componentWillReceiveProps (props) {
+	componentWillReceiveProps(props) {
 		this.setState({
 			leftElements: props.leftElements || [],
 			rightElements: props.rightElements || [],
-			actionElements: props.actionElements || []
+			actionElements: props.actionElements || [],
 		});
 	}
 
-	onControlClick (controlAction, isActive) {
+	onControlClick(controlAction, isActive) {
 		if (!isActive && this.props.controlActionCallback) {
 			this.props.controlActionCallback(controlAction);
 		}
 	}
 
-	render () {
+	render() {
 		const leftElements = [];
 		const rightElements = [];
 		const actionElements = [];
+		// console.log(this.props.actionElements, "action element in head detail");
 
 		this.state.leftElements.forEach((element, index) => {
 			leftElements.push(
@@ -44,7 +49,7 @@ class DetailViewHeadComponent extends React.Component {
 			rightElements.push(
 				<div
 					className={`detail-view-head-entry ${
-						index === this.state.rightElements.length - 1 ? 'detail-view-head-entry-last' : ''
+						index === this.state.rightElements.length - 1 ? "detail-view-head-entry-last" : ""
 					}`}
 					key={`detail-view-head-right-entry-${index}`}
 				>
@@ -56,11 +61,21 @@ class DetailViewHeadComponent extends React.Component {
 		});
 
 		this.state.actionElements.forEach((element, index) => {
-			const icon = <div className={`icon ${element.actionActive ? 'loader_spinner' : element.icon}`} />;
+			// const icon = <div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />;
+			const icon =
+				String(element.action).toLowerCase() === "print" ? (
+					<SVGInline svg={printerOutlined} width="16px" className="vertically-middle" />
+				) : String(element.action).toLowerCase() === "email" ? (
+					<SVGInline svg={shareOutlined} width="16px" className="vertically-middle" />
+				) : String(element.action).toLowerCase() === "downloadpdf" ? (
+					<SVGInline svg={downloadOutlined} width="16px" className="vertically-middle" />
+				) : (
+					<div className={`icon ${element.actionActive ? "loader_spinner" : element.icon}`} />
+				);
 			actionElements.push(
 				<div
 					id={element.id}
-					className={`detail-view-head-controls-item ${element.controlsItemClass || ''}`}
+					className={`detail-view-head-controls-item ${element.controlsItemClass || ""}`}
 					key={`detail-view-head-control-${index}`}
 					onClick={() => this.onControlClick(element.action, element.actionActive)}
 					data-qs-id={element.dataQsId}
@@ -73,7 +88,7 @@ class DetailViewHeadComponent extends React.Component {
 					) : (
 						<div>
 							{icon}
-							{element.name}
+							<span className="u_ml_6">{element.name}</span>
 						</div>
 					)}
 				</div>

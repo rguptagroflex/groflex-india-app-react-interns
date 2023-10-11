@@ -72,7 +72,7 @@ class TransactionsListComponent extends React.Component {
 			return q.all(requests);
 		};
 		const proceed = (...args) => {
-			console.log(args, "ARGS");
+			// console.log(args, "ARGS");
 			banks = args[0];
 			if (banks.body.data.length === 0) {
 				invoiz.page.showToast({ type: "error", message: "Please create Cash and Bank first" });

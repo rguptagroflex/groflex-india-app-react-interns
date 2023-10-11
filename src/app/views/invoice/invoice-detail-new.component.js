@@ -19,7 +19,6 @@ import InvoiceAutodunningComponent from "shared/invoice-autodunning/invoice-auto
 import NotesComponent from "shared/notes/notes.component";
 import ErrorCodes from "enums/error-codes.enum";
 import ListComponent from "shared/list/list.component";
-import DetailViewHeadAdvancedComponent from "shared/detail-view/detail-view-head-advanced.component";
 import ModalService from "services/modal.service";
 import { DetailViewConstants, errorCodes } from "helpers/constants";
 import { updateSubscriptionDetails } from "helpers/updateSubsciptionDetails";
@@ -60,6 +59,9 @@ import {
 } from "../../helpers/constants";
 import planPermissions from "enums/plan-permissions.enum";
 import abbreviationDateFormat, { dateObjToAbbreviation } from "../../helpers/abbreviationDateFormat";
+import DetailViewHeadAdvancedComponent from "shared/detail-view/detail-view-head-advanced.component";
+import DetailViewHeadComponent from "../../shared/detail-view/detail-view-head.component";
+import DetailViewHeadPrintTooltipComponent from "../../shared/detail-view/detail-view-head-print-tooltip.component";
 
 const createTopbarDropdown = (invoice, resources) => {
 	const items = [];
@@ -624,7 +626,8 @@ class InvoiceDetailNewComponent extends React.Component {
 		const handlePages = (page) => {
 			if (wrapper) {
 				const canvas = document.createElement("canvas");
-				canvas.width = wrapper.getBoundingClientRect().width;
+				// canvas.width = wrapper.getBoundingClientRect().width;
+				canvas.width = "658";
 				const context = canvas.getContext("2d");
 				const viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
 				canvas.height = viewport.height;
@@ -1721,12 +1724,26 @@ class InvoiceDetailNewComponent extends React.Component {
 					resources={resources}
 				/>
 
-				<DetailViewHeadAdvancedComponent
+				{/* <DetailViewHeadAdvancedComponent
 					actionCallback={(action) => this.onHeadControlClick(action)}
 					actionElements={headContents.actionElements}
 					leftElements={headContents.leftElements}
 					rightElements={headContents.rightElements}
 					canvasWidth={this.state.canvasWidth}
+				/> */}
+				<DetailViewHeadPrintTooltipComponent letterPaperType={letterPaperType} resources={resources} />
+				<DetailViewHeadComponent
+					controlActionCallback={(action) => this.onHeadControlClick(action)}
+					actionElements={headContents.actionElements.concat({
+						action: "showPrintSettingsPopover",
+						controlsItemClass: "item-print-settings",
+						dataQsId: "offerDetail-head-action-printSettings",
+						icon: "icon-arr_down",
+						id: "detail-head-print-settings-popover-anchor",
+						name: "",
+					})}
+					leftElements={headContents.leftElements}
+					rightElements={headContents.rightElements}
 				/>
 
 				{/* {invoiz.user.isAppEnabledAutoDunning() &&
@@ -1769,7 +1786,8 @@ class InvoiceDetailNewComponent extends React.Component {
 		const paymentAndDeliveryNoteContent = (
 			<React.Fragment>
 				{paymentTable.rows.length > 0 && (
-					<div className="detail-view-box-new u_mt_40 box">
+					// <div className="detail-view-box-new u_mt_40 box">
+					<div className="detail-view-box-new u_mt_16 box">
 						<ListComponent
 							title="Payments received"
 							columns={paymentTable.columns}
@@ -1862,6 +1880,7 @@ class InvoiceDetailNewComponent extends React.Component {
 								if (index === 0) return;
 								return (
 									<div
+										key={`invoice-info-item-${index}`}
 										style={{ color: item.headline === "payment overdue" ? "#FFAA2C" : null }}
 										className="date-of-invoice-container font-14px"
 									>

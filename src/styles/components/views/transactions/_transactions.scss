@@ -90,33 +90,43 @@
 	}
 
 	// Time preiod
-	.time-period-select {
-		.date-input {
-			position: relative;
+	.time-period-select-container {
+		.time-period-select {
+			.date-input {
+				position: relative;
 
-			.input-icon {
-				position: absolute;
-				left: 0;
-				margin: 8px;
-				z-index: 1;
+				.input-icon {
+					position: absolute;
+					left: 0;
+					margin: 8px;
+					z-index: 1;
+				}
+
+				.Select-value-label {
+					padding-left: 18px;
+				}
+			}
+			.selectInput {
+				width: 180px;
+				// margin: 20px 0 0 0 !important;
+				border: 1px solid #c4c4c4;
+				border-radius: 4px;
+
+				.Select-value-label {
+					font-size: 16px;
+					color: #000;
+				}
 			}
 
-			.Select-value-label {
-				padding-left: 18px;
-			}
-		}
-		.selectInput {
-			width: 180px;
-			// margin: 20px 0 0 0 !important;
-			border: 1px solid #c4c4c4;
-			border-radius: 4px;
-
-			.Select-value-label {
-				font-size: 16px;
-				color: #000;
+			.reconcile-date-picker-container {
+				// get the first child here
+				&:first-child {
+					margin-left: 0 !important;
+				}
 			}
 		}
 	}
+
 	.bank-and-time-button-container {
 		.button {
 			float: right;

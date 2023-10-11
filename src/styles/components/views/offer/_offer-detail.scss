@@ -2,7 +2,6 @@
 @import "../../../abstracts/mixins";
 
 .offer-detail-wrapper {
-
 	.offer-detail-timeline {
 		position: absolute;
 		right: 20px;
@@ -14,7 +13,7 @@
 			left: 50%;
 			right: auto;
 			bottom: auto;
-			@include vendor-prefix('transform', 'translateX(-50%);');
+			@include vendor-prefix("transform", "translateX(-50%);");
 		}
 	}
 
@@ -42,20 +41,192 @@
 		}
 	}
 
-	&.viewport-large {
-		.detail-view-head-container {
-			height: 510px;
-		}
+	// &.viewport-large {
+	// 	.detail-view-head-container {
+	// 		height: 510px;
+	// 	}
 
-		.detail-view-head-controls {
-			top: 95px;
-		}
-	}
+	// 	.detail-view-head-controls {
+	// 		top: 95px;
+	// 	}
+	// }
+
 	// .detail-view-document .detail-view-preview {
 	// 	position: relative;
 	// }
-
 }
 
+// Design changes
 
+.offer-detail-wrapper {
+	.detail-view-head-container {
+		// padding: 25px 20px 30px 20px;
+		padding: 20px 20px 50px 20px;
 
+		height: 100%;
+		.detail-view-head-wrapper {
+			display: flex;
+			margin: 0 auto;
+			width: 100%;
+			max-width: 1285px;
+			min-width: 920px;
+			.detail-view-head-infos {
+				display: none;
+			}
+			.detail-view-head-controls {
+				top: 0;
+				display: flex;
+				justify-content: flex-end;
+				width: 658px;
+				.detail-view-head-controls-item {
+					border: 1px solid #c6c6c6;
+					background-color: white;
+					padding: 9px 12px;
+					border-radius: 4px;
+					margin-right: 10px;
+					.icon-arr_down {
+						margin-right: 0;
+						color: $color-primary;
+					}
+				}
+				#detail-head-print-anchor {
+					margin-right: 0;
+					border-width: 1px 0 1px 1px;
+					border-radius: 4px 0 0 4px;
+					padding: 9px 6px 9px 12px;
+				}
+				#detail-head-print-settings-popover-anchor {
+					margin-right: 0;
+					border-width: 1px 1px 1px 0px;
+					border-radius: 0px 4px 4px 0px;
+					padding: 9px 12px 9px 6px;
+				}
+			}
+		}
+	}
+	.detail-view-content-wrapper {
+		// display: flex;
+		// margin: 10px auto 0;
+		// max-width: 1325px;
+		// min-width: 960px;
+		// padding: 0 20px;
+		// z-index: 2;
+		// position: relative;
+		.detail-view-content-left {
+			width: 658px;
+			margin-right: 16px;
+			.detail-view-document {
+				width: 100%;
+				border: none;
+				box-shadow: none;
+				margin-top: 20px;
+				.detail-view-preview {
+					box-shadow: none;
+					border-radius: 8px;
+					// height: calc(100% - 3px);
+					width: 658px;
+				}
+				#invoice-detail-pdf-wrapper {
+					width: 658px;
+					canvas {
+						box-shadow: none !important;
+						border-radius: 8px;
+					}
+				}
+			}
+		}
+		.detail-view-content-right {
+			// min-width: 535px;
+			// width: 535px;
+			margin-top: 20px;
+			.invoice-info {
+				background-color: #fff;
+				// height: 100%;
+				width: 100%;
+				border-radius: 8px;
+				border: 1px solid #c6c6c6;
+				margin-bottom: 16px;
+				.invoice-info-label {
+					color: #888787;
+					font-weight: 600;
+				}
+				.invoice-amount {
+					margin: 10px 0;
+				}
+				.customer-name-container,
+				.date-of-invoice-container {
+					display: flex;
+					justify-content: space-between;
+					font-weight: 600;
+				}
+				.invoice-info-item {
+					margin-bottom: 4px;
+				}
+				.customer-name-container {
+					margin-bottom: 4px;
+					.customer-name {
+						a {
+							color: $color-primary;
+						}
+					}
+				}
+				.date-of-invoice-container {
+					.date-of-invoice {
+						color: #888787;
+					}
+				}
+			}
+			.detail-view-box {
+				width: 100%;
+				padding: 16px;
+			}
+
+			.offer-timeline-container {
+				max-height: 829px;
+				.offer-timeline-content {
+					display: flex;
+					flex-direction: column;
+					.offer-timeline-item {
+						width: 100%;
+						height: 59px;
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						max-height: unset;
+						margin: 8px 0;
+						.timeline-date {
+							width: 95px;
+							color: #888787;
+							font-weight: 400;
+						}
+						.greenCircle {
+							border: 3.2px solid #00a353;
+							width: 16px;
+							height: 16px;
+							border-radius: 50%;
+						}
+						.greyCircleSolid {
+							border: none;
+							width: 16px;
+							height: 16px;
+							border-radius: 50%;
+							background-color: #888787;
+						}
+						.timeline-text {
+							width: 272px;
+							height: 100%;
+							padding: 8px 16px;
+							display: flex;
+							flex-direction: column;
+							justify-content: center;
+							border: 1px solid #c6c6c6;
+							border-radius: 8px;
+							color: #272d30;
+							font-weight: 600;
+						}
+					}
+				}
+			}
+		}
+	}
+}

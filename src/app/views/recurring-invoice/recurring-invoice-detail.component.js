@@ -24,7 +24,12 @@ import InvoiceAction from "enums/invoice/invoice-action.enum";
 import { formatApiDate } from "helpers/formatDate";
 import { format } from "util";
 import { connect, Provider } from "react-redux";
+// import userPermissions from "enums/user-permissions.enum";
+
 import userPermissions from "enums/user-permissions.enum";
+import { capitalize } from "lodash";
+import abbreviationDateFormat from "../../helpers/abbreviationDateFormat";
+import RecurringInvoiceList2Component from "./recurring-invoice-list-2.component";
 
 const createTopbarButtons = (recInvoice, resources) => {
 	const buttons = [];
@@ -285,9 +290,10 @@ class RecurringInvoiceDetailComponent extends React.Component {
 				</div>
 			);
 		}
-
-		const classLeft = submenuVisible ? "alignRecurringLeft" : "";
-
+		
+		const classLeft = submenuVisible ? "alignRecurringLeft" : "";		
+		// console.log(headContents, "headContents");
+		// console.log(invoicesTable, "invoicesTable");
 		return (
 			<div className={`recurring-invoice-detail-wrapper wrapper-has-topbar ${classLeft}`}>
 				{canUpdateRecurringInvoice && canDeleteRecurringInvoice ? (
@@ -312,16 +318,27 @@ class RecurringInvoiceDetailComponent extends React.Component {
 
 					<div className="recurring-invoice-detail-recipient-wrapper">
 						<div className="recurring-invoice-detail-recipient">
-							<span class="icon icon-mail"></span>
+							<span className="icon icon-mail"></span>
 							<span>{resources.str_willBeSentOn}:</span> {this.state.recInvoice.recipient}
 						</div>
 					</div>
 				</div>
+
 				<div className="detail-view-document" style={{ visibility: "hidden" }} />
 				<div className="detail-view-content-wrapper">
 					<div className="detail-view-content-left">
-						<div className="detail-view-box-new u_mt_20">
-							<ListComponent
+						<div className="detail-view-box-new u_mt_20 box">
+							<RecurringInvoiceList2Component
+								invoicesList={invoicesTable}
+								onRowClick={(id) => this.onInvoiceRowClick(id)}
+								placeholderInfo={[
+									{ value: resources.str_automAward },
+									{ value: this.state.recInvoice.displayStartDate },
+									{ value: resources.str_draft },
+									{ value: formatCurrency(this.state.recInvoice.template.invoice.totalGross) },
+								]}
+							/>
+							{/* <ListComponent
 								title={resources.str_createdBills}
 								clickable={true}
 								rowCallback={(id) => this.onInvoiceRowClick(id)}
@@ -338,11 +355,56 @@ class RecurringInvoiceDetailComponent extends React.Component {
 								emptyFallbackElement={emptyFallbackElement}
 								tableId={`invoices`}
 								resources={resources}
-							/>
+							/> */}
 						</div>
 					</div>
 					<div className="detail-view-content-right">
-						<div className="detail-view-box-new u_mt_20">
+						{/* recurring Invoice info */}
+						<div className="invoice-info u_p_16">
+							<div className="invoice-info-label font-14px">Recurring Invoice Amount:</div>
+							<h3 className="invoice-amount">{headContents.rightElements[0].value}</h3>
+							<div className="customer-name-container font-14px">
+								<div>Customer</div>
+								<div className="customer-name">{headContents.leftElements[0].value}</div>
+							</div>
+							{headContents.rightElements.map((item, index) => {
+								if (index === 0) return;
+								return (
+									<div
+										key={`invoice-info-item-${index}`}
+										style={{ color: item.headline === "payment overdue" ? "#FFAA2C" : null }}
+										className="date-of-invoice-container font-14px"
+									>
+										<div>
+											{capitalize(item.headline) === "Subscription start"
+												? "Subscription date"
+												: capitalize(item.headline)}
+										</div>
+										{/* Last element is not always always date */}
+										<div
+											className={
+												index === headContents.rightElements.length - 1
+													? item.value.includes("-")
+														? "date-of-invoice"
+														: item.value === "Subscription ended"
+														? "sub-ended"
+														: "invoice-info-item"
+													: "invoice-info-item"
+											}
+										>
+											{index === headContents.rightElements.length - 1 ||
+											capitalize(item.headline) === "Subscription start"
+												? item.value.includes("-")
+													? abbreviationDateFormat(item.value)
+													: item.value
+												: item.value}
+										</div>
+									</div>
+								);
+							})}
+						</div>
+						{/* Recurring Invoice info ends here */}
+						<div className="detail-view-box-new u_mt_20 u_p_16 box">
 							<NotesComponent
 								heading={resources.str_remarks}
 								data={{ notes: this.state.recInvoice.notes }}

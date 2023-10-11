@@ -656,9 +656,9 @@ class TransactionEditComponent extends React.Component {
 							/>
 						</div>
 						<div className="last-footer-msg-container">
-							<div className="thank-you-msg">
+							{/* <div className="thank-you-msg">
 								We thank you for your order and look forward to further cooperation.
-							</div>
+							</div> */}
 							<div className="groflex-ad">
 								<img className="footer-logo" src={groflexLetterFooterIcon} alt="logo" />
 								<div>Try Free Invoicing and Accounting software here </div>
