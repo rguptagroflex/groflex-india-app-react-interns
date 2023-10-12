@@ -919,7 +919,13 @@
 .head-first-bar {
 	padding-left: 0 !important;
 }
-
+.list-advanced-component-empty-list {
+	.empty-list-content {
+		position: fixed;
+		background: none;
+		box-shadow: none;
+	}
+}
 .list-advanced-component {
 	.list-advanced-head {
 		.left-col {
