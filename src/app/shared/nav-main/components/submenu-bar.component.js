@@ -28,10 +28,20 @@ const SubmenuBarComponent = ({
 	closeNotificationOnMenuItemClick,
 }) => {
 	// console.log("Slected Key", selectedName);
+	let hoverClass = "";
 
 	const [iconClose, setIconClose] = useState(visible);
-	const hoverClass = active ? "submenuStatic" : "submenuHover";
-
+	if (active === true && visible === false) {
+		hoverClass = "submenuStatic";
+	}
+	if (active === false && visible === true) {
+		hoverClass = "submenuHover";
+	}
+	if (active === true && visible === true) {
+		hoverClass = "submenuHover";
+	}
+	// const hoverClass = active ? "submenuStatic" : "submenuHover";
+	// console.log("Active: ", active, "Visible", visible);
 	useEffect(() => {
 		setIconClose(visible);
 	}, [visible]);
