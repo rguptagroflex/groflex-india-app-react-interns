@@ -12,7 +12,7 @@ import dashboard_hover from "assets/images/icons/dashboard_hover.svg";
 import articles_hover from "assets/images/icons/articles_hover.svg";
 import contacts_hover from "assets/images/icons/contacts_hover.svg";
 const MenuItemComponent = (props) => {
-	const { name, url, icon, active, submenuVisible, resourceKey, resources } = props;
+	const { name, url, icon, active, submenuVisible, resourceKey, resources, closeSearchOnMenuItemClick } = props;
 
 	const [iconHoverActive, setIconHoverActive] = useState(false);
 
@@ -33,6 +33,7 @@ const MenuItemComponent = (props) => {
 	const className = `menuItem  ${activeClass} ${submenuVisibleClass}`;
 
 	const navigateToPage = (url) => {
+		closeSearchOnMenuItemClick();
 		invoiz.trigger("updateNewsfeedCount");
 		invoiz.trigger("triggerSubmenuHide");
 		// if (url === '/offers') {

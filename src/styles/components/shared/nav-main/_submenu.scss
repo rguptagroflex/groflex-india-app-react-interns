@@ -176,7 +176,8 @@
 }
 
 .submenuHover {
-	z-index: 2 !important;
+	// z-index: 2 !important;
+	z-index: 100000 !important;
 }
 .submenuStatic {
 	z-index: 1 !important;

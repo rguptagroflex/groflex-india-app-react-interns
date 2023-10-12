@@ -24,6 +24,8 @@ const SubmenuBarComponent = ({
 	submenuActive,
 	showSubmenu,
 	active,
+	closeSearchOnMenuItemClick,
+	closeNotificationOnMenuItemClick,
 }) => {
 	// console.log("Slected Key", selectedName);
 

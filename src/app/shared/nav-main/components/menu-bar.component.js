@@ -13,8 +13,10 @@ class MenuBarComponent extends React.Component {
 	constructor(props) {
 		super(props);
 
-		const { activeItem, activeSubmenuItem } = props;
+		const { activeItem, activeSubmenuItem, closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick } = props;
 		this.state = {
+			closeNotificationOnMenuItemClick,
+			closeSearchOnMenuItemClick,
 			activeItem,
 			activeSubmenuItem,
 			canSeeEditGstReports: null,
@@ -226,6 +228,7 @@ class MenuBarComponent extends React.Component {
 		}
 
 		return items.map((menuItemData) => {
+			const { closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick } = this.state;
 			const { name, submenuItems } = menuItemData;
 			const active = name === activeItem;
 			Object.assign(menuItemData, { active, submenuVisible });
@@ -240,6 +243,8 @@ class MenuBarComponent extends React.Component {
 						{...menuItemData}
 						resources={resources}
 						permissions={permissions}
+						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
 
 						// activeName={activeItem}
 					/>
@@ -248,7 +253,13 @@ class MenuBarComponent extends React.Component {
 			// return <MenuItemComponent key={name} {...menuItemData} resources={resources}/>;
 			return (
 				<li key={name}>
-					<MenuItemComponent key={name} {...menuItemData} resources={resources} />
+					<MenuItemComponent
+						key={name}
+						{...menuItemData}
+						resources={resources}
+						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+					/>
 				</li>
 			);
 		});
