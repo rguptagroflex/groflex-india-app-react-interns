@@ -40,11 +40,17 @@ class MenuBarComponent extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		const { submenuVisible } = this.props;
-		const { activeSubmenuItem } = this.state;
+		const { activeSubmenuItem, activeItem } = this.state;
 		if (prevState.activeSubmenuItem === "creditNotes" && activeSubmenuItem === "invoice") {
 			submenuVisible(false);
 		}
 		if (prevState.activeSubmenuItem === "transactions" && activeSubmenuItem === "invoice") {
+			submenuVisible(false);
+		}
+		if (prevState.activeItem !== "customers" && activeItem === "customers") {
+			submenuVisible(false);
+		}
+		if (prevState.activeItem !== "articles" && activeItem === "articles") {
 			submenuVisible(false);
 		}
 	}
@@ -258,7 +264,7 @@ class MenuBarComponent extends React.Component {
 		return items.map((menuItemData) => {
 			const { closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick, setSubmenuVisible } = this.state;
 			const { name, submenuItems } = menuItemData;
-			console.log("Active Item", activeSubmenuItem);
+			console.log("Active Item", activeItem);
 			const active = name === activeItem;
 			Object.assign(menuItemData, { active, submenuVisible });
 

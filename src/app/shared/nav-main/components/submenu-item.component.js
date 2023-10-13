@@ -12,13 +12,14 @@ const SubmenuItemComponent = ({
 	submenuVisible,
 	closeSearchOnMenuItemClick,
 	closeNotificationOnMenuItemClick,
+	isSubmenuVisible,
 }) => {
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
 	const navigateToPage = (url) => {
+		console.log("Side state: ", isSubmenuVisible);
 		closeNotificationOnMenuItemClick();
 		closeSearchOnMenuItemClick();
-		submenuVisible(true);
 
 		// if (url === '/offers') {
 		// 	invoiz.offerListNaviagtion = true;
@@ -31,7 +32,14 @@ const SubmenuItemComponent = ({
 
 	return (
 		<li className={className}>
-			<a onClick={() => navigateToPage(url)} data-href={url} data-qs-id={`global-submenu-item-${name}`}>
+			<a
+				onClick={() => {
+					navigateToPage(url);
+					submenuVisible(true);
+				}}
+				data-href={url}
+				data-qs-id={`global-submenu-item-${name}`}
+			>
 				{resources.subMenuItems[resourceKey]}
 			</a>
 		</li>
@@ -50,6 +58,14 @@ SubmenuItemComponent.defaultProps = {
 	resourceKey: "",
 };
 
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
@@ -58,6 +74,6 @@ const mapDispatchToProps = (dispatch) => {
 	};
 };
 
-export default connect(null, mapDispatchToProps)(SubmenuItemComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(SubmenuItemComponent);
 
 // export default SubmenuItemComponent;
