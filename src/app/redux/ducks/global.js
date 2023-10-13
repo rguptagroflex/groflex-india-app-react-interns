@@ -45,6 +45,6 @@ export const submenuVisible = (payload) => {
 			type: SUBMENU_VISIBLE,
 			payload,
 		});
-		console.log("global state is :", getstate());
+		// console.log("global state is :", getstate());
 	};
 };

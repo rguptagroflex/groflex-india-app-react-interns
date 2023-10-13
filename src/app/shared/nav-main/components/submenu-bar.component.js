@@ -74,6 +74,7 @@ const SubmenuBarComponent = ({
 		hideSubmenu();
 		submenuCloseIconClicked();
 		submenuVisible(false);
+		setSubmenuVisibility();
 	};
 	const subMenuOverlay = () => {
 		setIconClose(false);
@@ -86,7 +87,7 @@ const SubmenuBarComponent = ({
 	const ulClicked = () => {
 		alert("click");
 	};
-	console.log("child submenu", setSubmenuVisible);
+	// console.log("child submenu", setSubmenuVisible);
 	return (
 		<div>
 			<div

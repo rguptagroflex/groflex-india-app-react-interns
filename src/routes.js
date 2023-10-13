@@ -104,7 +104,7 @@ import TransactionsListWrapper from "./app/views/transactions/transactions-list-
 // import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
 // import DeliveryChallanDetailsWrapper from "./app/views/delivrey-challan/delivery-challan-details.wrapper";
 // import DeliveryChallanSendMailWrapper from "./app/views/delivrey-challan/delivery-challan-send-mail.wrapper";
-console.log("Routes called");
+// console.log("Routes called");
 const PageClassNames = {
 	NO_SIDE_MARGIN: "no-side-margin",
 	NO_TOP_MARGIN: "no-top-margin",

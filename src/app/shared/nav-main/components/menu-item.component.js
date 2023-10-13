@@ -28,7 +28,7 @@ const MenuItemComponent = (props) => {
 	const [iconHoverActive, setIconHoverActive] = useState(false);
 
 	const iconClass = `icon icon-${icon}`;
-	console.log("Icon: ", icon);
+	// console.log("Icon: ", icon);
 
 	const menuIcons = {
 		home_blank: iconHoverActive ? home_hover : home,
@@ -55,7 +55,7 @@ const MenuItemComponent = (props) => {
 		invoiz.router.navigate(url);
 	};
 	// console.log(menuIcons[icon]);
-	console.log(icon);
+	// console.log(icon);
 	return (
 		<a
 			className={className}

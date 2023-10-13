@@ -241,7 +241,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 
 	render() {
-		console.log("Mid submenu", this.props.setSubmenuVisible);
+		// console.log("Mid submenu", this.props.setSubmenuVisible);
 		const {
 			submenuVisible,
 			activeSubmenuItem,
@@ -299,7 +299,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 
 		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
 		const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
-		console.log(submenuItems);
+		// console.log(submenuItems);
 
 		return (
 			<li key={name} id={name}>
