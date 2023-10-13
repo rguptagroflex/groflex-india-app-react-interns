@@ -64,19 +64,21 @@
 	}
 }
 
-.alignRecurringLeft {
-	left: 271px;
-	position: absolute;
-	right: 32px;
-	margin-top: -21px;
-}
-
 // Design changes
 
+.alignRecurringLeft {
+	left: 95px;
+	right: 32px;
+	margin-top: 0;
+}
+
 .recurring-invoice-detail-wrapper {
+	position: relative;
+	max-width: 1250px;
+	margin: 0 auto;
 	.detail-view-head-container {
 		height: 100px;
-		padding-top: 10px;
+		padding-top: 13px;
 		.detail-view-head-wrapper {
 			.detail-view-head-infos {
 				display: none;
@@ -91,6 +93,9 @@
 					border-radius: 4px;
 					margin-right: 10px;
 				}
+				.detail-view-head-controls-item:nth-child(1) {
+					margin-right: 0;
+				}
 			}
 		}
 		.recurring-invoice-detail-recipient-wrapper {
@@ -98,6 +103,7 @@
 		}
 	}
 	.detail-view-content-wrapper {
+		max-width: 1250px;
 		.detail-view-content-left {
 			width: 100%;
 			max-width: 658px !important;

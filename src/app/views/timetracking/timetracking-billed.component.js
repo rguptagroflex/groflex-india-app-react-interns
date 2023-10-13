@@ -13,6 +13,7 @@ import { ListAdvancedDefaultSettings } from "../../helpers/constants";
 import { dateCompareSort, localeCompare, localeCompareNumeric } from "../../helpers/sortComparators";
 import ModalService from "../../services/modal.service";
 import invoiz from "../../services/invoiz.service";
+import { connect } from "react-redux";
 
 class TimetrackingBilledComponent extends React.Component {
 	constructor(props) {
@@ -35,12 +36,21 @@ class TimetrackingBilledComponent extends React.Component {
 			trackedTimes: this.props.trackedTimes,
 			totalMoney,
 			totalTime,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	render() {
 		const { resources, customer } = this.props;
-		const { trackedTimes, totalTime, totalMoney } = this.state;
+		const { trackedTimes, totalTime, totalMoney, submenuVisible } = this.state;
 
 		const tableColumns = [
 			{ title: resources.str_date },
@@ -74,6 +84,9 @@ class TimetrackingBilledComponent extends React.Component {
 				id: index,
 			});
 		});
+
+		const classLeft = submenuVisible ? "alignTimeSheetLeft" : "";
+		const billingTimeListLeft = submenuVisible ? "billedTimeListLeft" : "";
 
 		// console.log(tableRows[0].cells[4].value.props.to, "tablerows");
 		// console.log(tableRows);
@@ -113,7 +126,7 @@ class TimetrackingBilledComponent extends React.Component {
 					/>
 				</div> */}
 
-				<div className="detail-view-content-wrapper">
+				<div className={`detail-view-content-wrapper ${classLeft}`}>
 					{/* First row */}
 					<div className="customer-and-time-tracking row">
 						<div className="detail-view-content-left col-xs-5 box">
@@ -180,7 +193,7 @@ class TimetrackingBilledComponent extends React.Component {
 						</div>
 					</div>
 				</div>
-				<div className="timetracking-list-wrapper ">
+				<div className={`timetracking-list-wrapper ${billingTimeListLeft}`}>
 					<ListAdvancedComponent
 						fetchUrls={[
 							`${config.resourceHost}trackedTime/customer/${parseInt(customer.id, 10)}?status=invoiced`,
@@ -309,4 +322,13 @@ class TimetrackingBilledComponent extends React.Component {
 	}
 }
 
-export default TimetrackingBilledComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(TimetrackingBilledComponent);

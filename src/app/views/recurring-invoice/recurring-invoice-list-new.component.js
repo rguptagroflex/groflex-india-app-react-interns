@@ -192,12 +192,13 @@ class RecurringInvoiceListNewComponent extends React.Component {
 	}
 
 	onActionCellPopupItemClick(recurringInvoice, entry) {
+		console.log(recurringInvoice, entry, "Recurrting invoice and entry");
 		const { resources } = this.props;
 		switch (entry.action) {
 			case RecurringInvoiceAction.COPY_AND_EDIT:
-				if (this.refs.listAdvanced) {
-					this.refs.listAdvanced.writePaginationRestoreState();
-				}
+				// if (this.refs.listAdvanced) {
+				// 	this.refs.listAdvanced.writePaginationRestoreState();
+				// }
 				copyAndEditTransaction({
 					invoiceModel: Object.assign({}, recurringInvoice, {
 						type: TRANSACTION_TYPE_RECURRING_INVOICE,

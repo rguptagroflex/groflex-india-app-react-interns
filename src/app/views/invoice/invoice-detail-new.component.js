@@ -1628,7 +1628,11 @@ class InvoiceDetailNewComponent extends React.Component {
 		const timelineIsHorizontal = this.state.viewportWidth <= DetailViewConstants.VIEWPORT_BREAKPOINT;
 
 		const headerContent = (
-			<div className="detail-view-head-wrapper-new">
+			<div
+				className={`detail-view-head-wrapper-new ${
+					this.props.isSubmenuVisible ? "detailHeadOnSidebarActive" : ""
+				}`}
+			>
 				<PopoverComponent
 					elementId={"detail-head-copy-link-popover-anchor"}
 					arrowOffset={160}

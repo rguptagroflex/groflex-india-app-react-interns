@@ -31,7 +31,7 @@ import store from "redux/store";
 import InvoiceMultiActionComponent from "shared/invoice-multi-action/invoice-multi-action.component";
 import userPermissions from "enums/user-permissions.enum";
 import { formatDate, formatApiDate } from "helpers/formatDate";
-// import { connect } from "react-redux";
+
 const PAYABLE_STATES = [InvoiceState.DUNNED, InvoiceState.LOCKED, InvoiceState.PARTIALLY_PAID];
 const CANCEL_OR_DELETE_STATES = ["open", InvoiceState.DUNNED, InvoiceState.LOCKED];
 const CANCEL_STATES = [InvoiceState.PAID, InvoiceState.PARTIALLY_PAID];

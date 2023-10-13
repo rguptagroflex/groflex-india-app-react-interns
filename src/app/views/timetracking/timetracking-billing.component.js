@@ -144,6 +144,7 @@ class TimetrackingBillingComponent extends React.Component {
 			},
 		];
 		const classLeft = submenuVisible ? "alignTimeSheetLeft" : "";
+		const billingTimeListLeft = submenuVisible ? "billingTimeListLeft" : "";
 
 		// console.log(tableRows, "Tablerows");
 		// console.log(trackedTimes, "trackedTimes");
@@ -224,7 +225,7 @@ class TimetrackingBillingComponent extends React.Component {
 					</div>
 				</div>
 				{/* List view */}
-				<div className="timetracking-list-wrapper ">
+				<div className={`timetracking-list-wrapper ${billingTimeListLeft}`}>
 					{/* <ListComponent
 							title={"Time records"}
 							tableId="timetracking-billing-component-table"

@@ -49,88 +49,108 @@
 
 //Design changes
 .timetracking-billed-component {
+	.alignTimeSheetLeft {
+		position: absolute;
+		left: 204px;
+		right: 6px;
+	}
+	.detail-view-content-wrapper {
+		max-width: 1303px;
+	}
 	.customer-and-time-tracking {
 		width: 100%;
-	}
-	.detail-view-content-left {
-		margin-right: 16px;
-		padding: 16px;
-		.text-h5 {
-			margin-bottom: 15px;
-		}
 
-		.left-content-wrapper {
-			height: 135px;
-			.first-half {
-				// width: 42%;
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				padding-right: 10px;
-				.sub-info-box:nth-child(2) {
-					word-wrap: break-word;
+		.detail-view-content-left {
+			margin-right: 16px;
+			padding: 16px;
+			.text-h5 {
+				margin-bottom: 15px;
+			}
+
+			.left-content-wrapper {
+				height: 135px;
+				.first-half {
+					// width: 42%;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					padding-right: 10px;
+					.sub-info-box:nth-child(2) {
+						word-wrap: break-word;
+					}
+					.sub-info-box:first-child {
+						margin-bottom: 18px;
+					}
+					.sub-info-box {
+						.sub-info-title {
+							color: #888787;
+							font-weight: 600;
+							margin-bottom: 9px;
+						}
+					}
 				}
-				.sub-info-box:first-child {
-					margin-bottom: 18px;
-				}
-				.sub-info-box {
-					.sub-info-title {
-						color: #888787;
-						font-weight: 600;
-						margin-bottom: 9px;
+				.second-half {
+					// width: 58%;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					padding-left: 10px;
+					.sub-info-box {
+						.sub-info-title {
+							color: #888787;
+							font-weight: 600;
+							margin-bottom: 9px;
+						}
 					}
 				}
 			}
-			.second-half {
-				// width: 58%;
+		}
+		.detail-view-content-right {
+			padding: 16px;
+			.filter-date-picker-container {
+				height: 55px;
 				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				padding-left: 10px;
-				.sub-info-box {
-					.sub-info-title {
-						color: #888787;
-						font-weight: 600;
-						margin-bottom: 9px;
+				align-content: center;
+				flex-wrap: wrap;
+			}
+			.total-hours-amount-container {
+				display: flex;
+				.total-hours,
+				.total-amount {
+					.text-h5:first-child {
+						margin-bottom: 8px;
+					}
+				}
+				.total-amount {
+					margin-left: 80px;
+				}
+			}
+			.timetracking-watch-wrapper {
+				top: -11px;
+				.timetracking-watch-text {
+					.text-h1 {
+						color: #0071ca;
 					}
 				}
 			}
 		}
 	}
-	.detail-view-content-right {
-		padding: 16px;
-		.filter-date-picker-container {
-			height: 55px;
-			display: flex;
-			align-content: center;
-			flex-wrap: wrap;
-		}
-		.total-hours-amount-container {
-			display: flex;
-			.total-hours,
-			.total-amount {
-				.text-h5:first-child {
-					margin-bottom: 8px;
-				}
-			}
-			.total-amount {
-				margin-left: 80px;
-			}
-		}
-		.timetracking-watch-wrapper {
-			top: -11px;
-			.timetracking-watch-text {
-				.text-h1 {
-					color: #0071ca;
-				}
-			}
+	.billedTimeListLeft {
+		top: 250px;
+		left: 217px;
+		position: relative;
+		max-width: 1190px;
+		.list-advanced-component {
+			padding-top: 0;
 		}
 	}
 	.timetracking-list-wrapper {
 		// width: 100%;
 		// height: 100%;
+		max-width: 1250px;
+
 		.list-advanced-component {
-			padding: 0 27px 0 13px;
+			// padding: 0 27px 0 13px;
 			.list-advanced-head {
 				position: inherit;
 				display: none;
@@ -145,6 +165,21 @@
 					}
 				}
 			}
+		}
+		.listAdvancedinactiveSidebarSectionGap {
+			left: 74px;
+			right: 90px;
+			padding: 0 13px 0 13px;
+		}
+	}
+
+	.billedTimeListLeft {
+		top: 250px;
+		left: 217px;
+		position: relative;
+		max-width: 1190px;
+		.list-advanced-component {
+			padding-top: 0;
 		}
 	}
 }

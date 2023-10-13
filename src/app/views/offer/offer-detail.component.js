@@ -28,6 +28,7 @@ import { Link } from "react-router-dom";
 import userPermissions from "enums/user-permissions.enum";
 import abbreviationDateFormat from "../../helpers/abbreviationDateFormat";
 import { capitalize } from "lodash";
+import { connect } from "react-redux";
 
 const createTopbarDropdown = (offer, resources) => {
 	const items = [];
@@ -680,7 +681,11 @@ class OfferDetailComponent extends React.Component {
 		newTimelineEntries = newTimelineEntries.slice().reverse();
 
 		return (
-			<div className={`offer-detail-wrapper wrapper-has-topbar ${!timelineIsHorizontal ? "viewport-large" : ""}`}>
+			<div
+				className={`offer-detail-wrapper wrapper-has-topbar ${!timelineIsHorizontal ? "viewport-large" : ""} ${
+					this.props.isSubmenuVisible ? "offerDetailOnSidebarActive" : ""
+				}`}
+			>
 				{canUpdateOffer && canDeleteOffer ? (
 					<TopbarComponent
 						title={`${resources.str_offerUpperCase} ${title}`}
@@ -1121,5 +1126,20 @@ class OfferDetailComponent extends React.Component {
 		);
 	}
 }
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 
-export default OfferDetailComponent;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OfferDetailComponent);

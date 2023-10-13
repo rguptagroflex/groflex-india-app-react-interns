@@ -26,13 +26,13 @@ class TopbarComponent extends React.Component {
 			submenuVisible: this.props.isSubmenuVisible,
 		};
 	}
-	// componentDidUpdate(prevProps) {
-	// 	const { isSubmenuVisible } = this.props;
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
 
-	// 	if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-	// 		this.setState({ submenuVisible: isSubmenuVisible });
-	// 	}
-	// }
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
+	}
 
 	componentWillReceiveProps(props) {
 		const buttons = this.createButtons(props);
@@ -110,7 +110,7 @@ class TopbarComponent extends React.Component {
 		}
 
 		const classLeft = submenuVisible ? "alignLeft" : "";
-		console.log(this.props.isSubmenuVisible);
+		console.log(this.props.isSubmenuVisible, "FROm ORIGINAL TOPBAR");
 
 		return (
 			<div className={`topbar-wrapper ${this.state.fullPageWidth ? "full-page-width" : ""} ${classLeft}`}>
