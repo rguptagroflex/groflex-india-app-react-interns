@@ -24,16 +24,32 @@ const SubmenuBarComponent = ({
 	submenuActive,
 	showSubmenu,
 	active,
+	closeSearchOnMenuItemClick,
+	closeNotificationOnMenuItemClick,
+	setSubmenuVisible,
+	setSubmenuVisibility,
 }) => {
 	// console.log("Slected Key", selectedName);
+	let hoverClass = "";
 
 	const [iconClose, setIconClose] = useState(visible);
-	const hoverClass = active ? "submenuStatic" : "submenuHover";
-
+	if (active === true && visible === false) {
+		hoverClass = "submenuStatic";
+	}
+	if (active === false && visible === true) {
+		hoverClass = "submenuHover";
+	}
+	if (active === true && visible === true) {
+		hoverClass = "submenuHover";
+	}
+	// const hoverClass = active ? "submenuStatic" : "submenuHover";
+	// console.log("Active: ", active, "Visible", visible);
 	useEffect(() => {
 		setIconClose(visible);
 	}, [visible]);
-	const visibleClass = visible || submenuClick ? "submenu-visible" : "u_hidden";
+	// const visibleClass = visible || submenuClick ? "submenu-visible" : "u_hidden";
+
+	const visibleClass = setSubmenuVisible || submenuClick ? "submenu-visible" : "u_hidden";
 
 	// const visibleClass = "submenu-visible";
 	// console.log("key ", resourceKey);
@@ -58,6 +74,7 @@ const SubmenuBarComponent = ({
 		hideSubmenu();
 		submenuCloseIconClicked();
 		submenuVisible(false);
+		setSubmenuVisibility();
 	};
 	const subMenuOverlay = () => {
 		setIconClose(false);
@@ -70,9 +87,16 @@ const SubmenuBarComponent = ({
 	const ulClicked = () => {
 		alert("click");
 	};
+	// console.log("child submenu", setSubmenuVisible);
 	return (
 		<div>
-			<div className={className} onMouseLeave={() => hideSubmenu()} onMouseEnter={() => showSubmenu()}>
+			<div
+				className={className}
+				onMouseLeave={() => {
+					hideSubmenu(), setSubmenuVisibility();
+				}}
+				onMouseEnter={() => showSubmenu()}
+			>
 				{/* <div onClick={() => onCloseClick()} className=" icon icon-back_arrow submenu-close" /> */}
 
 				<div onClick={() => onCloseClick()} className="submenu-close">

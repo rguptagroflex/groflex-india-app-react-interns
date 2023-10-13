@@ -3,11 +3,23 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { submenuVisible } from "../../../redux/ducks/global";
-const SubmenuItemComponent = ({ url, active, name, resourceKey, resources, submenuVisible }) => {
+const SubmenuItemComponent = ({
+	url,
+	active,
+	name,
+	resourceKey,
+	resources,
+	submenuVisible,
+	closeSearchOnMenuItemClick,
+	closeNotificationOnMenuItemClick,
+}) => {
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
 	const navigateToPage = (url) => {
+		closeNotificationOnMenuItemClick();
+		closeSearchOnMenuItemClick();
 		submenuVisible(true);
+
 		// if (url === '/offers') {
 		// 	invoiz.offerListNaviagtion = true;
 		// } else {

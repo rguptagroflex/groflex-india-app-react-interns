@@ -5,16 +5,18 @@ import MenuItemComponent from "shared/nav-main/components/menu-item.component";
 import MenuItemWithSubmenuComponent from "shared/nav-main/components/menu-item-with-submenu.component";
 import MenuItemWithSubmenuComponent1 from "shared/nav-main/components/menu-item-with-submenu.component1";
 import config from "config";
-
+import { submenuVisible } from "../../../redux/ducks/global";
 import userPermissions from "enums/user-permissions.enum";
 import planPermissions from "enums/plan-permissions.enum";
-
+import { connect } from "react-redux";
 class MenuBarComponent extends React.Component {
 	constructor(props) {
 		super(props);
 
-		const { activeItem, activeSubmenuItem } = props;
+		const { activeItem, activeSubmenuItem, closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick } = props;
 		this.state = {
+			closeNotificationOnMenuItemClick,
+			closeSearchOnMenuItemClick,
 			activeItem,
 			activeSubmenuItem,
 			canSeeEditGstReports: null,
@@ -30,7 +32,21 @@ class MenuBarComponent extends React.Component {
 			canViewStockMovement: null,
 			noGST: null,
 			menuItems: config.menuItemsData,
+			setSubmenuVisible: false,
 		};
+		this.toggleSubmenuVisibility = this.toggleSubmenuVisibility.bind(this);
+		this.setSubmenuVisibility = this.setSubmenuVisibility.bind(this);
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		const { submenuVisible } = this.props;
+		const { activeSubmenuItem } = this.state;
+		if (prevState.activeSubmenuItem === "creditNotes" && activeSubmenuItem === "invoice") {
+			submenuVisible(false);
+		}
+		if (prevState.activeSubmenuItem === "transactions" && activeSubmenuItem === "invoice") {
+			submenuVisible(false);
+		}
 	}
 
 	componentDidMount() {
@@ -53,8 +69,13 @@ class MenuBarComponent extends React.Component {
 
 	componentWillReceiveProps(newProps) {
 		const { activeItem, activeSubmenuItem, submenuVisible } = newProps;
-		const { activeItem: currentActiveItem, activeSubmenuItem: currentActiveSubmenuItem } = this.state;
-		const newState = Object.assign({}, this.state, { submenuVisible });
+		const {
+			activeItem: currentActiveItem,
+			activeSubmenuItem: currentActiveSubmenuItem,
+			setSubmenuVisible,
+		} = this.state;
+		// const newState = Object.assign({}, this.state, { submenuVisible });
+		const newState = Object.assign({}, { ...this.state, submenuVisible, setSubmenuVisible });
 
 		if (activeItem !== currentActiveItem) {
 			Object.assign(newState, { activeItem });
@@ -186,6 +207,15 @@ class MenuBarComponent extends React.Component {
 		});
 	}
 
+	toggleSubmenuVisibility() {
+		// const { setSubmenuVisible } = this.state;
+		this.setState({ setSubmenuVisible: true });
+		// console.log("Set Submenu", setSubmenuVisible);
+	}
+	setSubmenuVisibility() {
+		this.setState({ setSubmenuVisible: false });
+	}
+
 	buildMenuItems2(items) {
 		const {
 			activeItem,
@@ -226,7 +256,9 @@ class MenuBarComponent extends React.Component {
 		}
 
 		return items.map((menuItemData) => {
+			const { closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick, setSubmenuVisible } = this.state;
 			const { name, submenuItems } = menuItemData;
+			console.log("Active Item", activeSubmenuItem);
 			const active = name === activeItem;
 			Object.assign(menuItemData, { active, submenuVisible });
 
@@ -240,6 +272,11 @@ class MenuBarComponent extends React.Component {
 						{...menuItemData}
 						resources={resources}
 						permissions={permissions}
+						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+						toggleSubmenuVisibility={() => this.toggleSubmenuVisibility()}
+						setSubmenuVisibility={() => this.setSubmenuVisibility()}
+						setSubmenuVisible={setSubmenuVisible}
 
 						// activeName={activeItem}
 					/>
@@ -248,7 +285,15 @@ class MenuBarComponent extends React.Component {
 			// return <MenuItemComponent key={name} {...menuItemData} resources={resources}/>;
 			return (
 				<li key={name}>
-					<MenuItemComponent key={name} {...menuItemData} resources={resources} />
+					<MenuItemComponent
+						key={name}
+						{...menuItemData}
+						resources={resources}
+						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+						setSubmenuVisibility={() => this.setSubmenuVisibility()}
+						setSubmenuVisible={setSubmenuVisible}
+					/>
 				</li>
 			);
 		});
@@ -258,6 +303,7 @@ class MenuBarComponent extends React.Component {
 		const { submenuVisible } = this.props;
 		const menuItems = this.buildPermittedItems();
 		const permittedItems = this.buildMenuItems2(menuItems);
+		// console.log("Set Submenu from render", this.state.setSubmenuVisible);
 		return (
 			<div className="menuBar_container">
 				{/* <div className={`menuBar_content ${submenuVisible ? 'submenu-visible' : ''}`}>{permittedItems}</div> */}
@@ -280,4 +326,20 @@ MenuBarComponent.defaultProps = {
 	submenuVisible: false,
 };
 
-export default MenuBarComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+// export default MenuBarComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(MenuBarComponent);

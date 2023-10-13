@@ -38,6 +38,8 @@ class MenuComponent extends React.Component {
 			canViewRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_RECURRING_INVOICE),
 			viewAccounting: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING),
 		};
+		this.closeSearchOnMenuItemClick = this.closeSearchOnMenuItemClick.bind(this);
+		this.closeNotificationOnMenuItemClick = this.closeNotificationOnMenuItemClick.bind(this);
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -163,6 +165,15 @@ class MenuComponent extends React.Component {
 		const { isSearchVisible } = this.state;
 		this.setState({ isSearchVisible: !isSearchVisible });
 	}
+	closeSearchOnMenuItemClick() {
+		const { isSearchVisible } = this.state;
+		this.setState({ isSearchVisible: false });
+	}
+
+	closeNotificationOnMenuItemClick() {
+		const { isNewsfeedVisible } = this.state;
+		this.setState({ isNewsfeedVisible: false });
+	}
 
 	render() {
 		const {
@@ -185,6 +196,8 @@ class MenuComponent extends React.Component {
 					submenuVisible={submenuVisible}
 				/>
 				<MenuBarComponent
+					closeSearchOnMenuItemClick={this.closeSearchOnMenuItemClick.bind(this)}
+					closeNotificationOnMenuItemClick={this.closeNotificationOnMenuItemClick.bind(this)}
 					activeItem={activeItem}
 					activeSubmenuItem={activeSubmenuItem}
 					submenuVisible={submenuVisible}
@@ -192,6 +205,8 @@ class MenuComponent extends React.Component {
 					resources={resources}
 				/>
 				<MenuFooterComponent
+					closeNotificationOnMenuItemClick={this.closeNotificationOnMenuItemClick.bind(this)}
+					closeSearchOnMenuItemClick={this.closeSearchOnMenuItemClick.bind(this)}
 					onNewsfeedIconClick={this.onNewsfeedIconClick.bind(this)}
 					activeItem={activeItem}
 					activeSubmenuItem={activeSubmenuItem}

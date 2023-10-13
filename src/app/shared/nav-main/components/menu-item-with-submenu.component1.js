@@ -19,7 +19,9 @@ const buildSubmenuComponents = (
 	noInventory,
 	submenuItems,
 	activeSubmenuItem,
-	resources
+	resources,
+	closeNotificationOnMenuItemClick,
+	closeSearchOnMenuItemClick
 ) => {
 	const { canImportArticle, canImportContact, viewAccounting, canViewExpenses } = permissions;
 	// console.log('submenuItems', submenuItems)
@@ -53,7 +55,16 @@ const buildSubmenuComponents = (
 			active = true;
 		}
 
-		return <SubMenuItemComponent key={name} active={active} {...submenuItemData} resources={resources} />;
+		return (
+			<SubMenuItemComponent
+				key={name}
+				active={active}
+				{...submenuItemData}
+				resources={resources}
+				closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+				closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+			/>
+		);
 	});
 };
 
@@ -61,9 +72,20 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	constructor(props) {
 		super(props);
 
-		const { activeSubmenuItem } = this.props;
+		const {
+			activeSubmenuItem,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
+			toggleSubmenuVisibility,
+			setSubmenuVisible,
+			setSubmenuVisibility,
+		} = this.props;
 
 		this.state = {
+			setSubmenuVisibility,
+			setSubmenuVisible,
+			closeNotificationOnMenuItemClick,
+			closeSearchOnMenuItemClick,
 			submenuVisible: false,
 			activeSubmenuItem,
 			isCollapsedState: false,
@@ -76,6 +98,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			submenuVisibleOnclick: false,
 			submenuClick: false,
 			iconHoverActive: false,
+			toggleSubmenuVisibility,
 		};
 
 		this.windowResizeTimeout = null;
@@ -218,6 +241,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 
 	render() {
+		// console.log("Mid submenu", this.props.setSubmenuVisible);
 		const {
 			submenuVisible,
 			activeSubmenuItem,
@@ -229,6 +253,11 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			submenuVisibleOnclick,
 			submenuClick,
 			iconHoverActive,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
+			toggleSubmenuVisibility,
+			setSubmenuVisibility,
+			setSubmenuVisible,
 		} = this.state;
 		const {
 			title,
@@ -251,7 +280,9 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			noInventory,
 			submenuItems,
 			activeSubmenuItem,
-			resources
+			resources,
+			closeNotificationOnMenuItemClick,
+			closeSearchOnMenuItemClick
 		);
 
 		const iconClass = `icon icon-${icon}`;
@@ -269,6 +300,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
 		const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
 		// console.log(submenuItems);
+
 		return (
 			<li key={name} id={name}>
 				<div className={`sub-menu-main ${submenuVisible ? "visible" : ""}`}>
@@ -282,9 +314,15 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						onMouseEnter={() => {
 							this.showSubmenu();
 							this.iconChangeOnHover();
+							toggleSubmenuVisibility();
 						}}
 						onMouseLeave={() => {
 							this.iconChangeOnHover();
+							toggleSubmenuVisibility();
+						}}
+						onClick={() => {
+							closeSearchOnMenuItemClick();
+							closeNotificationOnMenuItemClick();
 						}}
 						// onMouseLeave={() => {
 						// 	this.hideSubmenu();
@@ -308,6 +346,11 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						submenuCloseIconClicked={this.submenuCloseIconClicked}
 						submenuClick={submenuClick}
 						active={active}
+						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+						// setSubmenuVisible={setSubmenuVisible}
+						setSubmenuVisible={this.props.setSubmenuVisible}
+						setSubmenuVisibility={setSubmenuVisibility}
 					>
 						{submenuItemComponents}
 					</SubMenuBarComponent>

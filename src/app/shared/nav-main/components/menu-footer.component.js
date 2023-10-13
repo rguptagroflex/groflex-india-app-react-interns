@@ -15,6 +15,7 @@ import bell_hover from "assets/images/icons/bell_new.svg";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
+		const { closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick } = this.props;
 
 		this.state = {
 			tenant: {
@@ -23,6 +24,8 @@ class MenuFooterComponent extends React.Component {
 			profileHoverActive: false,
 			searchHoverActive: false,
 			notificationHoverActive: false,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
 		};
 
 		this.navigateToPage = this.navigateToPage.bind(this);
@@ -98,6 +101,7 @@ class MenuFooterComponent extends React.Component {
 	}
 	onSearchClick() {
 		const { onSearchIconClick } = this.props;
+
 		onSearchIconClick();
 	}
 
@@ -120,7 +124,13 @@ class MenuFooterComponent extends React.Component {
 		const { submenuVisible, resources, activeItem, activeSubmenuItem } = this.props;
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
-		const { profileHoverActive, notificationHoverActive, searchHoverActive } = this.state;
+		const {
+			profileHoverActive,
+			notificationHoverActive,
+			searchHoverActive,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
+		} = this.state;
 
 		if (resetNewsFeedCount) {
 			newsfeedUnreadCount = 0;
@@ -136,7 +146,9 @@ class MenuFooterComponent extends React.Component {
 			<div className="menuFooter">
 				<div
 					className="search-footer menuItem"
-					onClick={this.onSearchClick.bind(this)}
+					onClick={() => {
+						closeNotificationOnMenuItemClick(), this.onSearchClick();
+					}}
 					onMouseLeave={() => {
 						this.searchIconHover();
 					}}
@@ -157,7 +169,10 @@ class MenuFooterComponent extends React.Component {
 
 				<div
 					className={notificationClass}
-					onClick={this.onNewsfeedClick.bind(this)}
+					onClick={() => {
+						this.onNewsfeedClick();
+						closeSearchOnMenuItemClick();
+					}}
 					onMouseLeave={() => {
 						this.notificationIconHover();
 					}}
@@ -210,7 +225,7 @@ class MenuFooterComponent extends React.Component {
 							</div>
 						</div>
 						<div className="menu-profile-popup-middle1">
-							{/* <a
+							<a
 								className={`menuItem small icon icon-user_outlined_black ${
 									activeSubmenuItem == "account" ? "menuItem-active" : ""
 								}`}
@@ -219,7 +234,7 @@ class MenuFooterComponent extends React.Component {
 								data-qs-id={`global-menu-item-Account-details`}
 							>
 								{"Account details"}
-							</a> */}
+							</a>
 							<a
 								className={`menuItem small icon icon-settings_outlined ${
 									activeSubmenuItem == "account-setting" ? "menuItem-active" : ""
@@ -232,7 +247,7 @@ class MenuFooterComponent extends React.Component {
 								{"Account Settings"}
 							</a>
 
-							{/* <a
+							<a
 								className={`menuItem small icon icon-credit_card ${
 									activeSubmenuItem == "billing" ? "menuItem-active" : ""
 								}`}
@@ -241,7 +256,7 @@ class MenuFooterComponent extends React.Component {
 								data-qs-id={`global-menu-item-Your-billing`}
 							>
 								{"Your billing"}
-							</a> */}
+							</a>
 							<a
 								className={`menuItem small icon icon-teams ${
 									activeSubmenuItem == "user" ? "menuItem-active" : ""
