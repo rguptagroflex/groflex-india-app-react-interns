@@ -141,7 +141,8 @@ class RecurringInvoiceListNewComponent extends React.Component {
 				cancelLabel: "Cancel",
 				confirmIcon: "icon-check",
 				confirmLabel: "Complete",
-				confirmButtonType: "danger",
+				// confirmButtonType: "danger",
+				confirmButtonType: "primary",
 				onConfirm: () => {
 					ModalService.close();
 					invoiz
@@ -222,9 +223,11 @@ class RecurringInvoiceListNewComponent extends React.Component {
 						width: 500,
 						headline: "Delete recurring invoice",
 						cancelLabel: "Cancel",
-						confirmIcon: "icon-trashcan",
+						// confirmIcon: "icon-trashcan",
 						confirmLabel: "Delete",
-						confirmButtonType: "danger",
+						// confirmButtonType: "danger",
+						confirmButtonType: "primary",
+
 						onConfirm: () => {
 							invoiz
 								.request(`${config.resourceHost}recurringInvoice/${recurringInvoice.id}`, {
@@ -256,10 +259,11 @@ class RecurringInvoiceListNewComponent extends React.Component {
 		if (action === "create") {
 			invoiz.router.navigate("/recurringInvoice/new");
 		} else if (action === "delete-recurring-invoice") {
-			const selectedRowsData = this.refs.listAdvanced.getSelectedRows({
-				prop: "number",
-				sort: "asc",
-			});
+			// const selectedRowsData = this.refs.listAdvanced.getSelectedRows({
+			// 	prop: "number",
+			// 	sort: "asc",
+			// });
+			const selectedRowsData = this.state.selectedRows;
 
 			ModalService.open(
 				<RecurringInvoiceMultiActionComponent
