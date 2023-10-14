@@ -11,6 +11,8 @@ import ContactPerson from "models/contact-person.model";
 import CallMadeIcon from "@material-ui/icons/CallMade";
 import SearchIcon from "@material-ui/icons/Search";
 import CloseIcon from "@material-ui/icons/Close";
+import noResultFound from "assets/images/icons/no_results.svg";
+import SVGInline from "react-svg-inline";
 const RESULT_TYPE = Object.freeze({
 	ARTICLE: "article",
 	CUSTOMER: "customer",
@@ -183,7 +185,8 @@ class GlobalSearchModalComponent extends React.Component {
 
 		return (
 			<div className="global-search-no-results">
-				<div className="icon icon-no_results" />
+				{/* <div className="icon icon-no_results" /> */}
+				<SVGInline svg={noResultFound} width="120px" height="120px" />
 				<div className="global-search-no-results-text">{resources.searchNoFoundMessage}</div>
 			</div>
 		);

@@ -232,6 +232,14 @@
 }
 
 .newsfeed-component {
+	.global-search-no-results {
+		align-items: center;
+		display: flex;
+		justify-content: center;
+		margin-top: 108px;
+		gap: 20px;
+		flex-direction: column;
+	}
 	z-index: 20000;
 	.global-search-list-headline {
 		padding-top: 8px;
