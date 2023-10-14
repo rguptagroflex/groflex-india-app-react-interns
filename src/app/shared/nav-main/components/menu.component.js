@@ -210,7 +210,7 @@ class MenuComponent extends React.Component {
 					onNewsfeedIconClick={this.onNewsfeedIconClick.bind(this)}
 					activeItem={activeItem}
 					activeSubmenuItem={activeSubmenuItem}
-					submenuVisible={submenuVisible}
+					submenuVisibleVar={submenuVisible}
 					onLogout={this.onLogout.bind(this)}
 					onSearchIconClick={this.onSearchIconClick.bind(this)}
 				/>

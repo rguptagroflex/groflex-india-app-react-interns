@@ -113,9 +113,13 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
 	}
 
-	componentDidUpdate(prevProps) {
-		const { active } = this.props;
+	componentDidUpdate(prevProps, prevState) {
+		const { submenuClick } = this.state;
+		const { active, isSubmenuVisible } = this.props;
 		if (prevProps.active !== active && active === false) {
+			this.submenuCloseIconClicked();
+		}
+		if (prevProps.isSubmenuVisible === true && isSubmenuVisible === false) {
 			this.submenuCloseIconClicked();
 		}
 	}
