@@ -11,6 +11,8 @@ import SVGInline from "react-svg-inline";
 import dashboard_hover from "assets/images/icons/dashboard_hover.svg";
 import articles_hover from "assets/images/icons/articles_hover.svg";
 import contacts_hover from "assets/images/icons/contacts_hover.svg";
+import expense from "assets/images/icons/accounting_icon.svg";
+import expense_hover from "assets/images/icons/expense_hover.svg";
 const MenuItemComponent = (props) => {
 	const {
 		name,
@@ -35,7 +37,7 @@ const MenuItemComponent = (props) => {
 		dashboard: iconHoverActive ? dashboard_hover : dashboard,
 		customer: iconHoverActive ? contacts_hover : contact,
 		article_outlined: iconHoverActive ? articles_hover : article,
-		expense: "",
+		expense: iconHoverActive ? expense_hover : expense,
 	};
 
 	const activeClass = active ? "menuItem-active" : "";
