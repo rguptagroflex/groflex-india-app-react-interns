@@ -12,6 +12,7 @@ import profile_hover from "assets/images/icons/profile_hover.svg";
 import search from "assets/images/icons/search_new.svg";
 import search_hover from "assets/images/icons/search_hover.svg";
 import bell_hover from "assets/images/icons/bell_new.svg";
+import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -95,6 +96,9 @@ class MenuFooterComponent extends React.Component {
 	}
 
 	navigateToPage(url) {
+		const { submenuVisible, isSubmenuVisible } = this.props;
+		submenuVisible(false);
+		// console.log("Footer: ", isSubmenuVisible);
 		invoiz.trigger("updateNewsfeedCount");
 		invoiz.trigger("triggerSubmenuHide");
 		invoiz.router.navigate(url);
@@ -121,7 +125,8 @@ class MenuFooterComponent extends React.Component {
 	}
 
 	render() {
-		const { submenuVisible, resources, activeItem, activeSubmenuItem } = this.props;
+		const { submenuVisibleVar, resources, activeItem, activeSubmenuItem } = this.props;
+		const { submenuVisible } = this.props;
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
 		const {
@@ -138,7 +143,7 @@ class MenuFooterComponent extends React.Component {
 
 		const iconClass = "icon icon-logout_outlined";
 		// const iconClass = "icon icon-logout_new";
-		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? "menuItem-notFocused" : ""}`;
+		const logoutClass = `menuItem small ${iconClass} ${submenuVisibleVar ? "menuItem-notFocused" : ""}`;
 		// const notificationClass = `menuItem icon icon-bell_2`;
 		const notificationClass = `menuItem notificationIcon`;
 
@@ -303,10 +308,13 @@ class MenuFooterComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { unreadCount, resetCount } = state.newsfeed;
 	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	return {
 		resources,
 		newsfeedUnreadCount: unreadCount,
 		resetNewsFeedCount: resetCount,
+		isSubmenuVisible,
 	};
 };
 
@@ -320,6 +328,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		updateNewsfeedCountReset: () => {
 			dispatch(updateNewsfeedCountReset());
+		},
+		submenuVisible: (payload) => {
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };

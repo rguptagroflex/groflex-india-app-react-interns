@@ -76,14 +76,14 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			activeSubmenuItem,
 			closeSearchOnMenuItemClick,
 			closeNotificationOnMenuItemClick,
-			toggleSubmenuVisibility,
-			setSubmenuVisible,
-			setSubmenuVisibility,
+			setSubmenuVisibleHoverTrue,
+			submenuHover,
+			setSubmenuVisibleHoverFalse,
 		} = this.props;
 
 		this.state = {
-			setSubmenuVisibility,
-			setSubmenuVisible,
+			setSubmenuVisibleHoverFalse,
+			submenuHover,
 			closeNotificationOnMenuItemClick,
 			closeSearchOnMenuItemClick,
 			submenuVisible: false,
@@ -98,7 +98,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			submenuVisibleOnclick: false,
 			submenuClick: false,
 			iconHoverActive: false,
-			toggleSubmenuVisibility,
+			setSubmenuVisibleHoverTrue,
 		};
 
 		this.windowResizeTimeout = null;
@@ -113,9 +113,13 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
 	}
 
-	componentDidUpdate(prevProps) {
-		const { active } = this.props;
+	componentDidUpdate(prevProps, prevState) {
+		const { submenuClick } = this.state;
+		const { active, isSubmenuVisible } = this.props;
 		if (prevProps.active !== active && active === false) {
+			this.submenuCloseIconClicked();
+		}
+		if (prevProps.isSubmenuVisible === true && isSubmenuVisible === false) {
 			this.submenuCloseIconClicked();
 		}
 	}
@@ -241,7 +245,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 
 	render() {
-		// console.log("Mid submenu", this.props.setSubmenuVisible);
+		// console.log("Mid submenu", this.props.submenuHover);
 		const {
 			submenuVisible,
 			activeSubmenuItem,
@@ -255,9 +259,9 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			iconHoverActive,
 			closeSearchOnMenuItemClick,
 			closeNotificationOnMenuItemClick,
-			toggleSubmenuVisibility,
-			setSubmenuVisibility,
-			setSubmenuVisible,
+			setSubmenuVisibleHoverTrue,
+			setSubmenuVisibleHoverFalse,
+			submenuHover,
 		} = this.state;
 		const {
 			title,
@@ -314,11 +318,11 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						onMouseEnter={() => {
 							this.showSubmenu();
 							this.iconChangeOnHover();
-							toggleSubmenuVisibility();
+							setSubmenuVisibleHoverTrue();
 						}}
 						onMouseLeave={() => {
 							this.iconChangeOnHover();
-							toggleSubmenuVisibility();
+							setSubmenuVisibleHoverTrue();
 						}}
 						onClick={() => {
 							closeSearchOnMenuItemClick();
@@ -348,9 +352,9 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						active={active}
 						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
 						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
-						// setSubmenuVisible={setSubmenuVisible}
-						setSubmenuVisible={this.props.setSubmenuVisible}
-						setSubmenuVisibility={setSubmenuVisibility}
+						// submenuHover={submenuHover}
+						submenuHover={this.props.submenuHover}
+						setSubmenuVisibleHoverFalse={setSubmenuVisibleHoverFalse}
 					>
 						{submenuItemComponents}
 					</SubMenuBarComponent>

@@ -2,7 +2,7 @@ import invoiz from "services/invoiz.service";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { submenuVisible } from "../../../redux/ducks/global";
+import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 const SubmenuItemComponent = ({
 	url,
 	active,
@@ -12,13 +12,14 @@ const SubmenuItemComponent = ({
 	submenuVisible,
 	closeSearchOnMenuItemClick,
 	closeNotificationOnMenuItemClick,
+	isSubmenuVisible,
 }) => {
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
 	const navigateToPage = (url) => {
+		console.log("Side state: ", isSubmenuVisible);
 		closeNotificationOnMenuItemClick();
 		closeSearchOnMenuItemClick();
-		submenuVisible(true);
 
 		// if (url === '/offers') {
 		// 	invoiz.offerListNaviagtion = true;
@@ -31,7 +32,14 @@ const SubmenuItemComponent = ({
 
 	return (
 		<li className={className}>
-			<a onClick={() => navigateToPage(url)} data-href={url} data-qs-id={`global-submenu-item-${name}`}>
+			<a
+				onClick={() => {
+					navigateToPage(url);
+					submenuVisible(true);
+				}}
+				data-href={url}
+				data-qs-id={`global-submenu-item-${name}`}
+			>
 				{resources.subMenuItems[resourceKey]}
 			</a>
 		</li>
@@ -50,14 +58,22 @@ SubmenuItemComponent.defaultProps = {
 	resourceKey: "",
 };
 
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };
 
-export default connect(null, mapDispatchToProps)(SubmenuItemComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(SubmenuItemComponent);
 
 // export default SubmenuItemComponent;

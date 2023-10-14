@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import CloseIcon from "@material-ui/icons/Close";
 import { connect } from "react-redux";
-import { submenuVisible } from "../../../redux/ducks/global";
+import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 import arrowLeft from "assets/images/svg/semicircular-left-arrow.svg";
 import collapse from "assets/images/icons/collapse.svg";
 import SVGInline from "react-svg-inline";
@@ -26,8 +26,8 @@ const SubmenuBarComponent = ({
 	active,
 	closeSearchOnMenuItemClick,
 	closeNotificationOnMenuItemClick,
-	setSubmenuVisible,
-	setSubmenuVisibility,
+	submenuHover,
+	setSubmenuVisibleHoverFalse,
 }) => {
 	// console.log("Slected Key", selectedName);
 	let hoverClass = "";
@@ -49,7 +49,7 @@ const SubmenuBarComponent = ({
 	}, [visible]);
 	// const visibleClass = visible || submenuClick ? "submenu-visible" : "u_hidden";
 
-	const visibleClass = setSubmenuVisible || submenuClick ? "submenu-visible" : "u_hidden";
+	const visibleClass = submenuHover || submenuClick ? "submenu-visible" : "u_hidden";
 
 	// const visibleClass = "submenu-visible";
 	// console.log("key ", resourceKey);
@@ -74,7 +74,7 @@ const SubmenuBarComponent = ({
 		hideSubmenu();
 		submenuCloseIconClicked();
 		submenuVisible(false);
-		setSubmenuVisibility();
+		setSubmenuVisibleHoverFalse();
 	};
 	const subMenuOverlay = () => {
 		setIconClose(false);
@@ -87,13 +87,13 @@ const SubmenuBarComponent = ({
 	const ulClicked = () => {
 		alert("click");
 	};
-	// console.log("child submenu", setSubmenuVisible);
+	// console.log("child submenu", submenuHover);
 	return (
 		<div>
 			<div
 				className={className}
 				onMouseLeave={() => {
-					hideSubmenu(), setSubmenuVisibility();
+					hideSubmenu(), setSubmenuVisibleHoverFalse();
 				}}
 				onMouseEnter={() => showSubmenu()}
 			>
@@ -138,7 +138,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };
