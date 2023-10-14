@@ -21,8 +21,8 @@ const MenuItemComponent = (props) => {
 		resourceKey,
 		resources,
 		closeSearchOnMenuItemClick,
-		setSubmenuVisible,
-		setSubmenuVisibility,
+		submenuHover,
+		setSubmenuVisibleHoverFalse,
 	} = props;
 
 	const [iconHoverActive, setIconHoverActive] = useState(false);
@@ -63,7 +63,7 @@ const MenuItemComponent = (props) => {
 			data-href={url}
 			data-qs-id={`global-menu-item-${name}`}
 			onMouseEnter={() => {
-				setIconHoverActive(true), setSubmenuVisibility();
+				setIconHoverActive(true), setSubmenuVisibleHoverFalse();
 			}}
 			onMouseLeave={() => setIconHoverActive(false)}
 		>
