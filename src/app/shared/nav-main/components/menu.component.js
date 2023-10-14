@@ -1,18 +1,20 @@
-import invoiz from 'services/invoiz.service';
-import config from 'config';
-import _ from 'lodash';
-import React from 'react';
-import { connect } from 'react-redux';
-import MenuBarComponent from 'shared/nav-main/components/menu-bar.component';
-import MenuHeaderComponent from 'shared/nav-main/components/menu-header.component';
-import MenuFooterComponent from 'shared/nav-main/components/menu-footer.component';
-import NewsfeedComponent from 'shared/newsfeed/newsfeed.component';
-import ModalService from 'services/modal.service';
-import ReferralModalComponent from 'shared/modals/referral-modal.component';
-import UpgradeModalComponent from 'shared/modals/upgrade-modal.component';
+import invoiz from "services/invoiz.service";
+import config from "config";
+import _ from "lodash";
+import React from "react";
+import { connect } from "react-redux";
+import MenuBarComponent from "shared/nav-main/components/menu-bar.component";
+import MenuHeaderComponent from "shared/nav-main/components/menu-header.component";
+import MenuFooterComponent from "shared/nav-main/components/menu-footer.component";
+import NewsfeedComponent from "shared/newsfeed/newsfeed.component";
+import ModalService from "services/modal.service";
+import ReferralModalComponent from "shared/modals/referral-modal.component";
+import UpgradeModalComponent from "shared/modals/upgrade-modal.component";
 
-import { fetchNewsfeedData } from 'redux/ducks/newsfeed';
-import userPermissions from 'enums/user-permissions.enum';
+import { fetchNewsfeedData } from "redux/ducks/newsfeed";
+import userPermissions from "enums/user-permissions.enum";
+import SearchComponent from "../../search/search-component";
+import GlobalSearchModalComponent from "../../modals/global-search-modal.component";
 // import { IntercomAPI } from 'react-intercom';
 
 class MenuComponent extends React.Component {
@@ -22,6 +24,7 @@ class MenuComponent extends React.Component {
 		const { activeItem, activeSubmenuItem } = props;
 
 		this.isNewsfeedToggling = false;
+		this.isSearchToggling = false;
 
 		this.state = {
 			activeItem,
@@ -29,11 +32,14 @@ class MenuComponent extends React.Component {
 			hideMenu: false,
 			submenuVisible: false,
 			isNewsfeedVisible: false,
+			isSearchVisible: false,
 			canReceiveNotification: invoiz.user && invoiz.user.hasPermission(userPermissions.RECEIVE_NOTIFCATIONS),
 			canViewInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_INVOICE_REMINDER),
 			canViewRecurringInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_RECURRING_INVOICE),
 			viewAccounting: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING),
 		};
+		this.closeSearchOnMenuItemClick = this.closeSearchOnMenuItemClick.bind(this);
+		this.closeNotificationOnMenuItemClick = this.closeNotificationOnMenuItemClick.bind(this);
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -85,25 +91,51 @@ class MenuComponent extends React.Component {
 		}
 	}
 
+	searchClose(forceHide) {
+		let isSearchVisible = this.state.isSearchVisible;
+
+		if (!this.isSearchToggling) {
+			isSearchVisible = !isSearchVisible;
+			this.isSearchToggling = true;
+
+			if (forceHide) {
+				isSearchVisible = false;
+			}
+
+			this.setState({ isSearchVisible }, () => {
+				if (isSearchVisible) {
+					this.props.fetchNewsfeedData();
+				}
+			});
+
+			_.delay(() => {
+				this.isSearchToggling = false;
+			}, 500);
+		}
+	}
+
 	onNewsfeedItemClick(item) {
 		const { resources } = this.props;
 		this.onNewsfeedIconClick(true);
 
 		invoiz.request(`${config.resourceHost}notification/${item.id}/read`, {
 			auth: true,
-			method: 'PUT'
+			method: "PUT",
 		});
-
+	}
+	onItemClickNavigate(item) {
+		const { resources } = this.props;
+		this.onNewsfeedIconClick(true);
 		setTimeout(() => {
-			if (item.type && (item.type === 'referral_selected_plan' || item.type === 'referral_registered')) {
+			if (item.type && (item.type === "referral_selected_plan" || item.type === "referral_registered")) {
 				ModalService.open(<ReferralModalComponent isBottomExpanded={true} resources={resources} />, {
 					width: 870,
 					padding: 0,
 					isCloseable: true,
 					resizePopupOnWindowResize: true,
-					modalClass: 'referral-modal-component-wrapper'
+					modalClass: "referral-modal-component-wrapper",
 				});
-			} else if (item.type && item.type === 'referral_plan_tip') {
+			} else if (item.type && item.type === "referral_plan_tip") {
 				// ModalService.open(<UpgradeModalComponent title={resources.str_timeToStart} resources={resources} />, {
 				// 	width: 1196,
 				// 	padding: 0,
@@ -121,16 +153,38 @@ class MenuComponent extends React.Component {
 		}, 0);
 	}
 
-	getPermittedNotifications (items) {
+	getPermittedNotifications(items) {
 		const { canViewInvoice, canViewRecurringInvoice } = this.state;
 		if (!canViewInvoice) {
-			return items.filter(item => !item.link.includes('invoice'));
+			return items.filter((item) => !item.link.includes("invoice"));
 		}
 		return items;
 	}
 
+	onSearchIconClick() {
+		const { isSearchVisible } = this.state;
+		this.setState({ isSearchVisible: !isSearchVisible });
+	}
+	closeSearchOnMenuItemClick() {
+		const { isSearchVisible } = this.state;
+		this.setState({ isSearchVisible: false });
+	}
+
+	closeNotificationOnMenuItemClick() {
+		const { isNewsfeedVisible } = this.state;
+		this.setState({ isNewsfeedVisible: false });
+	}
+
 	render() {
-		const { activeItem, activeSubmenuItem, hideMenu, submenuVisible, isNewsfeedVisible, viewAccounting  } = this.state;
+		const {
+			activeItem,
+			activeSubmenuItem,
+			hideMenu,
+			submenuVisible,
+			isNewsfeedVisible,
+			viewAccounting,
+			isSearchVisible,
+		} = this.state;
 		const { isLoadingNewsfeedItems, newsfeedItems, resources } = this.props;
 		const items = this.getPermittedNotifications(newsfeedItems);
 		//console.log('viewAccounting', viewAccounting)
@@ -138,21 +192,27 @@ class MenuComponent extends React.Component {
 			<nav className="menu">
 				<MenuHeaderComponent
 					onNewsfeedIconClick={this.onNewsfeedIconClick.bind(this)}
+					onSearchIconClick={this.onSearchIconClick.bind(this)}
 					submenuVisible={submenuVisible}
 				/>
 				<MenuBarComponent
+					closeSearchOnMenuItemClick={this.closeSearchOnMenuItemClick.bind(this)}
+					closeNotificationOnMenuItemClick={this.closeNotificationOnMenuItemClick.bind(this)}
 					activeItem={activeItem}
 					activeSubmenuItem={activeSubmenuItem}
 					submenuVisible={submenuVisible}
 					onSubmenuChanged={this.onSubmenuChanged.bind(this)}
 					resources={resources}
 				/>
-				<MenuFooterComponent 
-					onNewsfeedIconClick={this.onNewsfeedIconClick.bind(this)} 
+				<MenuFooterComponent
+					closeNotificationOnMenuItemClick={this.closeNotificationOnMenuItemClick.bind(this)}
+					closeSearchOnMenuItemClick={this.closeSearchOnMenuItemClick.bind(this)}
+					onNewsfeedIconClick={this.onNewsfeedIconClick.bind(this)}
 					activeItem={activeItem}
 					activeSubmenuItem={activeSubmenuItem}
-					submenuVisible={submenuVisible} 
-					onLogout={this.onLogout.bind(this)} 
+					submenuVisibleVar={submenuVisible}
+					onLogout={this.onLogout.bind(this)}
+					onSearchIconClick={this.onSearchIconClick.bind(this)}
 				/>
 				<NewsfeedComponent
 					isLoading={isLoadingNewsfeedItems}
@@ -160,7 +220,13 @@ class MenuComponent extends React.Component {
 					items={items}
 					onOverlayClick={this.onNewsfeedIconClick.bind(this)}
 					onItemClick={this.onNewsfeedItemClick.bind(this)}
+					onItemClickNavigate={this.onItemClickNavigate.bind(this)}
 					resources={resources}
+				/>
+				<GlobalSearchModalComponent
+					resources={resources}
+					isVisible={isSearchVisible}
+					onOverlayClick={this.searchClose.bind(this)}
 				/>
 			</nav>
 		);
@@ -169,25 +235,22 @@ class MenuComponent extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	const { isLoading, items } = state.newsfeed;
 	const { resources } = state.language.lang;
 	return {
 		isLoadingNewsfeedItems: isLoading,
 		newsfeedItems: items,
-		resources
+		resources,
 	};
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchNewsfeedData: () => {
 			dispatch(fetchNewsfeedData());
-		}
+		},
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(MenuComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuComponent);

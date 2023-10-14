@@ -1,21 +1,28 @@
 /*
  * Actions
  */
-const USER_LOGOUT = 'invoiz/global/USER_LOGOUT';
+const USER_LOGOUT = "invoiz/global/USER_LOGOUT";
+const SUBMENU_VISIBLE = "invoiz/global/SUBMENU_VISIBLE";
 
 /*
  * Reducer
  */
 const initialState = {
-	isLoggedOut: false
+	isLoggedOut: false,
+	isSubmenuVisible: false,
 };
 
 export default function reducer(state = initialState, action) {
 	switch (action.type) {
 		case USER_LOGOUT:
 			return Object.assign({}, state, {
-				isLoggedOut: true
+				isLoggedOut: true,
 			});
+		case SUBMENU_VISIBLE:
+			return Object.assign({}, state, {
+				isSubmenuVisible: action.payload,
+			});
+
 		default:
 			return state;
 	}
@@ -24,9 +31,20 @@ export default function reducer(state = initialState, action) {
  * Action Creators
  */
 export const userLoggedOut = () => {
-	return dispatch => {
+	return (dispatch) => {
 		dispatch({
-			type: USER_LOGOUT
+			type: USER_LOGOUT,
 		});
+	};
+};
+
+export const setSubmenuVisibleGlobal = (payload) => {
+	// console.log(payload);
+	return (dispatch, getstate) => {
+		dispatch({
+			type: SUBMENU_VISIBLE,
+			payload,
+		});
+		// console.log("global state is :", getstate());
 	};
 };

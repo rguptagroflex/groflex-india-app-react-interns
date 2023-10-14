@@ -11,8 +11,24 @@
 // 	}
 // }
 
+.cancellation-invoice-detail-wrapper {
+	max-width: 1250px;
+	margin: 0 auto;
+	position: relative;
+}
+
 .cancellation-list-component-wrapper {
 	.cancellation-list-wrapper {
-
 	}
+}
+
+.alignLeftCredit {
+	position: absolute;
+	left: 220px;
+	right: 32px;
+}
+
+.alignLeftDebit {
+	// position: relative;
+	left: 95px;
 }

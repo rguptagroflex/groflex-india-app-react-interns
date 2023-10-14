@@ -37,7 +37,7 @@ import DeleteCancelInvoiceModalComponent from "shared/modals/delete-cancel-invoi
 import DunningRecipientModalComponent from "shared/modals/dunning-recipient-modal.component";
 import PaymentCreateModalComponent from "shared/modals/payment-create-modal.component";
 import ClearDuesModalComponent from "shared/modals/clear-dues.modal.component";
-
+import { connect, Provider } from "react-redux";
 import CreateDunningModalComponent from "shared/modals/create-dunning-modal.component";
 //import DeletePaymentModalComponent from 'shared/modals/delete-payment-modal.component';
 // import DeliveryNote from 'models/delivery-note.model';
@@ -479,6 +479,7 @@ class InvoiceDetailNewComponent extends React.Component {
 			// todoItems: [],
 			// hideTodoActivityTabs: false,
 			canvasWidth: null,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
 
 		this.perfectScrollbar = null;
@@ -575,6 +576,13 @@ class InvoiceDetailNewComponent extends React.Component {
 
 	componentWillUnmount() {
 		window.removeEventListener("resize", this.handleResize);
+	}
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	getHistory() {
@@ -1530,7 +1538,7 @@ class InvoiceDetailNewComponent extends React.Component {
 	}
 
 	render() {
-		const { pdf, historyItems, todoItems, letterPaperType } = this.state;
+		const { pdf, historyItems, todoItems, letterPaperType, submenuVisible } = this.state;
 		const { resources } = this.props;
 		const topbarButtons = createTopbarButtons(this.state.invoice, this.state, null, resources);
 		const topbarDropdownItems = createTopbarDropdown(this.state.invoice, resources);
@@ -1620,7 +1628,11 @@ class InvoiceDetailNewComponent extends React.Component {
 		const timelineIsHorizontal = this.state.viewportWidth <= DetailViewConstants.VIEWPORT_BREAKPOINT;
 
 		const headerContent = (
-			<div className="detail-view-head-wrapper-new">
+			<div
+				className={`detail-view-head-wrapper-new ${
+					this.props.isSubmenuVisible ? "detailHeadOnSidebarActive" : ""
+				}`}
+			>
 				<PopoverComponent
 					elementId={"detail-head-copy-link-popover-anchor"}
 					arrowOffset={160}
@@ -1802,6 +1814,7 @@ class InvoiceDetailNewComponent extends React.Component {
 				)} */}
 			</React.Fragment>
 		);
+		const classLeft = submenuVisible ? "alignLeftDetail" : "";
 
 		return (
 			<div
@@ -1821,7 +1834,7 @@ class InvoiceDetailNewComponent extends React.Component {
 
 				{headerContent}
 
-				<div className="detail-view-content-wrapper">
+				<div className={`detail-view-content-wrapper ${classLeft}`}>
 					<div className="detail-view-content-left">
 						<div className="badge-wrapper u_c">{badge}</div>
 						<div className="detail-view-document-wrapper">
@@ -1983,4 +1996,21 @@ class InvoiceDetailNewComponent extends React.Component {
 	}
 }
 
-export default InvoiceDetailNewComponent;
+const mapStateToProps = (state) => {
+	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+// export default InvoiceDetailNewComponent;
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceDetailNewComponent);

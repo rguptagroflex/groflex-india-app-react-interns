@@ -51,8 +51,18 @@ class CancellationListComponent extends React.Component {
 			planRestricted:
 				(invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_CREDIT_NOTE)) ||
 				(invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_DEBIT_NOTE)),
+			submenuVisible: this.props.isSubmenuVisible,
 		};
 	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
+	}
+
 	componentDidMount() {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
 			invoiz.user.logout(true);
@@ -210,7 +220,8 @@ class CancellationListComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { cancelType, planRestricted, canChangeAccountData } = this.state;
+		const { cancelType, planRestricted, canChangeAccountData, submenuVisible } = this.state;
+		const classLeft = submenuVisible ? "alignLeftCredit" : "";
 		return (
 			<div className="cancellation-list-component-wrapper">
 				{planRestricted ? (
@@ -229,7 +240,7 @@ class CancellationListComponent extends React.Component {
 				) : null}
 				{this.createTopbar()}
 
-				<div className="cancellation-list-wrapper">
+				<div className={`cancellation-list-wrapper ${classLeft}`}>
 					<ListAdvancedComponent
 						resources={this.props.resources}
 						ref="listAdvanced"
@@ -553,8 +564,10 @@ class CancellationListComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 	return {
 		resources,
+		isSubmenuVisible,
 	};
 };
 

@@ -3,7 +3,8 @@
 
 .menuItem-hasSubmenu {
 	&:hover {
-		color: $color-menu-text;
+		// color: $color-menu-text;
+		color: red;
 	}
 }
 
@@ -26,5 +27,54 @@
 	span {
 		@include rem(margin-left, 10);
 		@include rem(margin-right, 10);
+	}
+}
+
+.sub-menu-main {
+	.sub-menu-overlay {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		background: #1a2028;
+		z-index: 10000;
+		opacity: 0;
+		// visibility: hidden;
+		transition: visibility 0s 0.3s, opacity 0.3s ease-out;
+		left: 85px;
+	}
+	&.visible {
+		.sub-menu-overlay {
+			opacity: 0.15;
+			visibility: visible;
+			transition: visibility 0s, opacity 0.3s ease-out;
+		}
+	}
+
+	// .SVGInline:hover {
+	// 	stroke: red;
+	// }
+}
+
+.submenu {
+	height: 100vh;
+	z-index: 10011;
+	width: 190px;
+	top: 0;
+	position: fixed;
+	cursor: default;
+	background-color: #fff;
+	// display: flex;
+	// flex-direction: column;
+
+	justify-content: flex-start !important;
+	padding-right: 15px;
+	padding-left: 15px;
+	left: 78px;
+	box-shadow: 20px 0px 40px -10px rgba(0, 0, 0, 0.1);
+	.submenu-close {
+		margin-left: 75%;
+		margin-bottom: 139px;
+		cursor: pointer;
 	}
 }

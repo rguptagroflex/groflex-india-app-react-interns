@@ -1,7 +1,7 @@
 //*******/
 // FONT */
 //*******/
-$font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+$font-family: "Segoe UI", Helvetica, Arial, sans-serif;
 $font-size: 15px;
 $font-size-unitless: 15;
 $font-size-inputs: 14px;
@@ -11,6 +11,7 @@ $font-size-inputs: 14px;
 //*************/
 $top-nav-height: 110px;
 $menu-width: 270px;
+$menu-width: 80px;
 $submenu-width: 185px;
 $menu-small-width: 85px;
 $menu-breakpoint: 1300px;
@@ -57,23 +58,23 @@ $z-index-drag-item: 1000000;
 $color-white: #ffffff;
 $color-black: #000000;
 
-$color-primary: #00A353; //#0079B3;
-$color-primary-hover: #00723A; //#194B7C;
+$color-primary: #00a353; //#0079B3;
+$color-primary-hover: #00723a; //#194B7C;
 $color-primary-light: lighten($color-primary, 13);
 $color-primary-superlight: #e9f2fb;
-$color-secondary:#0071CA; //#87428C;
+$color-secondary: #0071ca; //#87428C;
 $color-secondary-hover: #065693; //#6A1370;
 
-$color-table-hover: #E5F1F7;
+$color-table-hover: #e5f1f7;
 
-$color-disabled: #9A9A9A;
-$border-color: #7B7B7B;
+$color-disabled: #9a9a9a;
+$border-color: #7b7b7b;
 
-$color-error: #F03636; //#fa6e6e;
-$color-success: #19BD74; //#71BA45;
-$color-blue-light: #0071CA; //#0071CA; //#87428C;
+$color-error: #f03636; //#fa6e6e;
+$color-success: #19bd74; //#71BA45;
+$color-blue-light: #0071ca; //#0071CA; //#87428C;
 $color-blue-light2: #0884e3; //#2f87f3;
-$color-blue-white:#8accff; // #98c5fc;
+$color-blue-white: #8accff; // #98c5fc;
 
 $color-bg-dark: #e5e5e5;
 $color-bg-medium: #f5f5f5;
@@ -84,7 +85,7 @@ $color-text-light: #656768;
 $color-text-muted: #747474;
 $color-text-disabled: #ccc;
 $color-text-canceled: #bbb;
-$color-text-placeholder:#aaa; 
+$color-text-placeholder: #aaa;
 $color-dot-disabled: #eee;
 $color-button-disabled: $color-disabled; //#F0F0F0;
 $color-button-text-disabled: $color-white; //#bcbcbc;
@@ -92,19 +93,19 @@ $color-imprint-footer-grey: #99a0aa;
 $text-placeholder: $color-secondary;
 $color-text-lighter: #707070;
 $color-default-hover: #e9f2fb;
-$color-menu-background:#FFFFFF; //#0F2759;
-$color-menu-active-item: #0071CA; //#605f5e;
-$color-menu-active-background-item: #EDF7FF;
-$color-menu-hover: #0071CA;
+$color-menu-background: #ffffff; //#0F2759;
+$color-menu-active-item: #0071ca; //#605f5e;
+$color-menu-active-background-item: #edf7ff;
+$color-menu-hover: #0071ca;
 $color-menu-icon: #000000; //#afafaf;
 $color-menu-text: #000000; //#dfdfe0;
 $color-menu-item-divider: #f1f1f1;
 $color-menu-text-dark: #3a4149;
-$color-submenu: #6F7D9B;
-$color-submenu-imprint: #E2E5E8;
+$color-submenu: #6f7d9b;
+$color-submenu-imprint: #e2e5e8;
 
-$color-modal-footer-background: #F9FAFB;
-$color-modal-footer-border: #E3E3E3;
+$color-modal-footer-background: #f9fafb;
+$color-modal-footer-border: #e3e3e3;
 
 $color-shadow: #ccc;
 
@@ -112,12 +113,12 @@ $color-line-light: #e3e3e3;
 
 $color-input-bar: #c6c6c6;
 
-$color-attention: #EB244D;
+$color-attention: #eb244d;
 
 $badge-color: #b2b2b2;
 $badge-color-light: #ebf4ff;
-$badge-color-alert: #87428C;
-$badge-color-success: #19BD74; //#a6da98;
+$badge-color-alert: #87428c;
+$badge-color-success: #19bd74; //#a6da98;
 
 $badge-text-color: #b2b2b2;
 $badge-border-color: $badge-text-color;
@@ -128,23 +129,23 @@ $color-tradeTax: #dddbd7;
 $color-incomeTax: #e8e7e4;
 
 $color-sales-top1: $color-secondary;
-$color-sales-top2: #707E8E;
-$color-sales-top3: #A9B2BB;
-$color-sales-top4: #E2E5E8;
-$color-sales-top5: #DBDBDB;
+$color-sales-top2: #707e8e;
+$color-sales-top3: #a9b2bb;
+$color-sales-top4: #e2e5e8;
+$color-sales-top5: #dbdbdb;
 
 $barchart-color: $color-secondary;
 
 $topbar-color: $color-white;
 
-$menu-text-color: #A9B2BB;
-$submenu-text-color: #E2E5E8;
+$menu-text-color: #a9b2bb;
+$submenu-text-color: #e2e5e8;
 
-$color-default-border: #C9C9C9;
+$color-default-border: #c9c9c9;
 
-$color-kyc-clarification: #FFAA2C;
-$color-kyc-active: #0BA84A;
-$color-kyc-verification: #FFE141;
+$color-kyc-clarification: #ffaa2c;
+$color-kyc-active: #0ba84a;
+$color-kyc-verification: #ffe141;
 
 // round buttons
 $size-rounded-small: 24;
@@ -160,10 +161,7 @@ $outer-margin: 2rem;
 $gutter-compensation: $gutter-width / 2 * -1;
 $half-gutter-width: $gutter-width / 2;
 
-$breakpoints: xs 480px 480px,
-sm 768px 768px,
-md 1024px 1024px,
-lg 1300px 1300px;
+$breakpoints: xs 480px 480px, sm 768px 768px, md 1024px 1024px, lg 1300px 1300px;
 
 $flexboxgrid-max-width: 1300px;
 
@@ -182,7 +180,7 @@ $box-shadow-tooltip: 0 2px 14px 2px rgba(0, 0, 0, 0.13);
 
 $border-radius-small: 6px;
 $color-element-background: #f7f7f7;
-$color-input-border: #AAAAAA;
+$color-input-border: #aaaaaa;
 //**********/
 // IMPRESS */
 //**********/
@@ -190,7 +188,6 @@ $impress-topbars-height: 65px;
 $impress-content-nav-separator-width: 2px;
 $impress-nav-section-width: 350px;
 $impress-quill-picker-width: 178px;
-
 
 //**********/
 // AG-GRID */

@@ -16,7 +16,7 @@
 	@include rem(max-height, 70);
 	@include rem(line-height, 21);
 	@include rem(font-size, 14);
-	@include rem(border-bottom, 1, solid, $color-menu-item-divider);
+	// @include rem(border-bottom, 1, solid, $color-menu-item-divider);
 	@include rem(border-left, 5, solid, transparent);
 
 	.collapsed-title {
@@ -122,10 +122,15 @@
 // }
 
 .menuItem-active {
-	background-color: $color-menu-active-background-item; //$color-submenu;
+	// background-color: $color-menu-active-background-item; //$color-submenu;
+	background-color: #fff;
 	border-left-color: $color-primary;
 	color: $color-menu-active-item !important; // $color-white
 	&::before {
 		color: $color-menu-active-item !important; // $color-white
 	}
+}
+
+.menuItem:hover {
+	border-left-color: $color-primary;
 }

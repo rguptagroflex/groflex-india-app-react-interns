@@ -53,7 +53,16 @@ class OfferListNewComponent extends React.Component {
 			canSetOfferOpen: invoiz.user && invoiz.user.hasPermission(userPermissions.SET_OPEN_OFFER),
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_OFFER),
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentWillUnmount() {
@@ -461,7 +470,10 @@ class OfferListNewComponent extends React.Component {
 			canUpdateImprezzOffer,
 			canChangeAccountData,
 			planRestricted,
+			submenuVisible,
 		} = this.state;
+
+		const classLeft = submenuVisible ? "alignLeftContent" : "";
 		return (
 			<div className="invoice-list-component-wrapper">
 				{planRestricted ? (
@@ -480,7 +492,7 @@ class OfferListNewComponent extends React.Component {
 				) : null}
 				{this.createTopbar()}
 
-				<div className="invoice-list-wrapper">
+				<div className={`invoice-list-wrapper ${classLeft}`}>
 					<ListAdvancedComponent
 						resources={this.props.resources}
 						ref="listAdvanced"
@@ -836,10 +848,20 @@ class OfferListNewComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
 	return {
 		resources,
+		isSubmenuVisible,
 	};
 };
 
-export default connect(mapStateToProps)(OfferListNewComponent);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(OfferListNewComponent);

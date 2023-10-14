@@ -30,6 +30,7 @@ import SelectCellRendererComponent from "shared/list-advanced/cell-renderers/dro
 const parallelLinesIcon = require("assets/images/icons/parallelLines.svg");
 import SvgInline from "react-svg-inline";
 import SelectInput from "../inputs/select-input/select-input.component";
+import { connect } from "react-redux";
 
 const ACTION_POPUP_CELL_CLASS = "action-popup-cell";
 const FIELD_ACTION_POPUP_CELL = "actionPopupCell";
@@ -1318,6 +1319,7 @@ class ListAdvancedComponent extends React.Component {
 		// 		gridOptions.api.getFilterModel()
 		// 	);
 		// }
+		// console.log(this.props.isSubmenuVisible, "Is submenu visible in list davanced");
 
 		const emptyListContent = emptyState ? (
 			<div className="list-advanced-component-empty-list">
@@ -1481,7 +1483,9 @@ class ListAdvancedComponent extends React.Component {
 						? `list-advanced-component ag-theme-alpine ${usePagination ? "" : "no-pagination"} ${
 								// hasSecondHeadBar ? "has-second-head-bar" : ""
 								false ? "has-second-head-bar" : ""
-						  } ${searchFieldInSecondHeadBar ? "search-field-in-second-head-bar" : ""}`
+						  } ${searchFieldInSecondHeadBar ? "search-field-in-second-head-bar" : ""}
+							${!this.props.isSubmenuVisible ? "listAdvancedinactiveSidebarSectionGap" : ""}
+							`
 						: `list-advanced-component-manual-entry ag-theme-alpine no-pagination`
 				}`}
 			>
@@ -1611,4 +1615,20 @@ class ListAdvancedComponent extends React.Component {
 	}
 }
 
-export default ListAdvancedComponent;
+const mapStateToProps = (state) => {
+	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListAdvancedComponent);

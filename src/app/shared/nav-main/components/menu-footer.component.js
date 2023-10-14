@@ -4,18 +4,35 @@ import { fetchNewsfeedCount, updateNewsfeedCountReset } from "redux/ducks/newsfe
 import { userLoggedOut } from "redux/ducks/global";
 import invoiz from "services/invoiz.service";
 import config from "config";
-
+import SearchComponent from "../../search/search-component";
+import SVGInline from "react-svg-inline";
+import bell from "assets/images/icons/bell_2.svg";
+import profile from "assets/images/icons/profile_new.svg";
+import profile_hover from "assets/images/icons/profile_hover.svg";
+import search from "assets/images/icons/search_new.svg";
+import search_hover from "assets/images/icons/search_hover.svg";
+import bell_hover from "assets/images/icons/bell_new.svg";
+import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
+		const { closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick } = this.props;
 
 		this.state = {
 			tenant: {
 				companyAddress: {},
 			},
+			profileHoverActive: false,
+			searchHoverActive: false,
+			notificationHoverActive: false,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
 		};
 
 		this.navigateToPage = this.navigateToPage.bind(this);
+		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
+		this.searchIconHover = this.searchIconHover.bind(this);
+		this.notificationIconHover = this.notificationIconHover.bind(this);
 	}
 
 	componentDidMount() {
@@ -79,36 +96,135 @@ class MenuFooterComponent extends React.Component {
 	}
 
 	navigateToPage(url) {
+		const { submenuVisible, isSubmenuVisible } = this.props;
+		submenuVisible(false);
+		// console.log("Footer: ", isSubmenuVisible);
 		invoiz.trigger("updateNewsfeedCount");
 		invoiz.trigger("triggerSubmenuHide");
 		invoiz.router.navigate(url);
 	}
+	onSearchClick() {
+		const { onSearchIconClick } = this.props;
+
+		onSearchIconClick();
+	}
+
+	iconChangeOnHover() {
+		const { profileHoverActive } = this.state;
+		this.setState({ profileHoverActive: !profileHoverActive });
+	}
+
+	searchIconHover() {
+		const { searchHoverActive } = this.state;
+		this.setState({ searchHoverActive: !searchHoverActive });
+	}
+
+	notificationIconHover() {
+		const { notificationHoverActive } = this.state;
+		this.setState({ notificationHoverActive: !notificationHoverActive });
+	}
 
 	render() {
-		const { submenuVisible, resources, activeItem, activeSubmenuItem } = this.props;
+		const { submenuVisibleVar, resources, activeItem, activeSubmenuItem } = this.props;
+		const { submenuVisible } = this.props;
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
+		const {
+			profileHoverActive,
+			notificationHoverActive,
+			searchHoverActive,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
+		} = this.state;
 
 		if (resetNewsFeedCount) {
 			newsfeedUnreadCount = 0;
 		}
 
 		const iconClass = "icon icon-logout_outlined";
-		const logoutClass = `menuItem small ${iconClass} ${submenuVisible ? "menuItem-notFocused" : ""}`;
-		const notificationClass = `menuItem icon icon-bell`;
-		
+		// const iconClass = "icon icon-logout_new";
+		const logoutClass = `menuItem small ${iconClass} ${submenuVisibleVar ? "menuItem-notFocused" : ""}`;
+		// const notificationClass = `menuItem icon icon-bell_2`;
+		const notificationClass = `menuItem notificationIcon`;
 
 		return (
 			<div className="menuFooter">
-				<div className={notificationClass} onClick={this.onNewsfeedClick.bind(this)}>
-					{resources.str_notification}{" "}
-					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null}
+				<div
+					className="search-footer menuItem"
+					onClick={() => {
+						closeNotificationOnMenuItemClick(), this.onSearchClick();
+					}}
+					onMouseLeave={() => {
+						this.searchIconHover();
+					}}
+					onMouseEnter={() => {
+						this.searchIconHover();
+					}}
+				>
+					{/* <div className="menuHeader_search icon icon-search" /> */}
+
+					{searchHoverActive ? (
+						<SVGInline svg={search_hover} width="24px" height="24px" />
+					) : (
+						<SVGInline svg={search} width="24px" height="24px" />
+					)}
+					{/* <SVGInline svg={search} width="24px" height="24px" /> */}
+					{/* <h5>Search</h5> */}
 				</div>
-				<div className="menuItem profile_logo">
-					<span className=" icon icon-user_outlined"></span> My Account
+
+				<div
+					className={notificationClass}
+					onClick={() => {
+						this.onNewsfeedClick();
+						closeSearchOnMenuItemClick();
+					}}
+					onMouseLeave={() => {
+						this.notificationIconHover();
+					}}
+					onMouseEnter={() => {
+						this.notificationIconHover();
+					}}
+				>
+					{/* {resources.str_notification}{" "} */}
+					{notificationHoverActive ? (
+						<div>
+							<SVGInline svg={bell_hover} width="24px" height="24px" />
+							{newsfeedUnreadCount > 0 ? (
+								<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
+							) : null}
+						</div>
+					) : (
+						<div>
+							<SVGInline svg={bell} width="24px" height="24px" />
+							{newsfeedUnreadCount > 0 ? (
+								<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
+							) : null}
+						</div>
+					)}
+					{/* <SVGInline svg={bell} width="24px" height="24px" />
+
+					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null} */}
+				</div>
+				<div
+					className="menuItem profile_logo"
+					onMouseLeave={() => {
+						this.iconChangeOnHover();
+					}}
+					onMouseEnter={() => {
+						this.iconChangeOnHover();
+					}}
+				>
+					{/* <span className=" icon icon-user_outlined"></span> */}
+					{profileHoverActive ? (
+						<SVGInline svg={profile_hover} width="24px" height="24px" />
+					) : (
+						<SVGInline svg={profile} width="24px" height="24px" />
+					)}
+					{/* <SVGInline svg={profile} width="24px" height="24px" /> */}
 					<div className="menu-profile-popup">
 						<div className="menu-profile-popup-head">
 							<div className="icon icon-user_outlined"></div>
+
 							<div className="text-info">
 								{this.state.tenant.companyAddress.companyName || "Business Name"}
 							</div>
@@ -132,7 +248,8 @@ class MenuFooterComponent extends React.Component {
 								data-href="/settings/account-setting"
 								data-qs-id={`global-menu-item-Setting`}
 							>
-								{"Setting"}
+								{/* {"Setting"} */}
+								{"Account Settings"}
 							</a>
 
 							<a
@@ -156,20 +273,23 @@ class MenuFooterComponent extends React.Component {
 								{"Teams"}
 							</a>
 						</div>
+
 						<div className="menu-profile-popup-middle2">
 							<a
 								className="menuItem small icon icon-help_outlined"
 								href="https://groflex.in"
 								target="_blank"
 							>
-								{"Groflex Help Center"}
+								{/* {"Groflex Help Center"} */}
+								{"Help"}
 							</a>
 							<a
 								className="menuItem small icon icon-vpn_policy"
 								href="https://groflex.in/privacy-policy"
 								target="_blank"
 							>
-								{"Terms & Conditions"}
+								{/* {"Terms & Conditions"} */}
+								{"Privacy Policy"}
 							</a>
 						</div>
 						<div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>
@@ -188,10 +308,13 @@ class MenuFooterComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { unreadCount, resetCount } = state.newsfeed;
 	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	return {
 		resources,
 		newsfeedUnreadCount: unreadCount,
 		resetNewsFeedCount: resetCount,
+		isSubmenuVisible,
 	};
 };
 
@@ -205,6 +328,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		updateNewsfeedCountReset: () => {
 			dispatch(updateNewsfeedCountReset());
+		},
+		submenuVisible: (payload) => {
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };

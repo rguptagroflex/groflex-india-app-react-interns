@@ -23,6 +23,8 @@ import { Link } from "react-router-dom";
 import InvoiceAction from "enums/invoice/invoice-action.enum";
 import { formatApiDate } from "helpers/formatDate";
 import { format } from "util";
+import { connect, Provider } from "react-redux";
+// import userPermissions from "enums/user-permissions.enum";
 
 import userPermissions from "enums/user-permissions.enum";
 import { capitalize } from "lodash";
@@ -199,7 +201,16 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			canViewRecurringInvoice: null,
 			canStartRecurringInvoice: null,
 			canFinishRecurringInvoice: null,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentDidMount() {
@@ -234,6 +245,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			canStartRecurringInvoice,
 			canUpdateRecurringInvoice,
 			canDeleteRecurringInvoice,
+			submenuVisible,
 		} = this.state;
 		const topbarButtons = createTopbarButtons(this.state.recInvoice, resources);
 		const topbarPermittedButtons = createTopbarPermissionButtons(topbarButtons, this.state, resources);
@@ -278,10 +290,12 @@ class RecurringInvoiceDetailComponent extends React.Component {
 				</div>
 			);
 		}
+		
+		const classLeft = submenuVisible ? "alignRecurringLeft" : "";		
 		// console.log(headContents, "headContents");
 		// console.log(invoicesTable, "invoicesTable");
 		return (
-			<div className="recurring-invoice-detail-wrapper wrapper-has-topbar">
+			<div className={`recurring-invoice-detail-wrapper wrapper-has-topbar ${classLeft}`}>
 				{canUpdateRecurringInvoice && canDeleteRecurringInvoice ? (
 					<TopbarComponent
 						title={resources.str_subscriptionAccount}
@@ -299,7 +313,6 @@ class RecurringInvoiceDetailComponent extends React.Component {
 						buttons={topbarPermittedButtons}
 					/>
 				)}
-
 				<div className="detail-view-head-container">
 					{detailHeadContent}
 
@@ -660,4 +673,15 @@ class RecurringInvoiceDetailComponent extends React.Component {
 	}
 }
 
-export default RecurringInvoiceDetailComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(RecurringInvoiceDetailComponent);
+
+// export default RecurringInvoiceDetailComponent;

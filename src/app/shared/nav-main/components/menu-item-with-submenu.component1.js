@@ -1,44 +1,70 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import PropTypes from 'prop-types';
-import SubMenuBarComponent from 'shared/nav-main/components/submenu-bar.component';
-import SubMenuItemComponent from 'shared/nav-main/components/submenu-item.component';
-import userPermissions from 'enums/user-permissions.enum';
-import planPermissions from 'enums/plan-permissions.enum';
-
-
-const buildSubmenuComponents = (permissions, canViewDunning, canViewTimesheet, noInventory, submenuItems, activeSubmenuItem, resources) => {
+import invoiz from "services/invoiz.service";
+import React from "react";
+import PropTypes from "prop-types";
+import SubMenuBarComponent from "shared/nav-main/components/submenu-bar.component";
+import SubMenuItemComponent from "shared/nav-main/components/submenu-item.component";
+import userPermissions from "enums/user-permissions.enum";
+import planPermissions from "enums/plan-permissions.enum";
+import { connect } from "react-redux";
+import sales from "assets/images/icons/sales_new.svg";
+import expense from "assets/images/icons/accounting_icon.svg";
+import sales_hover from "assets/images/icons/sales_hover.svg";
+import expense_hover from "assets/images/icons/expense_hover.svg";
+import SVGInline from "react-svg-inline";
+// import store from "../../redux/store";
+const buildSubmenuComponents = (
+	permissions,
+	canViewDunning,
+	canViewTimesheet,
+	noInventory,
+	submenuItems,
+	activeSubmenuItem,
+	resources,
+	closeNotificationOnMenuItemClick,
+	closeSearchOnMenuItemClick
+) => {
 	const { canImportArticle, canImportContact, viewAccounting, canViewExpenses } = permissions;
 	// console.log('submenuItems', submenuItems)
 	if (!canImportArticle && !canImportContact) {
-		submenuItems = submenuItems.filter(item => item.name !== 'dataImport');
+		submenuItems = submenuItems.filter((item) => item.name !== "dataImport");
 	}
 
 	if (!canViewDunning) {
-		submenuItems = submenuItems.filter(item => item.name !== 'dunning');
+		submenuItems = submenuItems.filter((item) => item.name !== "dunning");
 	}
 
-	if(!canViewExpenses) {
-		submenuItems = submenuItems.filter(item => item.name !== 'expenditure' && item.name !== 'chartOfAccounts' && item.name !== 'cashAndBank');
+	if (!canViewExpenses) {
+		submenuItems = submenuItems.filter(
+			(item) => item.name !== "expenditure" && item.name !== "chartOfAccounts" && item.name !== "cashAndBank"
+		);
 	}
 	// In all case we need to show timesheet
 	// if (!canViewTimesheet) {
 	// 	submenuItems = submenuItems.filter(item => item.name !== 'timetracking');
 	// }
 
-	if(noInventory) {
-		submenuItems = submenuItems.filter(item => item.name !== 'inventory');
+	if (noInventory) {
+		submenuItems = submenuItems.filter((item) => item.name !== "inventory");
 	}
 
-	return submenuItems.map(submenuItemData => {
-		const { name } = submenuItemData;		
+	return submenuItems.map((submenuItemData) => {
+		const { name } = submenuItemData;
 		let active;
 
 		if (name === activeSubmenuItem) {
 			active = true;
 		}
 
-		return <SubMenuItemComponent key={name} active={active} {...submenuItemData} resources={resources}/>;
+		return (
+			<SubMenuItemComponent
+				key={name}
+				active={active}
+				{...submenuItemData}
+				resources={resources}
+				closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+				closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+			/>
+		);
 	});
 };
 
@@ -46,9 +72,20 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	constructor(props) {
 		super(props);
 
-		const { activeSubmenuItem } = this.props;
+		const {
+			activeSubmenuItem,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
+			setSubmenuVisibleHoverTrue,
+			submenuHover,
+			setSubmenuVisibleHoverFalse,
+		} = this.props;
 
 		this.state = {
+			setSubmenuVisibleHoverFalse,
+			submenuHover,
+			closeNotificationOnMenuItemClick,
+			closeSearchOnMenuItemClick,
 			submenuVisible: false,
 			activeSubmenuItem,
 			isCollapsedState: false,
@@ -57,14 +94,34 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			canViewTimesheet: null,
 			planRestricted: null,
 			canChangeAccountData: null,
-			noInventory: null
+			noInventory: null,
+			submenuVisibleOnclick: false,
+			submenuClick: false,
+			iconHoverActive: false,
+			setSubmenuVisibleHoverTrue,
 		};
 
 		this.windowResizeTimeout = null;
 		this.onWindowResize = this.onWindowResize.bind(this);
 
-		$(window).off('resize', this.onWindowResize);
-		$(window).on('resize', this.onWindowResize);
+		$(window).off("resize", this.onWindowResize);
+		$(window).on("resize", this.onWindowResize);
+
+		this.hideSubmenu = this.hideSubmenu.bind(this);
+		this.submenuItemClicked = this.submenuItemClicked.bind(this);
+		this.submenuCloseIconClicked = this.submenuCloseIconClicked.bind(this);
+		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		const { submenuClick } = this.state;
+		const { active, isSubmenuVisible } = this.props;
+		if (prevProps.active !== active && active === false) {
+			this.submenuCloseIconClicked();
+		}
+		if (prevProps.isSubmenuVisible === true && isSubmenuVisible === false) {
+			this.submenuCloseIconClicked();
+		}
 	}
 
 	componentDidMount() {
@@ -77,8 +134,8 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			noInventory: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_INVENTORY),
 		});
 		this.onWindowResize();
-		invoiz.on('triggerSubmenuHide', this.hideSubmenu, this);
-		invoiz.on('triggerSubmenuSwitch', this.switchSubmenu, this);
+		invoiz.on("triggerSubmenuHide", this.hideSubmenu, this);
+		invoiz.on("triggerSubmenuSwitch", this.switchSubmenu, this);
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -91,58 +148,76 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 	}
 
 	componentWillUnmount() {
-		invoiz.off('triggerSubmenuHide', this.hideSubmenu, this);
-		invoiz.off('triggerSubmenuSwitch', this.switchSubmenu, this);
-		$(window).off('resize', this.onWindowResize);
+		invoiz.off("triggerSubmenuHide", this.hideSubmenu, this);
+		invoiz.off("triggerSubmenuSwitch", this.switchSubmenu, this);
+		$(window).off("resize", this.onWindowResize);
 	}
 
-	hideSubmenu(noChangeTrigger) {
-		this.setState({ submenuVisible: false }, () => {
-			const { onSubmenuVisiblityChanged } = this.props;
+	// hideSubmenu(noChangeTrigger) {
+	// 	this.setState({ submenuVisible: false }, () => {
+	// 		const { onSubmenuVisiblityChanged } = this.props;
 
-			if (!noChangeTrigger) {
-				onSubmenuVisiblityChanged(false);
-			}
-		});
+	// 		if (!noChangeTrigger) {
+	// 			onSubmenuVisiblityChanged(false);
+	// 		}
+	// 	});
+	// }
+
+	hideSubmenu() {
+		this.setState({ submenuVisible: false });
 	}
-
 	isSubmenuClick(evt) {
-		return evt && evt.nativeEvent.target && $(evt.nativeEvent.target).closest('.submenu').length > 0;
+		return evt && evt.nativeEvent.target && $(evt.nativeEvent.target).closest(".submenu").length > 0;
 	}
 
-	showSubmenu(evt, isClick, checkCollapsedState) {
-		const { isCollapsedState } = this.state;
-		const isSubmenuClick = isClick && this.isSubmenuClick(evt);
-		let showSubmenu = true;
+	iconChangeOnHover() {
+		const { iconHoverActive } = this.state;
+		this.setState({ iconHoverActive: !iconHoverActive });
+		// console.log("Icon type:", iconHoverActive);
+	}
 
-		if (checkCollapsedState) {
-			showSubmenu = !isCollapsedState;
-		}
+	// showSubmenu(evt, isClick, checkCollapsedState) {
+	// 	const { isCollapsedState } = this.state;
+	// 	const isSubmenuClick = isClick && this.isSubmenuClick(evt);
+	// 	let showSubmenu = true;
 
-		if (!isSubmenuClick && showSubmenu) {
-			invoiz.trigger('triggerSubmenuSwitch');
+	// 	if (checkCollapsedState) {
+	// 		showSubmenu = !isCollapsedState;
+	// 	}
 
-			this.setState({ submenuVisible: true }, () => {
-				const { onSubmenuVisiblityChanged } = this.props;
-				onSubmenuVisiblityChanged(true);
+	// 	if (!isSubmenuClick && showSubmenu) {
+	// 		invoiz.trigger("triggerSubmenuSwitch");
 
-				if (isClick) {
-					this.navigateToFirstSubmenuItem();
-				}
-			});
-		}
+	// 		this.setState({ submenuVisible: true }, () => {
+	// 			const { onSubmenuVisiblityChanged } = this.props;
+	// 			onSubmenuVisiblityChanged(true);
+
+	// 			if (isClick) {
+	// 				this.navigateToFirstSubmenuItem();
+	// 			}
+	// 		});
+	// 	}
+	// }
+	showSubmenu() {
+		this.setState({ submenuVisible: true });
 	}
 
 	navigateToFirstSubmenuItem(evt) {
 		const { submenuItems } = this.props;
 		const isSubmenuClick = this.isSubmenuClick(evt);
-
+		const { submenuVisible } = this.state;
 		if (submenuItems && submenuItems[0].url && !isSubmenuClick) {
 			// if (submenuItems[0].url !== '/offers') {
 			// 	invoiz.offerListNaviagtion = false;
 			// }
 			invoiz.router.navigate(submenuItems[0].url);
 		}
+	}
+	toggleClick(e) {
+		// if (this.state.submenuVisible) {
+		// 	this.navigateToFirstSubmenuItem();
+		// }
+		this.setState({ submenuVisibleOnclick: !this.state.submenuVisibleOnclick, active: !this.state.active });
 	}
 
 	switchSubmenu() {
@@ -151,81 +226,139 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 
 	onWindowResize() {
 		clearTimeout(this.windowResizeTimeout);
-
 		this.windowResizeTimeout = setTimeout(() => {
 			if (this.refs.subMenuBarNormal || this.refs.subMenuBarCollapsed) {
-				this.setState({ isCollapsedState: !window.matchMedia('(min-width:1300px)').matches });
-
-				if (!window.matchMedia('(min-width:1300px)').matches) {
+				this.setState({ isCollapsedState: !window.matchMedia("(min-width:1300px)").matches });
+				if (!window.matchMedia("(min-width:1300px)").matches) {
 					this.hideSubmenu();
 				}
 			}
 		}, 100);
 	}
 
-	render() {
-		const { submenuVisible, activeSubmenuItem, isCollapsedState, canViewDunning, canViewTimesheet, noInventory, canView } = this.state;
-		const { title, name, submenuItems, icon, active, hasImprintAndPrivacy, resourceKey, resources, permissions } = this.props;
-		const submenuItemComponents = buildSubmenuComponents(permissions, canViewDunning, canViewTimesheet, noInventory, submenuItems, activeSubmenuItem, resources);
-		const iconClass = `icon icon-${icon}`;
-		const activeClass = active ? 'icon-arr_down menuItem-active' : 'icon-arr_right';
-		const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass}`;
+	submenuItemClicked() {
+		this.setState({ submenuClick: true });
+	}
 
-		return isCollapsedState ? (
-			<li key={name}>
-				<div
-					ref="subMenuBarCollapsed"
-					onMouseEnter={() => this.showSubmenu()}
-					onMouseLeave={() => this.hideSubmenu()}
-					onClick={e => this.navigateToFirstSubmenuItem(e)}
-					className={className}
-					data-href={submenuItems[0].url}
-					data-qs-id={`global-menu-item-${name}`}
-				>
-				{resources.menuItems[resourceKey]}
-				{/* <span className="collapsed-title">
-					{resources.menuItems[resourceKey]}
-				</span>				 */}
-			</div>
-			<SubMenuBarComponent key={`sub-item-${name}`}
-					visible={submenuVisible}
-					title={title}
-					name={name}
-					hasImprintAndPrivacy={hasImprintAndPrivacy}
-					resourceKey={resourceKey}
-					resources={resources}
-				>
-					{submenuItemComponents}
-			</SubMenuBarComponent>
-			</li>
-			
-		) : (
-			<li key={name}>
-			<div
-				ref="subMenuBarNormal"
-				onClick={e => this.showSubmenu(e, true)}
-				className={className}
-				data-href={submenuItems[0].url}
-				data-qs-id={`global-menu-item-${name}`}
-			>
-				{/* {title} */}
-				{resources.menuItems[resourceKey]}
-				{/* <span className="collapsed-title">
-					
-					{resources.menuItems[resourceKey]}
-				</span> */}
-				
-			</div>
-			<SubMenuBarComponent key={`sub-item-${name}`}
-					visible={submenuVisible}
-					title={title}
-					name={name}
-					hasImprintAndPrivacy={hasImprintAndPrivacy}
-					resourceKey={resourceKey}
-					resources={resources}
-				>
-					{submenuItemComponents}
-				</SubMenuBarComponent>
+	submenuCloseIconClicked() {
+		this.setState({ submenuClick: false });
+	}
+
+	render() {
+		// console.log("Mid submenu", this.props.submenuHover);
+		const {
+			submenuVisible,
+			activeSubmenuItem,
+			isCollapsedState,
+			canViewDunning,
+			canViewTimesheet,
+			noInventory,
+			canView,
+			submenuVisibleOnclick,
+			submenuClick,
+			iconHoverActive,
+			closeSearchOnMenuItemClick,
+			closeNotificationOnMenuItemClick,
+			setSubmenuVisibleHoverTrue,
+			setSubmenuVisibleHoverFalse,
+			submenuHover,
+		} = this.state;
+		const {
+			title,
+			name,
+			submenuItems,
+			icon,
+			hasImprintAndPrivacy,
+			resourceKey,
+			resources,
+			permissions,
+			active,
+			isSubmenuVisible,
+			submenuItemClicked,
+			submenuCloseIconClicked,
+		} = this.props;
+		const submenuItemComponents = buildSubmenuComponents(
+			permissions,
+			canViewDunning,
+			canViewTimesheet,
+			noInventory,
+			submenuItems,
+			activeSubmenuItem,
+			resources,
+			closeNotificationOnMenuItemClick,
+			closeSearchOnMenuItemClick
+		);
+
+		const iconClass = `icon icon-${icon}`;
+		// const activeClass = active ? "icon-arr_down menuItem-active" : "icon-arr_right";
+		// console.log(active);
+		const activeClass = active ? "menuItem-active" : "";
+		// console.log("Store: ", isSubmenuVisible);
+		const submenuActive = activeClass === "menuItem-active";
+
+		const menuIcons = {
+			sales: iconHoverActive ? sales_hover : sales,
+			expense: iconHoverActive ? expense_hover : expense,
+		};
+
+		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
+		const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
+		// console.log(submenuItems);
+
+		return (
+			<li key={name} id={name}>
+				<div className={`sub-menu-main ${submenuVisible ? "visible" : ""}`}>
+					<div
+						ref="subMenuBarCollapsed"
+						// onMouseEnter={() => this.showSubmenu(name)}
+						// onMouseEnter={() => console.log(name)}
+						className={className}
+						data-href={submenuItems[0].url}
+						data-qs-id={`global-menu-item-${name}`}
+						onMouseEnter={() => {
+							this.showSubmenu();
+							this.iconChangeOnHover();
+							setSubmenuVisibleHoverTrue();
+						}}
+						onMouseLeave={() => {
+							this.iconChangeOnHover();
+							setSubmenuVisibleHoverTrue();
+						}}
+						onClick={() => {
+							closeSearchOnMenuItemClick();
+							closeNotificationOnMenuItemClick();
+						}}
+						// onMouseLeave={() => {
+						// 	this.hideSubmenu();
+						// }}
+					>
+						<SVGInline svg={menuIcons[icon]} width="24px" height="24px" className="menuItemIcon" />
+					</div>
+
+					<SubMenuBarComponent
+						key={`sub-item-${isSubmenuVisible.name}`}
+						visible={submenuVisible}
+						title={title}
+						name={name}
+						hasImprintAndPrivacy={hasImprintAndPrivacy}
+						resourceKey={resourceKey}
+						resources={resources}
+						visibleOnclick={submenuVisibleOnclick}
+						hideSubmenu={this.hideSubmenu}
+						showSubmenu={() => this.showSubmenu()}
+						submenuItemClicked={this.submenuItemClicked}
+						submenuCloseIconClicked={this.submenuCloseIconClicked}
+						submenuClick={submenuClick}
+						active={active}
+						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+						// submenuHover={submenuHover}
+						submenuHover={this.props.submenuHover}
+						setSubmenuVisibleHoverFalse={setSubmenuVisibleHoverFalse}
+					>
+						{submenuItemComponents}
+					</SubMenuBarComponent>
+				</div>
 			</li>
 		);
 	}
@@ -239,17 +372,27 @@ MenuItemWithSubmenuComponent1.propTypes = {
 	submenuItems: PropTypes.array,
 	activeSubmenuItem: PropTypes.string,
 	onSubmenuVisiblityChanged: PropTypes.func,
-	resourceKey: PropTypes.string
+	resourceKey: PropTypes.string,
 };
 
 MenuItemWithSubmenuComponent1.defaultProps = {
-	title: '',
-	url: '',
-	icon: '',
+	title: "",
+	url: "",
+	icon: "",
 	active: false,
 	submenuItems: [],
-	activeSubmenuItem: '',
-	resourceKey: ''
+	activeSubmenuItem: "",
+	resourceKey: "",
 };
 
-export default MenuItemWithSubmenuComponent1;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(MenuItemWithSubmenuComponent1);
+
+// export default MenuItemWithSubmenuComponent1;

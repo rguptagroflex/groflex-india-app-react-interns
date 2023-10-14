@@ -1,8 +1,8 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import ButtonComponent from 'shared/button/button.component';
-import PopoverComponent from 'shared/popover/popover.component';
-
+import invoiz from "services/invoiz.service";
+import React from "react";
+import ButtonComponent from "shared/button/button.component";
+import PopoverComponent from "shared/popover/popover.component";
+import { connect } from "react-redux";
 class TopbarComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -22,8 +22,16 @@ class TopbarComponent extends React.Component {
 			titleSup: this.props.titleSup || null,
 			subtitle: this.props.subtitle || null,
 			viewIcon: this.props.viewIcon || null,
-			fullPageWidth: this.props.fullPageWidth || null
+			fullPageWidth: this.props.fullPageWidth || null,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentWillReceiveProps(props) {
@@ -42,11 +50,12 @@ class TopbarComponent extends React.Component {
 			titleSup: props.titleSup || null,
 			subtitle: props.subtitle || null,
 			viewIcon: props.viewIcon || null,
-			fullPageWidth: props.fullPageWidth || null
+			fullPageWidth: props.fullPageWidth || null,
 		});
 	}
 
 	render() {
+		const { submenuVisible } = this.state;
 		let backButton = null;
 		let viewIcon = null;
 		if (this.state.backButtonRoute || this.state.backButtonCallback) {
@@ -91,23 +100,25 @@ class TopbarComponent extends React.Component {
 
 					<PopoverComponent
 						entries={this.state.dropdownEntries}
-						elementId={'topbar-dropdown-anchor'}
+						elementId={"topbar-dropdown-anchor"}
 						arrowOffset={22}
-						ref={'topbar-popover'}
-						onClick={entry => this.handleDropdownClick(entry)}
+						ref={"topbar-popover"}
+						onClick={(entry) => this.handleDropdownClick(entry)}
 					/>
 				</div>
 			);
 		}
 
+		const classLeft = submenuVisible ? "alignLeft" : "";
+		console.log(this.props.isSubmenuVisible, "FROm ORIGINAL TOPBAR");
+
 		return (
-			<div className={`topbar-wrapper ${this.state.fullPageWidth ? 'full-page-width' : ''}`}>
+			<div className={`topbar-wrapper ${this.state.fullPageWidth ? "full-page-width" : ""} ${classLeft}`}>
 				{backButton}
 				{viewIcon}
-
 				<div
-					className={`topbar-content ${!backButton ? 'no-back-button' : ''} ${
-						!dropdownMenuButton ? 'no-dropdown-menu-button' : ''
+					className={`topbar-content ${!backButton ? "no-back-button" : ""} ${
+						!dropdownMenuButton ? "no-dropdown-menu-button" : ""
 					}`}
 				>
 					{this.props.children || (
@@ -117,7 +128,7 @@ class TopbarComponent extends React.Component {
 								{}
 								{this.state.titleSup ? (
 									<span>
-										{' '}
+										{" "}
 										<sup>{this.state.titleSup}</sup>
 									</span>
 								) : null}
@@ -128,32 +139,31 @@ class TopbarComponent extends React.Component {
 
 					<div className="topbar-buttons">{this.state.buttons}</div>
 				</div>
-
 				{dropdownMenuButton}
 			</div>
 		);
 	}
 
 	handleButtonClick(event, button) {
-		if (typeof this.state.buttonCallback === 'function') {
+		if (typeof this.state.buttonCallback === "function") {
 			this.state.buttonCallback(event, button);
 		}
 	}
 
 	handleDropdownClick(entry) {
-		if (typeof this.state.dropdownCallback === 'function') {
+		if (typeof this.state.dropdownCallback === "function") {
 			this.state.dropdownCallback(entry);
 		}
 	}
 
 	onDropdownClick() {
-		this.refs['topbar-popover'].show();
+		this.refs["topbar-popover"].show();
 	}
 
 	onBackButtonClick() {
 		if (this.state.backButtonRoute) {
 			invoiz.router.navigate(this.state.backButtonRoute);
-		} else if (typeof this.state.backButtonCallback === 'function') {
+		} else if (typeof this.state.backButtonCallback === "function") {
 			this.state.backButtonCallback();
 		}
 	}
@@ -180,7 +190,7 @@ class TopbarComponent extends React.Component {
 						isWide={button.isWide}
 						buttonIcon={button.buttonIcon}
 						label={button.label}
-						callback={event => this.handleButtonClick(event, button)}
+						callback={(event) => this.handleButtonClick(event, button)}
 						type={button.type}
 						dataQsId={button.dataQsId}
 						customCssClass={button.customCssClass}
@@ -193,4 +203,21 @@ class TopbarComponent extends React.Component {
 	}
 }
 
-export default TopbarComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopbarComponent);
+// export default TopbarComponent;

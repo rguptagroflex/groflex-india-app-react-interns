@@ -35,7 +35,16 @@ class TimeTrackingListComponent extends React.Component {
 			canDeleteTimesheet: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_TIMESHEET),
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_TIMESHEET),
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentWillUnmount() {
@@ -182,7 +191,10 @@ class TimeTrackingListComponent extends React.Component {
 	}
 
 	render() {
-		const { canUpdateTimesheet, canDeleteTimesheet, canChangeAccountData, planRestricted } = this.state;
+		const { canUpdateTimesheet, canDeleteTimesheet, canChangeAccountData, planRestricted, submenuVisible } =
+			this.state;
+
+		const classLeft = submenuVisible ? "alignLeftContent" : "";
 		return (
 			<div className="timetracking-list-component-wrapper">
 				{planRestricted ? (
@@ -197,7 +209,7 @@ class TimeTrackingListComponent extends React.Component {
 				) : null}
 				{this.createTopbar()}
 
-				<div className="timetracking-list-wrapper">
+				<div className={`timetracking-list-wrapper ${classLeft}`}>
 					<ListAdvancedComponent
 						headTabbedFilterItemsFunc={(timetrackings) => {
 							return [
@@ -353,7 +365,7 @@ class TimeTrackingListComponent extends React.Component {
 								<React.Fragment>
 									<ButtonComponent
 										label="Record time"
-										buttonIcon="icon-plus"
+										// buttonIcon="icon-plus"
 										dataQsId="empty-list-create-button"
 										callback={() => invoiz.router.navigate("/timetracking/new")}
 									/>
@@ -455,10 +467,20 @@ class TimeTrackingListComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
 	return {
 		resources,
+		isSubmenuVisible,
 	};
 };
 
-export default connect(mapStateToProps)(TimeTrackingListComponent);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimeTrackingListComponent);

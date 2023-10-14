@@ -8,7 +8,10 @@
 @import "menu-item-with-submenu";
 
 .menu {
-	background: $color-menu-background;
+	border-right: 1px solid #c6c6c6 !important;
+	// color: #c6c6c6;
+	// background: $color-menu-background;
+	background: #f2f2f2;
 	position: fixed;
 	z-index: 10010;
 	border-right: 5px solid $color-bg-medium;
@@ -29,6 +32,7 @@
 
 	.logo {
 		height: 100%;
+		margin-left: 26px !important;
 
 		@include breakpoint-md {
 			// @include rem(margin-left, 54);

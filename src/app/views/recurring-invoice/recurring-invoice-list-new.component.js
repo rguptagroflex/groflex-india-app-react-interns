@@ -48,7 +48,16 @@ class RecurringInvoiceListNewComponent extends React.Component {
 				invoiz.user && invoiz.user.hasPermission(userPermissions.FINISH_RECURRING_INVOICE),
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_RECURRING),
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentWillUnmount() {
@@ -132,7 +141,8 @@ class RecurringInvoiceListNewComponent extends React.Component {
 				cancelLabel: "Cancel",
 				confirmIcon: "icon-check",
 				confirmLabel: "Complete",
-				confirmButtonType: "danger",
+				// confirmButtonType: "danger",
+				confirmButtonType: "primary",
 				onConfirm: () => {
 					ModalService.close();
 					invoiz
@@ -183,12 +193,13 @@ class RecurringInvoiceListNewComponent extends React.Component {
 	}
 
 	onActionCellPopupItemClick(recurringInvoice, entry) {
+		console.log(recurringInvoice, entry, "Recurrting invoice and entry");
 		const { resources } = this.props;
 		switch (entry.action) {
 			case RecurringInvoiceAction.COPY_AND_EDIT:
-				if (this.refs.listAdvanced) {
-					this.refs.listAdvanced.writePaginationRestoreState();
-				}
+				// if (this.refs.listAdvanced) {
+				// 	this.refs.listAdvanced.writePaginationRestoreState();
+				// }
 				copyAndEditTransaction({
 					invoiceModel: Object.assign({}, recurringInvoice, {
 						type: TRANSACTION_TYPE_RECURRING_INVOICE,
@@ -212,9 +223,11 @@ class RecurringInvoiceListNewComponent extends React.Component {
 						width: 500,
 						headline: "Delete recurring invoice",
 						cancelLabel: "Cancel",
-						confirmIcon: "icon-trashcan",
+						// confirmIcon: "icon-trashcan",
 						confirmLabel: "Delete",
-						confirmButtonType: "danger",
+						// confirmButtonType: "danger",
+						confirmButtonType: "primary",
+
 						onConfirm: () => {
 							invoiz
 								.request(`${config.resourceHost}recurringInvoice/${recurringInvoice.id}`, {
@@ -246,10 +259,11 @@ class RecurringInvoiceListNewComponent extends React.Component {
 		if (action === "create") {
 			invoiz.router.navigate("/recurringInvoice/new");
 		} else if (action === "delete-recurring-invoice") {
-			const selectedRowsData = this.refs.listAdvanced.getSelectedRows({
-				prop: "number",
-				sort: "asc",
-			});
+			// const selectedRowsData = this.refs.listAdvanced.getSelectedRows({
+			// 	prop: "number",
+			// 	sort: "asc",
+			// });
+			const selectedRowsData = this.state.selectedRows;
 
 			ModalService.open(
 				<RecurringInvoiceMultiActionComponent
@@ -304,21 +318,24 @@ class RecurringInvoiceListNewComponent extends React.Component {
 			canFinishRecurringInvoice,
 			planRestricted,
 			canChangeAccountData,
+			submenuVisible,
 		} = this.state;
+
+		const classLeft = submenuVisible ? "alignLeftContent" : "";
 		return (
 			<div className="recurring-invoice-list-component-wrapper">
 				{planRestricted ? (
 					<RestrictedOverlayComponent
 						message={
 							canChangeAccountData
-							? 'Recurring Invoices are not available in your current plan'
-							: `You don’t have permission to access Recurring Invoices`
+								? "Recurring Invoices are not available in your current plan"
+								: `You don’t have permission to access Recurring Invoices`
 						}
 						owner={canChangeAccountData}
 					/>
 				) : null}
 				{this.createTopbar()}
-				<div className="recurring-invoice-list-wrapper">
+				<div className={`recurring-invoice-list-wrapper ${classLeft}`}>
 					<ListAdvancedComponent
 						headTabbedFilterItemsFunc={(recurringInvoices) => {
 							return [
@@ -647,10 +664,20 @@ class RecurringInvoiceListNewComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
 	return {
 		resources,
+		isSubmenuVisible,
 	};
 };
 
-export default connect(mapStateToProps)(RecurringInvoiceListNewComponent);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecurringInvoiceListNewComponent);

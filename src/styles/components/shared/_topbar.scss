@@ -8,7 +8,9 @@
 	left: $menu-small-width;
 	height: $topbar-height;
 	z-index: $z-index-topbar;
-	background: $topbar-color;
+	// background: #f2f2f2;
+	background: #f5f5f5;
+	// background: $topbar-color;
 	// border-bottom: 1px solid #DDDDDD;
 	// @include vendor-prefix('box-shadow', $box-shadow-subscription-box);
 
@@ -40,7 +42,7 @@
 		.icon {
 			&:before {
 				vertical-align: top;
-			}		
+			}
 		}
 	}
 
@@ -66,28 +68,31 @@
 			font-size: 24px;
 			line-height: 22px;
 		}
-		
+
 		.icon {
 			&:before {
 				vertical-align: top;
 				color: $color-black;
-			}		
+			}
 		}
 	}
 
 	.topbar-content {
 		position: absolute;
-		left: $topbar-left-icon-width; // $topbar-height
+		// left: $topbar-left-icon-width; // $topbar-height
+		left: 65px;
 		top: 0;
 		right: $topbar-height + 10px;
 		height: $topbar-height;
 
 		&.no-back-button {
-			left: $topbar-left-icon-width; //$topbar-height
+			// left: $topbar-left-icon-width; //$topbar-height
+			left: 65px;
 		}
 
 		&.no-dropdown-menu-button {
 			right: $topbar-height - 47px;
+			// right: $topbar-height - 51px;
 		}
 
 		.topbar-title {
@@ -116,10 +121,10 @@
 			line-height: 65px;
 
 			.button {
-				@include vendor-prefix('transition', 'none');
+				@include vendor-prefix("transition", "none");
 
 				&:hover {
-					@include vendor-prefix('transition', 'all .1s ease-in-out');
+					@include vendor-prefix("transition", "all .1s ease-in-out");
 				}
 			}
 
@@ -145,4 +150,31 @@
 			font-size: 22px;
 		}
 	}
+}
+
+.alignLeft {
+	left: 269px;
+	// .topbar-view-icon {
+	// 	left: 0;
+	// }
+	// .topbar-content {
+	// left: 29px;
+	// }
+}
+
+.alignLeftContent {
+	left: 220px;
+	position: absolute;
+	right: 32px;
+}
+
+.alignLeftEdit {
+	left: 100px;
+	position: relative;
+}
+
+.alignLeftDetail {
+	// left: 121px;
+	left: 95px;
+	position: relative;
 }

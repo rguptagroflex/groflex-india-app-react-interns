@@ -3,6 +3,7 @@ import TextInputLabelComponent from "shared/inputs/text-input/text-input-label.c
 import TextInputHintComponent from "shared/inputs/text-input/text-input-hint.component";
 import TextInputErrorComponent from "shared/inputs/text-input/text-input-error.component";
 
+import SearchIcon from "@material-ui/icons/Search";
 class TextInputComponent extends React.Component {
 	render() {
 		const {
@@ -28,6 +29,7 @@ class TextInputComponent extends React.Component {
 
 		return (
 			<div className={`text-input-component ${wrapperClass || ""}`}>
+				{/* <SearchIcon /> */}
 				<input
 					autoFocus={this.props.autoFocus}
 					className={`input ${!value ? "input-empty" : ""} ${errorMessage ? "input-invalid" : ""}`}

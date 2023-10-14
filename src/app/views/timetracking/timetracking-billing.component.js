@@ -11,6 +11,7 @@ import ListComponent from "shared/list/list.component";
 import PopoverComponent from "shared/popover/popover.component";
 import ModalService from "services/modal.service";
 import userPermissions from "enums/user-permissions.enum";
+import { connect, Provider } from "react-redux";
 import ListAdvancedComponent from "../../shared/list-advanced/list-advanced.component";
 import { ListAdvancedDefaultSettings } from "../../helpers/constants";
 import { dateCompareSort, localeCompare, localeCompareNumeric } from "../../helpers/sortComparators";
@@ -42,7 +43,16 @@ class TimetrackingBillingComponent extends React.Component {
 			totalMoney,
 			totalTime,
 			allSelected: true,
+			submenuVisible: this.props.isSubmenuVisible,
 		};
+	}
+
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	componentDidMount() {
@@ -55,7 +65,7 @@ class TimetrackingBillingComponent extends React.Component {
 	}
 
 	render() {
-		const { trackedTimes, totalTime, totalMoney, allSelected } = this.state;
+		const { trackedTimes, totalTime, totalMoney, allSelected, submenuVisible } = this.state;
 		const { customer, resources } = this.props;
 
 		const tableColumns = [
@@ -133,6 +143,9 @@ class TimetrackingBillingComponent extends React.Component {
 				dataQsId: "timetracking-billing-createTracking",
 			},
 		];
+		const classLeft = submenuVisible ? "alignTimeSheetLeft" : "";
+		const billingTimeListLeft = submenuVisible ? "billingTimeListLeft" : "";
+
 		// console.log(tableRows, "Tablerows");
 		// console.log(trackedTimes, "trackedTimes");
 		return (
@@ -144,7 +157,7 @@ class TimetrackingBillingComponent extends React.Component {
 					buttons={topbarButtons}
 				/>
 
-				<div className="detail-view-content-wrapper">
+				<div className={`detail-view-content-wrapper ${classLeft}`}>
 					{/* First row */}
 					<div className="customer-and-time-tracking row">
 						<div className="detail-view-content-left col-xs-5 box">
@@ -212,7 +225,7 @@ class TimetrackingBillingComponent extends React.Component {
 					</div>
 				</div>
 				{/* List view */}
-				<div className="timetracking-list-wrapper ">
+				<div className={`timetracking-list-wrapper ${billingTimeListLeft}`}>
 					{/* <ListComponent
 							title={"Time records"}
 							tableId="timetracking-billing-component-table"
@@ -495,4 +508,15 @@ class TimetrackingBillingComponent extends React.Component {
 	}
 }
 
-export default TimetrackingBillingComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
+	return {
+		resources,
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(TimetrackingBillingComponent);
+
+// export default TimetrackingBillingComponent;

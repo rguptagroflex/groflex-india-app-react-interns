@@ -21,6 +21,9 @@
 	bottom: 0;
 	left: 0;
 	right: 0;
+	// .SVGInline:hover {
+	// 	fill: red;
+	// }
 }
 
 // @mixin collapsed-menu-item {
@@ -45,11 +48,26 @@
 // }
 
 .menuBar_content {
+	// .menu-item-svg {
+	// 	&:hover {
+	// 		fill: red;
+	// 	}
+	// }
 	width: 100%;
+	.menuItem {
+		justify-content: center;
+		height: 64px;
+		// margin-bottom: 10px;
+	}
+	.menuItem:hover {
+		background-color: #fff;
+	}
 
 	.icon {
 		&:before {
 			padding-top: 6px !important;
+			fill: none;
+			color: #888787;
 		}
 	}
 
@@ -106,9 +124,11 @@
 
 			&:hover {
 				color: $color-menu-hover !important; //$color-white
+				// color: red;
 
 				&::before {
-					color: $color-menu-hover !important; //$color-white
+					// color: $color-menu-hover !important; //$color-white
+					color: #00a353;
 				}
 			}
 		}

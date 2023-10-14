@@ -53,10 +53,18 @@ class InvoiceListNewComponent extends React.Component {
 			canUpdateInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_INVOICE),
 			canRegisterPayment: invoiz.user && invoiz.user.hasPermission(userPermissions.ENTER_INVOICE_PAYMENT),
 			canCreateReminder: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_INVOICE_REMINDER),
+			submenuVisible: this.props.isSubmenuVisible,
 		};
 	}
 	componentWillUnmount() {
 		this.isUnmounted = true;
+	}
+	componentDidUpdate(prevProps) {
+		const { isSubmenuVisible } = this.props;
+
+		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
+			this.setState({ submenuVisible: isSubmenuVisible });
+		}
 	}
 
 	addPayment(invoice) {
@@ -448,13 +456,20 @@ class InvoiceListNewComponent extends React.Component {
 	}
 	render() {
 		const { resources } = this.props;
-		const { canCreateInvoice, canDeleteInvoice, canUpdateInvoice, canCreateReminder, canRegisterPayment } =
-			this.state;
+		const {
+			canCreateInvoice,
+			canDeleteInvoice,
+			canUpdateInvoice,
+			canCreateReminder,
+			canRegisterPayment,
+			submenuVisible,
+		} = this.state;
+		const classLeft = submenuVisible ? "alignLeftContent" : "";
 		return (
 			<div className="invoice-list-component-wrapper">
 				{this.createTopbar()}
 
-				<div className="invoice-list-wrapper">
+				<div className={`invoice-list-wrapper ${classLeft}`}>
 					<ListAdvancedComponent
 						resources={this.props.resources}
 						ref="listAdvanced"
@@ -1081,9 +1096,19 @@ class InvoiceListNewComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 	return {
 		resources,
+		isSubmenuVisible,
+	};
+};
+const mapDispatchToProps = (dispatch) => {
+	return {
+		submenuVisible: (payload) => {
+			dispatch(submenuVisible(payload));
+		},
 	};
 };
 
-export default connect(mapStateToProps)(InvoiceListNewComponent);
+// export default connect(mapStateToProps)(InvoiceListNewComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceListNewComponent);

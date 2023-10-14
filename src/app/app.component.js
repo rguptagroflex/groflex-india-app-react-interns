@@ -232,18 +232,18 @@ class PageContainer extends React.Component {
 		IntercomAPI.update();
 	}
 
-	showNewFeatureLivePopup() {
-		ModalService.open(<GroflexNewFeatureLiveModalComponent />, {
-			headline: "",
-			confirmLabel: "Buy",
-			cancelLabel: "Cancel",
-			onConfirm: () => {
-				ModalService.close();
-				invoiz.router.navigate("/settings/billing");
-			},
-			width: 580,
-		});
-	}
+	// showNewFeatureLivePopup() {
+	// 	ModalService.open(<GroflexNewFeatureLiveModalComponent />, {
+	// 		headline: "",
+	// 		confirmLabel: "Buy",
+	// 		cancelLabel: "Cancel",
+	// 		onConfirm: () => {
+	// 			ModalService.close();
+	// 			invoiz.router.navigate("/settings/billing");
+	// 		},
+	// 		width: 580,
+	// 	});
+	// }
 
 	render() {
 		const { hasFooterContent } = this.state;
