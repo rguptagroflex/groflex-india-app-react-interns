@@ -2,7 +2,7 @@ import invoiz from "services/invoiz.service";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { submenuVisible } from "../../../redux/ducks/global";
+import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 const SubmenuItemComponent = ({
 	url,
 	active,
@@ -69,7 +69,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };

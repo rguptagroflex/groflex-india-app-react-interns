@@ -7,7 +7,7 @@ import OnClickOutside from "../../shared/on-click-outside/on-click-outside.compo
 import ModalService from "../../services/modal.service";
 import MoneyInModalComponent from "./money-in-modal.component";
 import { connect } from "react-redux";
-import { submenuVisible } from "../../redux/ducks/global";
+import { setSubmenuVisibleGlobal } from "../../redux/ducks/global";
 class CustomTopbarComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -381,7 +381,7 @@ class CustomTopbarComponent extends React.Component {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };

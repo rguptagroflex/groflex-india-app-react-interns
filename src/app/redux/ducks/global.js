@@ -38,7 +38,7 @@ export const userLoggedOut = () => {
 	};
 };
 
-export const submenuVisible = (payload) => {
+export const setSubmenuVisibleGlobal = (payload) => {
 	// console.log(payload);
 	return (dispatch, getstate) => {
 		dispatch({

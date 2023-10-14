@@ -5,7 +5,7 @@ import MenuItemComponent from "shared/nav-main/components/menu-item.component";
 import MenuItemWithSubmenuComponent from "shared/nav-main/components/menu-item-with-submenu.component";
 import MenuItemWithSubmenuComponent1 from "shared/nav-main/components/menu-item-with-submenu.component1";
 import config from "config";
-import { submenuVisible } from "../../../redux/ducks/global";
+import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 import userPermissions from "enums/user-permissions.enum";
 import planPermissions from "enums/plan-permissions.enum";
 import { connect } from "react-redux";
@@ -339,7 +339,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };

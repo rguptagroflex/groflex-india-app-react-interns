@@ -12,7 +12,7 @@ import profile_hover from "assets/images/icons/profile_hover.svg";
 import search from "assets/images/icons/search_new.svg";
 import search_hover from "assets/images/icons/search_hover.svg";
 import bell_hover from "assets/images/icons/bell_new.svg";
-import { submenuVisible } from "../../../redux/ducks/global";
+import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -330,7 +330,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(updateNewsfeedCountReset());
 		},
 		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
+			dispatch(setSubmenuVisibleGlobal(payload));
 		},
 	};
 };
