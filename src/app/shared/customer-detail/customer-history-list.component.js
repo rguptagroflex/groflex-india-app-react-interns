@@ -1,9 +1,9 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import config from 'config';
-import ButtonComponent from 'shared/button/button.component';
-import FilterComponent from 'shared/filter/filter.component';
-import FilterNewComponent from 'shared/filter/filter-new.component';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import config from "config";
+import ButtonComponent from "shared/button/button.component";
+import FilterComponent from "shared/filter/filter.component";
+import FilterNewComponent from "shared/filter/filter-new.component";
 import {
 	fetchCustomerHistoryList,
 	filterCustomerHistoryList,
@@ -13,19 +13,19 @@ import {
 	// changeToDone,
 	//newDueDate,
 	//loadMore,
-} from 'redux/ducks/customer/customerHistoryList';
-import { connect } from 'react-redux';
-import ModalService from 'services/modal.service';
-import PerfectScrollbar from 'perfect-scrollbar';
-import TodoItem from 'shared/todo/todo-item.component';
-import arrowUp from 'assets/images/svg/semicircular-up-arrow.svg';
-import arrowLeft from 'assets/images/svg/semicircular-left-arrow.svg';
-import todoImage from 'assets/images/svg/to-do-list.svg';
-import SVGInline from 'react-svg-inline';
-import WebStorageService from 'services/webstorage.service';
-import WebStorageKey from 'enums/web-storage-key.enum';
-import envelope from 'assets/images/icons/mail.svg';
-import HistoryItemComponent from 'shared/history/history-item.component';
+} from "redux/ducks/customer/customerHistoryList";
+import { connect } from "react-redux";
+import ModalService from "services/modal.service";
+import PerfectScrollbar from "perfect-scrollbar";
+import TodoItem from "shared/todo/todo-item.component";
+import arrowUp from "assets/images/svg/semicircular-up-arrow.svg";
+import arrowLeft from "assets/images/svg/semicircular-left-arrow.svg";
+import todoImage from "assets/images/svg/to-do-list.svg";
+import SVGInline from "react-svg-inline";
+import WebStorageService from "services/webstorage.service";
+import WebStorageKey from "enums/web-storage-key.enum";
+import envelope from "assets/images/icons/mail.svg";
+import HistoryItemComponent from "shared/history/history-item.component";
 
 class CustomerHistoryListComponent extends React.Component {
 	constructor(props) {
@@ -68,7 +68,7 @@ class CustomerHistoryListComponent extends React.Component {
 			invoiz.user &&
 			//invoiz.user.isAppEnabledArchiveMails() &&
 			//this.props.isImapActivated &&
-			this.props.emailStatus !== 'started'
+			this.props.emailStatus !== "started"
 		) {
 			setTimeout(() => {
 				const emailEventId = WebStorageService.getItem(WebStorageKey.EMAIL_EVENT_ID);
@@ -114,7 +114,7 @@ class CustomerHistoryListComponent extends React.Component {
 			this.createRefs(this.refArray);
 		}, 0);
 
-		if (prevProps.emailStatus === 'started' && this.props.emailStatus === 'finished') {
+		if (prevProps.emailStatus === "started" && this.props.emailStatus === "finished") {
 			this.setState({
 				emailStatusChangedToFinished: true,
 			});
@@ -129,11 +129,11 @@ class CustomerHistoryListComponent extends React.Component {
 		if (!this.props.isLoading && !this.props.isLoadingMore) {
 			if (arr) {
 				arr.map((node, index) => {
-					if (node && node.classList.contains('history-text-done-todo')) {
+					if (node && node.classList.contains("history-text-done-todo")) {
 						if (node.offsetHeight > 55) {
 							this.longNotes.push(index);
 						} else {
-							$(node).parent().parent().children('.read-more-button').remove();
+							$(node).parent().parent().children(".read-more-button").remove();
 						}
 					}
 				});
@@ -146,14 +146,14 @@ class CustomerHistoryListComponent extends React.Component {
 			this.perfectScrollbar.destroy();
 			this.perfectScrollbar = null;
 		}
-		if ($('.customerHistory_list') && $('.customerHistory_list')[0]) {
-			$('.customerHistory_list')[0].removeEventListener('scroll', this.handleScroll);
-			this.perfectScrollbar = new PerfectScrollbar('.customerHistory_list', {
+		if ($(".customerHistory_list") && $(".customerHistory_list")[0]) {
+			$(".customerHistory_list")[0].removeEventListener("scroll", this.handleScroll);
+			this.perfectScrollbar = new PerfectScrollbar(".customerHistory_list", {
 				suppressScrollX: true,
 			});
 		}
 
-		$('.customerHistory_list')[0].addEventListener('scroll', this.handleScroll);
+		$(".customerHistory_list")[0].addEventListener("scroll", this.handleScroll);
 	}
 
 	handleScroll() {
@@ -165,17 +165,17 @@ class CustomerHistoryListComponent extends React.Component {
 			remaining,
 			customerHistoryListData: { customerTodoMeta },
 		} = this.props;
-		const itemsCount = document.querySelectorAll('.history-item-icon-and-content').length;
+		const itemsCount = document.querySelectorAll(".history-item-icon-and-content").length;
 
 		filterItems.forEach((filter, index) => {
 			if (filter.active) {
-				if (currentFilter === 'all') {
+				if (currentFilter === "all") {
 					countTotal = filter.count;
-				} else if (currentFilter === 'email') {
+				} else if (currentFilter === "email") {
 					countTotal = filter.count;
-				} else if (currentFilter === 'document') {
+				} else if (currentFilter === "document") {
 					countTotal = filter.count;
-				} 
+				}
 				return;
 			}
 		});
@@ -184,7 +184,7 @@ class CustomerHistoryListComponent extends React.Component {
 			remaining > 0 &&
 			itemsCount !== countTotal &&
 			this.perfectScrollbar &&
-			this.perfectScrollbar.reach.y === 'end' &&
+			this.perfectScrollbar.reach.y === "end" &&
 			!isLoadingMore
 		) {
 			this.state.updateScrollbar && this.setState({ updateScrollbar: false });
@@ -197,8 +197,8 @@ class CustomerHistoryListComponent extends React.Component {
 			this.perfectScrollbar.destroy();
 			this.perfectScrollbar = null;
 		}
-		if ($('.customerHistory_list') && $('.customerHistory_list')[0]) {
-			$('.customerHistory_list')[0].removeEventListener('scroll', this.handleScroll);
+		if ($(".customerHistory_list") && $(".customerHistory_list")[0]) {
+			$(".customerHistory_list")[0].removeEventListener("scroll", this.handleScroll);
 		}
 	}
 
@@ -206,12 +206,12 @@ class CustomerHistoryListComponent extends React.Component {
 		switch (item.currentFilter) {
 			// case 'note':
 			// 	return 'Notizen';
-			case 'document':
-				return 'Actions';
+			case "document":
+				return "Actions";
 			// case 'todo':
 			// 	return 'To-Dos';
-			case 'email':
-				return 'Communications';
+			case "email":
+				return "Communications";
 			default:
 				break;
 		}
@@ -225,7 +225,7 @@ class CustomerHistoryListComponent extends React.Component {
 	createEmailStatusRow() {
 		const { emailStatus } = this.props;
 
-		if (emailStatus === 'started') {
+		if (emailStatus === "started") {
 			return (
 				<div className="email-status-row u_c">
 					<div className="email-status-row-spinner-wrapper">
@@ -237,7 +237,7 @@ class CustomerHistoryListComponent extends React.Component {
 					<div className="email-status-row-text text-semibold">Dein E-Mail-Verlauf wird abgerufen.</div>
 				</div>
 			);
-		} else if (emailStatus === 'finished') {
+		} else if (emailStatus === "finished") {
 			return (
 				<div className="email-status-row u_c">
 					<div className="email-status-finished-icon-container u_c">
@@ -245,7 +245,7 @@ class CustomerHistoryListComponent extends React.Component {
 					</div>
 
 					<div className="email-status-row-text text-semibold">
-						Dein E-Mail-Verlauf wurde erfolgreich abgerufen.{' '}
+						Dein E-Mail-Verlauf wurde erfolgreich abgerufen.{" "}
 						<span className="email-status-row-text-link" onClick={() => this.reloadHistoryList()}>
 							Jetzt anzeigen
 						</span>
@@ -372,11 +372,11 @@ class CustomerHistoryListComponent extends React.Component {
 		const dateValue = date.format(config.dateFormat.api);
 
 		ModalService.open(`Möchtest du dein ToDo wirklich auf ${label} neu datieren?`, {
-			headline: 'ToDo neu datieren',
-			cancelLabel: 'Abbrechen',
-			confirmLabel: 'Neu datieren',
-			confirmIcon: 'icon-edit',
-			confirmButtonType: 'primary',
+			headline: "ToDo neu datieren",
+			cancelLabel: "Abbrechen",
+			confirmLabel: "Neu datieren",
+			confirmIcon: "icon-edit",
+			confirmButtonType: "primary",
 			onConfirm: () => {
 				ModalService.close();
 				this.props.newDueDate(id, dateValue, this.state.customer.id);
@@ -403,7 +403,7 @@ class CustomerHistoryListComponent extends React.Component {
 			currentFilter,
 			customerHistoryListData: { customerHistoryItems, customerTodoItems, meta, customerTodoMeta },
 			emailStatus,
-			resources
+			resources,
 		} = this.props;
 
 		const { emailStatusChangedToFinished } = this.state;
@@ -431,9 +431,7 @@ class CustomerHistoryListComponent extends React.Component {
 			this.props.customerHistoryListData.customerTodoItems &&
 			this.props.customerHistoryListData.customerTodoItems.length > 0;
 
-		const isEmptyHistoryList =
-			customerHistoryItems &&
-			customerHistoryItems.length === 0
+		const isEmptyHistoryList = customerHistoryItems && customerHistoryItems.length === 0;
 
 		const emptyListContent = (
 			<div className="empty-list-box-customer u_c">
@@ -451,7 +449,7 @@ class CustomerHistoryListComponent extends React.Component {
 				</div>
 			</div>
 		);
-		const finishedButShow = emailStatus === 'finished' && emailStatusChangedToFinished;
+		const finishedButShow = emailStatus === "finished" && emailStatusChangedToFinished;
 		return (
 			<div className="box-rounded flex-grow history-list">
 				{meta.count === 0 ? (
@@ -459,12 +457,12 @@ class CustomerHistoryListComponent extends React.Component {
 				) : (
 					<React.Fragment>
 						<div className="history-list-header">
-							<div className="pagebox_heading text-h4">
+							{/* <div className="pagebox_heading text-h4">
 								{!isLoading &&
 									(isCurrentFilterEmpty
 										? null
 										: 'Activities')}
-							</div>
+							</div> */}
 							<div className="history-list-head-content">
 								<FilterNewComponent
 									items={filterItems}
@@ -492,7 +490,7 @@ class CustomerHistoryListComponent extends React.Component {
 											<div>
 												<ButtonComponent
 													callback={() => invoiz.router.reload()}
-													label={'Reload'}
+													label={"Reload"}
 												/>
 											</div>
 										</div>
@@ -515,7 +513,7 @@ class CustomerHistoryListComponent extends React.Component {
 													emptyListContent
 												) : (
 													<div className="history-list-wrapper">
-														{emailStatus === 'started' || finishedButShow
+														{emailStatus === "started" || finishedButShow
 															? emailStatusRow
 															: null}
 														{/* <div>{rowsTodo}</div> */}
@@ -566,7 +564,7 @@ const mapStateToProps = (state) => {
 		filterItems,
 		remaining,
 		customerHistoryListData,
-		resources
+		resources,
 	};
 };
 
