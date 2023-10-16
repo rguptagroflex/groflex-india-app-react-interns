@@ -187,6 +187,12 @@
 
 	.articleHistory_container {
 		min-height: 400px;
+		.article {
+			.loader {
+				position: relative;
+				margin-top: 20%;
+			}
+		}
 	}
 
 	.article-history-list-pagination {
