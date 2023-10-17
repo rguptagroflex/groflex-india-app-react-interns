@@ -723,7 +723,9 @@ class ArticleDetailComponent extends React.Component {
 												<h4>Coming Soon</h4>
 											</div>
 											<div className="article-detail-information-text">
-												Launching new Inventory features very soon{" "}
+												<span>Launching new Inventory</span>
+												<br />
+												<span>features very soon</span>
 											</div>
 										</div>
 										<div

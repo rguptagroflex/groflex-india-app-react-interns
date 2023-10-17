@@ -147,105 +147,113 @@ const ReportsGeneralLedger = (props) => {
 
 	const onGridReady = useEffect(
 		(params) => {
+			const startDate = moment(selectedDate.startDate).format("YYYY-MM-DD");
+			const endDate = moment(selectedDate.endDate).format("YYYY-MM-DD");
+			console.log("Start Date: ", startDate);
+			console.log("End Date: ", endDate);
 			invoiz
+				// .request(
+				// 	`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
+
+				// 	{ auth: true }
+				// )
 				.request(
-					`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
+					`${config.resourceHost}accountingReport/generalLedger/${startDate}/${endDate}?type=json&customerId=700`,
 
 					{ auth: true }
 				)
 				.then((res) => {
-					console.log("Start Date ", Date.parse(selectedDate.startDate));
+					// let assetsTotalCredit = 0;
+					// let liablityTotalCredit = 0;
+					// let expenseTotalCredit = 0;
+					// let assetsTotalDebit = 0;
+					// let liablityTotalDebit = 0;
+					// let expenseTotalDebit = 0;
+					// let netMovementLiability = 0;
+					// let netMovementAssets = 0;
+					// let netMovementExpenses = 0;
 
-					let assetsTotalCredit = 0;
-					let liablityTotalCredit = 0;
-					let expenseTotalCredit = 0;
-					let assetsTotalDebit = 0;
-					let liablityTotalDebit = 0;
-					let expenseTotalDebit = 0;
-					let netMovementLiability = 0;
-					let netMovementAssets = 0;
-					let netMovementExpenses = 0;
+					// let filterdResponse = [];
+					// res.body.data.forEach((item) => {
+					// 	console.log("api date: ", Date.parse(item.date));
+					// 	if (
+					// 		Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
+					// 		Date.parse(item.date) <= Date.parse(selectedDate.endDate)
+					// 	) {
+					// 		filterdResponse.push(item);
+					// 	}
+					// });
+					// console.log("Filtered Array: ", filterdResponse);
 
-					let filterdResponse = [];
-					res.body.data.forEach((item) => {
-						console.log("api date: ", Date.parse(item.date));
-						if (
-							Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
-							Date.parse(item.date) <= Date.parse(selectedDate.endDate)
-						) {
-							filterdResponse.push(item);
-						}
-					});
-					console.log("Filtered Array: ", filterdResponse);
+					// filterdResponse.forEach((item) => {
+					// 	if (item.chartOfAccount.accountTypeId === "liability") {
+					// 		liablityTotalCredit += item.credits;
+					// 		liablityTotalDebit += item.debits;
+					// 	} else if (item.chartOfAccount.accountTypeId === "assets") {
+					// 		assetsTotalCredit += item.credits;
+					// 		assetsTotalDebit += item.debits;
+					// 	} else if (item.chartOfAccount.accountTypeId === "expenses") {
+					// 		expenseTotalCredit += item.credits;
+					// 		expenseTotalDebit += item.debits;
+					// 	}
+					// });
 
-					filterdResponse.forEach((item) => {
-						if (item.chartOfAccount.accountTypeId === "liability") {
-							liablityTotalCredit += item.credits;
-							liablityTotalDebit += item.debits;
-						} else if (item.chartOfAccount.accountTypeId === "assets") {
-							assetsTotalCredit += item.credits;
-							assetsTotalDebit += item.debits;
-						} else if (item.chartOfAccount.accountTypeId === "expenses") {
-							expenseTotalCredit += item.credits;
-							expenseTotalDebit += item.debits;
-						}
-					});
+					// netMovementLiability = liablityTotalCredit - liablityTotalDebit;
+					// netMovementAssets = assetsTotalCredit - assetsTotalDebit;
+					// netMovementExpenses = expenseTotalCredit - expenseTotalDebit;
 
-					netMovementLiability = liablityTotalCredit - liablityTotalDebit;
-					netMovementAssets = assetsTotalCredit - assetsTotalDebit;
-					netMovementExpenses = expenseTotalCredit - expenseTotalDebit;
+					// const resultTotal = [
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "liability" },
+					// 		credits: liablityTotalCredit,
+					// 		debits: liablityTotalDebit,
+					// 		date: "Total for Liabilities",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "assets" },
+					// 		credits: assetsTotalCredit,
+					// 		debits: assetsTotalDebit,
+					// 		date: "Total for Assets",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "expenses" },
+					// 		credits: expenseTotalCredit,
+					// 		debits: expenseTotalDebit,
+					// 		date: "Total for Expenses",
+					// 	},
+					// ];
 
-					const resultTotal = [
-						{
-							chartOfAccount: { accountTypeId: "liability" },
-							credits: liablityTotalCredit,
-							debits: liablityTotalDebit,
-							date: "Total for Liabilities",
-						},
-						{
-							chartOfAccount: { accountTypeId: "assets" },
-							credits: assetsTotalCredit,
-							debits: assetsTotalDebit,
-							date: "Total for Assets",
-						},
-						{
-							chartOfAccount: { accountTypeId: "expenses" },
-							credits: expenseTotalCredit,
-							debits: expenseTotalDebit,
-							date: "Total for Expenses",
-						},
-					];
+					// const resultNetMovement = [
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "liability" },
+					// 		credits: netMovementLiability > 0 ? netMovementLiability : "-",
+					// 		debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
+					// 		date: "Net Movement",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "assets" },
+					// 		credits: netMovementAssets > 0 ? netMovementAssets : "-",
+					// 		debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
+					// 		date: "Net Movement",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "expenses" },
+					// 		credits: netMovementExpenses > 0 ? netMovementExpenses : "-",
+					// 		debits: netMovementExpenses < 0 ? Math.abs(netMovementExpenses) : "-",
+					// 		date: "Net Movement",
+					// 	},
+					// ];
+					// let result = [];
 
-					const resultNetMovement = [
-						{
-							chartOfAccount: { accountTypeId: "liability" },
-							credits: netMovementLiability > 0 ? netMovementLiability : "-",
-							debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
-							date: "Net Movement",
-						},
-						{
-							chartOfAccount: { accountTypeId: "assets" },
-							credits: netMovementAssets > 0 ? netMovementAssets : "-",
-							debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
-							date: "Net Movement",
-						},
-						{
-							chartOfAccount: { accountTypeId: "expenses" },
-							credits: netMovementExpenses > 0 ? netMovementExpenses : "-",
-							debits: netMovementExpenses < 0 ? Math.abs(netMovementExpenses) : "-",
-							date: "Net Movement",
-						},
-					];
-					let result = [];
-
-					if (filterdResponse.length !== 0) {
-						result = [...filterdResponse, ...resultTotal, ...resultNetMovement];
-					}
+					// if (filterdResponse.length !== 0) {
+					// 	result = [...filterdResponse, ...resultTotal, ...resultNetMovement];
+					// }
 
 					console.log("response of data :", res.body.data);
 					// setRowData(res.body.data);
 
-					setRowData(result);
+					// setRowData(res.body.data);
+					setRowData(res.body.data.summaryData.transactions);
 				});
 		},
 		[selectedDate]
