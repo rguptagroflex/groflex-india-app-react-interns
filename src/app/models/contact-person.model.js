@@ -36,9 +36,11 @@ export default class ContactPerson {
 	}
 
 	get displayNameLong() {
-		let displayName = this.salutation ? `${this.salutation} ` : '';
-		displayName += this.title ? `${this.title} ` : '';
-		displayName += `${this.firstName} ${this.lastName}`;
+		// let displayName = this.salutation ? `${this.salutation} ` : '';
+		// displayName += this.title ? `${this.title} ` : '';
+		// displayName += `${this.firstName} ${this.lastName}`;
+		
+		let displayName =  `${this.firstName} ${this.lastName}`;
 		return displayName;
 	}
 

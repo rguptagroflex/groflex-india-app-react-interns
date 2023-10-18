@@ -86,8 +86,8 @@ class AccountKycProgressComponent extends React.Component {
 		const { resources, account } = this.props;
 		const { kycStep, kycStatus } = this.state;
 		return (
-			<div className="settings-kycform-component">
-				<div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
+			<div className="settings-kycform-component u_p_20">
+				<div className="row"> {/*u_pt_60 u_pb_40 */}
 					<div className="col-xs-12 text-h4 u_pb_20">{`KYC Form`}</div>
 					{kycStep === COMPLETED ? (
 						<div className="col-xs-12">

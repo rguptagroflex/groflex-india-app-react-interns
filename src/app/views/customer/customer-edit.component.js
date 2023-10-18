@@ -410,46 +410,18 @@ class CustomerEditComponent extends React.Component {
 					key={`customer-edit-contactperson-row-${index}`}
 				>
 					<div className="customer-edit-contactperson-controls">
-						<div className="icon icon-trashcan" onClick={() => this.onDeleteContactPerson(index)} />
+						<div className="icon icon-trashcan u_mr_8" onClick={() => this.onDeleteContactPerson(index)} />
 						<div className="icon icon-edit" onClick={() => this.onEditContactPerson(index)} />
 					</div>
-
-					<div className="col-xs-5">{contactPerson.displayNameLong}</div>
-					<div className="col-xs-7">
-						{contactPerson.phone1 && (
+					<div className="row u_ml_8">
+						<div className="col-xs-5">
+							<div>{contactPerson.displayNameLong}</div>
+						</div>
+						<div className="col-xs-7">
 							<div className="row">
-								<div className="col-xs-4 label">{resources.str_phone} 1</div>
-								<div className="col-xs-8">{contactPerson.phone1}</div>
+								<div>{contactPerson.email}</div>
 							</div>
-						)}
-
-						{contactPerson.phone2 && (
-							<div className="row">
-								<div className="col-xs-4 label">{resources.str_phone} 2</div>
-								<div className="col-xs-8">{contactPerson.phone2}</div>
-							</div>
-						)}
-
-						{contactPerson.mobile && (
-							<div className="row">
-								<div className="col-xs-4 label">{resources.str_mobile}</div>
-								<div className="col-xs-8">{contactPerson.mobile}</div>
-							</div>
-						)}
-
-						{contactPerson.fax && (
-							<div className="row">
-								<div className="col-xs-4 label">{resources.str_fax}</div>
-								<div className="col-xs-8">{contactPerson.fax}</div>
-							</div>
-						)}
-
-						{contactPerson.email && (
-							<div className="row">
-								<div className="col-xs-4 label">{resources.str_email}</div>
-								<div className="col-xs-8">{contactPerson.email}</div>
-							</div>
-						)}
+						</div>
 					</div>
 				</div>
 			);
@@ -458,239 +430,228 @@ class CustomerEditComponent extends React.Component {
 			<div className="customer-edit-component-wrapper">
 				{topbar}
 
-				<div className={`box wrapper-has-topbar-with-margin`}>
-					<div className="row ">
-						{" "}
-						{/*u_pt_60 u_pb_40 */}
-						<div className="col-xs-12 text-h4 u_pb_20">{resources.str_details}</div>
-						<div className="col-xs-12">
-							<div className="row">
-								<RadioInputComponent
-									wrapperClass={`customer-edit-type-toggle col-xs-6`}
-									options={[
-										{ label: "Customer", value: "customer" },
-										{ label: "Payee", value: "payee" },
-									]}
-									value={customer.type || "customer"}
-									onChange={(val) => this.onCustomerFieldChange("type", val)}
-									dataQsId="customer-edit-type"
-								/>
-							</div>
-							<div className="row">
-								<TabInputComponent
-									componentClass={"customer-edit-kind-toggle col-xs-6"}
-									items={[
-										{ label: resources.str_firma, value: CUSTOMER_KIND.COMPANY },
-										{ label: resources.str_private, value: CUSTOMER_KIND.PERSON },
-									]}
-									value={customer.kind}
-									onChange={(val) => this.onCustomerFieldChange("kind", val)}
-									dataQsId="customer-edit-kind"
-								/>
-
-								<div className="customer-edit-customer-number col-xs-5 col-xs-offset-1">
-									{/* <input type="text" value="" className="settings-autofilled-Field-hidden" /> */}
-									<NumberInputComponent
-										name="customerNumber"
-										dataQsId="customer-edit-customerNumber"
-										label={resources.str_customerNumber}
-										leftLabel={true}
-										hasBorder={true}
-										// precision={0}
-										min={this.props.nextCustomerNumber}
-										selectOnFocus={true}
-										value={customer.number || this.props.nextCustomerNumber}
-										isDecimal={false}
-										onChange={(value) => this.onCustomerFieldChange("number", value)}
-									/>
-								</div>
-							</div>
-
-							{customer.kind === CUSTOMER_KIND.COMPANY ? companyElements : personElements}
-
-							{/* <div className="row">
-								<div className="col-xs-12">
-									<TextInputExtendedComponent
-										name="street"
-										dataQsId="customer-edit-address-street"
-										value={customer.address.street || ''}
-										label={resources.str_streetAndHouseNumber}
-										onChange={value => this.onAddressFieldChange('street', value)}
-									/>
-								</div>
-							</div>
-
-							<div className="row">
-								<div className="col-xs-4">
-									<TextInputExtendedComponent
-										value={customer.address.zipCode || ''}
-										name="zipCode"
-										placeholder={resources.str_postcode}
-										onChange={value => this.onZipChange(value)}
-										dataQsId="customer-edit-address-zip"
-									/>
-								</div>
-
-								<div className="col-xs-8">
-									<div className="customer-edit-city-select">
-										<SelectInputComponent
-											name="city"
-											allowCreate={true}
-											notAsync={true}
-											options={{
-												labelKey: 'label',
-												valueKey: 'value',
-												matchProp: 'label',
-												placeholder: resources.str_place,
-												handleChange: option => this.onCityChange(option && option.value)
-											}}
-											value={customer.address.city}
-											loadedOptions={cityOptions}
-											onChange={value => this.onCityChange(value)}
-											dataQsId="customer-edit-address-city"
-										/>
-									</div>
-								</div>
-							</div> */}
-
-							<div className="row">
-								<div className="col-xs-12">
-									<label className="textarea_label">{resources.str_streetAndHouseNumber}</label>
-									<TextareaAutosize
-										name="street"
-										data-qs-id="customer-edit-address-street"
-										className="textarea_input customer-edit-address-street"
-										placeholder={resources.str_enterAddress}
-										minRows={3}
-										maxRows={15}
-										value={customer.address.street || ""}
-										onChange={(event) => this.onStreetFieldChange("street", event)}
-									/>
-									<span className="textarea_bar" />
-								</div>
-							</div>
-
-							<div className="row">
-								<div className={`${customer.address.countryIso !== "IN" ? "col-xs-12" : "col-xs-6"}`}>
-									<div className="customer-edit-country-select">
-										<SelectInputComponent
-											title={resources.str_country}
-											name="country"
-											dataQsId={"customer-edit-address-country"}
-											value={customer.address.countryIso}
-											allowCreate={false}
-											notAsync={true}
-											options={{
-												labelKey: "label",
-												valueKey: "iso2",
-												clearable: false,
-												backspaceRemoves: false,
-												handleChange: (option) =>
-													this.onCountryFieldChange("countryIso", option),
-											}}
-											loadedOptions={getCountries()}
-										/>
-									</div>
-								</div>
-								<div className="col-xs-6">
-									<div className="customer-edit-country-select">
-										{customer.address.countryIso === "IN" ? (
-											<SelectStateInputComponent
-												title={resources.str_state}
-												stateId={customer.indiaState && customer.indiaState.id}
-												onStateChanged={this.onStateChanged.bind(this)}
-												errorMessage={errorMessage}
-											/>
-										) : null}
-									</div>
-								</div>
-							</div>
-
-							{customer.kind === CUSTOMER_KIND.COMPANY && customer.address.countryIso === "IN" ? (
-								<div className="row">
-									<div className="col-xs-6">
-										<div>
-											<SelectInputComponent
-												// title= "GST Type"
-												name="gstType"
-												// ref ="customer-edit-text-input-company-gstType"
-												value={customer.address.gstType}
-												allowCreate={true}
-												notAsync={true}
-												// required={true}
-												options={{
-													placeholder: resources.str_gstType,
-													clearable: false,
-													backspaceRemoves: false,
-													labelKey: "label",
-													valueKey: "value",
-													matchProp: "label",
-													handleChange: (option) =>
-														this.onGSTTypeFieldChange("gstType", option.value),
-												}}
-												// errorMessage={gstTypeErrorMessage}
-												loadedOptions={gstTypeOptions}
-											/>
-										</div>
-									</div>
-									{customer.address.gstType !== "Unregistered" ? (
-										<div className="col-xs-6">
-											<TextInputExtendedComponent
-												name="gstNumber"
-												ref="customer-edit-text-input-company-gstNumber"
-												dataQsId="customer-edit-address-gstNumber"
-												value={customer.address.gstNumber || ""}
-												label={resources.str_gstNumber}
-												errorMessage={gstErrorMessage}
-												// onBlur={ev => this.onGstFieldBlur(ev)}
-												onChange={(value) => this.onGSTFieldChange("gstNumber", value)}
-											/>
-										</div>
-									) : null}
-
-									<div className="col-xs-6">
-										<TextInputExtendedComponent
-											name="cinNumber"
-											ref="customer-edit-text-input-company-cinNumber"
-											dataQsId="customer-edit-address-cinNumber"
-											value={customer.address.cinNumber || ""}
-											label={resources.str_cinNumber}
-											// errorMessage={cinErrorMessage}
-											// onBlur={ev => this.onCinFieldBlur(ev)}
-											onChange={(value) => this.onCINFieldChange("cinNumber", value)}
-										/>
-									</div>
-								</div>
-							) : null}
-							{customer.address.countryIso !== "IN" && customer.address.countryIso
-								? planRestricted
-									? restrictedContent
-									: multiCurrencyContent
-								: multiCurrencyContent}
-						</div>
-					</div>
-					{customer.type === `customer` || customer.type === undefined ? (
-						<div className="row ">
-							{" "}
-							{/*u_pb_30 u_pt_30 */}
-							<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{`Opening balance`}</div>
+				<div className={`wrapper-has-topbar-with-margin`}>
+					{" "}
+					<div className="row">
+						<div className="col-xs-7 u_mb_20 border-topbar-wrapper ">
+							<div className="col-xs-12 text-h4 ">{resources.str_contactInfo}</div>
 							<div className="col-xs-12">
 								<div className="row">
-									<div className="col-xs-6 recipientFormOpeningToggleRadio">
-										<RadioInputComponent
-											wrapperClass=""
-											// disabled={(customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0))
-											// 	|| (this.state.isOpeningDisabled) ? true : false}
-											key="toggleOpeningBalanceType"
-											options={[
-												{ label: `Previous dues`, value: DUES },
-												{ label: `Excess payments`, value: EXCESS },
-											]}
-											value={toggledOpeningBalance}
-											onChange={this.handleOpeningBalanceChange.bind(this)}
+									<RadioInputComponent
+										wrapperClass={`customer-edit-type-toggle col-xs-6 u_mt_20`}
+										options={[
+											{ label: "Customer", value: "customer" },
+											{ label: "Payee", value: "payee" },
+										]}
+										value={customer.type || "customer"}
+										onChange={(val) => this.onCustomerFieldChange("type", val)}
+										dataQsId="customer-edit-type"
+									/>
+								</div>
+								<div className="row">
+									<TabInputComponent
+										componentClass={"customer-edit-kind-toggle col-xs-5"}
+										items={[
+											{ label: resources.str_firma, value: CUSTOMER_KIND.COMPANY },
+											{ label: resources.str_private, value: CUSTOMER_KIND.PERSON },
+										]}
+										value={customer.kind}
+										onChange={(val) => this.onCustomerFieldChange("kind", val)}
+										dataQsId="customer-edit-kind"
+									/>
+
+									<div className="customer-edit-customer-number col-xs-6 col-xs-offset-1">
+										{/* <input type="text" value="" className="settings-autofilled-Field-hidden" /> */}
+										<NumberInputComponent
+											name="customerNumber"
+											dataQsId="customer-edit-customerNumber"
+											label={resources.str_customerNumber}
+											leftLabel={true}
+											hasBorder={true}
+											// precision={0}
+											min={this.props.nextCustomerNumber}
+											selectOnFocus={true}
+											value={customer.number || this.props.nextCustomerNumber}
+											isDecimal={false}
+											onChange={(value) => this.onCustomerFieldChange("number", value)}
 										/>
 									</div>
+								</div>
+
+								{customer.kind === CUSTOMER_KIND.COMPANY ? companyElements : personElements}
+
+								<div className="row">
+									<div className="col-xs-12">
+										<label className="textarea_label">{resources.str_streetAndHouseNumber}</label>
+										<TextareaAutosize
+											name="street"
+											data-qs-id="customer-edit-address-street"
+											className="textarea_input customer-edit-address-street"
+											placeholder={resources.str_enterAddress}
+											minRows={3}
+											maxRows={15}
+											value={customer.address.street || ""}
+											onChange={(event) => this.onStreetFieldChange("street", event)}
+										/>
+										<span className="textarea_bar" />
+									</div>
+								</div>
+								<div className="row">
+									<div className="col-xs-12 u_mt_40">
+										<div className="row">
+											<div className=" col-xs-12">
+												<SelectInputComponent
+													title="Category"
+													name="customerCategory"
+													notAsync={true}
+													options={{
+														clearable: false,
+														searchable: false,
+														labelKey: "name",
+														valueKey: "value",
+														handleChange: (option) =>
+															this.onCustomerFieldChange("category", option.value),
+													}}
+													value={customer.category}
+													loadedOptions={customerCategories.map((cat) => {
+														return {
+															name: cat,
+															value: cat === resources.str_noInformation ? "" : cat,
+														};
+													})}
+													dataQsId="customer-edit-customerCategory"
+												/>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div className="row">
+									<div
+										className={`${customer.address.countryIso !== "IN" ? "col-xs-12" : "col-xs-6"}`}
+									>
+										<div className="customer-edit-country-select">
+											<SelectInputComponent
+												title={resources.str_country}
+												name="country"
+												dataQsId={"customer-edit-address-country"}
+												value={customer.address.countryIso}
+												allowCreate={false}
+												notAsync={true}
+												options={{
+													labelKey: "label",
+													valueKey: "iso2",
+													clearable: false,
+													backspaceRemoves: false,
+													handleChange: (option) =>
+														this.onCountryFieldChange("countryIso", option),
+												}}
+												loadedOptions={getCountries()}
+											/>
+										</div>
+									</div>
 									<div className="col-xs-6">
+										<div className="customer-edit-country-select">
+											{customer.address.countryIso === "IN" ? (
+												<SelectStateInputComponent
+													title={resources.str_state}
+													stateId={customer.indiaState && customer.indiaState.id}
+													onStateChanged={this.onStateChanged.bind(this)}
+													errorMessage={errorMessage}
+												/>
+											) : null}
+										</div>
+									</div>
+								</div>
+
+								{customer.kind === CUSTOMER_KIND.COMPANY && customer.address.countryIso === "IN" ? (
+									<div className="row">
+										<div className="col-xs-6">
+											<div style={{ marginTop: "12px" }}>
+												<SelectInputComponent
+													// title= "GST Type"
+													name="gstType"
+													// ref ="customer-edit-text-input-company-gstType"
+													value={customer.address.gstType}
+													allowCreate={true}
+													notAsync={true}
+													// required={true}
+													options={{
+														placeholder: resources.str_gstType,
+														clearable: false,
+														backspaceRemoves: false,
+														labelKey: "label",
+														valueKey: "value",
+														matchProp: "label",
+														handleChange: (option) =>
+															this.onGSTTypeFieldChange("gstType", option.value),
+													}}
+													// errorMessage={gstTypeErrorMessage}
+													loadedOptions={gstTypeOptions}
+												/>
+											</div>
+										</div>
+										{customer.address.gstType !== "Unregistered" ? (
+											<div className="col-xs-6">
+												<TextInputExtendedComponent
+													name="gstNumber"
+													ref="customer-edit-text-input-company-gstNumber"
+													dataQsId="customer-edit-address-gstNumber"
+													value={customer.address.gstNumber || ""}
+													label={resources.str_gstNumber}
+													errorMessage={gstErrorMessage}
+													// onBlur={ev => this.onGstFieldBlur(ev)}
+													onChange={(value) => this.onGSTFieldChange("gstNumber", value)}
+												/>
+											</div>
+										) : null}
+
+										<div className="col-xs-6">
+											<TextInputExtendedComponent
+												name="cinNumber"
+												ref="customer-edit-text-input-company-cinNumber"
+												dataQsId="customer-edit-address-cinNumber"
+												value={customer.address.cinNumber || ""}
+												label={resources.str_cinNumber}
+												// errorMessage={cinErrorMessage}
+												// onBlur={ev => this.onCinFieldBlur(ev)}
+												onChange={(value) => this.onCINFieldChange("cinNumber", value)}
+											/>
+										</div>
+									</div>
+								) : null}
+								{customer.address.countryIso !== "IN" && customer.address.countryIso
+									? planRestricted
+										? restrictedContent
+										: multiCurrencyContent
+									: multiCurrencyContent}
+							</div>
+						
+						</div>
+						<div
+							className="col-xs-5 "
+						>
+							{customer.type === `customer` || customer.type === undefined ? (
+								<div className="row u_mb_20 border-topbar-wrapper u_ml_10">
+									{" "}
+									<div className="col-xs-12 text-h4 ">{`Opening balance`}</div>
+									<div className="col-xs-12">
+										<div className="row">
+											<div className="col-xs-12 recipientFormOpeningToggleRadio">
+												<RadioInputComponent
+													wrapperClass=""
+													// disabled={(customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0))
+													// 	|| (this.state.isOpeningDisabled) ? true : false}
+													key="toggleOpeningBalanceType"
+													options={[
+														{ label: `Previous dues`, value: DUES },
+														{ label: `Excess payments`, value: EXCESS },
+													]}
+													value={toggledOpeningBalance}
+													onChange={this.handleOpeningBalanceChange.bind(this)}
+												/>
+											</div>
+											{/* <div className="col-xs-6">
 										<CurrencyInputComponent
 											value={
 												toggledOpeningBalance === DUES
@@ -707,230 +668,233 @@ class CustomerEditComponent extends React.Component {
 											// 	|| (this.state.isOpeningDisabled) ? true : false}
 											openingBalanceTypeCurrency={toggledOpeningBalance}
 										/>
+									</div> */}
+										</div>
+										<div className="row">
+											<div className="col-xs-12 recipientFormOpeningToggleRadio">
+											</div>
+											<div className="col-xs-12">
+												<CurrencyInputComponent
+													value={
+														toggledOpeningBalance === DUES
+															? customer.openingBalance
+															: customer.balance
+													}
+													//name="openingBalance"
+													onBlur={this.onBalanceChange.bind(this)}
+													dataQsId="dashboard-taxEstimation-configuration-profit"
+													label={
+														customer.type === `payee`
+															? PAYEE_DUES_LABEL
+															: openingBalanceLabel
+													}
+													willReceiveNewValueProps={true}
+													//errorMessage={balanceErrorMessage}
+													// disabled={customer.salesOrExpensesVolumeData && (customer.salesOrExpensesVolumeData.turnoverTotal > 0 || customer.salesOrExpensesVolumeData.credits > 0 )
+													// 	|| (this.state.isOpeningDisabled) ? true : false}
+													openingBalanceTypeCurrency={toggledOpeningBalance}
+												/>
+											</div>
+										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-					) : null}
-					<div className="row">
-						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_communication}</div>
-						<div className="col-xs-12">
-							<div className="row">
-								<div className="col-xs-6">
-									<TextInputExtendedComponent
-										ref="customerEditEmailInput"
-										name="email"
-										dataQsId="customer-edit-email"
-										onBlur={(target, value) => this.onEmailBlur(value)}
-										value={customer.email || ""}
-										label={resources.str_email}
-										onChange={(value, name) => this.onInputChange(value, name)}
-										// onChange={value => this.onCustomerFieldChange('email', value)}
-										errorMessage={errorMessageEmail}
-									/>
+							) : null}
+							<div className="row u_mb_20 border-topbar-wrapper u_ml_10 ">
+								<div className="col-xs-12 text-h4 ">{resources.str_conditions}</div>
+								<div className="col-xs-12  u_mt_6">
+									{"You can set your payment terms & discount % here"}
 								</div>
-								<div className="col-xs-6">
-									<TextInputExtendedComponent
-										name="website"
-										dataQsId="customer-edit-website"
-										value={customer.website || ""}
-										label={resources.str_website}
-										onChange={(value) => this.onCustomerFieldChange("website", value)}
-									/>
-								</div>
-							</div>
-
-							<div className="row">
-								<div className="col-xs-6">
-									<NumberInputComponent
-										dataQsId="customer-edit-phone1"
-										label={resources.str_phone}
-										name={"phone1"}
-										value={parseInt(customer.phone1)}
-										isDecimal={false}
-										onChange={(value) => this.onCustomerFieldChange("phone1", value)}
-										defaultNonZero={true}
-									/>
-									{/* <TextInputExtendedComponent
-										name="phone1"
-										dataQsId="customer-edit-phone1"
-										value={customer.phone1 || ''}
-										label={resources.str_phone}
-										onChange={value => this.onCustomerFieldChange('phone1', value)}
-									/> */}
-								</div>
-								<div className="col-xs-6">
-									<NumberInputComponent
-										dataQsId="customer-edit-phone2"
-										label={resources.str_phone + " 2"}
-										name={"phone2"}
-										value={parseInt(customer.phone2)}
-										isDecimal={false}
-										onChange={(value) => this.onCustomerFieldChange("phone2", value)}
-										defaultNonZero={true}
-									/>
-									{/* <TextInputExtendedComponent
-										name="phone2"
-										dataQsId="customer-edit-phone2"
-										value={customer.phone2 || ''}
-										label={resources.str_phone + ' 2'}
-										onChange={value => this.onCustomerFieldChange('phone2', value)}
-									/> */}
-								</div>
-							</div>
-
-							<div className="row">
-								<div className="col-xs-6">
-									<NumberInputComponent
-										dataQsId="customer-edit-mobile"
-										label={resources.str_mobilePhone}
-										name={"mobile"}
-										maxLength="10"
-										value={parseInt(customer.mobile)}
-										isDecimal={false}
-										errorMessage={errorMessageMobile}
-										onBlur={(value) => this.onMobileNumberBlur(value)}
-										onChange={(value, name) => this.onInputChange(value, name)}
-										defaultNonZero={true}
-									/>
-
-									{/* <TextInputExtendedComponent
-										name="mobile"
-										dataQsId="customer-edit-mobile"
-										value={customer.mobile || ''}
-										label={resources.str_mobilePhone}
-										onChange={value => this.onCustomerFieldChange('mobile', value)}
-									/> */}
-								</div>
-
-								<div className="col-xs-6">
-									<TextInputExtendedComponent
-										name="fax"
-										dataQsId="customer-edit-fax"
-										value={customer.fax || ""}
-										label={resources.str_fax}
-										onChange={(value) => this.onCustomerFieldChange("fax", value)}
-									/>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div className="row">
-						<div className="col-xs-6 text-h4 u_pb_20">
-							<div className="row">
-								<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactCategory}</div>
 								<div className="col-xs-12">
 									<div className="row">
 										<div className="col-xs-12">
-											<SelectInputComponent
-												name="customerCategory"
-												notAsync={true}
-												options={{
-													clearable: false,
-													searchable: false,
-													labelKey: "name",
-													valueKey: "value",
-													handleChange: (option) =>
-														this.onCustomerFieldChange("category", option.value),
-												}}
-												value={customer.category}
-												loadedOptions={customerCategories.map((cat) => {
-													return {
-														name: cat,
-														value: cat === resources.str_noInformation ? "" : cat,
-													};
-												})}
-												dataQsId="customer-edit-customerCategory"
+											<div className="customer-edit-paycondition">
+												<label>{resources.str_termsOfPayment}</label>
+												<SelectInputComponent
+													name="payCondition"
+													notAsync={true}
+													options={{
+														clearable: false,
+														searchable: false,
+														labelKey: "name",
+														valueKey: "value",
+														handleChange: (option) =>
+															this.onCustomerFieldChange("payConditionId", option.value),
+													}}
+													value={customer.payConditionId || 0}
+													loadedOptions={payConditionOptions}
+													dataQsId="customer-edit-payCondition"
+												/>
+											</div>
+										</div>
+									</div>
+									<div className="row">
+										<div className="col-xs-12">
+											<PercentageInputComponent
+												name="discount"
+												dataQsId="customer-edit-discount"
+												value={customer.discount}
+												selectOnFocus={true}
+												onBlur={(value) => this.onCustomerFieldChange("discount", value)}
+												label={resources.customerDiscountListPrices}
+												hasBorder={true}
+												leftLabel={true}
 											/>
 										</div>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div className="col-xs-6 text-h4 u_pb_20">
-							<div className="row">
-								<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_contactPerson}</div>
-								<div className="col-xs-12">
-									{contactPersonRows.length > 0 ? (
-										<div className="customer-edit-contactpersons">{contactPersonRows}</div>
-									) : null}
-
-									<ButtonComponent
-										buttonIcon="icon-plus"
-										label={resources.str_contactPerson}
-										callback={() => this.onAddContactPerson()}
-										type="default"
-									/>
+							<div className="row u_mb_20  border-topbar-wrapper-rows u_ml_10">
+								<div className="col-xs-12 u_mt_8 text-h4 u_mb_20" style={{ height: "2px" }}>
+									{resources.str_contactPerson}
 								</div>
+								<div className="col-xs-12 u_mb_12 u_mt_10 u_ml_2">
+									{"You can list all your contacts here"}
+								</div>
+								<div className="col-xs-12  ">
+									{/* {contactPersonRows.length > 0 ? (
+										<div className="customer-edit-contactpersons">{contactPersonRows}</div>
+									) : null} */}
+									{contactPersonRows.length > 0 ? (
+										<div className="customer-edit-contactpersons-container">
+											<div className="row u_ml_8">
+												<div className="col-xs-5">
+													<div>
+														<strong>Name</strong>
+													</div>
+												</div>
+												<div className="col-xs-7">
+													<div>
+														<strong>{resources.str_email}</strong>
+													</div>
+												</div>
+											</div>
+
+											<div className="customer-edit-contactpersons">{contactPersonRows}</div>
+										</div>
+									) : null}
+									<div className="button-wrapper">
+										<ButtonComponent
+											// buttonIcon="icon-plus"
+											label={resources.str_contactPersons}
+											callback={() => this.onAddContactPerson()}
+											type="primary"
+										/>
+									</div>
+								</div>
+								{/* </div> */}
 							</div>
 						</div>
-					</div>
+						<div className="col-xs-7 border-topbar-wrapper">
+							<div className="col-xs-12 text-h4 u_pb_20 ">{resources.str_communication}</div>
+							<div className="col-xs-12">
+								<div className="row">
+									<div className="col-xs-6">
+										<TextInputExtendedComponent
+											ref="customerEditEmailInput"
+											name="email"
+											dataQsId="customer-edit-email"
+											onBlur={(target, value) => this.onEmailBlur(value)}
+											value={customer.email || ""}
+											label={resources.str_email}
+											onChange={(value, name) => this.onInputChange(value, name)}
+											// onChange={value => this.onCustomerFieldChange('email', value)}
+											errorMessage={errorMessageEmail}
+										/>
+									</div>
+									<div className="col-xs-6">
+										<TextInputExtendedComponent
+											name="website"
+											dataQsId="customer-edit-website"
+											value={customer.website || ""}
+											label={resources.str_website}
+											onChange={(value) => this.onCustomerFieldChange("website", value)}
+										/>
+									</div>
+								</div>
 
-					<div className="row">
-						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_conditions}</div>
-						<div className="col-xs-12">
-							<div className="row">
-								<div className="col-xs-12">
-									<div className="customer-edit-paycondition">
-										<label>{resources.str_termsOfPayment}</label>
-										<SelectInputComponent
-											name="payCondition"
-											notAsync={true}
-											options={{
-												clearable: false,
-												searchable: false,
-												labelKey: "name",
-												valueKey: "value",
-												handleChange: (option) =>
-													this.onCustomerFieldChange("payConditionId", option.value),
-											}}
-											value={customer.payConditionId || 0}
-											loadedOptions={payConditionOptions}
-											dataQsId="customer-edit-payCondition"
+								<div className="row">
+									<div className="col-xs-6">
+										<NumberInputComponent
+											dataQsId="customer-edit-phone1"
+											label={resources.str_phone}
+											name={"phone1"}
+											value={parseInt(customer.phone1)}
+											isDecimal={false}
+											onChange={(value) => this.onCustomerFieldChange("phone1", value)}
+											defaultNonZero={true}
+										/>
+									
+									</div>
+									<div className="col-xs-6">
+										<NumberInputComponent
+											dataQsId="customer-edit-phone2"
+											label={resources.str_phone + " 2"}
+											name={"phone2"}
+											value={parseInt(customer.phone2)}
+											isDecimal={false}
+											onChange={(value) => this.onCustomerFieldChange("phone2", value)}
+											defaultNonZero={true}
+										/>
+									
+									</div>
+								</div>
+
+								<div className="row">
+									<div className="col-xs-6">
+										<NumberInputComponent
+											dataQsId="customer-edit-mobile"
+											label={resources.str_mobilePhone}
+											name={"mobile"}
+											maxLength="10"
+											value={parseInt(customer.mobile)}
+											isDecimal={false}
+											errorMessage={errorMessageMobile}
+											onBlur={(value) => this.onMobileNumberBlur(value)}
+											onChange={(value, name) => this.onInputChange(value, name)}
+											defaultNonZero={true}
+										/>
+									</div>
+
+									<div className="col-xs-6">
+										<TextInputExtendedComponent
+											name="fax"
+											dataQsId="customer-edit-fax"
+											value={customer.fax || ""}
+											label={resources.str_fax}
+											onChange={(value) => this.onCustomerFieldChange("fax", value)}
 										/>
 									</div>
 								</div>
 							</div>
-							<div className="row">
-								<div className="col-xs-12">
-									<PercentageInputComponent
-										name="discount"
-										dataQsId="customer-edit-discount"
-										value={customer.discount}
-										selectOnFocus={true}
-										onBlur={(value) => this.onCustomerFieldChange("discount", value)}
-										label={resources.customerDiscountListPrices}
-										hasBorder={true}
-										leftLabel={true}
-									/>
-								</div>
-							</div>
 						</div>
-					</div>
+						<div className="col-xs-5 ">
+							<div className="row border-topbar-wrapper u_ml_10 ">
+								<div className="col-xs-12 text-h4">{resources.str_remarks}</div>
+								<div className="col-xs-12 u_mt_8">
+									<HtmlInputComponent
+										ref={"customer-edit-notes-ref"}
+										dataQsId={"customer-edit-notes"}
+										placeholder={resources.customerDepositNotesText}
+										value={customer.notes}
+										onTextChange={(value) => this.onCustomerFieldChange("notes", value)}
+									/>
 
-					<div className="row">
-						<div className="col-xs-12 text-h4 u_pb_20 u_pt_20">{resources.str_remarks}</div>
-						<div className="col-xs-12">
-							<HtmlInputComponent
-								ref={"customer-edit-notes-ref"}
-								dataQsId={"customer-edit-notes"}
-								placeholder={resources.customerDepositNotesText}
-								value={customer.notes}
-								onTextChange={(value) => this.onCustomerFieldChange("notes", value)}
-							/>
-
-							<div className="customer-edit-notes-alert">
-								<label className="notes-alert-label">{resources.str_showNoteConfirmation}</label>
-								<TabInputComponent
-									componentClass={"customer-edit-notes-alert-toggle"}
-									items={[
-										{ label: resources.str_yes, value: "1" },
-										{ label: resources.str_no, value: "0" },
-									]}
-									value={customer.notesAlert ? "1" : "0"}
-									onChange={(val) => this.onCustomerFieldChange("notesAlert", val)}
-									dataQsId="customer-edit-notesAlert"
-								/>
+									<div className="customer-edit-notes-alert">
+										<label className="notes-alert-label">
+											{resources.str_showNoteConfirmation}
+										</label>
+										<TabInputComponent
+											componentClass={"customer-edit-notes-alert-toggle"}
+											items={[
+												{ label: resources.str_yes, value: "1" },
+												{ label: resources.str_no, value: "0" },
+											]}
+											value={customer.notesAlert ? "1" : "0"}
+											onChange={(val) => this.onCustomerFieldChange("notesAlert", val)}
+											dataQsId="customer-edit-notesAlert"
+										/>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -1165,7 +1129,7 @@ class CustomerEditComponent extends React.Component {
 		// } else {
 		// 	cinErrorMessage = '';
 		// }
-		this.setState({ cinErrorMessrefreshRatesage, customer });
+		this.setState({ cinErrorMessage, customer });
 	}
 
 	onStreetFieldChange(key, event) {
@@ -1462,7 +1426,14 @@ class CustomerEditComponent extends React.Component {
 				invoiz.router.navigate(`/customer/${id}`);
 			})
 			.catch((error) => {
-				if (error.body.meta.number && error.body.meta.number[0].code === errorCodes.EXISTS) {
+				// if (error.body.meta.number && error.body.meta.number[0].code === errorCodes.EXISTS)
+				if (
+					error.body &&
+					error.body.meta &&
+					error.body.meta.number &&
+					error.body.meta.number[0] &&
+					error.body.meta.number[0].code
+				) {
 					invoiz.page.showToast({
 						type: "error",
 						message: resources.customerNumberAlreadyExistError,

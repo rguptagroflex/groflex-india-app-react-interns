@@ -58,7 +58,12 @@
 	position: absolute;
 	bottom: 0;
 	margin-left: 10px;
-	background: linear-gradient( to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50% , rgba(255, 255, 255, 1) 100%);
+	background: linear-gradient(
+		to bottom,
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 1) 50%,
+		rgba(255, 255, 255, 1) 100%
+	);
 }
 
 .customer-history-error {
@@ -74,7 +79,7 @@
 			font-size: 20px;
 		}
 	}
-	}
+}
 
 .customerHistory_list {
 	position: absolute;
@@ -86,7 +91,8 @@
 
 	@include empty-list-box-customer(none);
 
-	.tooltip-component, .tooltip-content {
+	.tooltip-component,
+	.tooltip-content {
 		padding: 5px;
 	}
 
@@ -124,10 +130,14 @@
 						}
 					}
 				}
-				
+
 				@keyframes spin {
-					0% {transform: rotate(0deg);}
-					100% {transform: rotate(360deg);}
+					0% {
+						transform: rotate(0deg);
+					}
+					100% {
+						transform: rotate(360deg);
+					}
 				}
 				.email-status-row-image-container {
 					position: absolute;
@@ -171,43 +181,43 @@
 	}
 
 	.history-loader-wrapper {
-		.history-loader-rectangle{
+		.history-loader-rectangle {
 			height: 30px;
 			margin-top: 20px;
 			border-radius: 8px;
 		}
 		.first {
 			width: 440px;
-			background-color: $color-bg-dark;			
+			background-color: $color-bg-dark;
 		}
 		.second {
 			width: 355px;
-			background-color: $color-bg-dark;			
+			background-color: $color-bg-dark;
 		}
 		.third {
 			width: 539px;
 			background-color: $color-bg-dark;
-			opacity: 0.7;			
+			opacity: 0.7;
 		}
 		.fourth {
 			width: 440px;
 			background-color: $color-bg-dark;
-			opacity: 0.7;			
+			opacity: 0.7;
 		}
 		.fifth {
 			width: 270px;
 			background-color: $color-bg-dark;
-			opacity: 0.5;			
+			opacity: 0.5;
 		}
 		.sixth {
 			width: 514px;
 			background-color: $color-bg-dark;
-			opacity: 0.5;			
+			opacity: 0.5;
 		}
 		.seventh {
 			width: 484px;
 			background-color: $color-bg-dark;
-			opacity: 0.5;			
+			opacity: 0.5;
 		}
 	}
 
@@ -230,8 +240,8 @@
 	// display: flex;
 	justify-content: space-between;
 	padding: 30px 30px 0 30px;
-	
-	.history-list-head-content{
+
+	.history-list-head-content {
 		margin-left: -18px;
 	}
 }
@@ -242,7 +252,3 @@
 	padding: 30px;
 	@include empty-list-box-customer(block);
 }
-
-
-
-

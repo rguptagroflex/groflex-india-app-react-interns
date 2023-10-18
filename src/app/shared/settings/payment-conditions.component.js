@@ -176,11 +176,12 @@ class PaymentConditionsComponent extends React.Component {
 		const defaultPaymentOption = payConditions.find(payCondition => payCondition.isDefault);
 
 		return (
-			<div className="settings-payment-conditions-component">
-				<div className="row u_pt_20">
+			<div className="settings-payment-conditions-component u_pl_20 u_pr_20 u_mt_16">
+				<div className="row">
+				{/* u_pt_20 */}
 					<div className="row">
 						<div className="col-xs-12">
-							<h2 className="u_pb_16">{resources.str_termsOfPaymentTitle}</h2>
+							<h3 className="u_pb_16">{resources.str_termsOfPaymentTitle}</h3>
 							<div className="text-muted">
 								<p>
 									{resources.payConditionTextDescription}

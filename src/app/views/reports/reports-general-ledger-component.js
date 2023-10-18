@@ -22,6 +22,12 @@ const ReportsGeneralLedger = (props) => {
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState();
+
+	// const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
+	const CustomCellRenderer = ({ value, colDef }) => (
+		<span>{value !== undefined ? (value !== "-" ? `₹ ${value}` : `${value}`) : ""}</span>
+	);
+
 	const [columnDefs, setColumnDefs] = useState([
 		{
 			field: "chartOfAccount.accountTypeId",
@@ -39,6 +45,7 @@ const ReportsGeneralLedger = (props) => {
 			filter: false,
 			valueFormatter: function (params) {
 				var value = params.value;
+
 				var date = new Date(value);
 
 				if (!isNaN(date.getTime())) {
@@ -51,7 +58,8 @@ const ReportsGeneralLedger = (props) => {
 
 					return day + "/" + month + "/" + year;
 				} else {
-					return "";
+					// return "";
+					return value;
 				}
 			},
 		},
@@ -72,9 +80,9 @@ const ReportsGeneralLedger = (props) => {
 			autoHeight: true,
 		},
 
-		{ headerName: "Debit", field: "debits", filter: false },
-		{ headerName: "Credit", field: "credits", filter: false },
-		{ field: "balance", filter: false },
+		{ headerName: "Debit", field: "debits", filter: false, cellRendererFramework: CustomCellRenderer },
+		{ headerName: "Credit", field: "credits", filter: false, cellRendererFramework: CustomCellRenderer },
+		{ field: "balance", filter: false, cellRendererFramework: CustomCellRenderer },
 	]);
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
@@ -135,18 +143,121 @@ const ReportsGeneralLedger = (props) => {
 			minWidth: 200,
 		};
 	}, []);
+	const [selectedDate, setSelectedDate] = useState(moment().month("April").startOf("month").format("DD MMM YYYY"));
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
-			});
-	}, []);
+	const onGridReady = useEffect(
+		(params) => {
+			const startDate = moment(selectedDate.startDate).format("YYYY-MM-DD");
+			const endDate = moment(selectedDate.endDate).format("YYYY-MM-DD");
+			console.log("Start Date: ", startDate);
+			console.log("End Date: ", endDate);
+			invoiz
+				// .request(
+				// 	`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
+
+				// 	{ auth: true }
+				// )
+				.request(
+					`${config.resourceHost}accountingReport/generalLedger/${startDate}/${endDate}?type=json&customerId=700`,
+
+					{ auth: true }
+				)
+				.then((res) => {
+					// let assetsTotalCredit = 0;
+					// let liablityTotalCredit = 0;
+					// let expenseTotalCredit = 0;
+					// let assetsTotalDebit = 0;
+					// let liablityTotalDebit = 0;
+					// let expenseTotalDebit = 0;
+					// let netMovementLiability = 0;
+					// let netMovementAssets = 0;
+					// let netMovementExpenses = 0;
+
+					// let filterdResponse = [];
+					// res.body.data.forEach((item) => {
+					// 	console.log("api date: ", Date.parse(item.date));
+					// 	if (
+					// 		Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
+					// 		Date.parse(item.date) <= Date.parse(selectedDate.endDate)
+					// 	) {
+					// 		filterdResponse.push(item);
+					// 	}
+					// });
+					// console.log("Filtered Array: ", filterdResponse);
+
+					// filterdResponse.forEach((item) => {
+					// 	if (item.chartOfAccount.accountTypeId === "liability") {
+					// 		liablityTotalCredit += item.credits;
+					// 		liablityTotalDebit += item.debits;
+					// 	} else if (item.chartOfAccount.accountTypeId === "assets") {
+					// 		assetsTotalCredit += item.credits;
+					// 		assetsTotalDebit += item.debits;
+					// 	} else if (item.chartOfAccount.accountTypeId === "expenses") {
+					// 		expenseTotalCredit += item.credits;
+					// 		expenseTotalDebit += item.debits;
+					// 	}
+					// });
+
+					// netMovementLiability = liablityTotalCredit - liablityTotalDebit;
+					// netMovementAssets = assetsTotalCredit - assetsTotalDebit;
+					// netMovementExpenses = expenseTotalCredit - expenseTotalDebit;
+
+					// const resultTotal = [
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "liability" },
+					// 		credits: liablityTotalCredit,
+					// 		debits: liablityTotalDebit,
+					// 		date: "Total for Liabilities",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "assets" },
+					// 		credits: assetsTotalCredit,
+					// 		debits: assetsTotalDebit,
+					// 		date: "Total for Assets",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "expenses" },
+					// 		credits: expenseTotalCredit,
+					// 		debits: expenseTotalDebit,
+					// 		date: "Total for Expenses",
+					// 	},
+					// ];
+
+					// const resultNetMovement = [
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "liability" },
+					// 		credits: netMovementLiability > 0 ? netMovementLiability : "-",
+					// 		debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
+					// 		date: "Net Movement",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "assets" },
+					// 		credits: netMovementAssets > 0 ? netMovementAssets : "-",
+					// 		debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
+					// 		date: "Net Movement",
+					// 	},
+					// 	{
+					// 		chartOfAccount: { accountTypeId: "expenses" },
+					// 		credits: netMovementExpenses > 0 ? netMovementExpenses : "-",
+					// 		debits: netMovementExpenses < 0 ? Math.abs(netMovementExpenses) : "-",
+					// 		date: "Net Movement",
+					// 	},
+					// ];
+					// let result = [];
+
+					// if (filterdResponse.length !== 0) {
+					// 	result = [...filterdResponse, ...resultTotal, ...resultNetMovement];
+					// }
+
+					console.log("response of data :", res.body.data);
+					// setRowData(res.body.data);
+
+					// setRowData(res.body.data);
+					setRowData(res.body.data.summaryData.transactions);
+				});
+		},
+		[selectedDate]
+	);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const onDate = (value) => {
@@ -204,7 +315,7 @@ const ReportsGeneralLedger = (props) => {
 				break;
 		}
 		setSelectedDate({ startDate, endDate });
-		console.log("startDate", startDate);
+		// console.log("startDate", startDate);
 		return { startDate, endDate };
 	};
 
@@ -218,7 +329,6 @@ const ReportsGeneralLedger = (props) => {
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
-	const [selectedDate, setSelectedDate] = useState(null);
 
 	const [showDateFilter, setShowDateFilter] = useState(props.showDateFilter || false);
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
@@ -237,6 +347,7 @@ const ReportsGeneralLedger = (props) => {
 		activeChartData: { series: [] },
 		selectedDateFilterType: DateFilterType.FISCAL_YEAR,
 	});
+
 	const dateOptions = [
 		{ label: dateData.currentMonthName, value: "currMonth", group: "month" },
 		{ label: dateData.lastMonthName, value: "lastMonth", group: "month" },
@@ -289,7 +400,7 @@ const ReportsGeneralLedger = (props) => {
 	};
 
 	return (
-		<div style={containerStyle}>
+		<div style={containerStyle} className="general-ledger-component-main">
 			<TopbarComponent
 				title={"General Ledger"}
 				hasCancelButton={true}
@@ -298,193 +409,287 @@ const ReportsGeneralLedger = (props) => {
 				}}
 			/>
 			<div
-				className="general-ledger-component"
+				className="general-ledger-content"
 				style={{
-					marginTop: "90px",
-					marginLeft: "50px",
-					display: "flex",
-					flexDirection: "column",
-				}}
-			>
-				<div
-					className="time-period-select-container"
-					style={{
-						width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-						display: "flex",
-						justifyContent: "space-between",
-					}}
-				>
-					<div style={{ flex: "1.5", display: "flex", alignItems: "center" }} className="time-period-select">
-						<div style={{ position: "relative", width: "100%", flex: "1" }}>
-							<SelectInputComponent
-								allowCreate={false}
-								notAsync={true}
-								loadedOptions={dateOptions}
-								value={dateData.dateFilterValue}
-								icon={calenderIcon}
-								containerClass="date-input"
-								options={{
-									clearable: false,
-									noResultsText: false,
-									labelKey: "label",
-									valueKey: "value",
-									matchProp: "label",
-									placeholder: "Select Date",
-									// handleChange: (option) => {
-									// 	console.log(option.value, "Selected date value");
-									// 	console.log(onDate(option.value), " by onDate");
-
-									// 	updateSelectedDate(option);
-									// },
-									handleChange: handleChange,
-
-									formatOptionLabel: ({ value, label }) => {
-										if (value === "custom" && dateData.showCustomDateRangeSelector) {
-											return (
-												<div>
-													{label}
-													<div
-														style={{
-															whiteSpace: "normal",
-															overflow: "hidden",
-															textOverflow: "ellipsis",
-														}}
-													>
-														Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
-														<br />
-														End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
-													</div>
-												</div>
-											);
-										} else {
-											return label;
-										}
-									},
-								}}
-								style={{ position: "absolute", width: "100%" }}
-							/>
-						</div>
-						{dateData.showCustomDateRangeSelector && (
-							<div
-								id="general-ledger-date-picker-container"
-								className="start-end-date-selector-group"
-								style={{ display: "flex" }}
-							>
-								<div style={{ marginRight: "10px" }}>
-									<DateInputComponent
-										name={"startDate"}
-										value={dateData.customStartDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"Start Date"}
-										noBorder={true}
-										onChange={handleStartDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
-								<div>
-									<DateInputComponent
-										name={"endDate"}
-										value={dateData.customEndDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"End Date"}
-										noBorder={true}
-										onChange={handleEndDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
-							</div>
-						)}
-					</div>
-				</div>
-
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
-					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
-						}}
-					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
-				</div>
-			</div>
-			<div
-				style={{
-					// position: "absolute",
-					// width: "80vw",
-					height: "500px",
-					// top: "180px",
-					// left: "334px",
+					// height: "500px",
+					height: "1186px",
+					width: "1120px",
 					backgroundColor: "#fff",
+					border: "1px solid #ccc",
 					marginTop: "30px",
 					marginLeft: "50px",
 					marginRight: "50px",
 					fontWeight: "600",
+					borderRadius: "8px",
+					marginTop: "130px",
 				}}
 			>
 				<div
-					className="general-heading"
+					className="general-ledger-component general-ledger-content-top"
+					style={{
+						marginTop: "20px",
+						marginLeft: "20px",
+						display: "flex",
+						flexDirection: "column",
+						padding: "0px, 24px, 0px, 24px",
+						justifyContent: "space-between",
+					}}
+				>
+					<div
+						className="time-period-select-container"
+						style={{
+							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
+							display: "flex",
+							justifyContent: "space-between",
+						}}
+					>
+						<div
+							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
+							className="time-period-select"
+						>
+							<div style={{ width: "170px", marginTop: "35px" }}>
+								<SelectInputComponent
+									// title={resources.str_title}
+									// title={"A.K Enterprises"}
+									name="title"
+									title={
+										invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
+										invoiz.user.companyAddress.companyName.slice(1)
+									}
+									value={invoiz.user.companyAddress.companyName}
+									dataQsId={"customer-edit-title"}
+									// value={customer.title}
+									allowCreate={true}
+									notAsync={true}
+									options={{
+										// placeholder: resources.str_choose,
+										labelKey: "name",
+										valueKey: "name",
+										// handleChange: (value) => {
+										// 	if (!value || (value && !value.isDummy && value.name)) {
+										// 		this.onSalutationOrTitleChange(value, false);
+										// 	}
+										// },
+									}}
+									// loadedOptions={titleOptions}
+								/>
+							</div>
+							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+								<SelectInputComponent
+									allowCreate={false}
+									notAsync={true}
+									loadedOptions={dateOptions}
+									value={dateData.dateFilterValue}
+									icon={calenderIcon}
+									containerClass="date-input"
+									options={{
+										clearable: false,
+										noResultsText: false,
+										labelKey: "label",
+										valueKey: "value",
+										matchProp: "label",
+										placeholder: "Select Date",
+										// handleChange: (option) => {
+										// 	console.log(option.value, "Selected date value");
+										// 	console.log(onDate(option.value), " by onDate");
+
+										// 	updateSelectedDate(option);
+										// },
+										handleChange: handleChange,
+
+										formatOptionLabel: ({ value, label }) => {
+											if (value === "custom" && dateData.showCustomDateRangeSelector) {
+												return (
+													<div>
+														{label}
+														<div
+															style={{
+																whiteSpace: "normal",
+																overflow: "hidden",
+																textOverflow: "ellipsis",
+															}}
+														>
+															Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
+															<br />
+															End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
+														</div>
+													</div>
+												);
+											} else {
+												return label;
+											}
+										},
+									}}
+									style={{ position: "absolute", width: "100%" }}
+								/>
+							</div>
+							{dateData.showCustomDateRangeSelector && (
+								<div
+									id="general-ledger-date-picker-container"
+									className="start-end-date-selector-group"
+									style={{ display: "flex" }}
+								>
+									<div
+									// style={{ marginRight: "10px" }}
+									>
+										<DateInputComponent
+											name={"startDate"}
+											value={dateData.customStartDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"Start Date"}
+											noBorder={true}
+											onChange={handleStartDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+									<div>
+										<DateInputComponent
+											name={"endDate"}
+											value={dateData.customEndDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"End Date"}
+											noBorder={true}
+											onChange={handleEndDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+
+					<div
+						style={{
+							display: "flex",
+							alignItems: "center",
+							justifyContent: "flex-end",
+							padding: " 0px 16px 0px 16px",
+							height: "32px",
+							/* width: 326px; */
+
+							position: "relative",
+							borderRadius: "4px",
+							gap: "16px",
+						}}
+					>
+						<div
+							style={{
+								border: "1px solid #ccc",
+								padding: "10px",
+								display: "flex",
+								alignItems: "center",
+								position: "relative",
+								borderRadius: "4px",
+								marginTop: "-100px",
+							}}
+						>
+							<div
+								className="icon-mail"
+								onClick={sendEmail}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									width: "101 px",
+									height: " 18px",
+									marginRight: "20px",
+								}}
+							>
+								<span
+									className="pdf_mail"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Send email
+								</span>
+							</div>
+							<div
+								style={{
+									borderLeft: "1px solid #ccc",
+									height: "100%",
+									position: "absolute",
+									left: "44%",
+									top: "0",
+									bottom: "0",
+									transform: "translateX(-50%)",
+								}}
+							></div>
+							<div
+								className="icon-print2"
+								onClick={onBtPrint}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									// marginLeft: "10px",
+									width: "101 px",
+									height: " 18px",
+									marginRight: "20px",
+									marginLeft: "5px",
+								}}
+							>
+								<span
+									className="pdf_print"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Print
+								</span>
+							</div>
+							<div
+								style={{
+									borderLeft: "1px solid #ccc",
+									height: "100%",
+									position: "absolute",
+									left: "70%",
+									top: "0",
+									bottom: "0",
+									transform: "translateX(-50%)",
+								}}
+							></div>
+
+							<div
+								className="icon-download"
+								onClick={onBtExport}
+								style={{
+									display: "flex",
+									alignItems: "center",
+									cursor: "pointer",
+									// marginLeft: "10px",
+									width: "101 px",
+									height: " 18px",
+								}}
+							>
+								<span
+									className="download"
+									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
+								></span>
+								<span className="icon-text" style={{ marginLeft: "-5px" }}>
+									Export
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div
+					className="general-heading general-ledger-content-middle"
 					style={{
 						// width: "80vw",
-						padding: "20px",
+						// padding: "20px",
+						marginLeft: "20px",
+						marginBottom: "30px",
 					}}
 				>
 					<div>
 						<h3>
+							{console.log(invoiz.user.companyAddress.companyName)}
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
 								invoiz.user.companyAddress.companyName.slice(1)}{" "}
 							General Ledger
 						</h3>
 					</div>
 					{selectedDate && selectedDate.startDate && selectedDate.endDate && (
-						<p>
+						<p style={{ color: "#888787" }}>
 							<span>From </span>
 							<span className="date">{moment(selectedDate.startDate).format("DD MMMM YYYY")}</span>
 							<span> to </span>
@@ -493,7 +698,7 @@ const ReportsGeneralLedger = (props) => {
 					)}
 				</div>
 
-				<div style={gridStyle} className="ag-theme-alpine">
+				<div style={gridStyle} className="ag-theme-alpine general-ledger-content-bottom">
 					<AgGridReact
 						ref={gridRef}
 						rowData={rowData}

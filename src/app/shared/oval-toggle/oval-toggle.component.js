@@ -17,7 +17,7 @@ class OvalToggleComponent extends React.Component {
 		const label = labelText ? <label htmlFor={id}>{labelText}</label> : null;
 
 		return (
-			<div className={`ovalToggle toggleSwitch ${newStyle === true ? 'newStyle' : ''} ${customClass || ''}`}>
+			<div 	style={{width:"100%"}} className={`ovalToggle toggleSwitch ${newStyle === true ? 'newStyle' : ''} ${customClass || ''}`}>
 				{labelLeft && label}
 				<div className={`toggleSwitch_switch${checked ? ' checked' : ''}`}>
 					<input
