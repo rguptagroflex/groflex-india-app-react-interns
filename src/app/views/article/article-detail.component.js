@@ -460,7 +460,9 @@ class ArticleDetailComponent extends React.Component {
 						<span>Total Revenue</span>
 						<br />
 					</div>
-					<div className="text-h6 text-primary">{formatCurrency(salesVolumeData.turnoverTotal)}</div>
+					<div className="text-h6 text-primary" style={{ marginTop: "10px" }}>
+						{formatCurrency(salesVolumeData.turnoverTotal)}
+					</div>
 				</div>
 			</div>
 		);
@@ -477,7 +479,9 @@ class ArticleDetailComponent extends React.Component {
 						<span>Total Orders</span>
 						<br />
 					</div>
-					<div className="text-h6 text-primary">{formatCurrency(salesVolumeData.invoiceCount)}</div>
+					<div className="text-h6 text-primary" style={{ marginTop: "10px" }}>
+						{formatCurrency(salesVolumeData.invoiceCount)}
+					</div>
 				</div>
 			</div>
 		);
