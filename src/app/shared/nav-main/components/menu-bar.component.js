@@ -260,7 +260,7 @@ class MenuBarComponent extends React.Component {
 		return items.map((menuItemData) => {
 			const { closeSearchOnMenuItemClick, closeNotificationOnMenuItemClick, submenuHover } = this.state;
 			const { name, submenuItems } = menuItemData;
-			console.log("Active Item", activeItem);
+			// console.log("Active Item", activeItem);
 			const active = name === activeItem;
 			Object.assign(menuItemData, { active, submenuVisible });
 

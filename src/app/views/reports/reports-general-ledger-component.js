@@ -173,17 +173,19 @@ const ReportsGeneralLedger = (props) => {
 					// let netMovementAssets = 0;
 					// let netMovementExpenses = 0;
 
-					// let filterdResponse = [];
-					// res.body.data.forEach((item) => {
-					// 	console.log("api date: ", Date.parse(item.date));
-					// 	if (
-					// 		Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
-					// 		Date.parse(item.date) <= Date.parse(selectedDate.endDate)
-					// 	) {
-					// 		filterdResponse.push(item);
-					// 	}
-					// });
-					// console.log("Filtered Array: ", filterdResponse);
+					let filterdResponse = [];
+					res.body.data.summaryData.transactions.forEach((item) => {
+						if (item.chartOfAccount) {
+							if (
+								Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
+								Date.parse(item.date) <= Date.parse(selectedDate.endDate)
+							) {
+								filterdResponse.push(item);
+							}
+						}
+					});
+					console.log("Filtered Array: ", filterdResponse);
+					// console.log("Account Type: ", res.body.data.summaryData.transactions);
 
 					// filterdResponse.forEach((item) => {
 					// 	if (item.chartOfAccount.accountTypeId === "liability") {
@@ -253,7 +255,7 @@ const ReportsGeneralLedger = (props) => {
 					// setRowData(res.body.data);
 
 					// setRowData(res.body.data);
-					setRowData(res.body.data.summaryData.transactions);
+					setRowData(filterdResponse);
 				});
 		},
 		[selectedDate]

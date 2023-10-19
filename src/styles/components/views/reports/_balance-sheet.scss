@@ -1,0 +1,48 @@
+.table-container {
+	.MuiTypography-body1 {
+		margin-left: 10px;
+	}
+	.balance-sheet-table-header {
+		display: flex;
+		justify-content: space-between;
+		color: #888787;
+		background: #f0f8fb;
+		padding-bottom: 10px;
+		.headingLeft {
+			margin-left: 24px;
+		}
+		.headingRight {
+			margin-right: 100px;
+		}
+	}
+	.MuiDivider-root {
+		margin-top: -10px;
+	}
+	.MuiAccordion-root {
+		&.Mui-expanded {
+			margin: 0px 0px;
+		}
+	}
+	.MuiAccordionDetails-root {
+		display: block;
+		// margin-top: -20px;
+		padding: 0px 0px 0px;
+		.balance-sheet-accordian-details {
+			display: flex;
+			flex-direction: column;
+			.accordian-details-row-entry {
+				padding: 20px 16px 30px;
+				display: flex;
+				justify-content: space-between;
+				.accordian-detail-total {
+					padding-left: 15px;
+					min-width: 130px;
+					text-align: left;
+				}
+				.accordian-detail-name {
+					margin-left: 10px;
+				}
+			}
+		}
+	}
+}
