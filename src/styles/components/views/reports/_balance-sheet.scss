@@ -1,6 +1,7 @@
 .table-container {
 	.MuiTypography-body1 {
 		margin-left: 10px;
+		font-weight: bold;
 	}
 	.balance-sheet-table-header {
 		display: flex;
@@ -21,6 +22,9 @@
 	.MuiAccordion-root {
 		&.Mui-expanded {
 			margin: 0px 0px;
+			&::before {
+				opacity: 1;
+			}
 		}
 	}
 	.MuiAccordionDetails-root {
@@ -31,6 +35,7 @@
 			display: flex;
 			flex-direction: column;
 			.accordian-details-row-entry {
+				font-weight: initial;
 				padding: 20px 16px 30px;
 				display: flex;
 				justify-content: space-between;
@@ -41,6 +46,17 @@
 				}
 				.accordian-detail-name {
 					margin-left: 10px;
+				}
+			}
+			.Total {
+				padding: 15px 16px 26px;
+				margin-left: 10px;
+				display: flex;
+				justify-content: space-between;
+				.totalValue {
+					min-width: 150px;
+					text-align: left;
+					padding-left: 34px;
 				}
 			}
 		}

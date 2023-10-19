@@ -31,6 +31,7 @@ const ReportBalanceSheet = (props) => {
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
+	const [tableTotals, setTableTotal] = useState([]);
 	const [rowData, setRowData] = useState([]);
 	const [tableHeaders, setTableHeader] = useState([]);
 	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
@@ -122,6 +123,7 @@ const ReportBalanceSheet = (props) => {
 			console.log("Response Data:", responseData);
 			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
 				const transactions = responseData.summaryData.transactions;
+				setTableTotal(responseData.summaryData);
 				transactions.forEach((item) => {
 					if (!tableHeaders.includes(item.accountTypeId)) {
 						tableHeaders.push(item.accountTypeId);
@@ -638,7 +640,8 @@ const ReportBalanceSheet = (props) => {
 									aria-controls="panel1a-content"
 									id="panel1a-header"
 								>
-									<Typography> {item} </Typography>
+									{" "}
+									<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>{" "}
 								</AccordionSummary>
 								<Divider />
 
@@ -646,7 +649,7 @@ const ReportBalanceSheet = (props) => {
 									<div className="balance-sheet-accordian-details">
 										{rowData
 											.filter((filteredItem) => filteredItem.accountTypeId === item)
-											.map((subItem) => (
+											.map((subItem, index) => (
 												<React.Fragment>
 													<div className="accordian-details-row-entry">
 														<div className="accordian-detail-name">
@@ -657,6 +660,23 @@ const ReportBalanceSheet = (props) => {
 														</div>
 													</div>
 													<Divider />
+													{index ===
+													rowData.filter(
+														(filteredItem) => filteredItem.accountTypeId === item
+													).length -
+														1 ? (
+														<React.Fragment>
+															<div className="Total">
+																<div>Total {item}</div>
+																<div className="totalValue">
+																	{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+																</div>
+															</div>
+															<Divider />
+														</React.Fragment>
+													) : (
+														""
+													)}
 												</React.Fragment>
 											))}
 									</div>
