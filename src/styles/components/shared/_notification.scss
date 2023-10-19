@@ -121,3 +121,85 @@
 		}
 	}
 }
+
+//Design changes{
+#notification-component-wrapper {
+	.successBg {
+		background: #bef9dc;
+	}
+	.errorBg {
+		background: #ffdcda;
+	}
+	.notification-component {
+		height: 106px;
+		.icon-close2 {
+			top: 14px;
+			right: 18px;
+		}
+		.content {
+			margin: 14px 18px;
+			display: flex;
+			flex-direction: column;
+			height: 100%;
+			.type-box {
+				display: flex;
+				.left-col {
+					width: auto;
+					height: auto;
+					line-height: inherit;
+					background: none;
+					&.success {
+						background: none;
+					}
+					&.error {
+						background: none;
+					}
+				}
+				.right-col {
+					margin-left: 10px;
+					.title {
+						display: none;
+					}
+					.message {
+						margin: 0 0 5px 0px;
+						font-size: 20px;
+						color: #272d30;
+						white-space: pre-wrap;
+						overflow-wrap: break-word;
+					}
+				}
+				.left-col {
+					width: auto;
+					height: auto;
+					line-height: inherit;
+					background: none;
+					&.success {
+						background: none;
+					}
+					&.error {
+						background: none;
+					}
+				}
+				.right-col {
+					margin-left: 10px;
+					.title {
+						display: none;
+					}
+					.message {
+						margin: 0 0 5px 0px;
+						font-size: 20px;
+						color: #272d30;
+						white-space: pre-wrap;
+						overflow-wrap: break-word;
+					}
+				}
+			}
+			.notification-message {
+				margin-top: 13px;
+				width: 100%;
+				white-space: pre-wrap;
+				overflow-wrap: break-word;
+			}
+		}
+	}
+}
