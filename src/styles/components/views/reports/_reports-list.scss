@@ -82,3 +82,77 @@
 		}
 	}
 }
+
+.leftAlignReports {
+	position: absolute;
+	left: 162px;
+	.reports-content-wrapper {
+		height: 385px;
+		width: 84%;
+		.reports-content-main {
+			.reports-content-detail {
+				color: #272d30;
+				margin-top: 10px;
+				font-size: 14px;
+				padding-left: 9px;
+			}
+			.reports-content-top {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 82px;
+				.reports-content-top-left {
+					width: 50%;
+				}
+				.reports-content-top-right {
+					width: 50%;
+				}
+			}
+			.reports-content-middle {
+				display: flex;
+				justify-content: space-between;
+				.reports-content-middle-left {
+					width: 49%;
+				}
+				.reports-content-middle-right {
+					width: 49%;
+				}
+			}
+		}
+	}
+}
+
+.reports-component {
+	.reports-content-wrapper {
+		width: 93%;
+		height: 375px;
+		.reports-content-main {
+			.reports-content-detail {
+				color: #272d30;
+				margin-top: 10px;
+				font-size: 14px;
+				padding-left: 9px;
+			}
+			.reports-content-top {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 74px;
+				.reports-content-top-left {
+					width: 49%;
+				}
+				.reports-content-top-right {
+					width: 49%;
+				}
+			}
+			.reports-content-middle {
+				display: flex;
+				justify-content: space-between;
+				.reports-content-middle-left {
+					width: 49%;
+				}
+				.reports-content-middle-right {
+					width: 49%;
+				}
+			}
+		}
+	}
+}

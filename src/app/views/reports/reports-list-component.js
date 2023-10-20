@@ -3,10 +3,12 @@ import TopbarComponent from "../../shared/topbar/topbar.component";
 import invoiz from "../../services/invoiz.service";
 import SVGInline from "react-svg-inline";
 import Vector from "../../../assets/images/icons/Reports.svg";
-
-function ReportsListComponent() {
+import { connect } from "react-redux";
+function ReportsListComponent(props) {
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignReports" : "";
 	return (
-		<div className="reports-component">
+		<div className={`reports-component ${classLeft}`}>
 			<div>
 				<TopbarComponent title={"Reports"} viewIcon={`icon-banking`} />
 			</div>
@@ -22,43 +24,11 @@ function ReportsListComponent() {
 					fontWeight: "600",
 				}}
 			></div>
-			<div
-				className="reports-content-wrapper"
-				// style={{
-				// 	height: "365px",
-				// 	border: "1px solid #ccc",
-				// 	borderRadius: "8px",
-				// 	margin: " 120px 60px 25px",
-				// 	backgroundColor: "#fff",
-				// 	fontWeight: "600",
-				// 	width: "1120px",
-				// }}
-			>
+			<div className="reports-content-wrapper">
 				<div>
 					<div className="reports-content-main">
-						<div
-							className="reports-content-top"
-							// style={{
-							// 	display: "grid",
-							// 	height: "2vh",
-							// 	gridTemplateColumns: "repeat(2,1fr)",
-							// 	justifyItems: "center",
-							// 	alignItems: "center",
-							// 	padding: "25px",
-							// }}
-						>
-							<div
-								className="reports-content-top-left"
-								// style={{
-								// 	height: "144px",
-								// 	width: "512px",
-								// 	border: "1px solid  #F2F2F2",
-								// 	color: "#00A353",
-								// 	borderRadius: "4px",
-								// 	padding: "20px",
-								// 	borderColor: "#C6C6C6",
-								// }}
-							>
+						<div className="reports-content-top">
+							<div className="reports-content-top-left">
 								<div
 									style={{
 										display: "flex",
@@ -86,23 +56,12 @@ function ReportsListComponent() {
 										General ledger
 									</span>
 								</div>
-								<p style={{ color: "#272D30", marginTop: "10px", fontSize: "14px" }}>
+								<p className="reports-content-detail">
 									A record of all the financial transactions of your company using double-entry
 									bookkeeping, including all accounts.
 								</p>
 							</div>
-							<div
-								className="reports-content-top-right"
-								// style={{
-								// 	height: "144px",
-								// 	width: "512px",
-								// 	border: "1px solid  #F2F2F2",
-								// 	color: "#00A353",
-								// 	padding: "20px",
-								// 	borderColor: "#C6C6C6",
-								// 	borderRadius: "4px",
-								// }}
-							>
+							<div className="reports-content-top-right">
 								<div
 									style={{
 										display: "flex",
@@ -130,36 +89,14 @@ function ReportsListComponent() {
 										Balance Sheet
 									</span>
 								</div>
-								<p style={{ color: "#272D30", marginTop: "10px", fontSize: "14px" }}>
+								<p className="reports-content-detail">
 									A snapshot of your company's financial position at a specific point in time showing
 									assets, liabilities, and equity.
 								</p>
 							</div>
 						</div>
-						<div
-							className="reports-content-middle"
-							// style={{
-							// 	display: "grid",
-							// 	height: "2vh",
-							// 	gridTemplateColumns: "repeat(2,1fr)",
-							// 	justifyItems: "center",
-							// 	alignItems: "center",
-							// 	padding: "25px",
-							// 	marginTop: "120px",
-							// }}
-						>
-							<div
-								className="reports-content-middle-left"
-								// style={{
-								// 	height: "144px",
-								// 	width: "512px",
-								// 	borderRadius: "4px",
-								// 	border: "1px solid  #F2F2F2",
-								// 	color: "#00A353",
-								// 	padding: "20px",
-								// 	borderColor: "#C6C6C6",
-								// }}
-							>
+						<div className="reports-content-middle">
+							<div className="reports-content-middle-left">
 								<div
 									style={{
 										display: "flex",
@@ -180,23 +117,12 @@ function ReportsListComponent() {
 									/>
 									<span style={{ cursor: "pointer" }}>Profit and Loss</span>
 								</div>
-								<p style={{ color: "#272D30", marginTop: "10px", fontSize: "14px" }}>
+								<p className="reports-content-detail">
 									A report showing your company's revenues, expenses, gains, and losses over a
 									specified period of time.
 								</p>
 							</div>
-							<div
-								className="reports-content-middle-right"
-								// style={{
-								// 	height: "144px",
-								// 	width: "512px",
-								// 	border: "1px solid  #F2F2F2",
-								// 	borderRadius: "4px",
-								// 	color: "#00A353",
-								// 	padding: "20px",
-								// 	borderColor: "#C6C6C6",
-								// }}
-							>
+							<div className="reports-content-middle-right">
 								<div
 									style={{
 										display: "flex",
@@ -217,24 +143,13 @@ function ReportsListComponent() {
 									/>
 									<span style={{ cursor: "pointer" }}>Cash Flow Statement</span>
 								</div>
-								<p style={{ color: "#272D30", marginTop: "10px", fontSize: "14px" }}>
+								<p className="reports-content-detail">
 									A report showing the inflows and outflows of cash and cash equivalents for a
 									specified period of time.
 								</p>
 							</div>
 						</div>
-						<div
-							className="reports-content-bottom"
-							// style={{
-							// 	display: "grid",
-							// 	height: "2vh",
-							// 	gridTemplateColumns: "repeat(2,1fr)",
-							// 	justifyItems: "center",
-							// 	alignItems: "center",
-							// 	padding: "50px",
-							// 	marginTop: "60px",
-							// }}
-						></div>
+						<div className="reports-content-bottom"></div>
 					</div>
 				</div>
 			</div>
@@ -242,4 +157,12 @@ function ReportsListComponent() {
 	);
 }
 
-export default ReportsListComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportsListComponent);
+// export default ReportsListComponent;
