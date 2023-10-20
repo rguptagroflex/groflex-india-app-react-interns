@@ -333,6 +333,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						// }}
 					>
 						<SVGInline svg={menuIcons[icon]} width="24px" height="24px" className="menuItemIcon" />
+						{/* <span className="menuItemTitle">{resources.menuItems[resourceKey]}</span> */}
 					</div>
 
 					<SubMenuBarComponent

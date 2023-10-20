@@ -13,6 +13,8 @@ import articles_hover from "assets/images/icons/articles_hover.svg";
 import contacts_hover from "assets/images/icons/contacts_hover.svg";
 import expense from "assets/images/icons/accounting_icon.svg";
 import expense_hover from "assets/images/icons/expense_hover.svg";
+import profile_new from "assets/images/icons/profile_new.svg";
+import profile_hover from "assets/images/icons/profile_hover.svg";
 const MenuItemComponent = (props) => {
 	const {
 		name,
@@ -38,6 +40,7 @@ const MenuItemComponent = (props) => {
 		customer: iconHoverActive ? contacts_hover : contact,
 		article_outlined: iconHoverActive ? articles_hover : article,
 		expense: iconHoverActive ? expense_hover : expense,
+		settings: iconHoverActive ? profile_hover : profile_new,
 	};
 
 	const activeClass = active ? "menuItem-active" : "";
@@ -70,6 +73,7 @@ const MenuItemComponent = (props) => {
 			onMouseLeave={() => setIconHoverActive(false)}
 		>
 			<SVGInline svg={menuIcons[icon]} className="menu-item-svg" />
+			{/* <span className="menuItemTitle">{resources.menuItems[resourceKey]}</span> */}
 		</a>
 	);
 };
