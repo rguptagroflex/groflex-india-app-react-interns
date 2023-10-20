@@ -296,7 +296,7 @@ const ReportBalanceSheet = (props) => {
 	console.log("headerData: ", tableHeaders);
 
 	return (
-		<div style={containerStyle}>
+		<div className="reports-balance-sheet-component">
 			<TopbarComponent
 				title={"Balance Sheet"}
 				hasCancelButton={true}
@@ -304,48 +304,16 @@ const ReportBalanceSheet = (props) => {
 					window.history.back();
 				}}
 			/>
-			<div
-				className="reports-balance-sheet-component"
-				style={{
-					// height: "500px",
-					height: "1186px",
-					width: "1120px",
-					backgroundColor: "#fff",
-					border: "1px solid #ccc",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-					borderRadius: "8px",
-					marginTop: "130px",
-				}}
-			>
-				<div
-					className="general-ledger-component"
-					style={{
-						marginTop: "20px",
-						marginLeft: "20px",
-						display: "flex",
-						flexDirection: "column",
-						// height:"32px",
-						// width:"1120px",
-						padding: "0px, 24px, 0px, 24px",
-						justifyContent: "space-between",
-					}}
-				>
+			<div className="balance-sheet-component-wrapper">
+				<div className="general-ledger-component">
 					<div
 						className="time-period-select-container"
 						style={{
 							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-							display: "flex",
-							justifyContent: "space-between",
 						}}
 					>
-						<div
-							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
-							className="time-period-select"
-						>
-							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+						<div className="time-period-select">
+							<div className="time-period-select-dropdown">
 								<SelectInputComponent
 									allowCreate={false}
 									notAsync={true}
@@ -427,128 +395,27 @@ const ReportBalanceSheet = (props) => {
 						</div>
 					</div>
 
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "flex-end",
-							padding: " 0px 16px 0px 16px",
-							height: "32px",
-							/* width: 326px; */
-
-							position: "relative",
-							borderRadius: "4px",
-							gap: "16px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px solid #ccc",
-								padding: "10px",
-								display: "flex",
-								alignItems: "center",
-								position: "relative",
-								borderRadius: "4px",
-								marginTop: "-70px",
-							}}
-						>
-							<div
-								className="icon-mail"
-								onClick={sendEmail}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-								}}
-							>
-								<span
-									className="pdf_mail"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Send email
-								</span>
+					<div className="balance-sheet-utility-icons">
+						<div className="utilityIcons">
+							<div className="icon-mail" onClick={sendEmail}>
+								<span className="pdf_mail"></span>
+								<span className="icon-text">Send email</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "44%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
-							<div
-								className="icon-print2"
-								onClick={onBtPrint}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-									marginLeft: "5px",
-								}}
-							>
-								<span
-									className="pdf_print"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Print
-								</span>
+							<div className="icon-separtor"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "70%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
+							<div className="icon-separtor_second"></div>
 
-							<div
-								className="icon-download"
-								onClick={onBtExport}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-								}}
-							>
-								<span
-									className="download"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Export
-								</span>
+							<div className="icon-download" onClick={onBtExport}>
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div
-					className="general-heading"
-					style={{
-						// width: "80vw",
-						// padding: "20px",
-						marginLeft: "20px",
-						marginBottom: "30px",
-					}}
-				>
+				<div className="general-heading">
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -566,67 +433,6 @@ const ReportBalanceSheet = (props) => {
 					)}
 				</div>
 				<div className="table-container">
-					{/* <table className="custom-table">
-						<thead style={{ height: "60px", background: "#F1F8FB" }}>
-							<tr>
-								<th colSpan="9">Account</th>
-								<th colSpan="9">Total</th>
-							</tr>
-						</thead>
-						<tbody>
-							{rowData.map((transaction, index) => (
-								<React.Fragment key={index}>
-									<tr
-										key={`${index}-subtype`}
-										style={{ height: "50px", borderBottom: "1px solid  #DDDDDD" }}
-									>
-										<td>
-											<SVGInline
-												style={{ paddingLeft: "30px" }}
-												svg={showAccountType ? Arrow : ArrowSide}
-												alt={"Could not load image!"}
-												onClick={() => setShowAccountType(!showAccountType)}
-											/>
-										</td>
-										<td colSpan={14}>
-											{" "}
-											{transaction.accountTypeId.charAt(0).toUpperCase() +
-												transaction.accountTypeId.slice(1)}
-										</td>
-									</tr>
-									{showAccountType && (
-										<tr
-											key={`${index}-details`}
-											style={{
-												height: "50px",
-												borderBottom: "1px solid  #DDDDDD",
-												paddingLeft: "7%",
-											}}
-										>
-											<td
-												style={{
-													paddingLeft: "5%",
-												}}
-												colSpan={13}
-											>
-												{transaction.accountSubTypeId
-													.split(/(?=[A-Z])/)
-													.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-													.join(" ")}
-											</td>
-											<td colSpan={3}>
-												{transaction.accountTypeId === "assets"
-													? transaction.debits
-													: transaction.accountTypeId === "liability"
-													? transaction.credits
-													: null}
-											</td>
-										</tr>
-									)}
-								</React.Fragment>
-							))}
-						</tbody>
-					</table> */}
 					<div className="balance-sheet-table-header">
 						<h6 className="headingLeft">Account</h6>
 						<h6 className="headingRight">Total</h6>

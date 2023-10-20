@@ -1,72 +1,202 @@
-.table-container {
-	.MuiTypography-body1 {
-		margin-left: 10px;
-		font-weight: bold;
-	}
-	.balance-sheet-table-header {
+.reports-balance-sheet-component {
+	width: 100%;
+	height: 100%;
+}
+.balance-sheet-component-wrapper {
+	height: 1186px;
+	width: 1120px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	margin-top: 30px;
+	margin-left: 50px;
+	margin-right: 50px;
+	font-weight: 600;
+	border-radius: 8px;
+	margin-top: 130px;
+
+	.general-ledger-component {
+		margin-top: 20px;
+		margin-left: 20px;
 		display: flex;
+		flex-direction: column;
+		padding: 0px 24px 0px 24px;
 		justify-content: space-between;
-		color: #888787;
-		background: #f0f8fb;
-		padding-bottom: 10px;
-		.headingLeft {
-			margin-left: 24px;
-		}
-		.headingRight {
-			margin-right: 100px;
-		}
-	}
-	.MuiDivider-root {
-		margin-top: -10px;
-	}
-	.MuiAccordion-root {
-		&.Mui-expanded {
-			margin: 0px 0px;
-			&::before {
-				opacity: 1;
-			}
-		}
-	}
-	.MuiButtonBase-root {
-		&.MuiAccordionSummary-root {
-			&.Mui-expanded {
-				border-bottom: 1px solid #ddd;
-			}
-		}
-	}
-	.MuiAccordionDetails-root {
-		display: block;
-		// margin-top: -20px;
-		padding: 0px 0px 0px;
-		.balance-sheet-accordian-details {
+		.time-period-select-container {
 			display: flex;
-			flex-direction: column;
-			.accordian-details-row-entry {
-				border-bottom: 1px solid #ddd;
-				font-weight: initial;
-				padding: 20px 16px 30px;
+			justify-content: space-between;
+			.time-period-select {
+				flex: 1.5;
 				display: flex;
-				justify-content: space-between;
-				.accordian-detail-total {
-					padding-left: 15px;
-					min-width: 130px;
-					text-align: left;
-				}
-				.accordian-detail-name {
-					margin-left: 10px;
+				align-items: center;
+				.time-period-select-dropdown {
+					position: relative;
+					width: 100%;
+					flex: 1;
 				}
 			}
-			.Total {
-				padding: 15px 16px 26px;
-				// margin-left: 10px;
-				background: #ecfcf4;
-				padding-left: 15px;
+		}
+		.balance-sheet-utility-icons {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			padding: 0px 16px 0px 16px;
+			height: 32px;
+			position: relative;
+			border-radius: 4px;
+			gap: 16px;
+			.utilityIcons {
+				border: 1px solid #ccc;
+				padding: 10px;
 				display: flex;
-				justify-content: space-between;
-				.totalValue {
-					min-width: 150px;
-					text-align: left;
-					padding-left: 34px;
+				align-items: center;
+				position: relative;
+				border-radius: 4px;
+				margin-top: -70px;
+				.icon-mail {
+					display: flex;
+					align-items: center;
+					cursor: pointer;
+
+					height: 18px;
+					margin-right: 20px;
+					.pdf_mail {
+						display: inline-block;
+						font-size: 16px;
+						width: 1em;
+						height: 1em;
+					}
+					.icon-text {
+						margin-left: -5px;
+					}
+				}
+				.icon-separtor {
+					border-left: 1px solid #ccc;
+					height: 100%;
+					position: absolute;
+					left: 44%;
+					top: 0;
+					bottom: 0;
+					transform: translate(-50%);
+				}
+				.icon-print2 {
+					display: flex;
+					align-items: center;
+					cursor: pointer;
+					height: 18px;
+					margin-right: 20px;
+					margin-left: 5px;
+					.pdf_print {
+						display: inline-block;
+						font-size: 16px;
+						width: 1em;
+						height: 1em;
+					}
+					.icon-text {
+						margin-left: -5px;
+					}
+				}
+				.icon-separtor_second {
+					border-left: 1px solid #ccc;
+					height: 100%;
+					position: absolute;
+					left: 70%;
+					top: 0;
+					bottom: 0;
+					transform: translate(-50%);
+				}
+				.icon-download {
+					display: flex;
+					align-items: center;
+					cursor: pointer;
+					height: 18px;
+					.download {
+						display: inline-block;
+						font-size: 16px;
+						width: 1em;
+						height: 1em;
+					}
+					.icon-text {
+						margin-left: -5px;
+					}
+				}
+			}
+		}
+	}
+	.general-heading {
+		margin-left: 20px;
+		margin-bottom: 30px;
+	}
+
+	.table-container {
+		.MuiTypography-body1 {
+			margin-left: 10px;
+			font-weight: bold;
+		}
+		.balance-sheet-table-header {
+			display: flex;
+			justify-content: space-between;
+			color: #888787;
+			background: #f0f8fb;
+			padding-bottom: 10px;
+			.headingLeft {
+				margin-left: 24px;
+			}
+			.headingRight {
+				margin-right: 100px;
+			}
+		}
+		.MuiDivider-root {
+			margin-top: -10px;
+		}
+		.MuiAccordion-root {
+			&.Mui-expanded {
+				margin: 0px 0px;
+				&::before {
+					opacity: 1;
+				}
+			}
+		}
+		.MuiButtonBase-root {
+			&.MuiAccordionSummary-root {
+				&.Mui-expanded {
+					border-bottom: 1px solid #ddd;
+				}
+			}
+		}
+		.MuiAccordionDetails-root {
+			display: block;
+			// margin-top: -20px;
+			padding: 0px 0px 0px;
+			.balance-sheet-accordian-details {
+				display: flex;
+				flex-direction: column;
+				.accordian-details-row-entry {
+					border-bottom: 1px solid #ddd;
+					font-weight: initial;
+					padding: 20px 16px 30px;
+					display: flex;
+					justify-content: space-between;
+					.accordian-detail-total {
+						padding-left: 15px;
+						min-width: 130px;
+						text-align: left;
+					}
+					.accordian-detail-name {
+						margin-left: 10px;
+					}
+				}
+				.Total {
+					padding: 15px 16px 26px;
+					// margin-left: 10px;
+					background: #ecfcf4;
+					padding-left: 15px;
+					display: flex;
+					justify-content: space-between;
+					.totalValue {
+						min-width: 150px;
+						text-align: left;
+						padding-left: 34px;
+					}
 				}
 			}
 		}
