@@ -21,7 +21,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
-
+import { connect } from "react-redux";
 import { formatApiDate } from "../../helpers/formatDate";
 const ReportBalanceSheet = (props) => {
 	LicenseManager.setLicenseKey(
@@ -295,6 +295,9 @@ const ReportBalanceSheet = (props) => {
 	}, []); //
 	console.log("headerData: ", tableHeaders);
 
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignBalanceSheet" : "";
+
 	return (
 		<div className="reports-balance-sheet-component">
 			<TopbarComponent
@@ -304,7 +307,7 @@ const ReportBalanceSheet = (props) => {
 					window.history.back();
 				}}
 			/>
-			<div className="balance-sheet-component-wrapper">
+			<div className={`balance-sheet-component-wrapper ${classLeft}`}>
 				<div className="general-ledger-component">
 					<div
 						className="time-period-select-container"
@@ -496,4 +499,13 @@ const ReportBalanceSheet = (props) => {
 		</div>
 	);
 };
-export default ReportBalanceSheet;
+
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportBalanceSheet);
+// export default ReportBalanceSheet;

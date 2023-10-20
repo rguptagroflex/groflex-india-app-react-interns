@@ -4,7 +4,8 @@
 }
 .balance-sheet-component-wrapper {
 	height: 1186px;
-	width: 1120px;
+	// width: 1120px;
+	width: 94%;
 	background-color: #fff;
 	border: 1px solid #ccc;
 	margin-top: 30px;
@@ -32,6 +33,7 @@
 					position: relative;
 					width: 100%;
 					flex: 1;
+					margin-left: -44px;
 				}
 			}
 		}
@@ -201,4 +203,10 @@
 			}
 		}
 	}
+}
+
+.leftAlignBalanceSheet {
+	position: relative;
+	width: 83% !important;
+	left: 170px;
 }
