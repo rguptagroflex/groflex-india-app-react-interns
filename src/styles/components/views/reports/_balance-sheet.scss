@@ -27,6 +27,13 @@
 			}
 		}
 	}
+	.MuiButtonBase-root {
+		&.MuiAccordionSummary-root {
+			&.Mui-expanded {
+				border-bottom: 1px solid #ddd;
+			}
+		}
+	}
 	.MuiAccordionDetails-root {
 		display: block;
 		// margin-top: -20px;
@@ -35,6 +42,7 @@
 			display: flex;
 			flex-direction: column;
 			.accordian-details-row-entry {
+				border-bottom: 1px solid #ddd;
 				font-weight: initial;
 				padding: 20px 16px 30px;
 				display: flex;
@@ -50,7 +58,9 @@
 			}
 			.Total {
 				padding: 15px 16px 26px;
-				margin-left: 10px;
+				// margin-left: 10px;
+				background: #ecfcf4;
+				padding-left: 15px;
 				display: flex;
 				justify-content: space-between;
 				.totalValue {
