@@ -14,6 +14,10 @@ import { downloadPdf } from "helpers/downloadPdf";
 import { formatCurrency } from "helpers/formatCurrency";
 import { formatApiDate, formatClientDate } from "helpers/formatDate";
 import { connect } from "react-redux";
+import { capitalize } from "lodash";
+import abbreviationDateFormat from "../../helpers/abbreviationDateFormat";
+import NotesComponent from "../../shared/notes/notes.component";
+import DetailViewHeadComponent from "../../shared/detail-view/detail-view-head.component";
 
 const createDetailViewHeadObjects = (cancellation, activeAction, resources) => {
 	const object = {
@@ -100,7 +104,8 @@ const createDetailViewHeadObjects = (cancellation, activeAction, resources) => {
 				// }
 		  )
 		: object.rightElements.push({
-				headline: cancellation.metaData.type === "invoice" ? resources.invoiceDate : `Date of expense`,
+				// headline: cancellation.metaData.type === "invoice" ? resources.invoiceDate : `Date of expense`,
+				headline: cancellation.metaData.type === "invoice" ? resources.invoiceDate : `Date of Debit Note`,
 				value: formatClientDate(cancellation.deliveryDate),
 		  });
 
@@ -197,7 +202,17 @@ class CancellationInvoiceDetailComponent extends React.Component {
 		const headContents = createDetailViewHeadObjects(this.state.cancellation, activeAction, resources);
 		const detailHeadContent = (
 			<div>
-				<DetailViewHeadAdvancedComponent
+				{/* <DetailViewHeadAdvancedComponent */}
+				<DetailViewHeadPrintPopoverComponent
+					printSettingUrl={`${config.resourceHost}cancellation/${this.state.cancellation.id}/print/setting`}
+					letterPaperType={letterPaperType}
+					letterPaperChangeCallback={(letterPaperType) => {
+						this.setState({ letterPaperType });
+					}}
+					ref="detail-head-print-settings-popover"
+					resources={resources}
+				/>
+				<DetailViewHeadComponent
 					actionCallback={(action) => this.onHeadControlClick(action)}
 					actionElements={headContents.actionElements}
 					leftElements={headContents.leftElements}
@@ -235,6 +250,10 @@ class CancellationInvoiceDetailComponent extends React.Component {
 
 		const classLeft = submenuVisible ? "alignLeftDebit" : "";
 
+		// console.log(headContents, "HEAD CONTENTS CANCELLATION");
+		// console.log(this.props.cancellationType, "Cancellation type");
+		// console.log(this.props.cancellation, "Cancellation from component");
+
 		return (
 			<div className={`cancellation-invoice-detail-wrapper wrapper-has-topbar ${classLeft}`}>
 				<TopbarComponent
@@ -246,9 +265,9 @@ class CancellationInvoiceDetailComponent extends React.Component {
 						cancellation.refundType === `credits` ? `cancellations` : `expenses/cancellations`
 					}`}
 				/>
-				<div className="detail-view-head-wrapper-new">
-					{/* <div className="detail-view-head-container"> */}
-					<DetailViewHeadPrintPopoverComponent
+				{/* <div className="detail-view-head-wrapper-new"> */}
+				<div className="detail-view-head-container">
+					{/* <DetailViewHeadPrintPopoverComponent
 						printSettingUrl={`${config.resourceHost}cancellation/${this.state.cancellation.id}/print/setting`}
 						letterPaperType={letterPaperType}
 						letterPaperChangeCallback={(letterPaperType) => {
@@ -256,11 +275,11 @@ class CancellationInvoiceDetailComponent extends React.Component {
 						}}
 						ref="detail-head-print-settings-popover"
 						resources={resources}
-					/>
+					/> */}
 					{/* <div className="detail-view-background"></div> */}
 					{detailHeadContent}
-					{/* </div> */}
 				</div>
+				{/* </div> */}
 				<div className="detail-view-content-wrapper">
 					<div className="detail-view-content-left">
 						<div className="detail-view-document-wrapper">
@@ -275,11 +294,69 @@ class CancellationInvoiceDetailComponent extends React.Component {
 						</div>
 					</div>
 
-					<div className="detail-view-content-right">
+					{/* <div className="detail-view-content-right">
 						<div className="detail-view-box-new">
 							<div className="notes_heading text-h4">{resources.str_reversalReason}</div>
 							<p>{this.state.cancellation.notes}</p>
 						</div>
+					</div> */}
+
+					<div className="detail-view-content-right">
+						{/* Cancellation Invoice info */}
+						<div className="invoice-info u_p_16">
+							<div className="invoice-info-label font-14px">
+								{capitalize(this.props.cancellationType)} Note Amount:
+							</div>
+							<h3 className="invoice-amount">{headContents.rightElements[0].value}</h3>
+							<div className="customer-name-container font-14px">
+								<div>Customer</div>
+								<div className="customer-name">{headContents.leftElements[0].value}</div>
+							</div>
+							{headContents.rightElements.map((item, index) => {
+								if (index === 0) return;
+								if (this.props.cancellationType === "debit") {
+									return (
+										<div
+											key={`invoice-info-item-${index}`}
+											// style={{ color: item.headline === "payment overdue" ? "#FFAA2C" : null }}
+											className="date-of-invoice-container font-14px"
+										>
+											<div>{capitalize(item.headline)}</div>
+											{/* Last element is always always date here */}
+											<div className={"date-of-invoice"}>
+												{abbreviationDateFormat(item.value)}
+											</div>
+										</div>
+									);
+								}
+								return (
+									<div key={`invoice-info-item-${index}`} className="invoice-info-item font-14px">
+										<div>{capitalize(item.headline)}</div>
+										<div>{item.value}</div>
+									</div>
+								);
+							})}
+						</div>
+						{/* Cancellation Invoice info ends here */}
+						<div className="box u_mt_16 u_p_16">
+							{/* <div className="notes_heading text-h4">{resources.str_reversalReason}</div> */}
+							<div className="notes_heading text-h4">Notes</div>
+							<p>{this.state.cancellation.notes}</p>
+						</div>
+
+						{/* <div className="detail-view-box-new u_mt_20 u_p_16 box">
+							<NotesComponent
+								heading={resources.str_remarks}
+								data={{ notes: this.state.recInvoice.notes }}
+								onSave={(value) => this.onNotesChange(value.notes)}
+								resources={resources}
+								placeholder={format(
+									resources.defaultCommentsPlaceholderText,
+									resources.str_recurringInvoiceSmall
+								)}
+								defaultFocus={true}
+							/>
+						</div> */}
 					</div>
 				</div>
 			</div>

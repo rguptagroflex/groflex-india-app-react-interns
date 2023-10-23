@@ -124,6 +124,7 @@
 
 //Design changes{
 #notification-component-wrapper {
+	top: 16px;
 	.successBg {
 		background: #bef9dc;
 	}
@@ -131,6 +132,7 @@
 		background: #ffdcda;
 	}
 	.notification-component {
+		width: 304px;
 		height: 106px;
 		.icon-close2 {
 			top: 14px;
@@ -140,7 +142,9 @@
 			margin: 14px 18px;
 			display: flex;
 			flex-direction: column;
-			height: 100%;
+			justify-content: space-evenly;
+			// height: 100%;
+			height: 76px;
 			.type-box {
 				display: flex;
 				.left-col {
