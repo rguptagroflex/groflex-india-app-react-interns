@@ -231,7 +231,7 @@ class MenuFooterComponent extends React.Component {
 						</div>
 						<div className="menu-profile-popup-middle1">
 							<a
-								className={`menuItem small icon icon-user_outlined_black ${
+								className={`menuItem small icon icon-settings_outlined ${
 									activeSubmenuItem == "account" ? "menuItem-active" : ""
 								}`}
 								onClick={() => this.navigateToPage("/settings/account")}
@@ -240,7 +240,7 @@ class MenuFooterComponent extends React.Component {
 							>
 								{"Account details"}
 							</a>
-							<a
+							{/* <a
 								className={`menuItem small icon icon-settings_outlined ${
 									activeSubmenuItem == "account-setting" ? "menuItem-active" : ""
 								}`}
@@ -248,9 +248,8 @@ class MenuFooterComponent extends React.Component {
 								data-href="/settings/account-setting"
 								data-qs-id={`global-menu-item-Setting`}
 							>
-								{/* {"Setting"} */}
 								{"Account Settings"}
-							</a>
+							</a> */}
 
 							<a
 								className={`menuItem small icon icon-credit_card ${

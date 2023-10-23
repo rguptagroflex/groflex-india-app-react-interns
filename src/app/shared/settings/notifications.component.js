@@ -59,12 +59,12 @@ class NotificationsComponent extends React.Component {
 					{" "}
 					{/*u_pt_60 u_pb_40 */}
 					<div className="col-xs-12 text-h4 u_pb_20">{resources.str_notifications}</div>
-					<div className="col-xs-12">
+					<div className="col-xs-12" style={{ display: "flex", justifyContent: "space-between" }}>
 						<div className="u_pb_10 notifications-info">
 							<span>{resources.notificationSettingInfo}</span>
 						</div>
 
-						<div className="col-xs-6">
+						<div className="col-xs-2">
 							<div className="row">
 								<OvalToggleComponent
 									labelLeft
@@ -77,7 +77,7 @@ class NotificationsComponent extends React.Component {
 										}
 									}}
 									checked={notificateEmail}
-									labelText={resources.str_byEmail}
+									// labelText={resources.str_byEmail}
 									newStyle={true}
 									customClass={"toggle-email"}
 								/>
