@@ -544,6 +544,17 @@ const routes = [
 		resourceKey: "cancellationBillingDetails",
 	},
 	{
+		path: "/expenses/cancellation/:id",
+		type: RouteTypes.PRIVATE,
+		component: CancellationInvoiceDetailWrapper,
+		exact: true,
+		title: "Stornorechnungs-Details",
+		menuItem: "expenditure",
+		submenuItem: "debitNotes",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "",
+	},
+	{
 		path: "/cancellations",
 		type: RouteTypes.PRIVATE,
 		component: CancellationListWrapper,
@@ -1021,17 +1032,7 @@ const routes = [
 		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
 		resourceKey: "cashFlowStatement",
 	},
-	{
-		path: "/expenses/cancellation/:id",
-		type: RouteTypes.PRIVATE,
-		component: CancellationInvoiceDetailWrapper,
-		exact: true,
-		title: "Stornorechnungs-Details",
-		menuItem: "expenditure",
-		submenuItem: "debitNotes",
-		pageClass: PageClassNames.NO_SIDE_MARGIN,
-		resourceKey: "",
-	},
+
 	{
 		path: "/expense/new",
 		type: RouteTypes.PRIVATE,

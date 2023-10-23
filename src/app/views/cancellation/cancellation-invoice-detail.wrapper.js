@@ -1,45 +1,48 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import config from 'config';
-import Cancellation from 'models/cancellation.model';
-import LoaderComponent from 'shared/loader/loader.component';
-import CancellationInvoiceDetailComponentnent from 'views/cancellation/cancellation-invoice-detail.component';
-import { connect } from 'react-redux';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import config from "config";
+import Cancellation from "models/cancellation.model";
+import LoaderComponent from "shared/loader/loader.component";
+import CancellationInvoiceDetailComponentnent from "views/cancellation/cancellation-invoice-detail.component";
+import { connect } from "react-redux";
 
 class CancellationInvoiceDetailWrapper extends React.Component {
-    constructor(props) {
+	constructor(props) {
 		super(props);
-		
+
 		this.state = {
-			preFetchData: null
+			preFetchData: null,
 		};
 	}
 
-    componentDidMount() {
+	componentDidMount() {
 		this.preFetch();
 	}
 
-    componentWillUnmount() {
+	componentWillUnmount() {
 		this.ignoreLastFetch = true;
 	}
 
-    preFetch ()  {
+	preFetch() {
 		const { resources, location } = this.props;
 		const id = this.props && this.props.match && this.props.match.params && this.props.match.params.id;
-		let cancelType = location.pathname.includes("/expenses/cancellation/") ? 'debitNotes' : 'creditNotes';
-		let requestUrl = cancelType === 'debitNotes' ? config.expense.endpoints.cancellationUrl : config.invoice.endpoints.cancellationUrl;
-		const showCancellationDetails = response => {
+		let cancelType = location.pathname.includes("/expenses/cancellation/") ? "debitNotes" : "creditNotes";
+		let requestUrl =
+			cancelType === "debitNotes"
+				? config.expense.endpoints.cancellationUrl
+				: config.invoice.endpoints.cancellationUrl;
+		const showCancellationDetails = (response) => {
 			const {
 				body: {
-					data: { cancellation }
-				}
+					data: { cancellation },
+				},
 			} = response;
 			try {
 				if (!this.ignoreLastFetch) {
 					this.setState({
 						preFetchData: {
-							cancellation: new Cancellation(cancellation)
-						}
+							cancellation: new Cancellation(cancellation),
+						},
 					});
 				}
 			} catch (err) {
@@ -47,23 +50,24 @@ class CancellationInvoiceDetailWrapper extends React.Component {
 			}
 		};
 
-		const onFetchError = response => {
-			invoiz.router.navigate(`${cancelType === 'debitNotes' ? '/expenses' : '/invoices'}`);
-			this.showNavigation({ message: resources.defaultErrorMessage, type: 'error' });
+		const onFetchError = (response) => {
+			invoiz.router.navigate(`${cancelType === "debitNotes" ? "/expenses" : "/invoices"}`);
+			this.showNavigation({ message: resources.defaultErrorMessage, type: "error" });
 		};
 
-		invoiz
-			.request(`${requestUrl}/${id}`, { auth: true })
-			.then(showCancellationDetails)
-			.catch(onFetchError);
-	};
+		invoiz.request(`${requestUrl}/${id}`, { auth: true }).then(showCancellationDetails).catch(onFetchError);
+	}
 
-    render() {
+	render() {
 		const { preFetchData } = this.state;
 		const { resources } = this.props;
 
 		return preFetchData ? (
-			<CancellationInvoiceDetailComponentnent cancellation={preFetchData.cancellation} resources={resources} />
+			<CancellationInvoiceDetailComponentnent
+				cancellation={preFetchData.cancellation}
+				resources={resources}
+				cancellationType={location.pathname.includes("/expenses/cancellation/") ? "debit" : "credit"}
+			/>
 		) : (
 			<div className="box main">
 				<LoaderComponent text={resources.str_loadingCancellationInvoice} visible={true} />
@@ -72,10 +76,10 @@ class CancellationInvoiceDetailWrapper extends React.Component {
 	}
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	return {
-		resources
+		resources,
 	};
 };
 
