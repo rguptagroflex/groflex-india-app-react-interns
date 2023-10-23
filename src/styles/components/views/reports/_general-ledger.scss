@@ -236,6 +236,149 @@ button.chart-type-toggle {
 //   }
 // }
 
+//New css
+.general-ledger-component-main {
+	.general-ledger-content {
+		// height: 1186px;
+		height: 50%;
+		width: 1120px;
+		background-color: #fff;
+		border: 1px solid #ccc;
+		margin-top: 30px;
+		margin-left: 50px;
+		margin-right: 50px;
+		font-weight: 600;
+		border-radius: 8px;
+		margin-top: 130px;
+		.general-ledger-content-top {
+			margin-top: 20px;
+			margin-left: 20px;
+			display: flex;
+			flex-direction: column;
+			padding: 0px 24px 0px 24px;
+			justify-content: space-between;
+			.time-period-select-container {
+				display: flex;
+				justify-content: space-between;
+				.time-period-select {
+					flex: 1.5;
+					display: flex;
+					align-items: center;
+					.customer-drop-down {
+						width: 170px;
+						margin-top: 19px;
+						border: 1px solid #c6c6c6;
+						border-radius: 4px;
+						.MuiFormControl-root {
+							width: 100%;
+						}
+					}
+					.date-select-drop-down {
+						position: relative;
+						width: 100%;
+						flex: 1;
+					}
+				}
+			}
+			.utility-icons-container {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				padding: 0px 16px 0px 16px;
+				height: 32px;
+				position: relative;
+				border-radius: 4px;
+				gap: 16px;
+				.utility-icons {
+					border: 1px solid #ccc;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					position: relative;
+					border-radius: 4px;
+					// margin-top: -100px;
+					margin-bottom: 77px;
+					.icon-mail {
+						display: flex;
+						align-items: center;
+						cursor: pointer;
+						height: 18px;
+						margin-right: 20px;
+						.pdf_mail {
+							display: inline-block;
+							font-size: 16px;
+							width: 1em;
+							height: 1em;
+						}
+						.icon-text {
+							margin-top: -5px;
+						}
+					}
+					.icon-separtor-first {
+						border-left: 1px solid #ccc;
+						height: 100%;
+						position: absolute;
+						left: 44%;
+						top: 0;
+						bottom: 0;
+						transform: translate(-50%);
+					}
+					.icon-print2 {
+						display: flex;
+						align-items: center;
+						cursor: pointer;
+						height: 18px;
+						margin-right: 20px;
+						margin-left: 5px;
+						.pdf_print {
+							display: inline-block;
+							font-size: 16px;
+							width: 1em;
+							height: 1em;
+						}
+						.icon-text {
+							margin-left: -5px;
+						}
+					}
+					.icon-separtor-second {
+						border: 1px solid #ccc;
+						height: 100%;
+						position: absolute;
+						left: 70%;
+						top: 0;
+						bottom: 0;
+						transform: translate(-50%);
+					}
+					.icon-download {
+						display: flex;
+						align-items: center;
+						cursor: pointer;
+						height: 18px;
+						.download {
+							display: inline-block;
+							font-size: 16px;
+							width: 1em;
+							height: 1em;
+						}
+						.icon-text {
+							margin-top: -5px;
+						}
+					}
+				}
+			}
+		}
+		.general-ledger-content-middle {
+			margin-left: 20px;
+			margin-bottom: 30px;
+		}
+		.general-ledger-content-bottom {
+			.ag-root-wrapper {
+				padding-bottom: 0px;
+			}
+		}
+	}
+}
+
 .leftAlignReport {
 	position: absolute;
 	left: 205px;

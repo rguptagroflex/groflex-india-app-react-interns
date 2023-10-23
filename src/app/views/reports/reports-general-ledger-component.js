@@ -184,27 +184,13 @@ const ReportsGeneralLedger = (props) => {
 			console.log("Api ID: ", customerId);
 
 			invoiz
-				// .request(
-				// 	`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
 
-				// 	{ auth: true }
-				// )
 				.request(
 					`${config.resourceHost}accountingReport/generalLedger/${startDate}/${endDate}?type=json&customerId=${customerId}`,
 
 					{ auth: true }
 				)
 				.then((res) => {
-					// let assetsTotalCredit = 0;
-					// let liablityTotalCredit = 0;
-					// let expenseTotalCredit = 0;
-					// let assetsTotalDebit = 0;
-					// let liablityTotalDebit = 0;
-					// let expenseTotalDebit = 0;
-					// let netMovementLiability = 0;
-					// let netMovementAssets = 0;
-					// let netMovementExpenses = 0;
-
 					let filterdResponse = [];
 					res.body.data.summaryData.transactions.forEach((item) => {
 						if (item.chartOfAccount) {
@@ -217,76 +203,9 @@ const ReportsGeneralLedger = (props) => {
 						}
 					});
 					console.log("Filtered Array: ", filterdResponse);
-					// console.log("Account Type: ", res.body.data.summaryData.transactions);
-
-					// filterdResponse.forEach((item) => {
-					// 	if (item.chartOfAccount.accountTypeId === "liability") {
-					// 		liablityTotalCredit += item.credits;
-					// 		liablityTotalDebit += item.debits;
-					// 	} else if (item.chartOfAccount.accountTypeId === "assets") {
-					// 		assetsTotalCredit += item.credits;
-					// 		assetsTotalDebit += item.debits;
-					// 	} else if (item.chartOfAccount.accountTypeId === "expenses") {
-					// 		expenseTotalCredit += item.credits;
-					// 		expenseTotalDebit += item.debits;
-					// 	}
-					// });
-
-					// netMovementLiability = liablityTotalCredit - liablityTotalDebit;
-					// netMovementAssets = assetsTotalCredit - assetsTotalDebit;
-					// netMovementExpenses = expenseTotalCredit - expenseTotalDebit;
-
-					// const resultTotal = [
-					// 	{
-					// 		chartOfAccount: { accountTypeId: "liability" },
-					// 		credits: liablityTotalCredit,
-					// 		debits: liablityTotalDebit,
-					// 		date: "Total for Liabilities",
-					// 	},
-					// 	{
-					// 		chartOfAccount: { accountTypeId: "assets" },
-					// 		credits: assetsTotalCredit,
-					// 		debits: assetsTotalDebit,
-					// 		date: "Total for Assets",
-					// 	},
-					// 	{
-					// 		chartOfAccount: { accountTypeId: "expenses" },
-					// 		credits: expenseTotalCredit,
-					// 		debits: expenseTotalDebit,
-					// 		date: "Total for Expenses",
-					// 	},
-					// ];
-
-					// const resultNetMovement = [
-					// 	{
-					// 		chartOfAccount: { accountTypeId: "liability" },
-					// 		credits: netMovementLiability > 0 ? netMovementLiability : "-",
-					// 		debits: netMovementLiability < 0 ? Math.abs(netMovementLiability) : "-",
-					// 		date: "Net Movement",
-					// 	},
-					// 	{
-					// 		chartOfAccount: { accountTypeId: "assets" },
-					// 		credits: netMovementAssets > 0 ? netMovementAssets : "-",
-					// 		debits: netMovementAssets < 0 ? Math.abs(netMovementAssets) : "-",
-					// 		date: "Net Movement",
-					// 	},
-					// 	{
-					// 		chartOfAccount: { accountTypeId: "expenses" },
-					// 		credits: netMovementExpenses > 0 ? netMovementExpenses : "-",
-					// 		debits: netMovementExpenses < 0 ? Math.abs(netMovementExpenses) : "-",
-					// 		date: "Net Movement",
-					// 	},
-					// ];
-					// let result = [];
-
-					// if (filterdResponse.length !== 0) {
-					// 	result = [...filterdResponse, ...resultTotal, ...resultNetMovement];
-					// }
 
 					console.log("response of data :", res.body.data);
-					// setRowData(res.body.data);
 
-					// setRowData(res.body.data);
 					setRowData(filterdResponse);
 				});
 		},
@@ -443,67 +362,24 @@ const ReportsGeneralLedger = (props) => {
 					window.history.back();
 				}}
 			/>
-			<div
-				className="general-ledger-content"
-				style={{
-					// height: "500px",
-					height: "1186px",
-					width: "1120px",
-					backgroundColor: "#fff",
-					border: "1px solid #ccc",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-					borderRadius: "8px",
-					marginTop: "130px",
-				}}
-			>
-				<div
-					className="general-ledger-component general-ledger-content-top"
-					style={{
-						marginTop: "20px",
-						marginLeft: "20px",
-						display: "flex",
-						flexDirection: "column",
-						padding: "0px, 24px, 0px, 24px",
-						justifyContent: "space-between",
-					}}
-				>
+			<div className="general-ledger-content">
+				<div className="general-ledger-component general-ledger-content-top">
 					<div
 						className="time-period-select-container"
 						style={{
 							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-							display: "flex",
-							justifyContent: "space-between",
 						}}
 					>
-						<div
-							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
-							className="time-period-select"
-						>
-							<div style={{ width: "170px", marginTop: "35px" }}>
-								{/* <SelectInputComponent
-									name="title"
-									title={
-										invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
-										invoiz.user.companyAddress.companyName.slice(1)
-									}
-									value={invoiz.user.companyAddress.companyName}
-									dataQsId={"customer-edit-title"}
-									allowCreate={true}
-									notAsync={true}
-									options={{
-										labelKey: "name",
-										valueKey: "name",
-									}}
-								/> */}
-
+						<div className="time-period-select">
+							<div className="customer-drop-down">
 								<FormControl>
-									<Select value={customerName} onChange={setCustomerDropDown} displayEmpty>
-										<MenuItem value="">
-											<em>None</em>
-										</MenuItem>
+									<Select
+										value={customerName}
+										onChange={setCustomerDropDown}
+										displayEmpty
+										disableUnderline
+									>
+										<MenuItem value="">None</MenuItem>
 
 										{customers.map((customer) => (
 											<MenuItem value={customer.id}>{customer.name}</MenuItem>
@@ -511,7 +387,7 @@ const ReportsGeneralLedger = (props) => {
 									</Select>
 								</FormControl>
 							</div>
-							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+							<div className="date-select-drop-down">
 								<SelectInputComponent
 									allowCreate={false}
 									notAsync={true}
@@ -526,12 +402,7 @@ const ReportsGeneralLedger = (props) => {
 										valueKey: "value",
 										matchProp: "label",
 										placeholder: "Select Date",
-										// handleChange: (option) => {
-										// 	console.log(option.value, "Selected date value");
-										// 	console.log(onDate(option.value), " by onDate");
 
-										// 	updateSelectedDate(option);
-										// },
 										handleChange: handleChange,
 
 										formatOptionLabel: ({ value, label }) => {
@@ -566,9 +437,7 @@ const ReportsGeneralLedger = (props) => {
 									className="start-end-date-selector-group"
 									style={{ display: "flex" }}
 								>
-									<div
-									// style={{ marginRight: "10px" }}
-									>
+									<div>
 										<DateInputComponent
 											name={"startDate"}
 											value={dateData.customStartDate.format("DD-MM-YYYY")}
@@ -595,128 +464,27 @@ const ReportsGeneralLedger = (props) => {
 						</div>
 					</div>
 
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "flex-end",
-							padding: " 0px 16px 0px 16px",
-							height: "32px",
-							/* width: 326px; */
-
-							position: "relative",
-							borderRadius: "4px",
-							gap: "16px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px solid #ccc",
-								padding: "10px",
-								display: "flex",
-								alignItems: "center",
-								position: "relative",
-								borderRadius: "4px",
-								marginTop: "-100px",
-							}}
-						>
-							<div
-								className="icon-mail"
-								onClick={sendEmail}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-								}}
-							>
-								<span
-									className="pdf_mail"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Send email
-								</span>
+					<div className="utility-icons-container">
+						<div className="utility-icons">
+							<div className="icon-mail" onClick={sendEmail}>
+								<span className="pdf_mail"></span>
+								<span className="icon-text">Send email</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "44%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
-							<div
-								className="icon-print2"
-								onClick={onBtPrint}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-									marginLeft: "5px",
-								}}
-							>
-								<span
-									className="pdf_print"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Print
-								</span>
+							<div className="icon-separtor-first"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "70%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
+							<div className="icon-separtor-second"></div>
 
-							<div
-								className="icon-download"
-								onClick={onBtExport}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-								}}
-							>
-								<span
-									className="download"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Export
-								</span>
+							<div className="icon-download" onClick={onBtExport}>
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div
-					className="general-heading general-ledger-content-middle"
-					style={{
-						// width: "80vw",
-						// padding: "20px",
-						marginLeft: "20px",
-						marginBottom: "30px",
-					}}
-				>
+				<div className="general-heading general-ledger-content-middle">
 					<div>
 						<h3>
 							{console.log(invoiz.user.companyAddress.companyName)}
