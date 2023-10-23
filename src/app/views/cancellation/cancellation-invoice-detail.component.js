@@ -250,7 +250,7 @@ class CancellationInvoiceDetailComponent extends React.Component {
 
 		const classLeft = submenuVisible ? "alignLeftDebit" : "";
 
-		// console.log(headContents, "HEAD CONTENTS CANCELLATION");
+		console.log(headContents, "HEAD CONTENTS CANCELLATION");
 		// console.log(this.props.cancellationType, "Cancellation type");
 		// console.log(this.props.cancellation, "Cancellation from component");
 
@@ -307,7 +307,13 @@ class CancellationInvoiceDetailComponent extends React.Component {
 							<div className="invoice-info-label font-14px">
 								{capitalize(this.props.cancellationType)} Note Amount:
 							</div>
-							<h3 className="invoice-amount">{headContents.rightElements[0].value}</h3>
+							<h3
+								className={`invoice-amount ${
+									this.props.cancellationType === "debit" ? "debit-amount" : "credit-amount"
+								}`}
+							>
+								{headContents.rightElements[0].value}
+							</h3>
 							<div className="customer-name-container font-14px">
 								<div>Customer</div>
 								<div className="customer-name">{headContents.leftElements[0].value}</div>
