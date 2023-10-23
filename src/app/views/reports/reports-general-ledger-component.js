@@ -13,6 +13,9 @@ import OfferAction from "enums/offer/offer-action.enum";
 import moment from "moment";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 import { formatApiDate } from "../../helpers/formatDate";
+import MenuItem from "@material-ui/core/MenuItem";
+import FormControl from "@material-ui/core/FormControl";
+import Select from "@material-ui/core/Select";
 const ReportsGeneralLedger = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -145,12 +148,41 @@ const ReportsGeneralLedger = (props) => {
 	}, []);
 	const [selectedDate, setSelectedDate] = useState(moment().month("April").startOf("month").format("DD MMM YYYY"));
 
+	const [customers, setCustomers] = useState([]);
+	const [customerId, setCustomerID] = useState("");
+	const [customerName, setCustomerName] = useState("");
+	const setCustomerDropDown = (event) => {
+		console.log("target value", event.target.value);
+		setCustomerName(event.target.value);
+		setCustomerID(event.target.value);
+	};
+	const fetchCustomers = () => {
+		let customerDropDownValues = [];
+		const endpoint = `${config.resourceHost}customer?offset=0`;
+		invoiz.request(endpoint, { auth: true }).then((res) => {
+			res.body.data.forEach((item) => {
+				// customerDropDownValues = {
+				// 	...customerDropDownValues,
+				// 	[item.id]: item.name,
+				// };
+				customerDropDownValues.push({ id: item.id, name: item.name });
+			});
+			setCustomers(customerDropDownValues);
+
+			console.log("Customer data: ", res.body.data);
+		});
+	};
+
+	useEffect(() => {
+		fetchCustomers();
+	}, []);
+
 	const onGridReady = useEffect(
 		(params) => {
 			const startDate = moment(selectedDate.startDate).format("YYYY-MM-DD");
 			const endDate = moment(selectedDate.endDate).format("YYYY-MM-DD");
-			console.log("Start Date: ", startDate);
-			console.log("End Date: ", endDate);
+			console.log("Api ID: ", customerId);
+
 			invoiz
 				// .request(
 				// 	`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
@@ -158,7 +190,7 @@ const ReportsGeneralLedger = (props) => {
 				// 	{ auth: true }
 				// )
 				.request(
-					`${config.resourceHost}accountingReport/generalLedger/${startDate}/${endDate}?type=json&customerId=700`,
+					`${config.resourceHost}accountingReport/generalLedger/${startDate}/${endDate}?type=json&customerId=${customerId}`,
 
 					{ auth: true }
 				)
@@ -258,7 +290,7 @@ const ReportsGeneralLedger = (props) => {
 					setRowData(filterdResponse);
 				});
 		},
-		[selectedDate]
+		[selectedDate, customerId]
 	);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
@@ -400,6 +432,7 @@ const ReportsGeneralLedger = (props) => {
 		const endDate = moment(value, "DD-MM-YYYY");
 		setDateData({ ...dateData, customEndDate: endDate });
 	};
+	console.log("Drop down: ", customers);
 
 	return (
 		<div style={containerStyle} className="general-ledger-component-main">
@@ -450,9 +483,7 @@ const ReportsGeneralLedger = (props) => {
 							className="time-period-select"
 						>
 							<div style={{ width: "170px", marginTop: "35px" }}>
-								<SelectInputComponent
-									// title={resources.str_title}
-									// title={"A.K Enterprises"}
+								{/* <SelectInputComponent
 									name="title"
 									title={
 										invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -460,21 +491,25 @@ const ReportsGeneralLedger = (props) => {
 									}
 									value={invoiz.user.companyAddress.companyName}
 									dataQsId={"customer-edit-title"}
-									// value={customer.title}
 									allowCreate={true}
 									notAsync={true}
 									options={{
-										// placeholder: resources.str_choose,
 										labelKey: "name",
 										valueKey: "name",
-										// handleChange: (value) => {
-										// 	if (!value || (value && !value.isDummy && value.name)) {
-										// 		this.onSalutationOrTitleChange(value, false);
-										// 	}
-										// },
 									}}
-									// loadedOptions={titleOptions}
-								/>
+								/> */}
+
+								<FormControl>
+									<Select value={customerName} onChange={setCustomerDropDown} displayEmpty>
+										<MenuItem value="">
+											<em>None</em>
+										</MenuItem>
+
+										{customers.map((customer) => (
+											<MenuItem value={customer.id}>{customer.name}</MenuItem>
+										))}
+									</Select>
+								</FormControl>
 							</div>
 							<div style={{ position: "relative", width: "100%", flex: "1" }}>
 								<SelectInputComponent
