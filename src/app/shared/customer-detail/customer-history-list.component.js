@@ -435,10 +435,10 @@ class CustomerHistoryListComponent extends React.Component {
 
 		const emptyListContent = (
 			<div className="empty-list-box-customer u_c">
-				<div className="text-and-icon-wrapper add add-document">
+				{/* <div className="text-and-icon-wrapper add add-document">
 					<SVGInline className="arrow arrow-left" svg={arrowLeft} width="124px" height="83px" />
 					<div className="text-placeholder">Begin by creating documents here</div>
-				</div>
+				</div> */}
 				{/* <div className="text-and-icon-wrapper add add-todo u_c">
 					<SVGInline className="arrow arrow-up" svg={arrowUp} width="97px" height="113px" />
 					<div className="text-placeholder">Hier kannst du To-Dos oder Notizen hinzufügen</div>

@@ -249,6 +249,8 @@
 .history-empty-list-box {
 	width: 100%;
 	height: 100%;
-	padding: 30px;
+	// padding: 30px;
+	padding-top: 158px;
+	margin-bottom: 18%;
 	@include empty-list-box-customer(block);
 }
