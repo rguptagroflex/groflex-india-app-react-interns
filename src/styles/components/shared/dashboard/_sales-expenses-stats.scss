@@ -66,7 +66,7 @@
 		.tooltiplight {
 			background-color: #fff;
 			color: #747474;
-			filter: drop-shadow(1px 1px 8px rgba(0,0,0,0.14));
+			filter: drop-shadow(1px 1px 8px rgba(0, 0, 0, 0.14));
 		}
 
 		.ct-label.ct-horizontal {
@@ -103,9 +103,9 @@
 	.selectInput {
 		width: 180px;
 		margin: 20px 0 0 20px;
-		border: 1px solid #C4C4C4;
+		border: 1px solid #c4c4c4;
 		border-radius: 4px;
-		
+
 		.Select-value-label {
 			font-size: 16px;
 			color: #000;
@@ -127,17 +127,17 @@
 		margin: 20px 0 0 20px;
 
 		.tab-name {
-			color: #0079B3;
+			color: #0079b3;
 			font-weight: 600;
 		}
-	}  
+	}
 
 	.start-end-date-selector-group {
 		margin-top: 20px;
 
 		.dateInput {
 			display: inline-block;
-			border: 1px solid #C4C4C4;
+			border: 1px solid #c4c4c4;
 			border-radius: 4px;
 			margin-left: 20px;
 			width: 120px;
@@ -148,7 +148,7 @@
 	.time-period-select {
 		.date-input {
 			position: relative;
-			
+
 			.input-icon {
 				position: absolute;
 				left: 0;
@@ -157,7 +157,8 @@
 			}
 
 			.Select-value-label {
-				padding-left: 18px;
+				// padding-left: 18px;
+				padding-left: 30px;
 			}
 		}
 	}
@@ -166,12 +167,12 @@
 		.from-selector,
 		.to-selector {
 			padding: 10px;
-			border-right: 1px solid #C4C4C4;
-			background-color: #E8F5FF;
+			border-right: 1px solid #c4c4c4;
+			background-color: #e8f5ff;
 
 			input {
-				background-color: #E8F5FF;
-			} 
+				background-color: #e8f5ff;
+			}
 		}
 	}
 
@@ -323,7 +324,7 @@
 				top: 0;
 				right: 0;
 				bottom: -28px;
-				width: 1px ;
+				width: 1px;
 				background: $color-line-light;
 				content: " ";
 			}
