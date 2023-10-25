@@ -240,7 +240,7 @@ button.chart-type-toggle {
 .general-ledger-component-main {
 	.general-ledger-content {
 		// height: 1186px;
-		height: 50%;
+		height: 100%;
 		width: 1120px;
 		background-color: #fff;
 		border: 1px solid #ccc;
@@ -252,7 +252,8 @@ button.chart-type-toggle {
 		margin-top: 130px;
 		.general-ledger-content-top {
 			margin-top: 20px;
-			margin-left: 20px;
+			// margin-left: 20px;
+			margin-left: -5px;
 			display: flex;
 			flex-direction: column;
 			padding: 0px 24px 0px 24px;

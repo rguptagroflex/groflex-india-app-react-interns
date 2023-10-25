@@ -152,7 +152,6 @@ const ReportsGeneralLedger = (props) => {
 	const [customerId, setCustomerID] = useState("");
 	const [customerName, setCustomerName] = useState("");
 	const setCustomerDropDown = (event) => {
-		setCustomerName(event.target.value);
 		setCustomerID(event.target.value);
 	};
 	const fetchCustomers = () => {
@@ -179,29 +178,33 @@ const ReportsGeneralLedger = (props) => {
 			const startDate = moment(selectedDate.startDate).format("YYYY-MM-DD");
 			const endDate = moment(selectedDate.endDate).format("YYYY-MM-DD");
 			console.log("Api ID: ", customerId);
+			if (customerId === "") {
+				setRowData([]);
+			} else {
+				invoiz
 
-			invoiz
+					.request(
+						`${config.resourceHost}accountingReport/generalLedger/${startDate}/${endDate}?type=json&customerId=${customerId}`,
 
-				.request(
-					`${config.resourceHost}accountingReport/generalLedger/${startDate}/${endDate}?type=json&customerId=${customerId}`,
-
-					{ auth: true }
-				)
-				.then((res) => {
-					let filterdResponse = [];
-					res.body.data.summaryData.transactions.forEach((item) => {
-						if (item.chartOfAccount) {
-							if (
-								Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
-								Date.parse(item.date) <= Date.parse(selectedDate.endDate)
-							) {
-								filterdResponse.push(item);
+						{ auth: true }
+					)
+					.then((res) => {
+						let filterdResponse = [];
+						res.body.data.summaryData.transactions.forEach((item) => {
+							if (item.chartOfAccount) {
+								if (
+									Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
+									Date.parse(item.date) <= Date.parse(selectedDate.endDate)
+								) {
+									filterdResponse.push(item);
+								}
 							}
-						}
-					});
+						});
+						setCustomerName(res.body.data.summaryData.customer.name);
 
-					setRowData(filterdResponse);
-				});
+						setRowData(filterdResponse);
+					});
+			}
 		},
 		[selectedDate, customerId]
 	);
@@ -367,7 +370,7 @@ const ReportsGeneralLedger = (props) => {
 							<div className="customer-drop-down">
 								<FormControl>
 									<Select
-										value={customerName}
+										value={customerId}
 										onChange={setCustomerDropDown}
 										displayEmpty
 										disableUnderline
@@ -483,11 +486,7 @@ const ReportsGeneralLedger = (props) => {
 				</div>
 				<div className="general-heading general-ledger-content-middle">
 					<div>
-						<h3>
-							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
-								invoiz.user.companyAddress.companyName.slice(1)}{" "}
-							General Ledger
-						</h3>
+						<h3>{customerName} General Ledger</h3>
 					</div>
 					{selectedDate && selectedDate.startDate && selectedDate.endDate && (
 						<p style={{ color: "#888787" }}>
