@@ -15,6 +15,10 @@ import Arrow from "../../../assets/images/icons/chevrons-down.svg";
 import ArrowSide from "../../../assets/images/icons/chevron.svg";
 
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 function ReportsProfitAndLoss() {
 	LicenseManager.setLicenseKey(
@@ -25,23 +29,37 @@ function ReportsProfitAndLoss() {
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState([]);
 	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
+	const [tableHeaders, setTableHeaders] = useState([]);
+	const [tableTotals, setTableTotal] = useState([]);
 	const CustomCellRenderer = ({ value, colDef }) => (
 		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
 	);
-	useEffect(() => {
-		fetchData();
-	}, []);
+
 	const fetchData = async () => {
+		const startDate = moment(selectedDate.startDate).format();
+		const endDate = moment(selectedDate.endDate).format();
+		console.log("Start Date: ", startDate);
+		console.log("End Date: ", endDate);
+		let tableHeaders = [];
 		try {
 			const response = await invoiz.request(
-				`${config.resourceHost}accountingReport/profitandloss/2023-03-31T20:10:51.000Z/2023-08-09T20:10:51.000Z?type=json`,
+				`${config.resourceHost}accountingReport/profitandloss/${startDate}/${endDate}?type=json`,
 				{ auth: true }
 			);
 			const responseData = response.body.data;
 
 			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
 				const transactions = responseData.summaryData.transactions;
+				setTableTotal(responseData.summaryData);
 				setRowData(transactions);
+
+				transactions.forEach((item) => {
+					if (!tableHeaders.includes(item.accountTypeId)) {
+						tableHeaders.push(item.accountTypeId);
+					}
+				});
+
+				setTableHeaders(tableHeaders);
 			} else {
 				console.error("Data structure in the response is not as expected.");
 			}
@@ -49,41 +67,7 @@ function ReportsProfitAndLoss() {
 			console.error("Error fetching data:", error);
 		}
 	};
-	// const [columnDefs, setColumnDefs] = useState([
-	// 	{
-	// 		field: "chartOfAccount.accountTypeId",
-	// 		rowGroup: true,
-	// 		enableRowGroup: true,
-	// 		filter: false,
-	// 		hide: true,
-	// 		valueFormatter: function (params) {
-	// 			var value = params.value;
-	// 			return value.charAt(0).toUpperCase() + value.slice(1);
-	// 		},
-	// 	},
-	// 	{
-	// 		headerName: "Account",
-	// 		field: "chartOfAccount.accountSubTypeId",
-	// 		filter: false,
-	// 		valueFormatter: function (params) {
-	// 			if (params.value) {
-	// 				let formattedValue = params.value.replace(/([A-Z])/g, " $1");
-	// 				formattedValue = formattedValue.replace(/([A-Z][a-z])/g, " $1");
-	// 				formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
-	// 				return formattedValue;
-	// 			}
-	// 			return params.value;
-	// 		},
-	// 		cellStyle: { whiteSpace: "normal" },
-	// 		autoHeight: true,
-	// 	},
-	// 	{
-	// 		headerName: "Account Code",
-	// 		field: "chartOfAccount.accountCode",
-	// 		filter: false,
-	// 	},
-	// 	{ field: "balance", filter: false, cellRendererFramework: CustomCellRenderer },
-	// ]);
+
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
 	}, []);
@@ -150,23 +134,7 @@ function ReportsProfitAndLoss() {
 			// filter: 'agGroupColumnFilter',
 		};
 	}, []);
-	// const companyName = invoiz.user.companyAddress.companyName;
-	// const capitalizedCompanyName = companyName
-	// 	.split(" ")
-	// 	.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-	// 	.join(" ");
 
-	// const onGridReady = useCallback((params) => {
-	// 	invoiz
-	// 		.request(
-	// 			`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-	// 			{ auth: true }
-	// 		)
-	// 		.then((res) => {
-	// 			console.log("response of data :", res.body.data);
-	// 			setRowData(res.body.data);
-	// 		});
-	// }, []);
 	const sendEmail = () => {
 		ModalService.open(<ProfitAndLossSendEmail />, {
 			modalClass: "edit-contact-person-modal-component",
@@ -301,8 +269,13 @@ function ReportsProfitAndLoss() {
 		const endDate = moment(value, "DD-MM-YYYY");
 		setDateData({ ...dateData, customEndDate: endDate });
 	};
+	useEffect(() => {
+		console.log("selected Date: ", selectedDate);
+		fetchData();
+	}, [selectedDate]);
+
 	return (
-		<div>
+		<div className="profit-loss-component">
 			<TopbarComponent
 				title={"Profit and loss"}
 				hasCancelButton={true}
@@ -310,51 +283,16 @@ function ReportsProfitAndLoss() {
 					window.history.back();
 				}}
 			/>
-			<div
-				style={{
-					// height: "500px",
-					height: "1186px",
-					width: "1120px",
-					backgroundColor: "#fff",
-					border: "1px solid #ccc",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-					borderRadius: "8px",
-					marginTop: "130px",
-				}}
-			>
-				<div
-					className="general-ledger-component"
-					style={{
-						// marginTop: "90px",
-						// marginLeft: "50px",
-						// display: "flex",
-						// flexDirection: "column",
-						marginTop: "20px",
-						marginLeft: "20px",
-						display: "flex",
-						flexDirection: "column",
-						// height:"32px",
-						// width:"1120px",
-						padding: "0px, 24px, 0px, 24px",
-						justifyContent: "space-between",
-					}}
-				>
+			<div className="profit-loss-component-wrapper">
+				<div className="general-ledger-component">
 					<div
 						className="time-period-select-container"
 						style={{
 							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-							display: "flex",
-							justifyContent: "space-between",
 						}}
 					>
-						<div
-							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
-							className="time-period-select"
-						>
-							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+						<div className="time-period-select">
+							<div className="date-selector">
 								<SelectInputComponent
 									allowCreate={false}
 									notAsync={true}
@@ -434,129 +372,28 @@ function ReportsProfitAndLoss() {
 						</div>
 					</div>
 
-			
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "flex-end",
-							padding: " 0px 16px 0px 16px",
-							height: "32px",
-							/* width: 326px; */
-
-							position: "relative",
-							borderRadius: "4px",
-							gap: "16px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px solid #ccc",
-								padding: "10px",
-								display: "flex",
-								alignItems: "center",
-								position: "relative",
-								borderRadius: "4px",
-								marginTop: "-70px",
-							}}
-						>
-							<div
-								className="icon-mail"
-								onClick={sendEmail}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-								}}
-							>
-								<span
-									className="pdf_mail"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Send email
-								</span>
+					<div className="utility-icons-wrapper">
+						<div className="utility-icons">
+							<div className="icon-mail" onClick={sendEmail}>
+								<span className="pdf_mail"></span>
+								<span className="icon-text">Send email</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "44%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
-							<div
-								className="icon-print2"
-								onClick={onBtPrint}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-									marginLeft: "5px",
-								}}
-							>
-								<span
-									className="pdf_print"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Print
-								</span>
+							<div className="icon-separtor-first"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "70%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
+							<div className="icon-separtor-second"></div>
 
-							<div
-								className="icon-download"
-								onClick={onBtExport}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-								}}
-							>
-								<span
-									className="download"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Export
-								</span>
+							<div className="icon-download" onClick={onBtExport}>
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div
-					className="general-heading"
-					style={{
-						// padding: "20px",
-						marginLeft: "20px",
-						marginBottom: "30px",
-					}}
-				>
+				<div className="general-heading">
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -574,82 +411,65 @@ function ReportsProfitAndLoss() {
 					)}
 				</div>
 
-				{/* <div style={gridStyle} className="ag-theme-alpine">
-					<AgGridReact
-						ref={gridRef}
-						rowData={rowData}
-						columnDefs={columnDefs}
-						defaultColDef={defaultColDef}
-						autoGroupColumnDef={autoGroupColumnDef}
-						animateRows={true}
-						onGridReady={onGridReady}
-						modules={AllModules}
-						// groupDisplayType={"groupRows"}
-						onFirstDataRendered={onFirstDataRendered}
-						// gridOptions={gridOptions}
-					></AgGridReact>
-				</div> */}
 				<div className="table-container">
-					<table className="custom-table">
-						<thead style={{ height: "60px", background: "#F1F8FB" }}>
-							<tr>
-							
-							
-								<th colSpan="8">Account</th>
-								<th colSpan="8">Debits</th>
-							
-							</tr>
-						</thead>
-						
-						<tbody>
-							{rowData.map((transaction, index) => (
-								<React.Fragment key={index}>
-									<tr
-										key={`${index}-subtype`}
-										style={{ height: "50px", borderBottom: "1px solid  #DDDDDD" }}
-									>
-										<td
-										//  colSpan={2}
-										>
-											<SVGInline
-												// className="overlay-image"
-												svg={showAccountType ? Arrow : ArrowSide} // Use the appropriate icon based on showAccountType
-												alt={"Could not load image!"}
-												onClick={() => setShowAccountType(!showAccountType)} // Toggle showAccountType on click
-											/>
-										</td>
-										<td colSpan={14}>{transaction.accountTypeId}</td>
-									</tr>
-									{showAccountType && (
-										<tr
-											key={`${index}-details`}
-											style={{
-												height: "50px",
-												borderBottom: "1px solid  #DDDDDD",
-												paddingLeft: "7%",
-											}}
-										>
-											<td
-												style={{
-													paddingLeft: "7%",
-												}}
-												colSpan={6}
-											>
-												{transaction.accountSubTypeId}
-											</td>
-											<td
-												colSpan={6}
-											>
-												{transaction.debits}
-											</td>
-										</tr>
-									)}
-								</React.Fragment>
-							))}
-						</tbody>
-					</table>
+					<div className="profit-loss-table-header">
+						<h6>Account</h6>
+						<h6>Account Code</h6>
+						<h6>Amount</h6>
+					</div>
+
+					{tableHeaders.map((item) => {
+						return (
+							<Accordion>
+								<AccordionSummary
+									expandIcon={<ExpandMoreIcon />}
+									aria-controls="panel1a-content"
+									id="panel1a-header"
+								>
+									{" "}
+									<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>{" "}
+								</AccordionSummary>
+
+								<AccordionDetails>
+									<div className="balance-sheet-accordian-details">
+										{rowData
+											.filter((filteredItem) => filteredItem.accountTypeId === item)
+											.map((subItem, index) => (
+												<React.Fragment>
+													<div className="accordian-details-row-entry">
+														<div className="accordian-detail-name">
+															{subItem.accountSubTypeId}{" "}
+														</div>
+														<div className="accordian-detail-total">
+															{subItem.credits === 0 ? subItem.debits : subItem.credits}{" "}
+														</div>
+													</div>
+
+													{index ===
+													rowData.filter(
+														(filteredItem) => filteredItem.accountTypeId === item
+													).length -
+														1 ? (
+														<React.Fragment>
+															<div className="Total">
+																<div>Total {item}</div>
+																<div className="totalValue">
+																	{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+																</div>
+															</div>
+														</React.Fragment>
+													) : (
+														""
+													)}
+												</React.Fragment>
+											))}
+									</div>
+								</AccordionDetails>
+							</Accordion>
+						);
+					})}
 				</div>
-			</div>{" "}
+			</div>
 		</div>
 	);
 }

@@ -1,0 +1,127 @@
+.profit-loss-table-header {
+	display: flex;
+	justify-content: space-between;
+}
+
+.profit-loss-component-wrapper {
+	height: 1186px;
+	width: 1120px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+	margin-top: 30px;
+	margin-left: 50px;
+	margin-right: 50px;
+	font-weight: 600;
+	border-radius: 8px;
+	margin-top: 130px;
+	.general-ledger-component {
+		margin-top: 20px;
+		margin-left: 20px;
+		flex-direction: column;
+		padding: 0px 24px 0px 24px;
+		justify-content: space-between;
+		.time-period-select-container {
+			display: flex;
+			justify-content: space-between;
+			.time-period-select {
+				flex: 1.5;
+				display: flex;
+				align-items: center;
+				.date-selector {
+					position: relative;
+					width: 100%;
+					flex: 1;
+				}
+			}
+		}
+		.utility-icons-wrapper {
+			display: flex;
+			align-items: center;
+			justify-content: flex-end;
+			padding: 0px 16px 0px 16px;
+			height: 32px;
+			position: relative;
+			border-radius: 4px;
+			gap: 16px;
+			.utility-icons {
+				border: 1px solid #ccc;
+				padding: 10px;
+				display: flex;
+				align-items: center;
+				position: relative;
+				border-radius: 4px;
+				margin-top: -70px;
+				.icon-mail {
+					display: flex;
+					align-items: center;
+					cursor: pointer;
+					height: 18px;
+					margin-right: 20px;
+					.pdf_mail {
+						display: inline-block;
+						font-size: 16px;
+						width: 1em;
+						height: 1em;
+					}
+					.icon-text {
+						margin-left: -5px;
+					}
+				}
+				.icon-separtor-first {
+					border-left: 1px solid #ccc;
+					height: 100%;
+					position: absolute;
+					left: 44%;
+					top: 0;
+					bottom: 0;
+					transform: translate(-50%);
+				}
+				.icon-print2 {
+					display: flex;
+					align-items: center;
+					cursor: pointer;
+					height: 18px;
+					margin-right: 20px;
+					margin-left: 5px;
+					.pdf_print {
+						display: inline-block;
+						font-size: 16px;
+						width: 1em;
+						height: 1em;
+					}
+					.icon-text {
+						margin-left: -5px;
+					}
+				}
+				.icon-separtor-second {
+					border-left: 1px solid #ccc;
+					height: 100%;
+					position: absolute;
+					left: 70%;
+					top: 0;
+					bottom: 0;
+					transform: translate(-50%);
+				}
+				.icon-download {
+					display: flex;
+					align-items: center;
+					cursor: pointer;
+					height: 18px;
+					.download {
+						display: inline-block;
+						font-size: 16px;
+						width: 1em;
+						height: 1em;
+					}
+					.icon-text {
+						margin-left: -5px;
+					}
+				}
+			}
+		}
+	}
+	.general-heading {
+		margin-left: 20px;
+		margin-bottom: 30px;
+	}
+}

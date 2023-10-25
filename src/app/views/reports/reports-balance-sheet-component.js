@@ -452,7 +452,6 @@ const ReportBalanceSheet = (props) => {
 									{" "}
 									<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>{" "}
 								</AccordionSummary>
-								{/* <Divider /> */}
 
 								<AccordionDetails>
 									<div className="balance-sheet-accordian-details">
@@ -468,7 +467,7 @@ const ReportBalanceSheet = (props) => {
 															{subItem.credits === 0 ? subItem.debits : subItem.credits}{" "}
 														</div>
 													</div>
-													{/* <Divider /> */}
+
 													{index ===
 													rowData.filter(
 														(filteredItem) => filteredItem.accountTypeId === item
@@ -481,7 +480,6 @@ const ReportBalanceSheet = (props) => {
 																	{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
 																</div>
 															</div>
-															{/* <Divider /> */}
 														</React.Fragment>
 													) : (
 														""
