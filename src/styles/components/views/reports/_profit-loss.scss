@@ -1,8 +1,3 @@
-.profit-loss-table-header {
-	display: flex;
-	justify-content: space-between;
-}
-
 .profit-loss-component-wrapper {
 	height: 1186px;
 	width: 1120px;
@@ -123,5 +118,79 @@
 	.general-heading {
 		margin-left: 20px;
 		margin-bottom: 30px;
+	}
+	.table-container {
+		.MuiTypography-body1 {
+			margin-left: 10px;
+			font-weight: bold;
+		}
+		.profit-loss-table-header {
+			display: flex;
+			justify-content: space-between;
+			color: #888787;
+			background: #f0f8fb;
+			padding-bottom: 10px;
+			.headingLeft {
+				margin-left: 24px;
+			}
+			.headingRight {
+				margin-right: 100px;
+			}
+		}
+		.MuiDivider-root {
+			margin-top: -10px;
+		}
+		.MuiAccordion-root {
+			&.Mui-expanded {
+				margin: 0px 0px;
+				&::before {
+					opacity: 1;
+				}
+			}
+		}
+		.MuiButtonBase-root {
+			&.MuiAccordionSummary-root {
+				&.Mui-expanded {
+					border-bottom: 1px solid #ddd;
+				}
+			}
+		}
+		.MuiAccordionDetails-root {
+			display: block;
+			// margin-top: -20px;
+			padding: 0px 0px 0px;
+			.balance-sheet-accordian-details {
+				display: flex;
+				flex-direction: column;
+				.accordian-details-row-entry {
+					border-bottom: 1px solid #ddd;
+					font-weight: initial;
+					padding: 20px 16px 30px;
+					display: flex;
+					justify-content: space-between;
+					.accordian-detail-total {
+						padding-left: 15px;
+						min-width: 130px;
+						text-align: left;
+					}
+					.accordian-detail-name {
+						margin-left: 10px;
+					}
+				}
+				.Total {
+					padding: 15px 16px 26px;
+					// margin-left: 10px;
+					background: #ecfcf4;
+					padding-left: 15px;
+					display: flex;
+					justify-content: space-between;
+					.totalValue {
+						min-width: 150px;
+						text-align: left;
+						padding-left: 34px;
+					}
+				}
+			}
+		}
 	}
 }

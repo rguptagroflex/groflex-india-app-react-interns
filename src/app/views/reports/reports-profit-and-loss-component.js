@@ -413,9 +413,9 @@ function ReportsProfitAndLoss() {
 
 				<div className="table-container">
 					<div className="profit-loss-table-header">
-						<h6>Account</h6>
-						<h6>Account Code</h6>
-						<h6>Amount</h6>
+						<h6 className="headingLeft">Account</h6>
+						<h6 className="headinMiddle">Account Code</h6>
+						<h6 className="headingRight">Amount</h6>
 					</div>
 
 					{tableHeaders.map((item) => {
@@ -426,8 +426,7 @@ function ReportsProfitAndLoss() {
 									aria-controls="panel1a-content"
 									id="panel1a-header"
 								>
-									{" "}
-									<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>{" "}
+									<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>
 								</AccordionSummary>
 
 								<AccordionDetails>
