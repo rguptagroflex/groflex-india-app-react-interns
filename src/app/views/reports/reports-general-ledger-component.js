@@ -24,7 +24,7 @@ const ReportsGeneralLedger = (props) => {
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-	const [rowData, setRowData] = useState();
+	const [rowData, setRowData] = useState([]);
 
 	// const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 	const CustomCellRenderer = ({ value, colDef }) => (
@@ -152,7 +152,6 @@ const ReportsGeneralLedger = (props) => {
 	const [customerId, setCustomerID] = useState("");
 	const [customerName, setCustomerName] = useState("");
 	const setCustomerDropDown = (event) => {
-		console.log("target value", event.target.value);
 		setCustomerName(event.target.value);
 		setCustomerID(event.target.value);
 	};
@@ -168,8 +167,6 @@ const ReportsGeneralLedger = (props) => {
 				customerDropDownValues.push({ id: item.id, name: item.name });
 			});
 			setCustomers(customerDropDownValues);
-
-			console.log("Customer data: ", res.body.data);
 		});
 	};
 
@@ -202,9 +199,6 @@ const ReportsGeneralLedger = (props) => {
 							}
 						}
 					});
-					console.log("Filtered Array: ", filterdResponse);
-
-					console.log("response of data :", res.body.data);
 
 					setRowData(filterdResponse);
 				});
@@ -351,7 +345,6 @@ const ReportsGeneralLedger = (props) => {
 		const endDate = moment(value, "DD-MM-YYYY");
 		setDateData({ ...dateData, customEndDate: endDate });
 	};
-	console.log("Drop down: ", customers);
 
 	return (
 		<div style={containerStyle} className="general-ledger-component-main">
@@ -464,30 +457,33 @@ const ReportsGeneralLedger = (props) => {
 						</div>
 					</div>
 
-					<div className="utility-icons-container">
-						<div className="utility-icons">
-							<div className="icon-mail" onClick={sendEmail}>
-								<span className="pdf_mail"></span>
-								<span className="icon-text">Send email</span>
-							</div>
-							<div className="icon-separtor-first"></div>
-							<div className="icon-print2" onClick={onBtPrint}>
-								<span className="pdf_print"></span>
-								<span className="icon-text">Print</span>
-							</div>
-							<div className="icon-separtor-second"></div>
+					{rowData.length > 0 ? (
+						<div className="utility-icons-container">
+							<div className="utility-icons">
+								<div className="icon-mail" onClick={sendEmail}>
+									<span className="pdf_mail"></span>
+									<span className="icon-text">Send email</span>
+								</div>
+								<div className="icon-separtor-first"></div>
+								<div className="icon-print2" onClick={onBtPrint}>
+									<span className="pdf_print"></span>
+									<span className="icon-text">Print</span>
+								</div>
+								<div className="icon-separtor-second"></div>
 
-							<div className="icon-download" onClick={onBtExport}>
-								<span className="download"></span>
-								<span className="icon-text">Export</span>
+								<div className="icon-download" onClick={onBtExport}>
+									<span className="download"></span>
+									<span className="icon-text">Export</span>
+								</div>
 							</div>
 						</div>
-					</div>
+					) : (
+						""
+					)}
 				</div>
 				<div className="general-heading general-ledger-content-middle">
 					<div>
 						<h3>
-							{console.log(invoiz.user.companyAddress.companyName)}
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
 								invoiz.user.companyAddress.companyName.slice(1)}{" "}
 							General Ledger
