@@ -84,7 +84,7 @@ class TransactionEditComponent extends React.Component {
 		props.transaction.columns = [
 			{
 				name: "SNo",
-				label: "SN",
+				label: "S.NO",
 				active: true,
 				required: true,
 				editable: false,

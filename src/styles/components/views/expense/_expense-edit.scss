@@ -126,12 +126,6 @@
 		padding-bottom: 25px;
 	}
 
-	.expense-edit-ispaid {
-		padding-bottom: 5px;
-		padding-top: 20px;
-		float: right;
-	}
-
 	.paykind-wrapper {
 		// display: flex;
 		// flex-direction: row;
@@ -242,6 +236,13 @@
 .font-size-small {
 	font-size: small;
 }
+
+//Design changes
+
+.expenseEditLeftAlign {
+	position: relative;
+	left: 100px;
+}
 .expense1-edit-component-wrapper {
 	.Select-placeholder {
 		padding-left: 0px !important;
@@ -253,5 +254,321 @@
 
 	.Select-value {
 		padding-left: 0 !important;
+	}
+	// Content design
+	.expense-edit-form {
+		width: 1000px;
+		padding: 40px;
+		margin-left: auto;
+		margin-right: auto;
+		.expense-type-tabs {
+			display: flex;
+			width: 300px;
+			height: 32px;
+			border: 1px solid #dddddd;
+			.expense-type-option {
+				cursor: pointer;
+				width: 50%;
+				color: #272d30;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.active-option {
+				font-weight: 700;
+				background-color: #ecfcf4;
+			}
+		}
+		.recipientContainer {
+			.recipientDisplay {
+				width: 240px;
+				.billed-to-name {
+					color: #00a353;
+					font-weight: 600;
+					font-size: 14px;
+				}
+				.billed-to-address {
+					margin-top: 10px;
+					.address-label {
+						font-weight: 600;
+						color: #888787;
+					}
+					.countryDisplay {
+						margin-bottom: 10px;
+					}
+				}
+				.phone-no-container {
+					margin-top: 10px !important;
+					.phone-label {
+						font-weight: 600;
+						color: #888787;
+					}
+				}
+				.gstno-container {
+					margin-top: 10px !important;
+					.gst-label {
+						font-weight: 600;
+						color: #888787;
+					}
+				}
+				.cinno-container {
+					margin-top: 10px !important;
+					.cin-label {
+						font-weight: 600;
+						color: #888787;
+					}
+				}
+			}
+		}
+	}
+
+	.invoice-number-date-container {
+		.invoice-no-input-container {
+			height: 35px;
+			.form_input {
+				height: 35px;
+				.input {
+					padding-top: 0;
+					height: 33px;
+				}
+			}
+		}
+	}
+
+	//Table design
+
+	//Letter positions head
+	.letter-positions-head-component-wrapper {
+		height: 60px;
+		border-bottom: 1px solid #dddddd;
+		.letter-positions-head {
+			border-bottom: none;
+			padding: 20px 75px 20px 41px;
+			font-size: 13px !important;
+			font-weight: 600 !important;
+			div:nth-of-type(n + 2) {
+				border-left: 1px solid #c6c6c6;
+			}
+			.letter-positions-head-column {
+				text-transform: uppercase !important;
+				// margin: 0 !important;
+				// padding: 0 !important;
+			}
+			.letter-positions-head-column-SNo {
+				flex-basis: 0;
+				flex-grow: 0;
+				margin-right: 12px;
+				padding-right: 0;
+				max-width: 32px;
+			}
+			.letter-positions-head-column-description {
+				padding-left: 12px;
+			}
+			.letter-positions-head-column-hsnSacCode {
+				flex-basis: 110px !important;
+				padding-left: 10px;
+			}
+			.letter-positions-head-column-amount {
+				max-width: 121px !important;
+			}
+			.letter-positions-head-column-vat {
+				width: 70px !important;
+			}
+			.letter-positions-head-column-price {
+				width: 115px !important;
+			}
+			.letter-positions-head-column-discount {
+				width: 90px !important;
+			}
+			.letter-positions-head-column-total {
+				width: 80px !important;
+			}
+		}
+
+		background-color: #f1f8fb !important;
+		color: #888787 !important;
+	}
+	//Letter position item
+	.letter-positions-component-wrapper {
+		.letter-positions-item {
+			padding: 0 72px 0 50px !important;
+		}
+
+		.letter-positions-item-column-SNo {
+			width: 50px;
+			text-align: center;
+		}
+		.letter-positions-item-textarea {
+			padding-left: 50px;
+		}
+	}
+
+	.transaction-form-positions {
+		border: 1px solid #c6c6c6 !important;
+		min-height: 120px !important;
+
+		.letter-positions-add-position {
+			padding: 0 0 0 14px;
+			margin: 14px 0;
+			.letter-positions-add-position-button {
+				margin: 0 0 0 0;
+			}
+		}
+		.letter-positions-item:nth-child(odd) {
+			.inline {
+				.input {
+					background-color: white;
+				}
+			}
+		}
+		.letter-positions-item,
+		.Select-control {
+			background-color: white;
+		}
+
+		.letter-positions-item {
+			// .letter-positions-item-column-amount {
+			// 	max-width: 139px;
+			// }
+			.Select-multi-value-wrapper {
+				.Select-value {
+					padding-right: 25px;
+				}
+			}
+			.document_info-action {
+				box-shadow: none;
+			}
+			.document_info-action:before {
+				font-size: 16px;
+				margin-right: 8px;
+			}
+		}
+	}
+
+	//Letter Total
+	.transaction-form-total {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		margin-top: 20px;
+		.expense-edit-ispaid {
+			padding-bottom: 5px;
+			padding-top: 20px;
+			float: right;
+			width: 40%;
+			.form_input {
+				margin-left: 7px;
+			}
+			.is-paid-elements {
+				width: 100%;
+				.paykind-wrapper {
+					margin-top: 12.5px;
+					margin-bottom: 16px;
+				}
+			}
+		}
+		.letter-total-container {
+			width: 60%;
+			.letter-positions-total-component {
+				margin-top: 20px;
+				.letter-positions-total-content {
+					padding: 0px 0px 20px 0px;
+
+					.letter-positions-radio {
+						border: 1px solid #dddddd;
+						display: flex;
+						.total-option {
+							cursor: pointer;
+							height: 30px;
+							width: 50%;
+							text-align: center;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+						}
+						.total-active {
+							background-color: #ecfcf4;
+							color: #272d30;
+							font-weight: 700;
+						}
+					}
+
+					.column-left {
+						min-width: 180px;
+						font-weight: 600;
+						color: #888787;
+					}
+					.letter-positions-total,
+					.letter-positions-vat {
+						margin-bottom: 4px;
+					}
+					&:after {
+						border-color: #c6c6c6;
+						// bottom: 50px;
+						border-width: 1px 0;
+					}
+					.last-letter-positions-total-container {
+						// margin-top: 12px;
+						color: #272d30;
+						.column-left {
+							font-weight: 700;
+							color: #272d30;
+						}
+					}
+				}
+			}
+			.transaction-positions-totalInWords {
+				text-align: right;
+				color: #888787;
+				margin-top: 35px;
+			}
+		}
+	}
+
+	.expense-receipt-list {
+		.expenseEdit_fileListRow {
+			border: 1px solid #c6c6c6;
+			border-radius: 4px;
+			padding: 0px 12px;
+			margin-bottom: 10px;
+		}
+	}
+
+	.expense-edit-drop-box {
+		border: 1px solid #c6c6c6;
+		border-color: #c6c6c6;
+		padding: 10px 0;
+		.text-muted {
+			p {
+				margin: 0;
+			}
+		}
+	}
+
+	.last-footer-msg-container {
+		.thank-you-msg {
+			text-align: center;
+		}
+		.groflex-ad {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			margin-top: 24px;
+			background-color: #f2f2f2;
+			padding: 5px;
+			font-size: 12px;
+			.footer-logo {
+				object-fit: contain;
+				height: 15px;
+				margin-top: 3px;
+				padding-right: 7px;
+				border-right: 1px solid #dddddd;
+				margin-right: 7px;
+			}
+			.app-link {
+				color: #00a353;
+				font-weight: 600;
+			}
+		}
 	}
 }

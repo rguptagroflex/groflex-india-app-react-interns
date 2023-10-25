@@ -29,18 +29,34 @@ import { saveCustomer } from "helpers/transaction/saveCustomer";
 import { convertToWords } from "helpers/convertRupeesIntoWords";
 import { handleTransactionFormErrors, handleImageError } from "helpers/errors";
 import CancelExpenseModalComponent from "shared/modals/cancel-expense-modal.component";
-
 import ChangeDetection from "helpers/changeDetection";
 import { formatApiDate } from "helpers/formatDate";
 import userPermissions from "enums/user-permissions.enum";
 import SelectInput from "../../shared/inputs/select-input/select-input.component";
 import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
+import { connect } from "react-redux";
+import groflexLetterFooterIcon from "../../../assets/images/groflex_name_logo_color_no_tag.png";
+import editSvg from "../../../assets/images/svg/editSvg.svg";
+import SVGInline from "react-svg-inline";
+
 const changeDetection = new ChangeDetection();
 
 const expanseTypes = { EXPENSE_TYPE: "expense", PURCHASE_TYPE: "purchase" };
 class ExpenseEditComponent extends React.Component {
 	constructor(props) {
 		super(props);
+		if (props.expense.columns[0].name.toLowerCase() !== "sno") {
+			props.expense.columns = [
+				{
+					name: "SNo",
+					label: "S.NO",
+					active: true,
+					required: true,
+					editable: false,
+				},
+				...props.expense.columns,
+			];
+		}
 		this.state = {
 			expense: this.props.expense || {},
 			miscOptions: props.miscOptions,
@@ -66,15 +82,15 @@ class ExpenseEditComponent extends React.Component {
 	getBanksList() {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((res) => {
 			// console.log(res.body.data, "GET BANKS LIST");
-			if(res.body.data.length === 0) {
-				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
+			if (res.body.data.length === 0) {
+				invoiz.page.showToast({ type: "error", message: "Please create Cash and Bank first" });
 			}
 			this.setState({
 				...this.state,
 				paymentMethodOptions: [...res.body.data].map((bank) => ({
 					label: capitalize(bank.bankName),
 					value: bank.id,
-					type: bank.type
+					type: bank.type,
 				})),
 			});
 		});
@@ -149,14 +165,14 @@ class ExpenseEditComponent extends React.Component {
 	}
 
 	handlePaymentMethodChange(option) {
-		let bankdetails = this.state.paymentMethodOptions.find(x => x.value == option.value);
+		let bankdetails = this.state.paymentMethodOptions.find((x) => x.value == option.value);
 		const { expense } = this.state;
 		expense.payKind = bankdetails.type;
 		this.setState({ ...this.state, expense, paymentMethod: option.value, bankDetailId: option.value });
 	}
 
 	render() {
-		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo } = this.state;
+		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo, paymentMethod } = this.state;
 		let title = expense.receiptNumber ? `Expenditure ${expense.receiptNumber}` : `Create expenditure`;
 		let subtitle;
 		// console.log(this.state, ": IS PAid STATE");
@@ -201,7 +217,8 @@ class ExpenseEditComponent extends React.Component {
 						action: "save",
 						dataQsId: "expense-topbar-button-save",
 						loading: saving,
-						disabled: expense.status !== "open",
+						// disabled: expense.status !== "open",
+						disabled: !paymentMethod,
 					},
 					{
 						type: "default",
@@ -218,8 +235,9 @@ class ExpenseEditComponent extends React.Component {
 
 		const isPaidElements =
 			this.state.expense.payKind !== "open" ? (
-				<div className="row u_pb_40 u_pt_60">
-					<div style={{ paddingTop: "12.5px" }} className="col-xs-6 paykind-wrapper">
+				// <div className="row u_pb_40 u_pt_60">
+				<div className="is-paid-elements">
+					<div className="col-xs-9 paykind-wrapper">
 						{/* <label className="paykind-radio-label">{resources.str_payment}</label> */}
 						{/* <RadioInputComponent
 							wrapperClass={`paykind-radio-wrapper`}
@@ -231,6 +249,7 @@ class ExpenseEditComponent extends React.Component {
 							onChange={() => this.onPaykindChange()}
 							dataQsId="expense-edit-paykind"
 						/> */}
+						<label className="dateInput_label">Payment Method</label>
 						<SelectInput
 							allowCreate={false}
 							notAsync={true}
@@ -247,9 +266,9 @@ class ExpenseEditComponent extends React.Component {
 							}}
 						/>
 					</div>
-					<div className="col-xs-6 payment-date">
+					<div className="col-xs-9 payment-date">
 						<div className="dateInput">
-							<label className="dateInput_label">{resources.expenseEditPaymentDateLabel}</label>
+							<label className="dateInput_label">Date</label>
 							<DateInputComponent
 								name={"expense-pay-date"}
 								value={this.state.expense.displayPayDate}
@@ -328,11 +347,16 @@ class ExpenseEditComponent extends React.Component {
 			</div>
 		) : null;
 
+		console.log(this.state, "Expense edit state");
 		return (
-			<div className="expense1-edit-component-wrapper">
+			<div
+				className={`expense1-edit-component-wrapper ${
+					this.props.isSubmenuVisible ? "expenseEditLeftAlign" : ""
+				}`}
+			>
 				{topbar}
 
-				<div className="box wrapper-has-topbar-with-margin">
+				<div className="box wrapper-has-topbar-with-margin expense-edit-form">
 					{/* <div className="row">
 						<div className="col-xs-8">
 							<div className="text-h4 heading">
@@ -357,7 +381,7 @@ class ExpenseEditComponent extends React.Component {
 					</div> */}
 					<div className="row">
 						<div className="col-xs-6">
-							<div className={`letter-positions-total-content`}>
+							{/* <div className={`letter-positions-total-content`}>
 								<div className="text-h4 letter-positions-radio">
 									{this.state.hideRadio ? (
 										capitalize(this.state.expense.type)
@@ -377,18 +401,37 @@ class ExpenseEditComponent extends React.Component {
 										/>
 									)}
 								</div>
+							</div> */}
+							<div className="expense-type-tabs">
+								<div
+									className={`expense-type-option ${
+										this.state.expense.type === "expense" ? "active-option" : ""
+									}`}
+									onClick={() => this.onExpenseTypeChage("expense")}
+								>
+									Expense
+								</div>
+								<div
+									className={`expense-type-option ${
+										this.state.expense.type === "purchase" ? "active-option" : ""
+									}`}
+									onClick={() => this.onExpenseTypeChage("purchase")}
+								>
+									Purchase
+								</div>
 							</div>
 						</div>
 					</div>
 
-					<div className="row ">
-						<div className="col-xs-12 u_pt_28">
+					<div className="row invoice-number-date-container">
+						{/* <div className="col-xs-12 u_pt_28"> */}
+						<div className="col-xs-6 u_pt_28">
 							<div className="row">
 								<div
-									className="col-xs-12 text-h5"
+									className="col-xs-12 text-h5 font-16px u_mb_16"
 									// style={{ fontSize: "16px", fontWeight: 600 }}
 								>
-									{`Received from`}
+									{"RECEIVED FROM"}
 								</div>
 							</div>
 							<div className="row">
@@ -422,9 +465,46 @@ class ExpenseEditComponent extends React.Component {
 								</div>
 							</div>
 						</div>
+						<div className="col-xs-6 u_pt_28">
+							<div className="row" style={{ flexDirection: "row-reverse" }}>
+								<div className="row col-xs-9 u_mb_6">
+									<div style={{ display: "flex", alignItems: "center" }} className="col-xs-5">
+										<b style={{ color: "#888787", fontWeight: 600 }}>Invoice No.*</b>
+									</div>
+									<div className="col-xs-2 u_pt_4">-</div>
+									<div className="col-xs-5 invoice-no-input-container">
+										<TextInputExtendedComponent
+											name="expense-receipt-no"
+											dataQsId="expense-edit-receipt-no"
+											value={this.state.expense.receiptNumber}
+											onChange={(value) => this.onReceiptNoChange(value)}
+											errorMessage={errorMessageReceiptNo}
+										/>
+									</div>
+								</div>
+								<div className="row col-xs-9">
+									<div style={{ display: "flex", alignItems: "center" }} className="col-xs-5">
+										<b style={{ color: "#888787", fontWeight: 600 }}>Invoice Date*</b>
+									</div>
+									<div className="col-xs-2 u_pt_4">-</div>
+									<div className="col-xs-5">
+										<div className="dateInput">
+											<DateInputComponent
+												dataQsId="expense-edit-booking-date"
+												name={"expense-booking-date"}
+												value={this.state.expense.displayDate}
+												required={true}
+												onChange={(name, value, date) => this.onDateChange(name, value, date)}
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 
-					<div className="row">
+					{/* Old invoice date container */}
+					{/* <div className="row">
 						<div className="col-xs-6">
 							<div>
 								<b>Invoice No.</b>
@@ -434,16 +514,9 @@ class ExpenseEditComponent extends React.Component {
 									name="expense-receipt-no"
 									dataQsId="expense-edit-receipt-no"
 									value={this.state.expense.receiptNumber}
-									// placeholder={"Enter issued invoice no."}
 									onChange={(value) => this.onReceiptNoChange(value)}
 									errorMessage={errorMessageReceiptNo}
 								/>
-								{/* <TextInputComponent
-									// label="Enter issued invoice no."
-									errorMessage={errorMessageReceiptNo}
-									value={this.state.expense.receiptNumber}
-									onChange={(value) => this.onReceiptNoChange(value)}
-								/> */}
 							</div>
 						</div>
 						<div className="col-xs-6">
@@ -462,7 +535,7 @@ class ExpenseEditComponent extends React.Component {
 								</div>
 							</div>
 						</div>
-					</div>
+					</div> */}
 
 					<div style={{ display: "none" }} className="row u_pb_40">
 						<div className="col-xs-6">
@@ -512,7 +585,7 @@ class ExpenseEditComponent extends React.Component {
 							/>
 						</div>
 					</div>
-					<div className="text-h4 heading u_mt_40">{resources.str_article}</div>
+					<div className="text-h4 heading u_mt_40">Articles</div>
 					<div className="row u_mb_40">
 						<div className="col-xs-12">
 							<div className="transaction-form-positions">
@@ -544,43 +617,54 @@ class ExpenseEditComponent extends React.Component {
 								/>
 							</div>
 							<div className="transaction-form-total">
-								<LetterPositionsTotalComponent
-									onChange={(value) => this.onLetterPriceKindChange(value)}
-									onDiscountChange={(value) => this.onDiscountChange(value)}
-									onChargesChange={(value) => this.onAdditionalChargeChange(value)}
-									totalDiscount={expense.totalDiscount}
-									positions={expense.positions}
-									priceKind={expense.priceKind}
-									additionalCharges={expense.additionalCharges}
-									resources={resources}
-									customerData={expense.customerData}
-									activeComponentAction={this.activeComponentHandler}
-									isActiveComponentHasError={this.state.isActiveComponentHasError}
-									activeComponent={this.state.activeComponent}
-									transaction={expense}
-								/>
-							</div>
-							{/* <div className="transaction-positions-totalInWords">
-								{expense.totalGross ? `${resources.str_totalInWords}: ${convertToWords(expense.totalGross)} ${resources.str_only}` : ''}
-							</div> */}
-							<div className="expense-edit-ispaid">
-								<CheckboxInputComponent
-									dataQsId="expense-edit-ispaid"
-									name={"isPaid"}
-									label={resources.str_paid}
-									checked={expense.payKind !== "open"}
-									onChange={() => this.onPaidChange()}
-								/>
+								<div className="expense-edit-ispaid">
+									<CheckboxInputComponent
+										dataQsId="expense-edit-ispaid"
+										name={"isPaid"}
+										label={resources.str_paid}
+										// checked={expense.payKind !== "open"}
+										checked={expense.payKind === "cash" || expense.payKind === "bank"}
+										onChange={() => this.onPaidChange()}
+									/>
+									{isPaidElements}
+								</div>
+								<div className="letter-total-container">
+									<LetterPositionsTotalComponent
+										onChange={(value) => this.onLetterPriceKindChange(value)}
+										onDiscountChange={(value) => {
+											this.onDiscountChange(value);
+										}}
+										onChargesChange={(value) => {
+											this.onAdditionalChargeChange(value);
+										}}
+										totalDiscount={expense.totalDiscount}
+										positions={expense.positions}
+										priceKind={expense.priceKind}
+										additionalCharges={expense.additionalCharges}
+										resources={resources}
+										customerData={expense.customerData}
+										activeComponentAction={this.activeComponentHandler}
+										isActiveComponentHasError={this.state.isActiveComponentHasError}
+										activeComponent={this.state.activeComponent}
+										transaction={expense}
+									/>
+									<div className="transaction-positions-totalInWords">
+										{expense.totalGross
+											? `Total amount (in words): ${convertToWords(expense.totalGross)} ${
+													resources.str_only
+											  }`
+											: ""}
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					{isPaidElements}
-					<div className="text-h4 heading">{resources.expenseEditDocumentHeading}</div>
+					{/* <div className="text-h4 heading">{resources.expenseEditDocumentHeading}</div> */}
+					<div className="text-h4 heading font-16px">UPLOAD ISSUED INVOICE</div>
 					<div className="row">
-						<div className="col-xs-7">
+						<div style={{ margin: "0 auto" }} className="col-xs-7">
 							{receiptList}
 							<div
-								style={{ borderColor: "#00A353" }}
 								id="expense-receipt-dropbox"
 								className="expense-edit-drop-box drop-box text-center u_p_10 u_mb_1"
 								data-qs-id="expense-edit-receipt-upload"
@@ -589,21 +673,45 @@ class ExpenseEditComponent extends React.Component {
 									{/* <p className="upload-image">
 										<img src="/assets/images/svg/impress_bild.svg" height="100" />
 									</p> */}
-									<p
-										style={{ color: "#00A353" }}
-										dangerouslySetInnerHTML={{
-											__html: resources.expenseEditDocumentDragAndDropTextNew,
-										}}
-									></p>
-									{/* <p
-										dangerouslySetInnerHTML={{ __html: resources.expenseEditDocumentReciptText + "sdfkjbdfs" }}
-									></p> */}
+									<p className="font-16px">
+										<span className="color-primary font-600">
+											<SVGInline
+												svg={editSvg}
+												width="16px"
+												height="16px"
+												className="vertically-middle"
+											/>{" "}
+											Upload
+										</span>{" "}
+										Or Drop a file
+									</p>
 									<input
 										className="u_hidden"
 										type="file"
 										onChange={this.addSelectedFile.bind(this)}
 									/>
 								</label>
+							</div>
+						</div>
+					</div>
+					<div className="u_mt_10 font-16px" style={{ textAlign: "center" }}>
+						Upload an issued invoiced by <span className="font-600">Drag & Drop</span> or{" "}
+						<span onClick={() => this.addSelectedFile.bind(this)} className="font-600">
+							Click Here
+						</span>{" "}
+						to select one
+					</div>
+					<div className="last-footer-msg-container">
+						{/* <div className="thank-you-msg">
+								We thank you for your order and look forward to further cooperation.
+							</div> */}
+						<div className="groflex-ad">
+							<img className="footer-logo" src={groflexLetterFooterIcon} alt="logo" />
+							<div>Try Free Invoicing and Accounting software here </div>
+							<div>
+								<a className="app-link" target="_blank" href="https://app.groflex.in">
+									&nbsp;app.groflex.in
+								</a>
 							</div>
 						</div>
 					</div>
@@ -723,7 +831,9 @@ class ExpenseEditComponent extends React.Component {
 			expense.totalNet * (expense.totalDiscount / 100) +
 			vatAmounts +
 			Object.values(expense.additionalCharges).reduce((a, b) => a + b, 0);
+		// console.log(expense, "before");
 		const newExpense = new Expense(expense);
+		// console.log(newExpense, "after");
 		this.setState({ expense: newExpense });
 	}
 
@@ -1232,4 +1342,12 @@ class ExpenseEditComponent extends React.Component {
 	}
 }
 
-export default ExpenseEditComponent;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps)(ExpenseEditComponent);

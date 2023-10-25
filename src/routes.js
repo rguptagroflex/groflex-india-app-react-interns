@@ -1082,6 +1082,7 @@ const routes = [
 		menuItem: "expenditure",
 		submenuItem: "expenses",
 		resourceKey: "expenseEdit",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
 	},
 	// chart of accounts
 	{
