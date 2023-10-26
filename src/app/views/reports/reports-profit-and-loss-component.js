@@ -420,51 +420,67 @@ function ReportsProfitAndLoss() {
 
 					{tableHeaders.map((item) => {
 						return (
-							<Accordion>
-								<AccordionSummary
-									expandIcon={<ExpandMoreIcon />}
-									aria-controls="panel1a-content"
-									id="panel1a-header"
-								>
-									<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>
-								</AccordionSummary>
+							<div>
+								<Accordion>
+									<AccordionSummary
+										expandIcon={<ExpandMoreIcon />}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
+									>
+										<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>
+									</AccordionSummary>
 
-								<AccordionDetails>
-									<div className="balance-sheet-accordian-details">
-										{rowData
-											.filter((filteredItem) => filteredItem.accountTypeId === item)
-											.map((subItem, index) => (
-												<React.Fragment>
-													<div className="accordian-details-row-entry">
-														<div className="accordian-detail-name">
-															{subItem.accountSubTypeId}{" "}
-														</div>
-														<div className="accordian-detail-total">
-															{subItem.credits === 0 ? subItem.debits : subItem.credits}{" "}
-														</div>
-													</div>
-
-													{index ===
-													rowData.filter(
-														(filteredItem) => filteredItem.accountTypeId === item
-													).length -
-														1 ? (
-														<React.Fragment>
-															<div className="Total">
-																<div>Total {item}</div>
-																<div className="totalValue">
-																	{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
-																</div>
+									<AccordionDetails>
+										<div className="balance-sheet-accordian-details">
+											{rowData
+												.filter((filteredItem) => filteredItem.accountTypeId === item)
+												.map((subItem, index) => (
+													<React.Fragment>
+														<div className="accordian-details-row-entry">
+															<div className="accordian-detail-name">
+																{subItem.accountSubTypeId}{" "}
 															</div>
-														</React.Fragment>
-													) : (
-														""
-													)}
-												</React.Fragment>
-											))}
-									</div>
-								</AccordionDetails>
-							</Accordion>
+															<div className="accordian-detail-total">
+																{subItem.credits === 0
+																	? subItem.debits
+																	: subItem.credits}{" "}
+															</div>
+														</div>
+
+														{/* {index ===
+														rowData.filter(
+															(filteredItem) => filteredItem.accountTypeId === item
+														).length -
+															1 ? (
+															<React.Fragment>
+																<div className="Total">
+																	<div>Total {item}</div>
+																	<div className="totalValue">
+																		{parseFloat(
+																			tableTotals[item + "Total"]
+																		).toFixed(2)}
+																	</div>
+																</div>
+															</React.Fragment>
+														) : (
+															""
+														)} */}
+													</React.Fragment>
+												))}
+										</div>
+									</AccordionDetails>
+								</Accordion>
+								<div className="Total-container">
+									<React.Fragment>
+										<div className="Total">
+											<div>Total {item}</div>
+											<div className="totalValue">
+												{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+											</div>
+										</div>
+									</React.Fragment>
+								</div>
+							</div>
 						);
 					})}
 				</div>

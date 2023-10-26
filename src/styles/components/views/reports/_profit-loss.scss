@@ -120,6 +120,21 @@
 		margin-bottom: 30px;
 	}
 	.table-container {
+		.Total-container {
+			.Total {
+				padding: 15px 16px 26px;
+				// margin-left: 10px;
+				background: #ecfcf4;
+				padding-left: 15px;
+				display: flex;
+				justify-content: space-between;
+				.totalValue {
+					min-width: 150px;
+					text-align: left;
+					padding-left: 34px;
+				}
+			}
+		}
 		.MuiTypography-body1 {
 			margin-left: 10px;
 			font-weight: bold;
@@ -175,19 +190,6 @@
 					}
 					.accordian-detail-name {
 						margin-left: 10px;
-					}
-				}
-				.Total {
-					padding: 15px 16px 26px;
-					// margin-left: 10px;
-					background: #ecfcf4;
-					padding-left: 15px;
-					display: flex;
-					justify-content: space-between;
-					.totalValue {
-						min-width: 150px;
-						text-align: left;
-						padding-left: 34px;
 					}
 				}
 			}
