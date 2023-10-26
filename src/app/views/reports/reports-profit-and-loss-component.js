@@ -31,6 +31,7 @@ function ReportsProfitAndLoss(props) {
 	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
 	const [tableHeaders, setTableHeaders] = useState([]);
 	const [tableTotals, setTableTotal] = useState([]);
+	const [netProfit, setNetProfit] = useState("");
 	const CustomCellRenderer = ({ value, colDef }) => (
 		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
 	);
@@ -52,6 +53,7 @@ function ReportsProfitAndLoss(props) {
 				const transactions = responseData.summaryData.transactions;
 				setTableTotal(responseData.summaryData);
 				setRowData(transactions);
+				setNetProfit(responseData.summaryData.netProfitTotal);
 
 				transactions.forEach((item) => {
 					if (!tableHeaders.includes(item.accountTypeId)) {
@@ -441,33 +443,22 @@ function ReportsProfitAndLoss(props) {
 													<React.Fragment>
 														<div className="accordian-details-row-entry">
 															<div className="accordian-detail-name">
-																{subItem.accountSubTypeId}{" "}
+																{subItem.accountSubTypeId
+																	.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																	.charAt(0)
+																	.toUpperCase() +
+																	subItem.accountSubTypeId
+																		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																		.slice(1)}
 															</div>
+															<div className="account-code">-</div>
+
 															<div className="accordian-detail-total">
 																{subItem.credits === 0
 																	? subItem.debits
 																	: subItem.credits}{" "}
 															</div>
 														</div>
-
-														{/* {index ===
-														rowData.filter(
-															(filteredItem) => filteredItem.accountTypeId === item
-														).length -
-															1 ? (
-															<React.Fragment>
-																<div className="Total">
-																	<div>Total {item}</div>
-																	<div className="totalValue">
-																		{parseFloat(
-																			tableTotals[item + "Total"]
-																		).toFixed(2)}
-																	</div>
-																</div>
-															</React.Fragment>
-														) : (
-															""
-														)} */}
 													</React.Fragment>
 												))}
 										</div>
@@ -486,6 +477,14 @@ function ReportsProfitAndLoss(props) {
 							</div>
 						);
 					})}
+					{rowData.length > 0 ? (
+						<div className="netProfit">
+							<div>Net Profit</div>
+							<div className="netProfit-value">{parseFloat(netProfit).toFixed(2)}</div>
+						</div>
+					) : (
+						""
+					)}
 				</div>
 			</div>
 		</div>

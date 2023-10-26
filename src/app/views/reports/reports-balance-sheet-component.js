@@ -462,7 +462,13 @@ const ReportBalanceSheet = (props) => {
 													<React.Fragment>
 														<div className="accordian-details-row-entry">
 															<div className="accordian-detail-name">
-																{subItem.accountSubTypeId}{" "}
+																{subItem.accountSubTypeId
+																	.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																	.charAt(0)
+																	.toUpperCase() +
+																	subItem.accountSubTypeId
+																		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																		.slice(1)}
 															</div>
 															<div className="accordian-detail-total">
 																{subItem.credits === 0
