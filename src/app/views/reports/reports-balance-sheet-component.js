@@ -444,7 +444,7 @@ const ReportBalanceSheet = (props) => {
 					{tableHeaders.map((item) => {
 						return (
 							<div>
-								<Accordion>
+								<Accordion elevation={0}>
 									<AccordionSummary
 										expandIcon={<ExpandMoreIcon />}
 										aria-controls="panel1a-content"

@@ -276,7 +276,7 @@ button.chart-type-toggle {
 							border: 1px solid #c6c6c6;
 							border-radius: 4px;
 							.Select-placeholder {
-								padding-left: 14px !important;
+								padding-left: 21px !important;
 							}
 							.Select-value {
 								.Select-value-label {
@@ -390,6 +390,10 @@ button.chart-type-toggle {
 		.general-ledger-content-bottom {
 			.ag-root-wrapper {
 				padding-bottom: 0px;
+			}
+			.ag-header {
+				min-height: unset !important;
+				height: 63px !important;
 			}
 		}
 	}

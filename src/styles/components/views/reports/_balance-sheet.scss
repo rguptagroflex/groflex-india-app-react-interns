@@ -131,6 +131,8 @@
 
 	.table-container {
 		.Total-container {
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid #ddd;
 			.Total {
 				padding: 15px 16px 26px;
 				// margin-left: 10px;
@@ -150,6 +152,8 @@
 			font-weight: bold;
 		}
 		.balance-sheet-table-header {
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid #ddd;
 			display: flex;
 			justify-content: space-between;
 			color: #888787;
