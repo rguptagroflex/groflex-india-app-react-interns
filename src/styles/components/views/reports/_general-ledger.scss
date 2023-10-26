@@ -278,6 +278,11 @@ button.chart-type-toggle {
 							.Select-placeholder {
 								padding-left: 14px !important;
 							}
+							.Select-value {
+								.Select-value-label {
+									padding-left: 10px;
+								}
+							}
 						}
 						.MuiFormControl-root {
 							width: 100%;
