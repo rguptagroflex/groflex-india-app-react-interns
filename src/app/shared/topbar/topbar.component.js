@@ -110,7 +110,7 @@ class TopbarComponent extends React.Component {
 		}
 
 		const classLeft = submenuVisible ? "alignLeft" : "";
-		console.log(this.props.isSubmenuVisible, "FROm ORIGINAL TOPBAR");
+		// console.log(this.props.isSubmenuVisible, "FROm ORIGINAL TOPBAR");
 
 		return (
 			<div className={`topbar-wrapper ${this.state.fullPageWidth ? "full-page-width" : ""} ${classLeft}`}>

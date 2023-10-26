@@ -2,9 +2,13 @@
 @import "../../../abstracts/_mixins";
 
 .settings-senderemail-component {
-    .sender-email-info {
-        margin-bottom: 30px;
-    }
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 16px;
+    border-radius: 8px;
+    border: 1px solid #C6C6C6;
+    background: #FFF;
+
 
     .sender-email-name-input,
     .sender-email-input {

@@ -10,40 +10,64 @@ import config from "../../../config";
 import ModalService from "../../services/modal.service";
 import OfferAction from "enums/offer/offer-action.enum";
 import moment from "moment";
-import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
+import SVGInline from "react-svg-inline";
+import Arrow from "../../../assets/images/icons/chevrons-down.svg";
+import ArrowSide from "../../../assets/images/icons/chevron.svg";
 
-function ReportsProfitAndLoss() {
+import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { connect } from "react-redux";
+function ReportsProfitAndLoss(props) {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
 	);
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-	const [rowData, setRowData] = useState();
-	const [columnDefs, setColumnDefs] = useState([
-			{
-			headerName: "Account",
-			field: "chartOfAccount.accountSubTypeId",
-			filter: false,
-			valueFormatter: function (params) {
-				if (params.value) {
-					let formattedValue = params.value.replace(/([A-Z])/g, " $1");
-					formattedValue = formattedValue.replace(/([A-Z][a-z])/g, " $1");
-					formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
-					return formattedValue;
-				}
-				return params.value;
-			},
-			cellStyle: { whiteSpace: "normal" },
-			autoHeight: true,
-		},
-		{
-			headerName: "Account Code",
-			field: "chartOfAccount.accountCode",
-			filter: false,
-		},
-		{ field: "Total", filter: false },
-	]);
+	const [rowData, setRowData] = useState([]);
+	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
+	const [tableHeaders, setTableHeaders] = useState([]);
+	const [tableTotals, setTableTotal] = useState([]);
+	const CustomCellRenderer = ({ value, colDef }) => (
+		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
+	);
+
+	const fetchData = async () => {
+		const startDate = moment(selectedDate.startDate).format();
+		const endDate = moment(selectedDate.endDate).format();
+		console.log("Start Date: ", startDate);
+		console.log("End Date: ", endDate);
+		let tableHeaders = [];
+		try {
+			const response = await invoiz.request(
+				`${config.resourceHost}accountingReport/profitandloss/${startDate}/${endDate}?type=json`,
+				{ auth: true }
+			);
+			const responseData = response.body.data;
+
+			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
+				const transactions = responseData.summaryData.transactions;
+				setTableTotal(responseData.summaryData);
+				setRowData(transactions);
+
+				transactions.forEach((item) => {
+					if (!tableHeaders.includes(item.accountTypeId)) {
+						tableHeaders.push(item.accountTypeId);
+					}
+				});
+
+				setTableHeaders(tableHeaders);
+			} else {
+				console.error("Data structure in the response is not as expected.");
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
 	}, []);
@@ -68,6 +92,14 @@ function ReportsProfitAndLoss() {
 			api.setDomLayout();
 		}
 	}, []);
+	const toggleAccountType = (accountType) => {
+		// Check if the account type is expanded, and toggle it
+		if (expandedAccountTypes.includes(accountType)) {
+			setExpandedAccountTypes(expandedAccountTypes.filter((type) => type !== accountType));
+		} else {
+			setExpandedAccountTypes([...expandedAccountTypes, accountType]);
+		}
+	};
 
 	const onBtPrint = useCallback(() => {
 		if (gridRef.current) {
@@ -102,23 +134,7 @@ function ReportsProfitAndLoss() {
 			// filter: 'agGroupColumnFilter',
 		};
 	}, []);
-	// const companyName = invoiz.user.companyAddress.companyName;
-	// const capitalizedCompanyName = companyName
-	// 	.split(" ")
-	// 	.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-	// 	.join(" ");
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
-			});
-	}, []);
 	const sendEmail = () => {
 		ModalService.open(<ProfitAndLossSendEmail />, {
 			modalClass: "edit-contact-person-modal-component",
@@ -126,7 +142,7 @@ function ReportsProfitAndLoss() {
 		});
 	};
 	const activeAction = OfferAction.PRINT;
-		const onDate = (value) => {
+	const onDate = (value) => {
 		let startDate = "";
 		let endDate = "";
 
@@ -187,8 +203,9 @@ function ReportsProfitAndLoss() {
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
+	const [showAccountType, setShowAccountType] = useState(false);
 	const [selectedDate, setSelectedDate] = useState(null);
-const [selectedDateFilter, setSelectedDateFilter] = useState("");
+	const [selectedDateFilter, setSelectedDateFilter] = useState("");
 	const [dateData, setDateData] = useState({
 		currentMonthName: moment().format("MMMM"),
 		lastMonthName: moment().subtract(1, "months").format("MMMM"),
@@ -234,7 +251,7 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 
 				break;
 			default:
-					onDate(option.value);
+				onDate(option.value);
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: false,
@@ -252,8 +269,16 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 		const endDate = moment(value, "DD-MM-YYYY");
 		setDateData({ ...dateData, customEndDate: endDate });
 	};
+	useEffect(() => {
+		console.log("selected Date: ", selectedDate);
+		fetchData();
+	}, [selectedDate]);
+
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignProfitAndLoss" : "";
+
 	return (
-		<div>
+		<div className="profit-loss-component">
 			<TopbarComponent
 				title={"Profit and loss"}
 				hasCancelButton={true}
@@ -261,174 +286,117 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 					window.history.back();
 				}}
 			/>
-			<div
-				className="general-ledger-component"
-				style={{
-					marginTop: "90px",
-					marginLeft: "50px",
-					display: "flex",
-					flexDirection: "column",
-				}}
-			>
-				<div
-					className="time-period-select-container"
-					style={{
-						width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-					 display: "flex", justifyContent: "space-between" }}
-				>
-					<div style={{ flex: "1.5", display: "flex", alignItems: "center" }} className="time-period-select">
-						<div style={{ position: "relative", width: "100%" , flex: "1"}}>
-							<SelectInputComponent
-								allowCreate={false}
-								notAsync={true}
-								loadedOptions={dateOptions}
-								value={dateData.dateFilterValue}
-								icon={calenderIcon}
-								containerClass="date-input"
-								options={{
-									clearable: false,
-									noResultsText: false,
-									labelKey: "label",
-									valueKey: "value",
-									matchProp: "label",
-									placeholder: "Select Date",
-								// 	handleChange: (option) => {
-								// 		updateSelectedDate(option);
-								// 	},
-								// }}
-									handleChange: handleChange,
-
-									formatOptionLabel: ({ value, label }) => {
-										if (value === "custom" && dateData.showCustomDateRangeSelector) {
-											return (
-												<div>
-													{label}
-													<div
-														style={{
-															whiteSpace: "normal",
-															overflow: "hidden",
-															textOverflow: "ellipsis",
-														}}
-													>
-														Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
-														<br />
-														End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
-													</div>
-												</div>
-											);
-										} else {
-											return label;
-										}
-									},
-								}}
-								style={{ position: "absolute", width: "100%" }}
-							/>
-						</div>
-						{dateData.showCustomDateRangeSelector && (
-							<div
-								id="general-ledger-date-picker-container"
-								className="start-end-date-selector-group"
-								style={{ display: "flex" }}
-							>
-								<div style={{ marginRight: "10px" }}>
-									<DateInputComponent
-										name={"startDate"}
-										value={dateData.customStartDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"Start Date"}
-										noBorder={true}
-										onChange={handleStartDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
-								<div>
-									<DateInputComponent
-										name={"endDate"}
-										value={dateData.customEndDate.format("DD-MM-YYYY")}
-										required={true}
-										label={"End Date"}
-										noBorder={true}
-										onChange={handleEndDateChange}
-										dateFormat="DD-MM-YYYY"
-									/>
-								</div>
-							</div>
-						)}
-					</div>
-				</div>
-
-				<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
+			<div className={`profit-loss-component-wrapper ${classLeft}`}>
+				<div className="general-ledger-component">
 					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
+						className="time-period-select-container"
+						style={{
+							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
 						}}
 					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
+						<div className="time-period-select">
+							<div className="date-selector">
+								<SelectInputComponent
+									allowCreate={false}
+									notAsync={true}
+									loadedOptions={dateOptions}
+									value={dateData.dateFilterValue}
+									icon={calenderIcon}
+									containerClass="date-input"
+									options={{
+										clearable: false,
+										noResultsText: false,
+										labelKey: "label",
+										valueKey: "value",
+										matchProp: "label",
+										placeholder: "Select Date",
+										// 	handleChange: (option) => {
+										// 		updateSelectedDate(option);
+										// 	},
+										// }}
+										handleChange: handleChange,
+
+										formatOptionLabel: ({ value, label }) => {
+											if (value === "custom" && dateData.showCustomDateRangeSelector) {
+												return (
+													<div>
+														{label}
+														<div
+															style={{
+																whiteSpace: "normal",
+																overflow: "hidden",
+																textOverflow: "ellipsis",
+															}}
+														>
+															Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
+															<br />
+															End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
+														</div>
+													</div>
+												);
+											} else {
+												return label;
+											}
+										},
+									}}
+									style={{ position: "absolute", width: "100%" }}
+								/>
+							</div>
+							{dateData.showCustomDateRangeSelector && (
+								<div
+									id="general-ledger-date-picker-container"
+									className="start-end-date-selector-group"
+									style={{ display: "flex" }}
+								>
+									<div style={{ marginRight: "10px" }}>
+										<DateInputComponent
+											name={"startDate"}
+											value={dateData.customStartDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"Start Date"}
+											noBorder={true}
+											onChange={handleStartDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+									<div>
+										<DateInputComponent
+											name={"endDate"}
+											value={dateData.customEndDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"End Date"}
+											noBorder={true}
+											onChange={handleEndDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+
+					<div className="utility-icons-wrapper">
+						<div className="utility-icons">
+							<div className="icon-mail" onClick={sendEmail}>
+								<span className="pdf_mail"></span>
+								<span className="icon-text">Send email</span>
+							</div>
+							<div className="icon-separtor-first"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
+							</div>
+							<div className="icon-separtor-second"></div>
+
+							<div className="icon-download" onClick={onBtExport}>
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div
-				style={{
-					width: "80vw",
-					height: "500px",
-					backgroundColor: "#fff",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-				}}
-			>
-				<div className="general-heading" style={{ 
-					// width: "80vw",
-				 padding: "20px" }}>
+
+				<div className="general-heading">
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -437,7 +405,7 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 						</h3>
 					</div>
 					{selectedDate && selectedDate.startDate && selectedDate.endDate && (
-						<p>
+						<p style={{ color: "#888787" }}>
 							<span>From </span>
 							<span className="date">{moment(selectedDate.startDate).format("DD MMMM YYYY")}</span>
 							<span> to </span>
@@ -446,24 +414,90 @@ const [selectedDateFilter, setSelectedDateFilter] = useState("");
 					)}
 				</div>
 
-				<div style={gridStyle} className="ag-theme-alpine">
-					<AgGridReact
-						ref={gridRef}
-						rowData={rowData}
-						columnDefs={columnDefs}
-						defaultColDef={defaultColDef}
-						autoGroupColumnDef={autoGroupColumnDef}
-						animateRows={true}
-						onGridReady={onGridReady}
-						modules={AllModules}
-						// groupDisplayType={"groupRows"}
-						onFirstDataRendered={onFirstDataRendered}
-						// gridOptions={gridOptions}
-					></AgGridReact>
+				<div className="table-container">
+					<div className="profit-loss-table-header">
+						<h6 className="headingLeft">Account</h6>
+						<h6 className="headinMiddle">Account Code</h6>
+						<h6 className="headingRight">Amount</h6>
+					</div>
+
+					{tableHeaders.map((item) => {
+						return (
+							<div>
+								<Accordion>
+									<AccordionSummary
+										expandIcon={<ExpandMoreIcon />}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
+									>
+										<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>
+									</AccordionSummary>
+
+									<AccordionDetails>
+										<div className="balance-sheet-accordian-details">
+											{rowData
+												.filter((filteredItem) => filteredItem.accountTypeId === item)
+												.map((subItem, index) => (
+													<React.Fragment>
+														<div className="accordian-details-row-entry">
+															<div className="accordian-detail-name">
+																{subItem.accountSubTypeId}{" "}
+															</div>
+															<div className="accordian-detail-total">
+																{subItem.credits === 0
+																	? subItem.debits
+																	: subItem.credits}{" "}
+															</div>
+														</div>
+
+														{/* {index ===
+														rowData.filter(
+															(filteredItem) => filteredItem.accountTypeId === item
+														).length -
+															1 ? (
+															<React.Fragment>
+																<div className="Total">
+																	<div>Total {item}</div>
+																	<div className="totalValue">
+																		{parseFloat(
+																			tableTotals[item + "Total"]
+																		).toFixed(2)}
+																	</div>
+																</div>
+															</React.Fragment>
+														) : (
+															""
+														)} */}
+													</React.Fragment>
+												))}
+										</div>
+									</AccordionDetails>
+								</Accordion>
+								<div className="Total-container">
+									<React.Fragment>
+										<div className="Total">
+											<div>Total {item}</div>
+											<div className="totalValue">
+												{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+											</div>
+										</div>
+									</React.Fragment>
+								</div>
+							</div>
+						);
+					})}
 				</div>
-			</div>{" "}
+			</div>
 		</div>
 	);
 }
 
-export default ReportsProfitAndLoss;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportsProfitAndLoss);
+// export default ReportsProfitAndLoss;

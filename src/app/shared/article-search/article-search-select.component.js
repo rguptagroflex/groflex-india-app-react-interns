@@ -59,7 +59,8 @@ class ArticleSearchSelectComponent extends React.Component {
 		};
 
 		return {
-			placeholder: "Select or create an article",
+			// placeholder: "Select or create an article",
+			placeholder: "Article Name",
 			//handleChange,
 			//autofocus: true,
 			// getCustomLabelToHighlight: option => {

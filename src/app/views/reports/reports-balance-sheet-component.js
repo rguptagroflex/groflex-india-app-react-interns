@@ -5,127 +5,74 @@ import TopbarComponent from "../../shared/topbar/topbar.component";
 import SelectInputComponent from "../../shared/inputs/select-input/select-input.component";
 import calenderIcon from "../../../assets/images/icons/calender.svg";
 import invoiz from "../../services/invoiz.service";
+import OfferSendMailWrapper from "../offer/offer-send-mail.wrapper";
 import BalanceSheetSendEmail from "./balance-sheet-send-email";
 import config from "../../../config";
 import ModalService from "../../services/modal.service";
 import OfferAction from "enums/offer/offer-action.enum";
 import moment from "moment";
+import SVGInline from "react-svg-inline";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
-
-function ReportBalanceSheet() {
+import Arrow from "../../../assets/images/icons/chevrons-down.svg";
+import ArrowSide from "../../../assets/images/icons/chevron.svg";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import Typography from "@material-ui/core/Typography";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import Divider from "@material-ui/core/Divider";
+import { connect } from "react-redux";
+import { formatApiDate } from "../../helpers/formatDate";
+const ReportBalanceSheet = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
 	);
-	// var callCount = 1;
-	// var totalValueGetter = function (params) {
-	// 	var credits = params.getValue("credits");
-	// 	var debits = params.getValue("debits");
-
-	// 	var result = credits + debits;
-	// 	console.log(
-	// 		"Total Value Getter (" +
-	// 			callCount +
-	// 			", " +
-	// 			params.column.getId() +
-	// 			"): " +
-	// 			[credits, debits].join(", ") +
-	// 			" = " +
-	// 			result
-	// 	);
-	// 	callCount++;
-	// 	return result;
-	// };
-
-	// const formatNumber = (params) => {
-	// 	var number = params.value;
-	// 	return Math.floor(number)
-	// 		.toString()
-	// 		.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-	// };
 
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-	const [rowData, setRowData] = useState();
-	const [columnDefs, setColumnDefs] = useState([
-		// {
-		// 	field: "chartOfAccount.accountTypeId",
-		// 	rowGroup: true,
-		// 	enableRowGroup: true,
-		// 	hide: true,
-		// 	valueFormatter: function (params) {
-		// 		var value = params.value;
-		// 		return value.charAt(0).toUpperCase() + value.slice(1);
-		// 	},
-		// },
-		{
-			headerName: "Account",
-			field: "chartOfAccount.accountTypeId",
-			filter: false,
-			valueFormatter: function (params) {
-				if (params.value) {
-					let formattedValue = params.value.replace(/([A-Z])/g, " $1");
-					formattedValue = formattedValue.replace(/([A-Z][a-z])/g, " $1");
-					formattedValue = formattedValue.charAt(0).toUpperCase() + formattedValue.slice(1);
-					return formattedValue;
-				}
-				return params.value;
-			},
-			cellStyle: { whiteSpace: "normal" },
-			autoHeight: true,
-		},
-		{
-			headerName: "Total",
-			// field: "chartOfAccount.accountSubTypeId",
-			filter: false,
-		},
-	]);
-	// const columnTypes = useMemo(() => {
-	// 	return {
-	// 		quarterFigure: {
-	// 			editable: true,
-	// 			cellClass: "number-cell",
-	// 			aggFunc: "sum",
-	// 			valueFormatter: formatNumber,
-	// 			valueParser: function numberParser(params) {
-	// 				return Number(params.newValue);
-	// 			},
-	// 		},
-	// 	};
-	// }, []);
-	// const getRowId = useMemo(() => {
-	// 	return (params) => {
-	// 		return params.data.id;
-	// 	};
-	// }, []);
+	const [tableTotals, setTableTotal] = useState([]);
+	const [rowData, setRowData] = useState([]);
+	const [tableHeaders, setTableHeader] = useState([]);
+	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
 
-	// const onCellValueChanged = useCallback(() => {
-	// 	console.log("onCellValueChanged");
-	// }, []);
+	const CustomCellRenderer = ({ value, colDef }) => (
+		<span>{colDef.field === "total" && value !== undefined ? `₹ ${value}` : value}</span>
+	);
+
 	const onBtExport = useCallback(() => {
 		gridRef.current.api.exportDataAsExcel();
 	}, []);
-	// const onFirstDataRendered = useCallback(() => {
-	// 	if (gridRef.current) {
-	// 		gridRef.current.api.expandAll();
-	// 	}
-	// }, []);
-	// const setPrinterFriendly = useCallback((api) => {
-	// 	const eGridDiv = document.querySelector("#myGrid");
-	// 	if (eGridDiv) {
-	// 		eGridDiv.style.width = "";
-	// 		eGridDiv.style.height = "";
-	// 		api.setDomLayout("print");
-	// 	}
-	// }, []);
-	// const setNormal = useCallback((api) => {
-	// 	const eGridDiv = document.querySelector("#myGrid");
-	// 	if (eGridDiv) {
-	// 		eGridDiv.style.width = "700px";
-	// 		eGridDiv.style.height = "200px";
-	// 		api.setDomLayout();
-	// 	}
-	// }, []);
+	const onFirstDataRendered = useCallback(() => {
+		if (gridRef.current) {
+			gridRef.current.api.expandAll();
+		}
+	}, []);
+	const toggleAccountType = (accountType) => {
+		// Check if the account type is expanded, and toggle it
+		if (expandedAccountTypes.includes(accountType)) {
+			setExpandedAccountTypes(expandedAccountTypes.filter((type) => type !== accountType));
+		} else {
+			setExpandedAccountTypes([...expandedAccountTypes, accountType]);
+		}
+	};
+
+	const setPrinterFriendly = useCallback((api) => {
+		const eGridDiv = document.querySelector("#myGrid");
+		if (eGridDiv) {
+			eGridDiv.style.width = "";
+			eGridDiv.style.height = "";
+			api.setDomLayout("print");
+		}
+	}, []);
+	const setNormal = useCallback((api) => {
+		const eGridDiv = document.querySelector("#myGrid");
+		if (eGridDiv) {
+			eGridDiv.style.width = "700px";
+			eGridDiv.style.height = "200px";
+			api.setDomLayout();
+		}
+	}, []);
 
 	const onBtPrint = useCallback(() => {
 		if (gridRef.current) {
@@ -137,11 +84,13 @@ function ReportBalanceSheet() {
 			}, 2000);
 		}
 	}, []);
-	// useEffect(() => {
-	// 	const eGridDiv = document.querySelector("#myGrid");
-	// 	if (eGridDiv) {
-	// 	}
-	// }, []);
+	const getDefaultDateOption = () => {
+		return dateOptions.find((option) => option.value === dateData.dateFilterValue);
+	};
+
+	useEffect(() => {
+		updateSelectedDate(getDefaultDateOption());
+	}, []);
 
 	const defaultColDef = useMemo(() => {
 		return {
@@ -155,26 +104,104 @@ function ReportBalanceSheet() {
 	}, []);
 	const autoGroupColumnDef = useMemo(() => {
 		return {
-			minWidth: 50,
+			minWidth: 200,
 		};
 	}, []);
-	// const companyName = invoiz.user.companyAddress.companyName;
-	// const capitalizedCompanyName = companyName
-	// 	.split(" ")
-	// 	.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-	// 	.join(" ");
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
-			});
+	useEffect(() => {
+		fetchData();
 	}, []);
+	const [responseData, setResponseData] = useState(null);
+	const fetchData = async (startDate, endDate) => {
+		let tableHeaders = [];
+		try {
+			const response = await invoiz.request(
+				`${config.resourceHost}accountingReport/balanceSheet/${startDate}/${endDate}?type=json`,
+				{ auth: true }
+			);
+			const responseData = response.body.data;
+			console.log("Response Data:", responseData);
+			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
+				const transactions = responseData.summaryData.transactions;
+				setTableTotal(responseData.summaryData);
+				transactions.forEach((item) => {
+					if (!tableHeaders.includes(item.accountTypeId)) {
+						tableHeaders.push(item.accountTypeId);
+					}
+				});
+				setTableHeader(tableHeaders);
+				console.log("table header:: ", tableHeaders);
+				setRowData(transactions);
+				setResponseData(responseData);
+			} else {
+				console.error("Data structure in the response is not as expected.");
+			}
+		} catch (error) {
+			console.error("Error fetching data:", error);
+		}
+	};
+	const [showAccountType, setShowAccountType] = useState(false);
+	const [startDate, setStartDate] = useState("");
+	const [endDate, setEndDate] = useState("");
+	const onDate = (value) => {
+		let startDate = "";
+		let endDate = "";
+
+		switch (value) {
+			case "currMonth":
+				startDate = moment().startOf("month").format("DD MMMM YYYY");
+				endDate = moment().endOf("month").format("DD MMMM YYYY");
+				break;
+			case "lastMonth":
+				startDate = moment().subtract(1, "months").startOf("month").format("DD MMMM YYYY");
+				endDate = moment().subtract(1, "months").endOf("month").format("DD MMMM YYYY");
+				break;
+			case "secondLastMonth":
+				startDate = moment().subtract(2, "months").startOf("month").format("DD MMMM YYYY");
+				endDate = moment().subtract(2, "months").endOf("month").format("DD MMMM YYYY");
+				break;
+			case "currQuarter":
+				startDate = moment().startOf("quarter").format("DD MMMM YYYY");
+				endDate = moment().endOf("quarter").format("DD MMMM YYYY");
+				break;
+			case "lastQuarter":
+				startDate = moment().subtract(3, "months").startOf("quarter").format("DD MMMM YYYY");
+				endDate = moment().subtract(3, "months").endOf("quarter").format("DD MMMM YYYY");
+				break;
+			case "secondLastQuarter":
+				startDate = moment().subtract(6, "months").startOf("quarter").format("DD MMMM YYYY");
+				endDate = moment().subtract(6, "months").endOf("quarter").format("DD MMMM YYYY");
+				break;
+			case DateFilterType.FISCAL_YEAR:
+				const fiscalYearStartMonth = 4;
+				const currentYear = moment().year();
+				const fiscalYearStart = moment()
+					.month(fiscalYearStartMonth - 1)
+					.year(currentYear)
+					.startOf("month");
+				const fiscalYearEnd = moment()
+					.month(fiscalYearStartMonth - 1)
+					.year(currentYear + 1)
+					.startOf("month")
+					.subtract(1, "day");
+
+				startDate = fiscalYearStart.format("DD MMMM YYYY");
+				endDate = fiscalYearEnd.format("DD MMMM YYYY");
+				break;
+			// case "custom":
+			// 	startDate = dateData.customStartDate.format("DD MMMM YYYY");
+			// 	endDate = dateData.customEndDate.format("DD MMMM YYYY");
+			// 	break;
+			default:
+				startDate = "";
+				endDate = "";
+				break;
+		}
+		setSelectedDate({ startDate, endDate });
+		// console.log("startDate", startDate);
+		return { startDate, endDate };
+	};
+
 	const sendEmail = () => {
 		ModalService.open(<BalanceSheetSendEmail />, {
 			modalClass: "edit-contact-person-modal-component",
@@ -184,81 +211,95 @@ function ReportBalanceSheet() {
 	const activeAction = OfferAction.PRINT;
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
-		TODAY: "today",
 	};
 	const [selectedDate, setSelectedDate] = useState(null);
-	const currentDate = moment().format("DD-MM-YYYY");
 
-	// const [dateData, setDateData] = useState({
-	// 	currentMonthName: moment().format("MMMM"),
-	// 	lastMonthName: moment().subtract(1, "months").format("MMMM"),
-	// 	secondLastMonth: moment().subtract(2, "months").format("MMMM"),
-	// 	currQuarter: moment().startOf("quarter").format("Q/YYYY"),
-	// 	lastQuarter: moment().subtract(3, "months").startOf("quarter").format("Q/YYYY"),
-	// 	secondLastQuarter: moment().subtract(6, "months").startOf("quarter").format("Q/YYYY"),
-	// 	customStartDate: moment().subtract(1, "months"),
-	// 	customEndDate: moment(),
-	// 	showCustomDateRangeSelector: false,
-	// 	dateFilterValue: DateFilterType.FISCAL_YEAR,
-	// 	categoryFilterValue: "",
-	// 	activeChartData: { series: [] },
-	// 	selectedDateFilterType: DateFilterType.FISCAL_YEAR,
-	// });
+	const [showDateFilter, setShowDateFilter] = useState(props.showDateFilter || false);
+	const [selectedDateFilter, setSelectedDateFilter] = useState("");
+	const [dateData, setDateData] = useState({
+		currentMonthName: moment().format("MMMM"),
+		lastMonthName: moment().subtract(1, "months").format("MMMM"),
+		secondLastMonth: moment().subtract(2, "months").format("MMMM"),
+		currQuarter: moment().startOf("quarter").format("Q/YYYY"),
+		lastQuarter: moment().subtract(3, "months").startOf("quarter").format("Q/YYYY"),
+		secondLastQuarter: moment().subtract(6, "months").startOf("quarter").format("Q/YYYY"),
+		customStartDate: moment().subtract(1, "months"),
+		customEndDate: moment(),
+		showCustomDateRangeSelector: false,
+		dateFilterValue: DateFilterType.FISCAL_YEAR,
+		categoryFilterValue: "",
+		activeChartData: { series: [] },
+		selectedDateFilterType: DateFilterType.FISCAL_YEAR,
+	});
 	const dateOptions = [
-		{ label: "Today", value: DateFilterType.TODAY, group: "date" },
-		// { label: dateData.currentMonthName, value: "currMonth", group: "month" },
-		// { label: dateData.lastMonthName, value: "lastMonth", group: "month" },
-		// { label: dateData.secondLastMonth, value: "secondLastMonth", group: "month" },
-		// { label: `Quarter ${dateData.currQuarter}`, value: "currQuarter", group: "quarter" },
-		// { label: `Quarter ${dateData.lastQuarter}`, value: "lastQuarter", group: "quarter" },
-		// { label: `Quarter ${dateData.secondLastQuarter}`, value: "secondLastQuarter", group: "quarter" },
-		// { label: "Fiscal Year", value: DateFilterType.FISCAL_YEAR, group: "year" },
-		// { label: "Custom", value: "custom", group: "custom" },
+		{ label: dateData.currentMonthName, value: "currMonth", group: "month" },
+		{ label: dateData.lastMonthName, value: "lastMonth", group: "month" },
+		{ label: dateData.secondLastMonth, value: "secondLastMonth", group: "month" },
+		{ label: `Quarter ${dateData.currQuarter}`, value: "currQuarter", group: "quarter" },
+		{ label: `Quarter ${dateData.lastQuarter}`, value: "lastQuarter", group: "quarter" },
+		{ label: `Quarter ${dateData.secondLastQuarter}`, value: "secondLastQuarter", group: "quarter" },
+		{ label: "Fiscal Year", value: DateFilterType.FISCAL_YEAR, group: "year" },
+		{ label: "Custom", value: "custom", group: "custom" },
 	];
+	const handleChange = (option) => {
+		setSelectedDateFilter(option.value);
+		updateSelectedDate(option);
+	};
 
 	const updateSelectedDate = (option) => {
 		if (!option) {
 			setSelectedDate(null);
-			// setProcessStationStatus({ ...processStationStatus, timePeriod: "active" });
 			return;
 		}
 
 		switch (option.value) {
 			case "custom":
-				// this.props.onDateChange(option.value, [dateData.customStartDate, dateData.customEndDate]);
-				// setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
-				setSelectedDate(option.value);
-				// setSelectedDate(
-				// 	`From ${dateData.customStartDate.format("DD MMMM YYYY")} to ${dateData.customEndDate.format(
-				// 		"DD MMMM YYYY"
-				// 	)}`
-				// );
-				break;
-			case DateFilterType.TODAY:
-				// Handle today's date selection
-				setSelectedDate(DateFilterType.TODAY);
+				setDateData({
+					...dateData,
+					showCustomDateRangeSelector: true,
+					// dateFilterValue: option.value
+				});
+				setSelectedDate({
+					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
+					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
+				});
+
 				break;
 			default:
-				// this.props.onDateChange(option.value);
-				// setSelectedDate(option.label);
-				// setDateData({ ...dateData, showCustomDateRangeSelector: false, dateFilterValue: option.value });
-				setSelectedDate(option.value);
+				const { startDate, endDate } = onDate(option.value);
+				// onDate(option.value);
+				setDateData({
+					...dateData,
+					showCustomDateRangeSelector: false,
+					dateFilterValue: option.value,
+				});
+				setSelectedDate({ startDate, endDate });
+				fetchData(startDate, endDate);
 				break;
 		}
 	};
-	// const handleStartDateChange = (name, value) => {
-	// 	const startDate = moment(value, "DD-MM-YYYY");
-	// 	setDateData({ ...dateData, customStartDate: startDate });
-	// 	// updateSelectedDate({ value: "custom" });
-	// };
 
-	// const handleEndDateChange = (name, value) => {
-	// 	const endDate = moment(value, "DD-MM-YYYY");
-	// 	setDateData({ ...dateData, customEndDate: endDate });
-	// 	// updateSelectedDate({ value: "custom" });
-	// };
+	const handleStartDateChange = (name, value) => {
+		const startDate = moment(value, "DD-MM-YYYY");
+		setDateData({ ...dateData, customStartDate: startDate });
+	};
+
+	const handleEndDateChange = (name, value) => {
+		const endDate = moment(value, "DD-MM-YYYY");
+		setDateData({ ...dateData, customEndDate: endDate });
+	};
+	useEffect(() => {
+		// Fetch initial data with the default date filter
+		const { startDate, endDate } = onDate(dateData.dateFilterValue);
+		fetchData(startDate, endDate);
+	}, []); //
+	console.log("headerData: ", tableHeaders);
+
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignBalanceSheet" : "";
+
 	return (
-		<div>
+		<div className="reports-balance-sheet-component">
 			<TopbarComponent
 				title={"Balance Sheet"}
 				hasCancelButton={true}
@@ -266,173 +307,118 @@ function ReportBalanceSheet() {
 					window.history.back();
 				}}
 			/>
-			<div
-				className="balance-sheet-component"
-				style={{
-					marginTop: "90px",
-					marginLeft: "50px",
-					display: "flex",
-					flexDirection: "column",
-				}}
-			>
-				<div
-					className="time-period-select-container"
-					style={{
-						width: "200px",
-						display: "flex",
-						justifyContent: "space-between",
-					}}
-				>
-					<div style={{ flex: "1.5" }} className="time-period-select">
-						{/* <SelectInputComponent
-							allowCreate={false}
-							notAsync={true}
-							loadedOptions={dateOptions}
-							// value={dateData.dateFilterValue}
-							value={selectedDate}
-							icon={calenderIcon}
-							containerClass="date-input"
-							options={{
-								clearable: false,
-								noResultsText: false,
-								labelKey: "label",
-								valueKey: "value",
-								matchProp: "label",
-								placeholder: "Today",
-								handleChange: (option) => {
-									updateSelectedDate(option);
-								},
-							}}
-						/> */}
-						<DateInputComponent
-							// name="date"
-							placeholder="Today"
-							icon={calenderIcon}
-							value={selectedDate ? selectedDate : currentDate} // Pass the selected date value here
-							required={true}
-							label="Today"
-							noBorder={true}
-							onChange={(name, value) => {
-								setSelectedDate(value);
-								// Handle the date change here if needed
-							}}
-						/>
-						{/* {selectedDate && <div>As of {selectedDate}</div>} */}
-					</div>
-
-					{/* {dateData.showCustomDateRangeSelector && (
-						<div
-							style={{
-								// marginLeft: "10px",
-								display: "flex",
-								flex: "1",
-								flexDirection: "column",
-								alignItems: "flex-start",
-								marginLeft: "10px",
-								//  alignItems: "center"
-							}}
-						>
-							<div style={{ marginRight: "10px" }}>
-								<label htmlFor="startDate">Start Date</label>
-								<DateInputComponent
-									name="startDate"
-									value={dateData.customStartDate.format("DD-MM-YYYY")}
-									required={true}
-									noBorder={true}
-									onChange={handleStartDateChange}
-									dateFormat="DD-MM-YYYY"
-								/>
-							</div>
-							<div
-							//  style={{  marginRight: "10px"}}
-							>
-								<label htmlFor="endDate">End Date</label>
-								<DateInputComponent
-									name="endDate"
-									value={dateData.customEndDate.format("DD-MM-YYYY")}
-									required={true}
-									noBorder={true}
-									onChange={handleEndDateChange}
-									dateFormat="DD-MM-YYYY"
-								/>
-							</div>
-						</div>
-					)} */}
-				</div>
-
+			<div className={`balance-sheet-component-wrapper ${classLeft}`}>
+				<div className="general-ledger-component">
 					<div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
-					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
+						className="time-period-select-container"
+						style={{
+							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
 						}}
 					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
+						<div className="time-period-select">
+							<div className="time-period-select-dropdown">
+								<SelectInputComponent
+									allowCreate={false}
+									notAsync={true}
+									loadedOptions={dateOptions}
+									value={dateData.dateFilterValue}
+									icon={calenderIcon}
+									containerClass="date-input"
+									options={{
+										clearable: false,
+										noResultsText: false,
+										labelKey: "label",
+										valueKey: "value",
+										matchProp: "label",
+										placeholder: "Select Date",
+										// handleChange: (option) => {
+										// 	console.log(option.value, "Selected date value");
+										// 	console.log(onDate(option.value), " by onDate");
+
+										// 	updateSelectedDate(option);
+										// },
+										handleChange: handleChange,
+
+										formatOptionLabel: ({ value, label }) => {
+											if (value === "custom" && dateData.showCustomDateRangeSelector) {
+												return (
+													<div>
+														{label}
+														<div
+															style={{
+																whiteSpace: "normal",
+																overflow: "hidden",
+																textOverflow: "ellipsis",
+															}}
+														>
+															Start Date: {dateData.customStartDate.format("DD-MM-YYYY")}
+															<br />
+															End Date: {dateData.customEndDate.format("DD-MM-YYYY")}
+														</div>
+													</div>
+												);
+											} else {
+												return label;
+											}
+										},
+									}}
+									style={{ position: "absolute", width: "100%" }}
+								/>
+							</div>
+							{dateData.showCustomDateRangeSelector && (
+								<div
+									id="general-ledger-date-picker-container"
+									className="start-end-date-selector-group"
+									style={{ display: "flex" }}
+								>
+									<div style={{ marginRight: "10px" }}>
+										<DateInputComponent
+											name={"startDate"}
+											value={dateData.customStartDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"Start Date"}
+											noBorder={true}
+											onChange={handleStartDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+									<div>
+										<DateInputComponent
+											name={"endDate"}
+											value={dateData.customEndDate.format("DD-MM-YYYY")}
+											required={true}
+											label={"End Date"}
+											noBorder={true}
+											onChange={handleEndDateChange}
+											dateFormat="DD-MM-YYYY"
+										/>
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+
+					<div className="balance-sheet-utility-icons">
+						<div className="utilityIcons">
+							<div className="icon-mail" onClick={sendEmail}>
+								<span className="pdf_mail"></span>
+								<span className="icon-text">Send email</span>
+							</div>
+							<div className="icon-separtor"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
+							</div>
+							<div className="icon-separtor_second"></div>
+
+							<div className="icon-download" onClick={onBtExport}>
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
+							</div>
+						</div>
+					</div>
 				</div>
-			</div>
-			<div
-				style={{
-					// position: "absolute",
-					width: "80vw",
-					height: "500px",
-					// top: "180px",
-					// left: "334px",
-					backgroundColor: "#fff",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-				}}
-			>
-				<div className="balance-heading" style={{ width: "80vw", padding: "20px" }}>
+				<div className="general-heading">
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -440,35 +426,100 @@ function ReportBalanceSheet() {
 							Balance Sheet
 						</h3>
 					</div>
-					{selectedDate && <p> As of {selectedDate}</p>}
+					{selectedDate && selectedDate.startDate && selectedDate.endDate && (
+						<p style={{ color: "#888787" }}>
+							<span>From </span>
+							<span className="date">{moment(selectedDate.startDate).format("DD MMMM YYYY")}</span>
+							<span> to </span>
+							<span className="date">{moment(selectedDate.endDate).format("DD MMMM YYYY")}</span>
+						</p>
+					)}
 				</div>
+				<div className="table-container">
+					<div className="balance-sheet-table-header">
+						<h6 className="headingLeft">Account</h6>
+						<h6 className="headingRight">Total</h6>
+					</div>
 
-				<div style={gridStyle} className="ag-theme-alpine">
-					<AgGridReact
-						ref={gridRef}
-						rowData={rowData}
-						columnDefs={columnDefs}
-						defaultColDef={defaultColDef}
-						autoGroupColumnDef={autoGroupColumnDef}
-						// columnTypes={columnTypes}
-						animateRows={true}
-						onGridReady={onGridReady}
-						modules={AllModules}
-						// groupDisplayType={"groupRows"}
-						// onFirstDataRendered={onFirstDataRendered}
-						// gridOptions={gridOptions}
-						// valueCache={true}
-						// valueCacheNeverExpires={true}
-						// suppressAggFuncInHeader={true}
-						// enableCellChangeFlash={true}
-						// groupDefaultExpanded={1}
-						// getRowId={getRowId}
-						// onCellValueChanged={onCellValueChanged}
-					></AgGridReact>
+					{tableHeaders.map((item) => {
+						return (
+							<div>
+								<Accordion>
+									<AccordionSummary
+										expandIcon={<ExpandMoreIcon />}
+										aria-controls="panel1a-content"
+										id="panel1a-header"
+									>
+										{" "}
+										<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>{" "}
+									</AccordionSummary>
+
+									<AccordionDetails>
+										<div className="balance-sheet-accordian-details">
+											{rowData
+												.filter((filteredItem) => filteredItem.accountTypeId === item)
+												.map((subItem, index) => (
+													<React.Fragment>
+														<div className="accordian-details-row-entry">
+															<div className="accordian-detail-name">
+																{subItem.accountSubTypeId}{" "}
+															</div>
+															<div className="accordian-detail-total">
+																{subItem.credits === 0
+																	? subItem.debits
+																	: subItem.credits}{" "}
+															</div>
+														</div>
+
+														{/* {index ===
+														rowData.filter(
+															(filteredItem) => filteredItem.accountTypeId === item
+														).length -
+															1 ? (
+															<React.Fragment>
+																<div className="Total">
+																	<div>Total {item}</div>
+																	<div className="totalValue">
+																		{parseFloat(
+																			tableTotals[item + "Total"]
+																		).toFixed(2)}
+																	</div>
+																</div>
+															</React.Fragment>
+														) : (
+															""
+														)} */}
+													</React.Fragment>
+												))}
+										</div>
+									</AccordionDetails>
+								</Accordion>
+								<div className="Total-container">
+									<React.Fragment>
+										<div className="Total">
+											<div>Total {item}</div>
+											<div className="totalValue">
+												{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+											</div>
+										</div>
+									</React.Fragment>
+								</div>
+							</div>
+						);
+					})}
+					<div></div>
 				</div>
 			</div>{" "}
 		</div>
 	);
-}
+};
 
-export default ReportBalanceSheet;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportBalanceSheet);
+// export default ReportBalanceSheet;

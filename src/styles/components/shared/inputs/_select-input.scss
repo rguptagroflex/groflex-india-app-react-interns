@@ -23,14 +23,14 @@
 		.Select-control {
 			border: 1px solid $color-input-border;
 			height: 40px;
-	
+
 			.Select-value,
 			.Select-placeholder {
 				height: inherit;
 				line-height: 38px;
 				font-size: $font-size-inputs;
 			}
-			
+
 			.Select-placeholder,
 			.Select-input {
 				font-size: $font-size-inputs;
@@ -49,7 +49,7 @@
 				color: $color-text-muted;
 			}
 		}
-		
+
 		.Select-control {
 			border-radius: $border-radius-small;
 		}
@@ -80,7 +80,7 @@
 			.Select-control {
 				height: 40px;
 
-				.Select-placeholder {					
+				.Select-placeholder {
 					color: $color-text-muted;
 				}
 			}
@@ -103,7 +103,7 @@
 			border: none;
 			height: 28px;
 			cursor: text;
-	
+
 			.Select-value,
 			.Select-placeholder,
 			.Select-input {
@@ -111,19 +111,18 @@
 				padding-left: 0;
 			}
 		}
-
 	}
 
 	&.selectInput-outlined-rounded {
-		 &.selectInput-email {
-		 	.Select-control {
-				 overflow: unset;
+		&.selectInput-email {
+			.Select-control {
+				overflow: unset;
 
-		 		.Select-value {
-		 			line-height: 24px;
-					 padding: 0;	
-		 		}
-		 	}
+				.Select-value {
+					line-height: 24px;
+					padding: 0;
+				}
+			}
 		}
 
 		input:-webkit-autofill {
@@ -154,28 +153,29 @@
 			padding: 0 15px;
 			color: $color-text-muted;
 			z-index: 1;
-			pointer-events: none;	
-			transition: top 0.2s ease, font-size 0.2s ease;	
+			pointer-events: none;
+			transition: top 0.2s ease, font-size 0.2s ease;
 		}
 
 		.Select {
-			&.Select--single, &.Select--multi {
+			&.Select--single,
+			&.Select--multi {
 				position: relative;
 				z-index: 2;
 			}
-			&.has-value, &.has-input {
-                & ~ .selectInput_label-top {
+			&.has-value,
+			&.has-input {
+				& ~ .selectInput_label-top {
 					font-size: 13px;
-					@include rem(top,-21);					
-                }
+					@include rem(top, -21);
+				}
 			}
-
 		}
 
 		&.has-input-value {
 			.selectInput_label-top {
 				font-size: 13px;
-				@include rem(top,4);
+				@include rem(top, 4);
 			}
 		}
 
@@ -183,7 +183,7 @@
 			border: 1px solid $color-input-border;
 			border-radius: 6px;
 			height: 40px;
-	
+
 			.Select-value,
 			.Select-placeholder,
 			.Select-input {
@@ -201,8 +201,9 @@
 		}
 
 		&.selectInput-active {
-			.Select-control, .Select-menu-outer {
-				border-color:$color-primary;
+			.Select-control,
+			.Select-menu-outer {
+				border-color: $color-primary;
 			}
 		}
 
@@ -219,7 +220,8 @@
 			}
 		}
 
-		.Select-option, .Select-noresults {
+		.Select-option,
+		.Select-noresults {
 			padding: 10px 15px;
 		}
 	}
@@ -253,8 +255,8 @@
 	}
 	&-active .input_label,
 	.has-value ~ .input_label {
-		@include rem(font-size,13);
-		@include rem(top,-50);
+		@include rem(font-size, 13);
+		@include rem(top, -50);
 	}
 	.selectize-control {
 		border-radius: 0;
@@ -304,7 +306,8 @@
 		position: relative;
 		width: 100%;
 		z-index: 10;
-		&:before, &:after {
+		&:before,
+		&:after {
 			content: "";
 			position: absolute;
 			transition: 0.3s ease all;
@@ -319,7 +322,8 @@
 			right: 50%;
 		}
 	}
-	&-active .selectInput_bar:before, &-active .selectInput_bar:after {
+	&-active .selectInput_bar:before,
+	&-active .selectInput_bar:after {
 		width: 50%;
 		background: $color-primary;
 	}
@@ -357,7 +361,8 @@
 		}
 		.selectize-control.single {
 			&.loading {
-				&:before, &:after {
+				&:before,
+				&:after {
 					right: 0;
 				}
 				&:after {
@@ -382,7 +387,8 @@
 			&-active ~ .selectInput_label {
 				color: $color-primary;
 			}
-			&_hint, &_error {
+			&_hint,
+			&_error {
 				margin-left: 51%;
 				position: relative;
 				@include rem(top, -16);
@@ -401,7 +407,8 @@
 		}
 	}
 	// hint
-	&_hint, &_error {
+	&_hint,
+	&_error {
 		color: $color-text-muted;
 		display: block;
 		position: relative;
@@ -433,11 +440,13 @@
 .Select--single > .Select-control .Select-value {
 	font-size: 16px;
 	color: $color-text-muted;
+	margin-left: -10px;
 }
 
 .selectize-control.single {
 	&.loading {
-		&:before, &:after {
+		&:before,
+		&:after {
 			@include rem(top, 20);
 			@include rem(right, 15);
 		}
@@ -449,7 +458,8 @@
 			display: none;
 		}
 	}
-	.selectize-input, .selectize-input.focus {
+	.selectize-input,
+	.selectize-input.focus {
 		@include icon(after, arr_down);
 		border-radius: 0;
 		box-shadow: none;
@@ -518,7 +528,8 @@
 			font-size: 15px;
 			font-weight: 600;
 		}
-		&-head, &-foot {
+		&-head,
+		&-foot {
 			overflow: hidden;
 			text-overflow: ellipsis;
 			white-space: nowrap;
@@ -550,6 +561,4 @@
 			}
 		}
 	}
-
 }
-

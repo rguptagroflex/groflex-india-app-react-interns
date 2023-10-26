@@ -43,10 +43,14 @@
 			.Select-control {
 				border: 1px solid #ddd;
 				height: 39px;
+				.Select-placeholder{
+					margin-left: 5px;
+				}
 
 				.Select-value {
 					line-height: 39px;
 					padding-left: 10px !important;
+					margin-left: 5px;
 				}
 			}
 
@@ -94,7 +98,7 @@
 		padding: 5px 0 10px;
 
 		.notes-alert-label {
-			font-size: 14px;
+			font-size: 10px;
 			color: $color-text-muted;
 		}
 
@@ -184,5 +188,10 @@
 				display: block;
 			}
 		}
+	}
+	.box-wrapper{
+		border-radius: 8px;
+border: 1px solid #C6C6C6;
+background: #FFF;
 	}
 }

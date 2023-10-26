@@ -2,6 +2,13 @@
 @import "../../../abstracts/_mixins";
 
 .settings-account-component {
+	display: inline-flex;
+				flex-direction: column;
+				align-items: flex-end;
+				gap: 16px;
+				border-radius: 8px;
+				border: 1px solid #C6C6C6;
+				background: #FFF;
 	.update-email-link {
 		text-align: right;
 		margin-top: -12px;
@@ -39,6 +46,10 @@
 	z-index: -5;
 }
 .settings-account-wrapper {
+	.tabs-container .tab-list{
+		border-radius: 8px 8px 0 0 !important;
+		background-color: #f5f5f5 !important;
+	}
 	.plan-type-toggle {
 		.radio_inputs {
 			display: inline-block;

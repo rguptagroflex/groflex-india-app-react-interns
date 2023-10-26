@@ -1,32 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import TopbarComponent from "../../shared/topbar/topbar.component";
 import invoiz from "../../services/invoiz.service";
-import { useDispatch, useSelector } from "react-redux";
-import store from "../../redux/store";
-import { connect, Provider } from "react-redux";
-const ReportsListComponent = (props) => {
-	// const isSubmenuVisible = useSelector((state) => state.global.isSubmenuVisible);
-	// const [submenVisible, setSubmenuVisible] = useState(isSubmenuVisible);
-
-	// useEffect(() => {
-	// 	setSubmenuVisible(isSubmenuVisible);
-	// }, [isSubmenuVisible]);
-
-	// const classLeft = submenVisible ? "leftAlignReport" : "";
-
-	const { isSubmenuVisible } = store.getState().global;
+import SVGInline from "react-svg-inline";
+import Vector from "../../../assets/images/icons/Reports.svg";
+import { connect } from "react-redux";
+function ReportsListComponent(props) {
 	const submenVisible = props.isSubmenuVisible;
-	// console.log("reports ", submenVisible);
-	// console.log("Store: ", isSubmenuVisible);
-
-	const classLeft = submenVisible ? "leftAlignReport" : "";
-	const classHeading = submenVisible ? "leftAlignHeading" : "";
-
+	const classLeft = submenVisible ? "leftAlignReports" : "";
 	return (
-		<div>
+		<div className={`reports-component ${classLeft}`}>
 			<div>
 				<TopbarComponent title={"Reports"} viewIcon={`icon-banking`} />
 			</div>
+
 			<div
 				style={{
 					display: "block",
@@ -37,235 +23,142 @@ const ReportsListComponent = (props) => {
 					padding: "10px",
 					fontWeight: "600",
 				}}
-			>
-				{/* <span>All Reports Comming Soon..!</span> */}
-			</div>
-			<div
-				className={`${classLeft}`}
-				style={{
-					height: "375px",
-					width: "80vw",
-					border: "1px solid white",
-					// borderTop: "100px solid white",
-					marginTop: "130px",
-					marginLeft: "50px",
-					backgroundColor: "#fff",
-					fontWeight: "600",
-				}}
-			>
-				<span style={{ marginLeft: "44%" }}>All Reports Comming Soon..!</span>
+			></div>
+			<div className="reports-content-wrapper">
 				<div>
-					<div
-						style={{
-							display: "grid",
-							height: "2vh",
-							gridTemplateColumns: "repeat(2,1fr)",
-							justifyItems: "center",
-							alignItems: "center",
-							// justifyItems: "space-between",
-							// alignItems: "space-between",
-							padding: "50px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px dashed #000",
-								color: "#00A353",
-								padding: "20px",
-								width: "30vw",
-								borderColor: "#C6C6C6",
-								display: "flex",
-								alignItems: "center",
-							}}
-							// onClick={() => {
-							// 	// invoiz.router.navigate("/expenses/reports/balance-sheet");
-							// 	invoiz.router.navigate("/expenses/reports/general-ledger");
-							// }}
-						>
-							<i
-								className="icon-copy"
-								style={{
-									marginRight: "10px",
-									borderRadius: "50%",
-									border: "1px solid #00A353",
-									padding: "8px",
-								}}
-							></i>
-							{/* <span style={{ cursor: "pointer" }}>Balance Sheet</span> */}
-							<span
-								style={{ cursor: "pointer" }}
-								// onClick={() => {
-								// 	invoiz.router.navigate("/expenses/reports/general-ledger");
-								// }}
-							>
-								General ledger
-							</span>
+					<div className="reports-content-main">
+						<div className="reports-content-top">
+							<div className="reports-content-top-left">
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+									}}
+									onClick={() => {
+										invoiz.router.navigate("/expenses/reports/general-ledger");
+									}}
+								>
+									<SVGInline
+										style={{
+											borderRadius: "50%",
+											padding: "8px",
+										}}
+										className="overlay-image"
+										svg={Vector}
+										alt={"Could not load image!"}
+									/>
+									<span
+										style={{ cursor: "pointer" }}
+										onClick={() => {
+											invoiz.router.navigate("/expenses/reports/general-ledger");
+										}}
+									>
+										General ledger
+									</span>
+								</div>
+								<p className="reports-content-detail">
+									A record of all the financial transactions of your company using double-entry
+									bookkeeping, including all accounts.
+								</p>
+							</div>
+							<div className="reports-content-top-right">
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+									}}
+									onClick={() => {
+										invoiz.router.navigate("/expenses/reports/balance-sheet");
+									}}
+								>
+									<SVGInline
+										style={{
+											borderRadius: "50%",
+											padding: "8px",
+										}}
+										className="overlay-image"
+										svg={Vector}
+										alt={"Could not load image!"}
+									/>
+									<span
+										style={{ cursor: "pointer" }}
+										onClick={() => {
+											invoiz.router.navigate("/expenses/reports/balance-sheet");
+										}}
+									>
+										Balance Sheet
+									</span>
+								</div>
+								<p className="reports-content-detail">
+									A snapshot of your company's financial position at a specific point in time showing
+									assets, liabilities, and equity.
+								</p>
+							</div>
 						</div>
-						<div
-							style={{
-								border: "1px dashed #000",
-								color: "#00A353",
-								padding: "20px",
-								width: "30vw",
-								borderColor: "#C6C6C6",
-								display: "flex",
-								alignItems: "center",
-							}}
-							// onClick={() => {
-							// 	// invoiz.router.navigate("/expenses/reports/cash-flow-statement");
-							// 	invoiz.router.navigate("/expenses/reports/balance-sheet");
-							// }}
-						>
-							<i
-								className="icon-copy"
-								style={{
-									marginRight: "10px",
-									borderRadius: "50%",
-									border: "1px solid #00A353",
-									padding: "8px",
-								}}
-							></i>
-							<span
-								style={{ cursor: "pointer" }}
-								// onClick={() => {
-								// 	invoiz.router.navigate("/expenses/reports/balance-sheet");
-								// }}
-							>
-								Balance Sheet
-							</span>
+						<div className="reports-content-middle">
+							<div className="reports-content-middle-left">
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+									}}
+									onClick={() => {
+										invoiz.router.navigate("/expenses/reports/profit-and-loss");
+									}}
+								>
+									<SVGInline
+										style={{
+											borderRadius: "50%",
+											padding: "8px",
+										}}
+										className="overlay-image"
+										svg={Vector}
+										alt={"Could not load image!"}
+									/>
+									<span style={{ cursor: "pointer" }}>Profit and Loss</span>
+								</div>
+								<p className="reports-content-detail">
+									A report showing your company's revenues, expenses, gains, and losses over a
+									specified period of time.
+								</p>
+							</div>
+							<div className="reports-content-middle-right">
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+									}}
+									onClick={() => {
+										invoiz.router.navigate("/expenses/reports/cash-flow-statement");
+									}}
+								>
+									<SVGInline
+										style={{
+											borderRadius: "50%",
+											padding: "8px",
+										}}
+										className="overlay-image"
+										svg={Vector}
+										alt={"Could not load image!"}
+									/>
+									<span style={{ cursor: "pointer" }}>Cash Flow Statement</span>
+								</div>
+								<p className="reports-content-detail">
+									A report showing the inflows and outflows of cash and cash equivalents for a
+									specified period of time.
+								</p>
+							</div>
 						</div>
-					</div>
-					<div
-						style={{
-							display: "grid",
-							height: "2vh",
-							gridTemplateColumns: "repeat(2,1fr)",
-							justifyItems: "center",
-							alignItems: "center",
-							padding: "50px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px dashed #000",
-								color: "#00A353",
-								padding: "20px",
-								width: "30vw",
-								borderColor: "#C6C6C6",
-								display: "flex",
-								alignItems: "center",
-							}}
-							// onClick={() => {
-							// 	invoiz.router.navigate("/expenses/reports/profit-and-loss");
-							// }}
-						>
-							<i
-								className="icon-copy"
-								style={{
-									marginRight: "10px",
-									borderRadius: "50%",
-									border: "1px solid #00A353",
-									padding: "8px",
-								}}
-							></i>
-							<span style={{ cursor: "pointer" }}>Profit and Loss</span>
-						</div>
-						<div
-							style={{
-								border: "1px dashed #000",
-								color: "#00A353",
-								padding: "20px",
-								width: "30vw",
-								borderColor: "#C6C6C6",
-								display: "flex",
-								alignItems: "center",
-							}}
-							// onClick={() => {
-							// 	invoiz.router.navigate("/expenses/reports/profit-and-loss");
-							// }}
-						>
-							<i
-								className="icon-copy"
-								style={{
-									marginRight: "10px",
-									borderRadius: "50%",
-									border: "1px solid #00A353",
-									padding: "8px",
-								}}
-							></i>
-							<span style={{ cursor: "pointer" }}>Trial Balance</span>
-						</div>
-					</div>
-					<div
-						style={{
-							display: "grid",
-							height: "2vh",
-							gridTemplateColumns: "repeat(2,1fr)",
-							justifyItems: "center",
-							alignItems: "center",
-							padding: "50px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px dashed #000",
-								color: "#00A353",
-								padding: "20px",
-								width: "30vw",
-								borderColor: "#C6C6C6",
-								display: "flex",
-								alignItems: "center",
-							}}
-							// onClick={() => {
-							// 	invoiz.router.navigate("/expenses/reports/profit-and-loss");
-							// }}
-						>
-							<i
-								className="icon-copy"
-								style={{
-									marginRight: "10px",
-									borderRadius: "50%",
-									border: "1px solid #00A353",
-									padding: "8px",
-								}}
-							></i>
-							<span style={{ cursor: "pointer" }}>GST Sales Report</span>
-						</div>
-						{/* <div
-							style={{
-								border: "1px dashed #000",
-								color: "#00A353",
-								padding: "20px",
-								width: "30vw",
-								borderColor: "#C6C6C6",
-								display: "flex",
-								alignItems: "center",
-							}}
-							// onClick={() => {
-							// 	invoiz.router.navigate("/expenses/reports/profit-and-loss");
-							// }}
-						>
-							<i
-								className="icon-copy"
-								style={{
-									marginRight: "10px",
-									borderRadius: "50%",
-									border: "1px solid #00A353",
-									padding: "8px",
-								}}
-							></i>
-							<span style={{ cursor: "pointer" }}>Trial Balance</span>
-						</div> */}
+						<div className="reports-content-bottom"></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	);
-};
+}
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
-
 	return {
 		isSubmenuVisible,
 	};

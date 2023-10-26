@@ -1,0 +1,158 @@
+.reports-component {
+	.reports-content-wrapper {
+		height: 365px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		margin: 120px 60px 25px;
+		background-color: #fff;
+		font-weight: 600;
+		width: 1120px;
+
+		.reports-content-main {
+			.reports-content-top {
+				display: grid;
+				height: 2vh;
+				grid-template-columns: repeat(2, 1fr);
+				justify-items: center;
+				align-items: center;
+				padding: 25px;
+
+				.reports-content-top-left {
+					height: 144px;
+					width: 512px;
+					border: 1px solid #f2f2f2;
+					color: #00a353;
+					border-radius: 4px;
+					padding: 20px;
+					border-color: #c6c6c6;
+					margin-right: 20px;
+				}
+
+				.reports-content-top-right {
+					height: 144px;
+					width: 512px;
+					border: 1px solid #f2f2f2;
+					color: #00a353;
+					padding: 20px;
+					border-color: #c6c6c6;
+					border-radius: 4px;
+				}
+			}
+
+			.reports-content-middle {
+				display: grid;
+				height: 2vh;
+				grid-template-columns: repeat(2, 1fr);
+				justify-content: center;
+				align-items: center;
+				padding: 25px;
+				margin-top: 120px;
+
+				.reports-content-middle-left {
+					height: 144px;
+					width: 512px;
+					border-radius: 4px;
+					border: 1px solid #f2f2f2;
+					color: #00a353;
+					padding: 20px;
+					border-color: #c6c6c6;
+				}
+
+				.reports-content-middle-right {
+					height: 144px;
+					width: 512px;
+					border: 1px solid #f2f2f2;
+					border-radius: 4px;
+					color: #00a353;
+					padding: 20px;
+					border-color: #c6c6c6;
+					margin-left: 10px;
+				}
+			}
+
+			.reports-content-bottom {
+				display: grid;
+				height: 2vh;
+				grid-template-columns: repeat(2, 1fr);
+				justify-content: center;
+				align-items: center;
+				padding: 50px;
+				margin-top: 60px;
+			}
+		}
+	}
+}
+
+.leftAlignReports {
+	position: absolute;
+	left: 162px;
+	.reports-content-wrapper {
+		height: 385px;
+		width: 84%;
+		.reports-content-main {
+			.reports-content-detail {
+				color: #272d30;
+				margin-top: 10px;
+				font-size: 14px;
+				padding-left: 9px;
+			}
+			.reports-content-top {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 82px;
+				.reports-content-top-left {
+					width: 50%;
+				}
+				.reports-content-top-right {
+					width: 50%;
+				}
+			}
+			.reports-content-middle {
+				display: flex;
+				justify-content: space-between;
+				.reports-content-middle-left {
+					width: 49%;
+				}
+				.reports-content-middle-right {
+					width: 49%;
+				}
+			}
+		}
+	}
+}
+
+.reports-component {
+	.reports-content-wrapper {
+		width: 93%;
+		height: 375px;
+		.reports-content-main {
+			.reports-content-detail {
+				color: #272d30;
+				margin-top: 10px;
+				font-size: 14px;
+				padding-left: 9px;
+			}
+			.reports-content-top {
+				display: flex;
+				justify-content: space-between;
+				margin-top: 74px;
+				.reports-content-top-left {
+					width: 49%;
+				}
+				.reports-content-top-right {
+					width: 49%;
+				}
+			}
+			.reports-content-middle {
+				display: flex;
+				justify-content: space-between;
+				.reports-content-middle-left {
+					width: 49%;
+				}
+				.reports-content-middle-right {
+					width: 49%;
+				}
+			}
+		}
+	}
+}

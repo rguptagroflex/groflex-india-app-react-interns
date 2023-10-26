@@ -30,12 +30,20 @@ import { format } from "util";
 import Uploader from "fine-uploader";
 import _ from "lodash";
 import { handleTransactionFormErrors, handleImageError } from "helpers/errors";
+import TabsComponent from "../../shared/tabs/tabs.component";
+import SVGInline from "react-svg-inline";
+import Group from "../../../assets/images/icons/Group 3086.svg";
+import minimumStock from "../../../assets/images/icons/minimumStock.svg";
+import totalStock from "../../../assets/images/icons/Total stock.svg";
+import openingBalance from "../../../assets/images/icons/Group.svg";
+import priceRed from "../../../assets/images/icons/Price_red.svg";
+import priceGreen from "../../../assets/images/icons/Price.svg";
 
 const TopbarActions = {
 	EDIT: 1,
 	CREATE_PURCHASE_ORDER: 2,
 };
-
+const tabs = ["Article Overview", "History"];
 class ArticleDetailComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -44,7 +52,9 @@ class ArticleDetailComponent extends React.Component {
 		const inventory = this.props.inventory || {};
 		const inventoryHistory = this.props.inventoryHistory || {};
 		const salesVolumeData = this.props.salesVolumeData || {};
-
+		this.state = {
+			activeTab: "Article Overview",
+		};
 		this.state = {
 			article,
 			inventory,
@@ -75,6 +85,7 @@ class ArticleDetailComponent extends React.Component {
 			canViewOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_OFFER),
 			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
 		});
+		this.setState({ activeTab: "Article Overview" });
 		setTimeout(() => {
 			this.initManualUploader();
 		});
@@ -133,6 +144,9 @@ class ArticleDetailComponent extends React.Component {
 
 		return rows;
 	}
+	setActiveTab(tab) {
+		this.setState({ activeTab: tab });
+	}
 
 	addFile(files) {
 		if (!files) {
@@ -140,7 +154,7 @@ class ArticleDetailComponent extends React.Component {
 		}
 
 		_.each(files, (file) => {
-			this.manualUploader.addFiles([file]);
+			this.manualUploader.addFile([file]);
 		});
 	}
 
@@ -191,10 +205,6 @@ class ArticleDetailComponent extends React.Component {
 							invoiz.page.showToast({ message: resources.str_fileUploadSuccessMessage });
 							invoiz.router.reload();
 						});
-
-						//if (!this.state.isModal) {
-
-						//}
 					},
 					onError: (id, name, errorReason, xhr) => {
 						if (xhr) {
@@ -223,188 +233,181 @@ class ArticleDetailComponent extends React.Component {
 			? article.imageUrl
 			: `${config.imageResourceHost}${article.imageUrl}`;
 		return (
-			<div className="box wrapper-has-topbar-with-margin">
+			<div className="detail-wrap u_mt_48 u_p_16 getBlock1Content-wrap ">
 				<div className="article-content_content row">
-					<div className="article-col">
+					<div className="article-row">
 						<div className="articleImageContainer">
 							<img
 								className=""
-								style={!article.imageUrl ? { height: 100, textAlign: "center", marginTop: 55 } : null}
+								style={
+									!article.imageUrl
+										? {
+												height: 100,
+												textAlign: "center",
+												borderRadius: "112px",
+												border: "1px solid var(--grey-medium-dddddd, #DDD)",
+												width: " 112px",
+												height: " 112px",
+												flexShrink: " 0",
+										  }
+										: null
+								}
 								src={!article.imageUrl ? "/assets/images/icons/article_img_placeholder.svg" : imageUrl}
 								alt={"Could not load image!"}
 								onError={(e) => {
 									e.target.style = "padding: 95px 57px 0 50px!important; font-size: 12px;";
 								}}
 							/>
-							{!article.imageUrl ? (
+							{/* {!article.imageUrl ? (
 								<span
 									style={{ textAlign: "center", marginTop: 10, color: "#747474" }}
 								>{`No image found`}</span>
-							) : null}
+							) : null} */}
+						</div>
+						<div className="article-content-row">
+							<div className="itemGroup-article">
+								<div className="text-h4 text-truncatewrap">{article.title}</div>
+								<div className="item text-truncatewrap">
+									<div
+										className="item_text text-truncatewrap"
+										dangerouslySetInnerHTML={{ __html: format(article.description) }}
+									></div>
+								</div>
+								<div className="itemGroup text-right">
+									<div className="item">
+										<div className="item_label text-h4">{`MRP ${article.displayMRP}${"/"}${
+											article.unit
+										}`}</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className="article-col">
-						<div className="itemGroup" style={{ marginBottom: 0 }}>
-							<div className="text-h4 text-truncatewrap" style={{ height: 56, width: 232 }}>
-								{article.title}
-							</div>
-							<div className="item text-truncatewrap" style={{ height: 56, paddingTop: 5 }}>
-								<div
-									className="item_text text-truncatewrap"
-									dangerouslySetInnerHTML={{ __html: format(article.description) }}
-								></div>
-							</div>
-						</div>
-						<div className="itemGroup text-right">
-							<div className="item">
-								<div className="item_label">{resources.str_category}</div>
-								<div className="item_text">{article.displayCategory}</div>
-							</div>
-							<div className="item">
-								<div className="item_label">{resources.str_numberShort}</div>
-								<div className="item_text">{article.number}</div>
-							</div>
-							<div className="item">
-								<div className="item_label">{resources.str_hsnSacCode}</div>
-								<div className="item_text">{article.displayHsnSacCode}</div>
-							</div>
-							<div className="item">
-								<div className="item_label">{`EAN code`}</div>
-								<div className="item_text">{article.displayEANCode}</div>
-							</div>
-						</div>
-						{/* {article.trackedInInventory ? (<div className="pagebox_subheading">
-							<div className="item">
-								<div className="item_label">{`Current stock`}</div>
-								<div className={inventory.currentStock < inventory.minimumBalance ? "item_text low_stock_alert" : "item_text"} style={{paddingRight: 5}}>{inventory.currentStock}</div>
-								<div className={inventory.currentStock < inventory.minimumBalance ? "item_text low_stock_alert" : "item_text"}>{article.unit}</div>
-							</div>
-							<div className="item">
-								<div className="item_label">{`Minimum stock`}</div>
-								<div className="item_text" style={{paddingRight: 5}}>{inventory.minimumBalance}</div>
-								<div className="item_text">{article.unit}</div>
-							</div>
-							<div className="item">
-								<div className="item_label">{`Opening balance`}</div>
-								<div className="item_text" style={{paddingRight: 5}}>{inventory.openingBalance}</div>
-								<div className="item_text">{article.unit}</div>
-							</div>
-							<div className="item">
-								<div className="item_label">{`Low stock alert`}</div>
-								{
-									inventory.lowStockAlert ? (<div className="item_text">Enabled</div>) : (<div className="item_text">Disabled</div>)
-								}
-							</div>
-						</div>) : null} */}
-					</div>
-
-					<div className="article-col">
-						<div className="itemGroup text-right">
-							<div className="item">
-								<div className="item_label text-h4">{`MRP ${article.displayMRP}${"/"}${
-									article.unit
-								}`}</div>
-								{/* <div className="item_text">{article.displayMRP + '/' + article.unit}</div> */}
-							</div>
-							<div className="item" style={{ paddingTop: 5 }}>
-								<div className="item_label">{resources.articleVATRateLabel}</div>
-								<div className="item_text">{article.displayVatPercent}</div>
-							</div>
-						</div>
-						{invoiz.user.isSmallBusiness ? (
-							<div className="itemGroup text-right">
-								<div className="item">
-									<div className="item_label">{`Purchase price (net)`}</div>
-									<div className="item_text">{article.displayPurchasePrice}</div>
+					<div className="article-row-wrap">
+						<div className="itemGroup-articles text-right">
+							<div className="row">
+								<div className="col-xs-6">
+									<div className="item-article">
+										<div className="item_label">{resources.str_category}</div>
+										<div className="item_text">{article.displayCategory}</div>
+									</div>
+								</div>
+								<div className="col-xs-6">
+									<div className="item-article">
+										<div className="item_label">{resources.str_numberShort}</div>
+										<div className="item_text">{article.number}</div>
+									</div>
 								</div>
 							</div>
-						) : (
-							<div className="itemGroup text-right" style={{ marginTop: 50 }}>
-								<div className="item">
-									<div className="item_label">{`Purchase price (net)`}</div>
-									<div className="item_text">{article.displayPurchasePrice}</div>
-								</div>
-								<div className="item">
-									<div className="item_label">{`Purchase price (gross)`}</div>
-									<div className="item_text">{article.displayPurchasePriceGross}</div>
-								</div>
-								{/* <div className="item">
-									<div className="item_label">{resources.str_purchaseVatRate}</div>
-									<div className="item_text">{article.displayPurchaseVatPercent}</div>
-								</div> */}
-								<div className="item">
-									<div className="item_label">{resources.str_salesPriceNet}</div>
-									<div className="item_text">{article.displayPrice}</div>
-								</div>
-								<div className="item">
-									<div className="item_label">{resources.str_salesPriceGross}</div>
-									<div className="item_text">{article.displayPriceGross}</div>
+							<div>
+								<div className="row">
+									<div className="col-xs-6">
+										<div className="item-article">
+											<div className="item_label">{resources.str_hsnSacCode}</div>
+											<div className="item_text">
+												{article.displayHsnSacCode === "N/A" ? "-" : article.displayHsnSacCode}
+											</div>
+											{console.log("HSN: ", article.displayHsnSacCode)}
+										</div>
+									</div>
+									<div className="col-xs-6">
+										<div className="item-article">
+											<div className="item_label">{`EAN code`}</div>
+											<div className="item_text">{article.displayEANCode}</div>
+										</div>
+									</div>
 								</div>
 							</div>
-						)}
-					</div>
-					{/* {article.metaData.imageUrl === null ? (
-						<div className="row">
-							<div className="article-image">
-								<ButtonComponent callback={() => invoiz.router.reload()} label={`Upload image`} />
+							<div>
+								<div className="row">
+									<div className="col-xs-6">
+										<div className="item-article">
+											<div className="item_label">{resources.articleVATRateLabel}</div>
+											<div className="item_text">{article.displayVatPercent}</div>
+										</div>
+									</div>
+								</div>
 							</div>
-						</div>
-					) : null} */}
-					<div className="row">
-						<div className="article-image">
-							<label className="text-muted">
-								<p
-								// className="upload-image"
-								>
-									<span
-										className="button button-default button-rounded"
-										// style={{ color: "white" }}
-									>{`Upload image`}</span>
-								</p>
-								<input className="u_hidden" type="file" onChange={this.addSelectedFile.bind(this)} />
-							</label>
 						</div>
 					</div>
 				</div>
-				{article.trackedInInventory ? (
-					<div className="article-inventory-row">
-						<div className="item" style={{ flexDirection: "column" }}>
-							<div className="item_label">{`Current stock`}</div>
-							<div
-								className={
-									inventory.currentStock < inventory.minimumBalance
-										? "item_text low_stock_alert"
-										: "item_text"
-								}
-							>{`${!inventory.currentStock ? 0 : inventory.currentStock} ${article.unit}`}</div>
-							{/* <div className={inventory.currentStock < inventory.minimumBalance ? "item_text low_stock_alert" : "item_text"}>{article.unit}</div> */}
-						</div>
-						<div className="item" style={{ flexDirection: "column" }}>
-							<div className="item_label">{`Minimum stock`}</div>
-							<div className="item_text">{`${inventory.minimumBalance} ${article.unit}`}</div>
-							{/* <div className="item_text">{article.unit}</div> */}
-						</div>
-						<div className="item" style={{ flexDirection: "column" }}>
-							<div className="item_label">{`Opening balance`}</div>
-							<div className="item_text">{`${inventory.openingBalance} ${article.unit}`}</div>
-							{/* <div className="item_text">{article.unit}</div> */}
-						</div>
-						<div className="item" style={{ flexDirection: "column" }}>
-							<div className="item_label">{`Low stock alert`}</div>
-							{inventory.lowStockAlert ? (
-								<div className="item_text">Enabled</div>
-							) : (
-								<div className="item_text text-red">Disabled</div>
-							)}
-						</div>
-					</div>
-				) : (
-					<div className="article-inventory-row_untracked">
-						<span>{`Article not tracked in inventory`}</span>
-					</div>
-				)}
 			</div>
 		);
+	}
+	renderSellingPriceNet(article, resources) {
+		if (article && article.displayPrice) {
+			return (
+				<div className="selling-price-container">
+					<SVGInline className="background-image-price" svg={priceGreen} alt={"Could not load image!"} />
+					<div className="item-content">
+						<div className="text-muted text-medium u_mb_6" style={{ marginTop: "10px" }}>
+							<span>Selling price</span>
+							<br />
+							<span>(Net)</span>
+						</div>
+						<div className="text-h6 text-primary">{article.displayPrice}</div>
+					</div>
+				</div>
+			);
+		} else {
+			console.log("No displayPrice found");
+			return null;
+		}
+	}
+	renderSellingPriceGross(article, resources) {
+		if (article && article.displayPriceGross) {
+			return (
+				<div className="selling-price-gross-container">
+					<SVGInline className="background-image-price" svg={priceGreen} alt={"Could not load image!"} />
+					<div className="item-content">
+						<div className="text-muted text-medium u_mb_6" style={{ marginTop: "10px" }}>
+							<span>Selling price</span>
+							<br />
+							<span>(Gross)</span>
+						</div>
+						<div className="text-h6 text-primary">{article.displayPriceGross}</div>
+					</div>
+				</div>
+			);
+		} else {
+			return null;
+		}
+	}
+	renderPurchasePriceNet(article, resources) {
+		if (article && article.displayPurchasePrice) {
+			return (
+				<div className="purchase-price-net-container">
+					<SVGInline className="background-image-price-red" svg={priceRed} alt={"Could not load image!"} />
+					<div className="item-content">
+						<div className="text-muted text-medium u_mb_6" style={{ marginTop: "10px", display: "flex" }}>
+							<span>Purchase (Net)</span>
+							<span>price</span>
+						</div>
+						<div className="text-h6 text-primary">{article.displayPurchasePrice}</div>
+					</div>
+				</div>
+			);
+		} else {
+			return null;
+		}
+	}
+	renderPurchasePriceGross(article, resources) {
+		if (article && article.displayPurchasePrice) {
+			return (
+				<div className="purchase-price-gross-container">
+					<SVGInline className="background-image-price-red" svg={priceRed} alt={"Could not load image!"} />
+					<div className="item-content">
+						<div className="text-muted text-medium u_mb_6" style={{ marginTop: "10px", display: "flex" }}>
+							<span>Purchase (Gross) </span>
+							<span>price</span>
+						</div>
+						<div className="text-h6 text-primary">{article.displayPurchasePriceGross}</div>
+					</div>
+				</div>
+			);
+		} else {
+			return null;
+		}
 	}
 
 	getBlock2Content() {
@@ -412,21 +415,22 @@ class ArticleDetailComponent extends React.Component {
 		const { resources } = this.props;
 
 		return (
-			<div className="box">
+			<div
+				className="detail-wrap u_mt_16 u_p_16 u_ml_8 sales-wrap "
+				style={{
+					borderRadius: "10px",
+					border: "1.087px solid var(--grey-dark-c-6-c-6-c-6, #C6C6C6)",
+					background: "var(--font-colors-white-fffffff, #FFF)",
+					width: "770px",
+					height: "422px",
+					flexShrink: " 0",
+				}}
+			>
 				<div className="pagebox_heading text-h4">{resources.str_salesOverview}</div>
 				<div className="text-muted">{resources.str_salesLastTwelveMonth}</div>
 
 				<div className="graph-cont row">
 					<div className="col-xs-3">
-						<div className="item item-vertical ">
-							<div className="item_label">{resources.str_totalRevenue}</div>
-							<div className="item_text">{formatCurrency(salesVolumeData.turnoverTotal)}</div>
-						</div>
-						<div className="item item-vertical ">
-							<div className="item_label">{resources.articleTotalOrdersLabel}</div>
-							<div className="item_text">{salesVolumeData.invoiceCount}</div>
-						</div>
-
 						<div className="item item-vertical ">
 							<div className="item_label">Ø {resources.articleQuantityPerOrderLabel}</div>
 							<div className="item_text">{salesVolumeData.averageAmount}</div>
@@ -439,6 +443,44 @@ class ArticleDetailComponent extends React.Component {
 
 					<div className="col-xs-9">
 						<BarChartMonthsComponent target="articleSalesVolumeStats" data={salesVolumeData.chartData} />
+					</div>
+				</div>
+			</div>
+		);
+	}
+	getTotalRevenue() {
+		const { salesVolumeData } = this.state;
+		const { resources } = this.props;
+
+		return (
+			<div className="total-revenue-container">
+				<SVGInline className="background-image-price" svg={priceGreen} alt={"Could not load image!"} />
+				<div className="item-content">
+					<div className="text-muted text-medium u_mb_6" style={{ marginTop: "15px" }}>
+						<span>Total Revenue</span>
+						<br />
+					</div>
+					<div className="text-h6 text-primary" style={{ marginTop: "10px" }}>
+						{formatCurrency(salesVolumeData.turnoverTotal)}
+					</div>
+				</div>
+			</div>
+		);
+	}
+	getTotalOrders() {
+		const { salesVolumeData } = this.state;
+		const { resources } = this.props;
+
+		return (
+			<div className="total-order-container">
+				<SVGInline className="background-image-price-red" svg={priceRed} alt={"Could not load image!"} />
+				<div className="item-content">
+					<div className="text-muted text-medium u_mb_6" style={{ marginTop: "15px" }}>
+						<span>Total Orders</span>
+						<br />
+					</div>
+					<div className="text-h6 text-primary" style={{ marginTop: "10px" }}>
+						{formatCurrency(salesVolumeData.invoiceCount)}
 					</div>
 				</div>
 			</div>
@@ -522,7 +564,15 @@ class ArticleDetailComponent extends React.Component {
 	}
 
 	render() {
-		const { article, inventoryHistory, canUpdateArticle, canViewArticleSalesOverview, canViewOffer, canViewExpense } = this.state;
+		const {
+			article,
+			inventoryHistory,
+			canUpdateArticle,
+			canViewArticleSalesOverview,
+			canViewOffer,
+			canViewExpense,
+		} = this.state;
+		const { activeTab } = this.state;
 		const {
 			isLoading,
 			errorOccurred,
@@ -544,8 +594,10 @@ class ArticleDetailComponent extends React.Component {
 			permittedfilterItems = filterItems;
 		}
 		if (!canViewExpense) {
-			permittedfilterItems = permittedfilterItems.filter((item) => item.key !== "expense" && item.key !== "purchaseOrder");
-		} 
+			permittedfilterItems = permittedfilterItems.filter(
+				(item) => item.key !== "expense" && item.key !== "purchaseOrder"
+			);
+		}
 		return (
 			<div className="article-detail-wrapper wrapper-has-topbar">
 				{canUpdateArticle ? (
@@ -554,7 +606,6 @@ class ArticleDetailComponent extends React.Component {
 						backButtonRoute={`/articles`}
 						buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
 						buttons={[
-							// { type: 'primary', label: `Create purchase order`, buttonIcon: 'icon-plus', action: TopbarActions.CREATE_PURCHASE_ORDER },
 							{
 								type: "primary",
 								label: resources.str_toEdit,
@@ -570,13 +621,272 @@ class ArticleDetailComponent extends React.Component {
 						buttonCallback={(e, button) => this.onTopbarButtonClick(button.action)}
 					/>
 				)}
-				{this.getBlock1Content()}
+				<div className="row">
+					<div className="tabs-container" style={{ display: "flex", marginLeft: "-60px", marginTop: "30px" }}>
+						<TabsComponent activeTab={this.state.activeTab} setActiveTab={this.setActiveTab}>
+							<TabsComponent.List>
+								{tabs.map((tab, index) => (
+									<div
+										key={index}
+										className={`tab-item ${this.state.activeTab === tab ? "active-tab" : ""}`}
+										onClick={() => this.setActiveTab(tab)}
+										style={{
+											marginRight: "20px",
+											cursor: "pointer",
+											position: "relative",
+											color: this.state.activeTab === tab ? "#00A353" : "#272D30",
+										}}
+									>
+										{tab}
+										{this.state.activeTab === tab && (
+											<div>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-7px",
+														left: "0",
+														width: "100%",
+														height: "3px",
+														backgroundColor: "#00A353",
+													}}
+												/>
+												<div
+													style={{
+														content: "",
+														display: "block",
+														position: "absolute",
+														bottom: "-8px",
+														left:
+															this.state.activeTab === "Article Overview"
+																? "0px"
+																: "-270%",
 
-				{canViewArticleSalesOverview ? this.getBlock2Content() : null}
+														width: "1100px",
+														height: "1px",
+														background: "#C6C6C6",
+													}}
+												/>
+											</div>
+										)}
+									</div>
+								))}
+							</TabsComponent.List>
+						</TabsComponent>
+					</div>
+				</div>
+				{activeTab === "Article Overview" && (
+					// <div>
+					<div className="row detail-wrap-article" style={{ marginLeft: "-72px" }}>
+						<div className="col-xs-3">
+							<div className="row">{this.getBlock1Content()}</div>
+							<div className="row u_mt_16 u_p_16 detail-wrap notes-box">
+								<NotesComponent
+									data={article}
+									heading={resources.str_remarks}
+									// placeholder={resources.articleEnterCommentsAboutArticleText}
+									// notesAlertLabel={resources.str_seeNoteConfirmationMessage}
+									// showToggleInput={true}
+									onSave={({ notes, notesAlert }) => this.onSaveNotesClick({ notes, notesAlert })}
+									resources={resources}
+									defaultFocus={true}
+								/>
+							</div>
+						</div>
+						<div className="col-xs-9 ">
+							<div className="row ">
+								<div className="col-xs-6 u_ml_10">
+									<div className="row detail-wrap u_ml_8 u_mt_48">
+										<div className="row u_m_16 row-box-col">
+											<div className="col-xs-4 box-column">
+												{" "}
+												{this.renderSellingPriceNet(article, resources)}
+											</div>
+											<div className=" col-xs-4 box-column">
+												{this.renderSellingPriceGross(article, resources)}
+											</div>
+											<div className="col-xs-4 box-column">{this.getTotalRevenue()}</div>
+										</div>
 
-				{article.trackedInInventory ? (
-					<div className="box" style={{ height: 699 }}>
-						<div className="pagebox_heading text-h4">{`Stock movement`}</div>
+										<div className="row u_m_16 row-box-col">
+											<div className=" col-xs-4 box-column">
+												{this.renderPurchasePriceNet(article, resources)}
+											</div>
+											<div className="col-xs-4 box-column">
+												{this.renderPurchasePriceGross(article, resources)}
+											</div>
+											<div className=" col-xs-4 box-column">{this.getTotalOrders()}</div>
+										</div>
+									</div>
+								</div>
+								<div className="col-xs-5 u_ml_16 detail-wrap detail-information u_mt_48">
+									<div className="detail-information-content">
+										<div className="content-information">
+											<div className="title is-4 mb-2 mt-4">
+												<h4>Coming Soon</h4>
+											</div>
+											<div className="article-detail-information-text">
+												<span>Launching new Inventory</span>
+												<br />
+												<span>features very soon</span>
+											</div>
+										</div>
+										<div
+											style={{
+												display: "grid",
+												gridTemplateColumns: "1fr 1fr",
+												height: "100%",
+												width: "100%",
+											}}
+										>
+											<div
+												style={{
+													display: "flex",
+													flexDirection: "column",
+													alignItems: "center",
+													height: "10%",
+													padding: "8px",
+												}}
+											>
+												<SVGInline
+													className="background-image"
+													svg={openingBalance}
+													alt={"Could not load image!"}
+												/>
+												<p style={{ textAlign: "center", marginTop: "10px" }}>
+													Opening Balance
+												</p>
+											</div>
+											<div
+												style={{
+													display: "flex",
+													flexDirection: "column",
+													alignItems: "center",
+													height: "10%",
+													padding: "8px",
+												}}
+											>
+												<SVGInline
+													className="background-image"
+													svg={Group}
+													alt={"Could not load image!"}
+												/>
+												<p style={{ textAlign: "center", marginTop: "10px" }}>
+													Low Stock Alert
+												</p>
+											</div>
+											<div
+												style={{
+													display: "flex",
+													flexDirection: "column",
+													alignItems: "center",
+													height: "10%",
+													padding: "8px",
+												}}
+											>
+												<SVGInline
+													className="background-image"
+													svg={minimumStock}
+													alt={"Could not load image!"}
+												/>
+												<p>Minimum Stock</p>
+											</div>
+											<div
+												style={{
+													display: "flex",
+													flexDirection: "column",
+													alignItems: "center",
+													height: "10%",
+													padding: "8px",
+												}}
+											>
+												<SVGInline
+													className="background-image"
+													svg={totalStock}
+													alt={"Could not load image!"}
+												/>
+												<p style={{ textAlign: "center", marginTop: "10px" }}>Total Stock</p>
+											</div>
+										</div>
+									</div>
+									<div className="row"></div>
+								</div>
+							</div>
+							<div className="row u_ml_10">
+								{canViewArticleSalesOverview ? this.getBlock2Content() : null}
+							</div>
+						</div>
+
+						{article.trackedInInventory ? (
+							<div className="box" style={{ height: 699 }}>
+								<div className="pagebox_heading text-h4">{`Stock movement`}</div>
+								<div className="pagebox_content articleHistory_container">
+									{errorOccurred ? (
+										<div className="article-history-error">
+											<div className="error-headline">
+												<h1>{resources.errorOccuredMessage}</h1>
+											</div>
+											<div>
+												<ButtonComponent
+													callback={() => invoiz.router.reload()}
+													label={resources.str_reload}
+												/>
+											</div>
+										</div>
+									) : (
+										<div>
+											{/* <div className="article-history-list-head-content">
+											{isLoading ? null : (
+												<FilterComponent
+													items={permittedfilterItems}
+													onChange={filter => this.onFilterList(filter)}
+													resources={resources}
+												/>
+											)}getBlock1Content
+										</div> */}
+
+											<div className="article ">
+												{isLoading ? (
+													<LoaderComponent visible={true} />
+												) : (
+													<div>
+														<ListComponent
+															clickable={false}
+															//rowCallback={(id, row) => this.onRowClick(row)}
+															sortable={true}
+															columns={inventoryHistoryColumns}
+															rows={this.createInventoryTableRows(inventoryHistoryItems)}
+															columnCallback={(column) => this.onInventorySort(column)}
+															emptyFallbackElement={resources.str_noDocumentAvailable}
+															resources={resources}
+														/>
+
+														{inventoryTotalPages > 1 ? (
+															<div className="article-history-list-pagination">
+																<PaginationComponent
+																	currentPage={inventoryCurrentPage}
+																	totalPages={inventoryTotalPages}
+																	onPaginate={(page) => {
+																		this.onInventoryPaginate(page);
+																	}}
+																/>
+															</div>
+														) : null}
+													</div>
+												)}
+											</div>
+										</div>
+									)}
+								</div>
+							</div>
+						) : null}
+					</div>
+				)}
+
+				{activeTab === "History" && (
+					<div className="detail-wrap u_p_16 u_mt_48 detail-history" style={{ marginLeft: "-70px" }}>
+						<div className="pagebox_heading text-h4">{resources.str_history}</div>
 						<div className="pagebox_content articleHistory_container">
 							{errorOccurred ? (
 								<div className="article-history-error">
@@ -592,15 +902,15 @@ class ArticleDetailComponent extends React.Component {
 								</div>
 							) : (
 								<div>
-									{/* <div className="article-history-list-head-content">
-									{isLoading ? null : (
-										<FilterComponent
-											items={permittedfilterItems}
-											onChange={filter => this.onFilterList(filter)}
-											resources={resources}
-										/>
-									)}
-								</div> */}
+									<div className="article-history-list-head-content">
+										{isLoading ? null : (
+											<FilterComponent
+												items={permittedfilterItems}
+												onChange={(filter) => this.onFilterList(filter)}
+												resources={resources}
+											/>
+										)}
+									</div>
 
 									<div className="article">
 										{isLoading ? (
@@ -608,24 +918,22 @@ class ArticleDetailComponent extends React.Component {
 										) : (
 											<div>
 												<ListComponent
-													clickable={false}
-													//rowCallback={(id, row) => this.onRowClick(row)}
+													clickable={true}
+													rowCallback={(id, row) => this.onRowClick(row)}
 													sortable={true}
-													columns={inventoryHistoryColumns}
-													rows={this.createInventoryTableRows(inventoryHistoryItems)}
-													columnCallback={(column) => this.onInventorySort(column)}
+													columns={columns}
+													rows={this.createArticleHistoryTableRows(articleHistoryItems)}
+													columnCallback={(column) => this.onSort(column)}
 													emptyFallbackElement={resources.str_noDocumentAvailable}
 													resources={resources}
 												/>
 
-												{inventoryTotalPages > 1 ? (
+												{totalPages > 1 ? (
 													<div className="article-history-list-pagination">
 														<PaginationComponent
-															currentPage={inventoryCurrentPage}
-															totalPages={inventoryTotalPages}
-															onPaginate={(page) => {
-																this.onInventoryPaginate(page);
-															}}
+															currentPage={currentPage}
+															totalPages={totalPages}
+															onPaginate={(page) => this.onPaginate(page)}
 														/>
 													</div>
 												) : null}
@@ -636,79 +944,7 @@ class ArticleDetailComponent extends React.Component {
 							)}
 						</div>
 					</div>
-				) : null}
-
-				<div className="box">
-					<div className="pagebox_heading text-h4">{resources.str_history}</div>
-					<div className="pagebox_content articleHistory_container">
-						{errorOccurred ? (
-							<div className="article-history-error">
-								<div className="error-headline">
-									<h1>{resources.errorOccuredMessage}</h1>
-								</div>
-								<div>
-									<ButtonComponent
-										callback={() => invoiz.router.reload()}
-										label={resources.str_reload}
-									/>
-								</div>
-							</div>
-						) : (
-							<div>
-								<div className="article-history-list-head-content">
-									{isLoading ? null : (
-										<FilterComponent
-											items={permittedfilterItems}
-											onChange={(filter) => this.onFilterList(filter)}
-											resources={resources}
-										/>
-									)}
-								</div>
-
-								<div className="article">
-									{isLoading ? (
-										<LoaderComponent visible={true} />
-									) : (
-										<div>
-											<ListComponent
-												clickable={true}
-												rowCallback={(id, row) => this.onRowClick(row)}
-												sortable={true}
-												columns={columns}
-												rows={this.createArticleHistoryTableRows(articleHistoryItems)}
-												columnCallback={(column) => this.onSort(column)}
-												emptyFallbackElement={resources.str_noDocumentAvailable}
-												resources={resources}
-											/>
-
-											{totalPages > 1 ? (
-												<div className="article-history-list-pagination">
-													<PaginationComponent
-														currentPage={currentPage}
-														totalPages={totalPages}
-														onPaginate={(page) => this.onPaginate(page)}
-													/>
-												</div>
-											) : null}
-										</div>
-									)}
-								</div>
-							</div>
-						)}
-					</div>
-				</div>
-				<div className="notes box">
-					<NotesComponent
-						data={article}
-						heading={resources.str_remarks}
-						placeholder={resources.articleEnterCommentsAboutArticleText}
-						notesAlertLabel={resources.str_seeNoteConfirmationMessage}
-						showToggleInput={true}
-						onSave={({ notes, notesAlert }) => this.onSaveNotesClick({ notes, notesAlert })}
-						resources={resources}
-						defaultFocus={true}
-					/>
-				</div>
+				)}
 			</div>
 		);
 	}

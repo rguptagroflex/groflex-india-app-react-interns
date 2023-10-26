@@ -242,9 +242,9 @@ class AccountComponent extends React.Component {
 			account.companyAddress.countryIso = 'IN';
 		}
 		return (
-			<div className="settings-account-component">
-				<div className="row u_pt_20"> {/*u_pt_60 u_pb_40 */}
-					<div className="col-xs-12 text-h4 u_pb_20">{'Company'}</div> {/* {title} */}
+			<div className="settings-account-component u_p_20 u_mt_16">
+				<div className="row "> {/*u_pt_60 u_pb_40 */}
+					<div className="col-xs-12 text-h4 u_pb_20">{'Company info'}</div> {/* {title} */}
 					<div className="col-xs-12">
 						{/* <div className="col-xs-12" /> */}
 						{/* <div className="col-xs-12"> */}
