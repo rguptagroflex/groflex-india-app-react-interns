@@ -266,10 +266,19 @@ button.chart-type-toggle {
 					display: flex;
 					align-items: center;
 					.customer-drop-down {
-						width: 170px;
+						width: 195px;
 						margin-top: 19px;
-						border: 1px solid #c6c6c6;
-						border-radius: 4px;
+						.selectInput {
+							padding-top: 15px;
+						}
+
+						.Select-control {
+							border: 1px solid #c6c6c6;
+							border-radius: 4px;
+							.Select-placeholder {
+								padding-left: 14px !important;
+							}
+						}
 						.MuiFormControl-root {
 							width: 100%;
 							padding-left: 12px;

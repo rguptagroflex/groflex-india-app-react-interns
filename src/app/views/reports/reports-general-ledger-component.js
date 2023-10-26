@@ -151,8 +151,8 @@ const ReportsGeneralLedger = (props) => {
 	const [customers, setCustomers] = useState([]);
 	const [customerId, setCustomerID] = useState("");
 	const [customerName, setCustomerName] = useState("");
-	const setCustomerDropDown = (event) => {
-		setCustomerID(event.target.value);
+	const setCustomerDropDown = (option) => {
+		setCustomerID(option.value);
 	};
 	const fetchCustomers = () => {
 		let customerDropDownValues = [];
@@ -163,7 +163,7 @@ const ReportsGeneralLedger = (props) => {
 				// 	...customerDropDownValues,
 				// 	[item.id]: item.name,
 				// };
-				customerDropDownValues.push({ id: item.id, name: item.name });
+				customerDropDownValues.push({ name: item.name, value: item.id });
 			});
 			setCustomers(customerDropDownValues);
 		});
@@ -368,7 +368,7 @@ const ReportsGeneralLedger = (props) => {
 					>
 						<div className="time-period-select">
 							<div className="customer-drop-down">
-								<FormControl>
+								{/* <FormControl>
 									<Select
 										value={customerId}
 										onChange={setCustomerDropDown}
@@ -381,7 +381,27 @@ const ReportsGeneralLedger = (props) => {
 											<MenuItem value={customer.id}>{customer.name}</MenuItem>
 										))}
 									</Select>
-								</FormControl>
+								</FormControl> */}
+								<SelectInputComponent
+									name="customer"
+									notAsync={true}
+									options={{
+										clearable: false,
+										searchable: true,
+										labelKey: "name",
+										valueKey: "value",
+										handleChange: (option) => {
+											if (!option) return;
+											// this.onCustomerChange(option.customer);
+											setCustomerDropDown(option);
+											console.log("Option", option);
+										},
+									}}
+									title={"Customers"}
+									value={customerId || null}
+									loadedOptions={customers}
+									dataQsId="timetracking-edit-customer"
+								/>
 							</div>
 							<div className="date-select-drop-down">
 								<SelectInputComponent
