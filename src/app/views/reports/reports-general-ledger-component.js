@@ -16,6 +16,7 @@ import { formatApiDate } from "../../helpers/formatDate";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
+import { connect } from "react-redux";
 const ReportsGeneralLedger = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -349,6 +350,9 @@ const ReportsGeneralLedger = (props) => {
 		setDateData({ ...dateData, customEndDate: endDate });
 	};
 
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignGeneralLedger" : "";
+
 	return (
 		<div style={containerStyle} className="general-ledger-component-main">
 			<TopbarComponent
@@ -358,7 +362,7 @@ const ReportsGeneralLedger = (props) => {
 					window.history.back();
 				}}
 			/>
-			<div className="general-ledger-content">
+			<div className={`general-ledger-content ${classLeft}`}>
 				<div className="general-ledger-component general-ledger-content-top">
 					<div
 						className="time-period-select-container"
@@ -537,4 +541,13 @@ const ReportsGeneralLedger = (props) => {
 		</div>
 	);
 };
-export default ReportsGeneralLedger;
+
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportsGeneralLedger);
+// export default ReportsGeneralLedger;

@@ -241,15 +241,15 @@ button.chart-type-toggle {
 	.general-ledger-content {
 		// height: 1186px;
 		height: 100%;
-		width: 1120px;
+		width: 94%;
 		background-color: #fff;
 		border: 1px solid #ccc;
 		margin-top: 30px;
-		margin-left: 50px;
+		margin-left: 44px;
 		margin-right: 50px;
 		font-weight: 600;
 		border-radius: 8px;
-		margin-top: 130px;
+		margin-top: 81px;
 		.general-ledger-content-top {
 			margin-top: 20px;
 			// margin-left: 20px;
@@ -413,4 +413,10 @@ button.chart-type-toggle {
 			}
 		}
 	}
+}
+
+.leftAlignGeneralLedger {
+	position: relative;
+	left: 173px;
+	width: 83% !important;
 }
