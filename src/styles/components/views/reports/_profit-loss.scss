@@ -1,6 +1,7 @@
 .profit-loss-component-wrapper {
 	height: 1186px;
-	width: 1120px;
+	// width: 1120px;
+	width: 93%;
 	background-color: #fff;
 	border: 1px solid #ccc;
 	margin-top: 30px;
@@ -8,7 +9,7 @@
 	margin-right: 50px;
 	font-weight: 600;
 	border-radius: 8px;
-	margin-top: 130px;
+	margin-top: 81px;
 	.general-ledger-component {
 		margin-top: 20px;
 		margin-left: 20px;
@@ -18,6 +19,7 @@
 		.time-period-select-container {
 			display: flex;
 			justify-content: space-between;
+			margin-left: -43px;
 			.time-period-select {
 				flex: 1.5;
 				display: flex;
@@ -195,4 +197,10 @@
 			}
 		}
 	}
+}
+
+.leftAlignProfitAndLoss {
+	left: 163px;
+	position: relative;
+	width: 83%;
 }

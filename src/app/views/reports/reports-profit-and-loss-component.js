@@ -19,8 +19,8 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-
-function ReportsProfitAndLoss() {
+import { connect } from "react-redux";
+function ReportsProfitAndLoss(props) {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
 	);
@@ -274,6 +274,9 @@ function ReportsProfitAndLoss() {
 		fetchData();
 	}, [selectedDate]);
 
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignProfitAndLoss" : "";
+
 	return (
 		<div className="profit-loss-component">
 			<TopbarComponent
@@ -283,7 +286,7 @@ function ReportsProfitAndLoss() {
 					window.history.back();
 				}}
 			/>
-			<div className="profit-loss-component-wrapper">
+			<div className={`profit-loss-component-wrapper ${classLeft}`}>
 				<div className="general-ledger-component">
 					<div
 						className="time-period-select-container"
@@ -489,4 +492,12 @@ function ReportsProfitAndLoss() {
 	);
 }
 
-export default ReportsProfitAndLoss;
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportsProfitAndLoss);
+// export default ReportsProfitAndLoss;
