@@ -129,10 +129,10 @@
 			height: 56px;
 			padding: 17px;
 			.netProfit-value {
+				width: 170px;
 				display: flex;
-				align-items: flex-start;
-				justify-content: flex-start;
-				width: 112px;
+				text-align: right;
+				padding-left: 90px;
 			}
 		}
 		.Total-container {
@@ -147,9 +147,10 @@
 				display: flex;
 				justify-content: space-between;
 				.totalValue {
-					min-width: 150px;
-					text-align: left;
-					padding-left: 34px;
+					min-width: 170px;
+					text-align: right;
+					display: flex;
+					padding-left: 86px;
 				}
 			}
 		}
@@ -204,9 +205,10 @@
 					display: flex;
 					justify-content: space-between;
 					.accordian-detail-total {
-						padding-left: 15px;
-						min-width: 130px;
-						text-align: left;
+						padding-left: 90px;
+						min-width: 170px;
+						text-align: right;
+						display: flex;
 					}
 					.accordian-detail-name {
 						margin-left: 10px;

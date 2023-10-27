@@ -483,9 +483,10 @@ const ReportBalanceSheet = (props) => {
 																		.slice(1)}
 															</div>
 															<div className="accordian-detail-total">
+																₹{" "}
 																{subItem.credits === 0
-																	? subItem.debits
-																	: subItem.credits}{" "}
+																	? parseFloat(subItem.debits).toFixed(2)
+																	: parseFloat(subItem.credits).toFixed(2)}
 															</div>
 														</div>
 													</React.Fragment>
@@ -498,7 +499,7 @@ const ReportBalanceSheet = (props) => {
 										<div className="Total">
 											<div>Total {item}</div>
 											<div className="totalValue">
-												{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+												₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}
 											</div>
 										</div>
 									</React.Fragment>

@@ -434,6 +434,12 @@ button.chart-type-toggle {
 					.headingRight {
 						margin-right: 100px;
 					}
+					.headingBalance {
+						padding-right: 42px;
+					}
+					.headingDate {
+						padding-left: 24px;
+					}
 				}
 				.MuiDivider-root {
 					margin-top: -10px;
@@ -468,26 +474,29 @@ button.chart-type-toggle {
 							justify-content: space-between;
 							.row-entry-date {
 								width: 170px;
-								padding-left: 15px;
+								padding-left: 29px;
 							}
 							.row-entry-account {
 								width: 170px;
 								padding-left: 30px;
 							}
 							.row-entry-debits {
+								display: flex;
 								width: 170px;
-								padding-right: 60px;
 								text-align: right;
+								padding-left: 98px;
 							}
 							.row-entry-credits {
 								width: 170px;
 								text-align: right;
-								padding-right: 38px;
+								display: flex;
+								padding-left: 125px;
 							}
 							.row-entry-balance {
 								width: 170px;
 								text-align: right;
-								padding-right: 15px;
+								display: flex;
+								padding-left: 100px;
 							}
 						}
 					}

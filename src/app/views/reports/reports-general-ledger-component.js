@@ -570,7 +570,9 @@ const ReportsGeneralLedger = (props) => {
 											id="panel1a-header"
 										>
 											{" "}
-											<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>{" "}
+											<h6 style={{ paddingLeft: "23px" }}>
+												{item.charAt(0).toUpperCase() + item.slice(1)}
+											</h6>{" "}
 										</AccordionSummary>
 
 										<AccordionDetails>
@@ -596,13 +598,13 @@ const ReportsGeneralLedger = (props) => {
 																			.slice(1)}
 																</div>
 																<div className="row-entry-debits">
-																	₹ {subItem.debits}
+																	₹ {parseFloat(subItem.debits).toFixed(2)}
 																</div>
 																<div className="row-entry-credits">
-																	₹ {subItem.credits}
+																	₹ {parseFloat(subItem.credits).toFixed(2)}
 																</div>
 																<div className="row-entry-balance">
-																	₹ {subItem.balance}
+																	₹ {parseFloat(subItem.balance).toFixed(2)}
 																</div>
 															</div>
 														</React.Fragment>
