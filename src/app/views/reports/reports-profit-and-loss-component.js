@@ -253,12 +253,23 @@ function ReportsProfitAndLoss(props) {
 
 				break;
 			default:
-				onDate(option.value);
+				// onDate(option.value);
+				// setDateData({
+				// 	...dateData,
+				// 	showCustomDateRangeSelector: false,
+				// 	dateFilterValue: option.value,
+				// });
+				// break;
+				const { startDate, endDate } = onDate(option.value);
+
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: false,
 					dateFilterValue: option.value,
 				});
+				setSelectedDate({ startDate, endDate });
+				fetchData(startDate, endDate);
+
 				break;
 		}
 	};
@@ -276,8 +287,16 @@ function ReportsProfitAndLoss(props) {
 		fetchData();
 	}, [selectedDate]);
 
+	useEffect(() => {
+		// Fetch initial data with the default date filter
+		const { startDate, endDate } = onDate(dateData.dateFilterValue);
+		fetchData(startDate, endDate);
+	}, []); //
+
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignProfitAndLoss" : "";
+
+	console.log("Profit: ", selectedDate);
 
 	return (
 		<div className="profit-loss-component">
