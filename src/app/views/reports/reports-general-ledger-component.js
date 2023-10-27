@@ -17,6 +17,10 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import { connect } from "react-redux";
+import Accordion from "@material-ui/core/Accordion";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import AccordionDetails from "@material-ui/core/AccordionDetails";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 const ReportsGeneralLedger = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -26,6 +30,7 @@ const ReportsGeneralLedger = (props) => {
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState([]);
+	const [tableHeaders, setTableHeader] = useState([]);
 
 	// const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 	const CustomCellRenderer = ({ value, colDef }) => (
@@ -191,7 +196,8 @@ const ReportsGeneralLedger = (props) => {
 					)
 					.then((res) => {
 						let filterdResponse = [];
-						res.body.data.summaryData.transactions.forEach((item) => {
+						const transactions = res.body.data.summaryData.transactions;
+						transactions.forEach((item) => {
 							if (item.chartOfAccount) {
 								if (
 									Date.parse(item.date) >= Date.parse(selectedDate.startDate) &&
@@ -201,7 +207,15 @@ const ReportsGeneralLedger = (props) => {
 								}
 							}
 						});
+						filterdResponse.forEach((item) => {
+							if (!tableHeaders.includes(item.chartOfAccount.accountTypeId)) {
+								tableHeaders.push(item.chartOfAccount.accountTypeId);
+							}
+						});
+						setTableHeader(tableHeaders);
+
 						setCustomerName(res.body.data.summaryData.customer.name);
+						console.log("Filtered Response: ", filterdResponse);
 
 						setRowData(filterdResponse);
 					});
@@ -352,6 +366,8 @@ const ReportsGeneralLedger = (props) => {
 
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignGeneralLedger" : "";
+	console.log("Table Heads: ", tableHeaders);
+	console.log("Row Data: ", rowData);
 
 	return (
 		<div style={containerStyle} className="general-ledger-component-main">
@@ -523,7 +539,7 @@ const ReportsGeneralLedger = (props) => {
 				</div>
 
 				<div style={gridStyle} className="ag-theme-alpine general-ledger-content-bottom">
-					<AgGridReact
+					{/* <AgGridReact
 						ref={gridRef}
 						rowData={rowData}
 						columnDefs={columnDefs}
@@ -532,10 +548,73 @@ const ReportsGeneralLedger = (props) => {
 						animateRows={true}
 						onGridReady={onGridReady}
 						modules={AllModules}
-						// groupDisplayType={"groupRows"}
 						onFirstDataRendered={onFirstDataRendered}
-						// gridOptions={gridOptions}
-					></AgGridReact>
+					></AgGridReact> */}
+
+					<div className="table-container">
+						<div className="general-ledger-table-header">
+							<h6 className="headingDate">Date</h6>
+							<h6 className="headingAccount">Account</h6>
+							<h6 className="headingDebit">Debit</h6>
+							<h6 className="headingCredit">Credit</h6>
+							<h6 className="headingBalance">Balance</h6>
+						</div>
+
+						{tableHeaders.map((item) => {
+							return (
+								<div style={{ borderBottom: "1px solid #ddd" }}>
+									<Accordion elevation={0}>
+										<AccordionSummary
+											expandIcon={<ExpandMoreIcon />}
+											aria-controls="panel1a-content"
+											id="panel1a-header"
+										>
+											{" "}
+											<h6>{item.charAt(0).toUpperCase() + item.slice(1)}</h6>{" "}
+										</AccordionSummary>
+
+										<AccordionDetails>
+											<div className="general-ledger-accordian-details">
+												{rowData
+													.filter(
+														(filteredItem) =>
+															filteredItem.chartOfAccount.accountTypeId === item
+													)
+													.map((subItem, index) => (
+														<React.Fragment>
+															<div className="accordian-details-row-entry">
+																<div className="row-entry-date">
+																	{moment(subItem.date).format("DD/MM/YYYY")}
+																</div>
+																<div className="row-entry-account">
+																	{subItem.chartOfAccount.accountSubTypeId
+																		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																		.charAt(0)
+																		.toUpperCase() +
+																		subItem.chartOfAccount.accountSubTypeId
+																			.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																			.slice(1)}
+																</div>
+																<div className="row-entry-debits">
+																	₹ {subItem.debits}
+																</div>
+																<div className="row-entry-credits">
+																	₹ {subItem.credits}
+																</div>
+																<div className="row-entry-balance">
+																	₹ {subItem.balance}
+																</div>
+															</div>
+														</React.Fragment>
+													))}
+											</div>
+										</AccordionDetails>
+									</Accordion>
+								</div>
+							);
+						})}
+						<div></div>
+					</div>
 				</div>
 			</div>{" "}
 		</div>

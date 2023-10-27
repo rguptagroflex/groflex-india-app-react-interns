@@ -114,6 +114,7 @@ const ReportBalanceSheet = (props) => {
 	const [responseData, setResponseData] = useState(null);
 	const fetchData = async (startDate, endDate) => {
 		let tableHeaders = [];
+		console.log("start: ", startDate);
 		try {
 			const response = await invoiz.request(
 				`${config.resourceHost}accountingReport/balanceSheet/${startDate}/${endDate}?type=json`,
@@ -275,6 +276,7 @@ const ReportBalanceSheet = (props) => {
 				});
 				setSelectedDate({ startDate, endDate });
 				fetchData(startDate, endDate);
+
 				break;
 		}
 	};
@@ -294,6 +296,16 @@ const ReportBalanceSheet = (props) => {
 		fetchData(startDate, endDate);
 	}, []); //
 	console.log("headerData: ", tableHeaders);
+
+	const exportButtonClick = async () => {
+		console.log("startExport: ", selectedDate);
+		const endpoint = `${config.resourceHost}accountingReport/balanceSheet/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}?type=csv`;
+		await invoiz.request(endpoint, { auth: true }).then((res) => {
+			console.log("Res: ", res);
+		});
+	};
 
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignBalanceSheet" : "";
@@ -411,7 +423,7 @@ const ReportBalanceSheet = (props) => {
 							</div>
 							<div className="icon-separtor_second"></div>
 
-							<div className="icon-download" onClick={onBtExport}>
+							<div className="icon-download" onClick={exportButtonClick}>
 								<span className="download"></span>
 								<span className="icon-text">Export</span>
 							</div>
@@ -476,25 +488,6 @@ const ReportBalanceSheet = (props) => {
 																	: subItem.credits}{" "}
 															</div>
 														</div>
-
-														{/* {index ===
-														rowData.filter(
-															(filteredItem) => filteredItem.accountTypeId === item
-														).length -
-															1 ? (
-															<React.Fragment>
-																<div className="Total">
-																	<div>Total {item}</div>
-																	<div className="totalValue">
-																		{parseFloat(
-																			tableTotals[item + "Total"]
-																		).toFixed(2)}
-																	</div>
-																</div>
-															</React.Fragment>
-														) : (
-															""
-														)} */}
 													</React.Fragment>
 												))}
 										</div>
