@@ -16,6 +16,7 @@ import Uploader from "fine-uploader";
 import { handleImageError } from "helpers/errors";
 import { format } from "util";
 import ButtonComponent from "../../shared/button/button.component";
+import RadioInputComponent from "../../shared/inputs/radio-input/radio-input.component";
 
 const attachmentConfig = {
 	attachmentUrl: `${config.resourceHost}email/attachment`,
@@ -42,6 +43,18 @@ const attachmentConfig = {
 		},
 	},
 };
+const exportOption = [
+	{
+		id: "pdf",
+		label: "PDF",
+		value: ".pdf",
+	},
+	{
+		id: "csv",
+		label: "CSV",
+		value: ".csv",
+	},
+];
 const handleSave = () => {
 	ModalService.close();
 };
@@ -62,6 +75,7 @@ class balanceSheetSendEmail extends React.Component {
 		console.log("resources", resources);
 
 		this.state = {
+			exportFormat: ".pdf",
 			customerId: this.props.customerId,
 			documentTitle: this.props.documentTitle,
 			emails: this.props.emails || [],
@@ -392,6 +406,8 @@ class balanceSheetSendEmail extends React.Component {
 
 	render() {
 		const { resources } = this.props;
+		const { exportFormat } = this.state;
+		console.log(exportFormat);
 
 		const buttonDisabled = this.isButtonDisabled();
 		const headline = this.state.model.headline;
@@ -421,10 +437,10 @@ class balanceSheetSendEmail extends React.Component {
 		return (
 			<div className="email-view-wrapper wrapper-has-topbar-with-margin">
 				<div
-				//  style={{ marginTop: "-120px", marginBottom: "-120px" }}
-				className="add-chart-modal-container"
+					//  style={{ marginTop: "-120px", marginBottom: "-120px" }}
+					className="add-chart-modal-container"
 					style={{ minHeight: "200px" }}
-				 >
+				>
 					{/* <TopbarComponent
 					backButtonCallback={() => this.navigateToDetails()}
 					buttons={[
@@ -453,16 +469,18 @@ class balanceSheetSendEmail extends React.Component {
 				</TopbarComponent> */}
 
 					{/* <div className="email-view-headline"> */}
-						{/* <h1>Send your General Ledger by email</h1> */}
-						{/* <h2>Send your General Ledger by email</h2> */}
-						<div
+					{/* <h1>Send your General Ledger by email</h1> */}
+					{/* <h2>Send your General Ledger by email</h2> */}
+					<div
 						style={{
 							padding: "20px",
 							boxShadow: "0px 1px 4px 0px #0000001F",
 						}}
 						className="modal-base-headline"
 						//  className="email-view-textarea-label"
-						 >Send Balance Sheet</div>
+					>
+						Send Balance Sheet
+					</div>
 					{/* </div> */}
 					<div
 						style={{
@@ -477,53 +495,54 @@ class balanceSheetSendEmail extends React.Component {
 								backgroundColor: "white",
 							}}
 						>
-
-					<div className="row">
-						<div className="col-xs-12">
-							<div className="email-view-select">
-								{/* <div className="email-view-select-label">{resources.str_emailAddress}</div> */}
-								<div className="email-view-select-label">E-Mail Address</div>
-								<SelectInputComponent
-									allowCreate={true}
-									notAsync={true}
-									loadedOptions={this.state.emailOptions}
-									value={this.state.emails}
-									options={this.emailSelectOptions}
-								/>
+							<div className="row">
+								<div className="col-xs-12">
+									<div className="email-view-select">
+										{/* <div className="email-view-select-label">{resources.str_emailAddress}</div> */}
+										<div className="email-view-select-label">E-Mail Address</div>
+										<SelectInputComponent
+											allowCreate={true}
+											notAsync={true}
+											loadedOptions={this.state.emailOptions}
+											value={this.state.emails}
+											options={this.emailSelectOptions}
+										/>
+									</div>
+								</div>
 							</div>
-						</div>
-						</div>
-						<div className="row u_mt_20">
-						<div className="col-xs-12">
-							<TextInputExtendedComponent
-								value={this.state.regard}
-								required={true}
-								// label={resources.str_subject}
-								label={"Subject"}
-								onChange={(val) => this.setState({ regard: val })}
-								style={{ padding: "0px" }}
-							/>
-						</div>
-					</div>
+							<div className="row u_mt_20">
+								<div className="col-xs-12">
+									<TextInputExtendedComponent
+										value={this.state.regard}
+										required={true}
+										// label={resources.str_subject}
+										label={"Subject"}
+										onChange={(val) => this.setState({ regard: val })}
+										style={{ padding: "0px" }}
+									/>
+								</div>
+							</div>
 
-					<div className="row">
-						<div className="col-xs-12">
-							{this.state.showEmailError ? (
-								// <div className="email-error">{resources.emailViewRecipientEmailText}</div>
-								<div className="email-error">{"Please enter a recipient email address"}</div>
-							) : null}
-						</div>
-					</div>
+							<div className="row">
+								<div className="col-xs-12">
+									{this.state.showEmailError ? (
+										// <div className="email-error">{resources.emailViewRecipientEmailText}</div>
+										<div className="email-error">{"Please enter a recipient email address"}</div>
+									) : null}
+								</div>
+							</div>
 
-					<div className="row">
-						<div className="col-xs-12">
-							{/* <div className="email-view-textarea-label">{resources.emailViewPreviewEmailText}</div> */}
-							<div 
-							// className="email-view-textarea-label"
-							className="textarea_label"
-							style={{ marginTop: "5px", color: "#747474" }}
-							>Message</div>
-							{/* <div className="email-view-textarea">
+							<div className="row">
+								<div className="col-xs-12">
+									{/* <div className="email-view-textarea-label">{resources.emailViewPreviewEmailText}</div> */}
+									<div
+										// className="email-view-textarea-label"
+										className="textarea_label"
+										style={{ marginTop: "5px", color: "#747474" }}
+									>
+										Message
+									</div>
+									{/* <div className="email-view-textarea">
 								<div className="email-view-textarea-inner">
 									<HtmlInputComponent
 										displayBlueLine={false}
@@ -559,101 +578,113 @@ class balanceSheetSendEmail extends React.Component {
 									<SVGInline width="45px" svg={imprezzLogo} />
 								</div>
 							</div> */}
-								<textarea
+									<textarea
 										style={{ borderRadius: "8px" }}
 										className="textarea_input"
 										rows="5"
 										onTextChange={(val) => this.setState({ emailTextAdditional: val })}
 										value={this.state.emailTextAdditional}
 									/>
-						</div>
-					</div>
-
-					<div className="row">
-						<div className="col-xs-6">
-							{this.state.model.type === "dunning" ? (
-								<div className="email-view-dunning">
-									{/* <span>{resources.emaillViewAutomaticallyRemindersText}</span> */}
-									<span>{"to select an attachment"}</span>
-									<OvalToggleComponent
-										checked={this.state.autoDunningEnabled}
-										onChange={() => {
-											this.setState({ autoDunningEnabled: !this.state.autoDunningEnabled });
-										}}
-										newStyle={true}
-									/>
 								</div>
-							) : null}
-						</div>
-					</div>
+							</div>
 
-					<div className="row">
-						<div className="col-xs-12">
-							{/* <div className="email-view-textarea-label">{resources.str_attachments}</div> */}
-							<div
-							//  className="email-view-textarea-label"
-							className="textarea_label"
-							style={{ color: "#747474", marginTop: "20px" }}
-							 >{"Attachments"}</div>
-							<div className="email-view-attachments">
-								<div className="row">
-									<div className="col-xs-7">
-										<div className="expense-receipt-list">
-											{this.state.additionalDefaultAttachmentName ? (
-												<div style={{ marginTop: "-20px" }} className="expenseEdit_fileListRow">
-													<div className="expenseEdit_fileIcon icon icon-attachment" />
-													<div className="list_item">
-														{this.state.additionalDefaultAttachmentName}.pdf
+							<div className="row">
+								<div className="col-xs-6">
+									{this.state.model.type === "dunning" ? (
+										<div className="email-view-dunning">
+											{/* <span>{resources.emaillViewAutomaticallyRemindersText}</span> */}
+											<span>{"to select an attachment"}</span>
+											<OvalToggleComponent
+												checked={this.state.autoDunningEnabled}
+												onChange={() => {
+													this.setState({
+														autoDunningEnabled: !this.state.autoDunningEnabled,
+													});
+												}}
+												newStyle={true}
+											/>
+										</div>
+									) : null}
+								</div>
+							</div>
+
+							<div className="row balance-sheet-email-bottom">
+								<div className="col-xs-12">
+									<div className="email-view-attachments">
+										<div className="row">
+											<div className="col-xs-7">
+												<div className="expense-receipt-list">
+													{this.state.additionalDefaultAttachmentName ? (
+														<div className="expenseEdit_fileListRow">
+															<div className="expenseEdit_fileIcon icon icon-attachment" />
+															<div className="list_item">
+																{this.state.additionalDefaultAttachmentName}.pdf
+															</div>
+														</div>
+													) : null}
+													<div className="expenseEdit_fileListRow">
+														<div
+															className="textarea_label"
+															style={{ color: "#747474", marginTop: "20px" }}
+														>
+															{"Attachments"}
+														</div>
+														<div className="expenseEdit_fileIcon icon icon-attachment" />
 													</div>
 												</div>
-											) : null}
-											<div style={{ marginTop: "-20px" }} className="expenseEdit_fileListRow">
-												<div className="expenseEdit_fileIcon icon icon-attachment" />
-												<div className="list_item">{this.state.defaultAttachmentName}.pdf</div>
+												{attachmentList}
+
+												{this.state.uploadedAttachments.length < 10 ? (
+													<div>
+														<div className="balance-sheet-email-radio">
+															<RadioInputComponent
+																useCustomStyle={true}
+																value={exportFormat}
+																onChange={(value) =>
+																	this.setState({ exportFormat: value })
+																}
+																options={exportOption}
+															/>
+														</div>
+														<div
+															style={{
+																width: "585px",
+																borderRadius: "4px",
+																border: "1px solid #ccc",
+																height: "50px",
+															}}
+															id="emailView-attachment-dropbox"
+															className="drop-box text-center u_mb_4"
+															data-qs-id="expense-edit-receipt-upload"
+														>
+															<label
+																className="text-muted"
+																style={{ marginTop: " -6px" }}
+															>
+																<p>{"Drag & drop an attachment here"}</p>
+
+																<input
+																	className="u_hidden"
+																	type="file"
+																	onChange={this.addSelectedFile.bind(this)}
+																	accept={exportFormat}
+																/>
+															</label>
+														</div>
+													</div>
+												) : null}
 											</div>
 										</div>
-										{attachmentList}
-
-										{this.state.uploadedAttachments.length < 10 ? (
-											<div
-											style={{
-												width: "585px",
-												borderRadius: "4px",
-												border: "1px solid #ccc",
-												height: "50px",
-											}}
-												id="emailView-attachment-dropbox"
-												className="drop-box text-center u_mb_4"
-												data-qs-id="expense-edit-receipt-upload"
-											>
-												<label className="text-muted"  style={{ marginTop: " -6px" }}>
-													<p>
-														{/* {resources.emaillViewAttachmentDragText} */}
-														{"Drag & drop an attachment here"}
-														{/*
-														 &amp;
-														  {resources.emaillViewDropOrClickText}, */}
-														{/* {"Drop here or click"} */}
-														{/* <br /> */}
-														{/* {resources.emaillViewSelectAttachment} */}
-														{/* {"or click to select an attachment"} */}
-													</p>
-													<input
-														className="u_hidden"
-														type="file"
-														onChange={this.addSelectedFile.bind(this)}
-													/>
-												</label>
-											</div>
-										) : null}
-									</div>
-									</div>
 									</div>
 								</div>
-								<div style={{ 
-									// position: "relative",
-								 marginTop: "10px" }} className="modal-base-footer">
-										<div className="modal-base-confirm">
+								<div
+									style={{
+										// position: "relative",
+										marginTop: "10px",
+									}}
+									className="modal-base-footer"
+								>
+									<div className="modal-base-confirm">
 										<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Send"} />
 									</div>
 									<div className="modal-base-cancel">
@@ -664,7 +695,6 @@ class balanceSheetSendEmail extends React.Component {
 											onClick={() => onTopbarButtonClick("send")}
 										/>
 									</div>
-								
 								</div>
 							</div>
 						</div>

@@ -17,6 +17,7 @@ import Uploader from "fine-uploader";
 import { handleImageError } from "helpers/errors";
 import { format } from "util";
 import ButtonComponent from "../../shared/button/button.component";
+import RadioInputComponent from "../../shared/inputs/radio-input/radio-input.component";
 
 const attachmentConfig = {
 	attachmentUrl: `${config.resourceHost}email/attachment`,
@@ -47,6 +48,19 @@ const handleSave = () => {
 	ModalService.close();
 };
 
+const exportOption = [
+	{
+		id: "pdf",
+		label: "PDF",
+		value: ".pdf",
+	},
+	{
+		id: "csv",
+		label: "CSV",
+		value: ".csv",
+	},
+];
+
 class profitAndLossSendEmail extends React.Component {
 	// componentDidMount() {
 	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
@@ -63,6 +77,7 @@ class profitAndLossSendEmail extends React.Component {
 		console.log("resources", resources);
 
 		this.state = {
+			exportFormat: ".pdf",
 			customerId: this.props.customerId,
 			documentTitle: this.props.documentTitle,
 			emails: this.props.emails || [],
@@ -392,6 +407,7 @@ class profitAndLossSendEmail extends React.Component {
 	}
 
 	render() {
+		const { exportFormat } = this.state;
 		const { resources } = this.props;
 
 		const buttonDisabled = this.isButtonDisabled();
@@ -527,42 +543,7 @@ class profitAndLossSendEmail extends React.Component {
 									>
 										Message
 									</div>
-									{/* <div className="email-view-textarea">
-								<div className="email-view-textarea-inner">
-									<HtmlInputComponent
-										displayBlueLine={false}
-										// value={this.state.emailText}
-										value={
-											"Dear Ladies and Gentlemen,</br>Please find the current estimate attached."
-										}
-										onTextChange={(val) => this.setState({ emailText: val })}
-									/>
-									<div className="email-body-link">
-										&rarr;{" "}
-										{format(
-											// resources.emailBodyLinkText,
-											"View %s online",
-											this.state.model.type === "offer"
-												? "General Ledger"
-												: this.state.model.type === "purchaseOrder"
-												? "str_thePurchaseOrder"
-												: "the statement"
-										)}
-									</div>
-									<HtmlInputComponent
-										displayBlueLine={false}
-										value={this.state.emailTextAdditional}
-										onTextChange={(val) => this.setState({ emailTextAdditional: val })}
-										// placeholder={resources.str_yourSincerely}
-										placeholder={"Yours sincerely"}
-									/>
-								</div>
-								<div className="email-view-textarea-footer">
-									{/* <span>{resources.str_poweredBy}</span> */}
-									{/* <span>{"powered by"}</span>
-									<SVGInline width="45px" svg={imprezzLogo} />
-								</div>
-							</div> */}
+
 									<textarea
 										style={{ borderRadius: "8px" }}
 										className="textarea_input"
@@ -593,16 +574,11 @@ class profitAndLossSendEmail extends React.Component {
 								</div>
 							</div>
 
-							<div className="row">
+							<div className="row profit-loss-email-bottom">
 								<div className="col-xs-12">
-									{/* <div className="email-view-textarea-label">{resources.str_attachments}</div> */}
-									<div
-										// className="email-view-textarea-label"
-										className="textarea_label"
-										style={{ color: "#747474", marginTop: "20px" }}
-									>
+									{/* <div className="textarea_label" style={{ color: "#747474", marginTop: "20px" }}>
 										{"Attachments"}
-									</div>
+									</div> */}
 									<div className="email-view-attachments">
 										<div className="row">
 											<div className="col-xs-7">
@@ -618,48 +594,54 @@ class profitAndLossSendEmail extends React.Component {
 															</div>
 														</div>
 													) : null}
-													<div
-														style={{ marginTop: "-20px" }}
-														className="expenseEdit_fileListRow"
-													>
-														<div className="expenseEdit_fileIcon icon icon-attachment" />
-														<div className="list_item">
-															{this.state.defaultAttachmentName}.pdf
+													<div className="expenseEdit_fileListRow">
+														<div
+															className="textarea_label"
+															style={{ color: "#747474", marginTop: "20px" }}
+														>
+															{"Attachments"}
 														</div>
+														<div className="expenseEdit_fileIcon icon icon-attachment" />
 													</div>
 												</div>
 												{attachmentList}
 
 												{this.state.uploadedAttachments.length < 10 ? (
-													<div
-														style={{
-															width: "585px",
-															borderRadius: "4px",
-															border: "1px solid #ccc",
-															height: "50px",
-														}}
-														id="emailView-attachment-dropbox"
-														className="drop-box text-center u_mb_4"
-														data-qs-id="expense-edit-receipt-upload"
-													>
-														<label className="text-muted" style={{ marginTop: " -6px" }}>
-															<p>
-																{/* {resources.emaillViewAttachmentDragText} */}
-																{"Drag & drop an attachment here"}
-																{/*
-														 &amp;
-														  {resources.emaillViewDropOrClickText}, */}
-																{/* {"Drop here or click"} */}
-																{/* <br /> */}
-																{/* {resources.emaillViewSelectAttachment} */}
-																{/* {"or click to select an attachment"} */}
-															</p>
-															<input
-																className="u_hidden"
-																type="file"
-																onChange={this.addSelectedFile.bind(this)}
+													<div>
+														<div className="profit-loss-email-radio">
+															<RadioInputComponent
+																useCustomStyle={true}
+																value={exportFormat}
+																onChange={(value) =>
+																	this.setState({ exportFormat: value })
+																}
+																options={exportOption}
 															/>
-														</label>
+														</div>
+														<div
+															style={{
+																width: "585px",
+																borderRadius: "4px",
+																border: "1px solid #ccc",
+																height: "50px",
+															}}
+															id="emailView-attachment-dropbox"
+															className="drop-box text-center u_mb_4"
+															data-qs-id="expense-edit-receipt-upload"
+														>
+															<label
+																className="text-muted"
+																style={{ marginTop: " -6px" }}
+															>
+																<p>{"Drag & drop an attachment here"}</p>
+																<input
+																	className="u_hidden"
+																	type="file"
+																	onChange={this.addSelectedFile.bind(this)}
+																	accept={exportFormat}
+																/>
+															</label>
+														</div>
 													</div>
 												) : null}
 											</div>
@@ -673,7 +655,7 @@ class profitAndLossSendEmail extends React.Component {
 									}}
 									className="modal-base-footer"
 								>
-										<div className="modal-base-confirm">
+									<div className="modal-base-confirm">
 										<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Send"} />
 									</div>
 									<div className="modal-base-cancel">
@@ -684,7 +666,6 @@ class profitAndLossSendEmail extends React.Component {
 											onClick={() => onTopbarButtonClick("send")}
 										/>
 									</div>
-								
 								</div>
 							</div>
 						</div>
