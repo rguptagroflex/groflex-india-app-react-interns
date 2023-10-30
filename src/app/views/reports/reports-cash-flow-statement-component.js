@@ -312,7 +312,7 @@ const ReportsCashFlowStatement = (props) => {
 	};
 
 	return (
-		<div style={containerStyle}>
+		<div className="reports-cash-flow-component">
 			<TopbarComponent
 				title={"Cash Flow Statement"}
 				hasCancelButton={true}
@@ -320,47 +320,16 @@ const ReportsCashFlowStatement = (props) => {
 					window.history.back();
 				}}
 			/>
-			<div
-				style={{
-					// height: "500px",
-					height: "1186px",
-					width: "1120px",
-					backgroundColor: "#fff",
-					border: "1px solid #ccc",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-					borderRadius: "8px",
-					marginTop: "130px",
-				}}
-			>
-				<div
-					className="general-ledger-component"
-					style={{
-						marginTop: "20px",
-						marginLeft: "20px",
-						display: "flex",
-						flexDirection: "column",
-						// height:"32px",
-						// width:"1120px",
-						padding: "0px, 24px, 0px, 24px",
-						justifyContent: "space-between",
-					}}
-				>
+			<div className="cash-flow-component-wrapper">
+				<div className="general-ledger-component">
 					<div
 						className="time-period-select-container"
 						style={{
 							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-							display: "flex",
-							justifyContent: "space-between",
 						}}
 					>
-						<div
-							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
-							className="time-period-select"
-						>
-							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+						<div className="time-period-select">
+							<div className="time-period-select-subDiv">
 								<SelectInputComponent
 									allowCreate={false}
 									notAsync={true}
@@ -442,185 +411,27 @@ const ReportsCashFlowStatement = (props) => {
 						</div>
 					</div>
 
-					{/* <div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
-					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
-						}}
-					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
-					{/* </div> */}
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "flex-end",
-							padding: " 0px 16px 0px 16px",
-							height: "32px",
-							/* width: 326px; */
-
-							position: "relative",
-							borderRadius: "4px",
-							gap: "16px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px solid #ccc",
-								padding: "10px",
-								display: "flex",
-								alignItems: "center",
-								position: "relative",
-								borderRadius: "4px",
-								marginTop: "-70px",
-							}}
-						>
-							<div
-								className="icon-mail"
-								onClick={sendEmail}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-								}}
-							>
-								<span
-									className="pdf_mail"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Send email
-								</span>
+					<div className="utility-icons-wrapper">
+						<div className="utility-icons">
+							<div className="icon-mail" onClick={sendEmail}>
+								<span className="pdf_mail"></span>
+								<span className="icon-text">Send email</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "44%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
-							<div
-								className="icon-print2"
-								onClick={onBtPrint}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-									marginLeft: "5px",
-								}}
-							>
-								<span
-									className="pdf_print"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Print
-								</span>
+							<div className="icon-separtor-first"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "70%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
+							<div className="icon-separtor-second"></div>
 
-							<div
-								className="icon-download"
-								onClick={onBtExport}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-								}}
-							>
-								<span
-									className="download"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Export
-								</span>
+							<div className="icon-download" onClick={onBtExport}>
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div
-					className="general-heading"
-					style={{
-						// width: "80vw",
-						// padding: "20px",
-						marginLeft: "20px",
-						marginBottom: "30px",
-					}}
-				>
+				<div className="general-heading">
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -638,7 +449,7 @@ const ReportsCashFlowStatement = (props) => {
 					)}
 				</div>
 
-				<div style={gridStyle} className="ag-theme-alpine">
+				{/* <div style={gridStyle} className="ag-theme-alpine">
 					<AgGridReact
 						ref={gridRef}
 						rowData={rowData}
@@ -652,7 +463,8 @@ const ReportsCashFlowStatement = (props) => {
 						onFirstDataRendered={onFirstDataRendered}
 						// gridOptions={gridOptions}
 					></AgGridReact>
-				</div>
+				</div> */}
+				<div>Hello</div>
 			</div>{" "}
 		</div>
 	);
