@@ -13,6 +13,7 @@ import moment from "moment";
 import CashAndFlowSendEmail from "./cash-and-flow-send-email";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 import { formatApiDate } from "../../helpers/formatDate";
+import { connect } from "react-redux";
 const ReportsCashFlowStatement = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -313,7 +314,8 @@ const ReportsCashFlowStatement = (props) => {
 		fetchData();
 	}, [selectedDate]);
 
-	console.log("headers:  ", contentHeaders);
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignCashAndFlow" : "";
 
 	return (
 		<div className="reports-cash-flow-component">
@@ -324,7 +326,7 @@ const ReportsCashFlowStatement = (props) => {
 					window.history.back();
 				}}
 			/>
-			<div className="cash-flow-component-wrapper">
+			<div className={`cash-flow-component-wrapper ${classLeft}`}>
 				<div className="general-ledger-component">
 					<div
 						className="time-period-select-container"
@@ -507,4 +509,13 @@ const ReportsCashFlowStatement = (props) => {
 		</div>
 	);
 };
-export default ReportsCashFlowStatement;
+
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	return {
+		isSubmenuVisible,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportsCashFlowStatement);
+// export default ReportsCashFlowStatement;
