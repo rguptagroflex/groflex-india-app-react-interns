@@ -117,7 +117,9 @@ const ReportBalanceSheet = (props) => {
 		console.log("start: ", startDate);
 		try {
 			const response = await invoiz.request(
-				`${config.resourceHost}accountingReport/balanceSheet/${startDate}/${endDate}?type=json`,
+				`${config.resourceHost}accountingReport/balanceSheet/${moment(startDate).format()}/${moment(
+					endDate
+				).format()}?type=json`,
 				{ auth: true }
 			);
 			const responseData = response.body.data;
@@ -145,6 +147,7 @@ const ReportBalanceSheet = (props) => {
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const onDate = (value) => {
+		console.log("Value:", value);
 		let startDate = "";
 		let endDate = "";
 
@@ -189,15 +192,16 @@ const ReportBalanceSheet = (props) => {
 				startDate = fiscalYearStart.format("DD MMMM YYYY");
 				endDate = fiscalYearEnd.format("DD MMMM YYYY");
 				break;
-			// case "custom":
-			// 	startDate = dateData.customStartDate.format("DD MMMM YYYY");
-			// 	endDate = dateData.customEndDate.format("DD MMMM YYYY");
-			// 	break;
+			case "custom":
+				startDate = dateData.customStartDate.format("DD MMMM YYYY");
+				endDate = dateData.customEndDate.format("DD MMMM YYYY");
+				break;
 			default:
 				startDate = "";
 				endDate = "";
 				break;
 		}
+		console.log("CustomStart: ", startDate);
 		setSelectedDate({ startDate, endDate });
 		// console.log("startDate", startDate);
 		return { startDate, endDate };
@@ -248,26 +252,28 @@ const ReportBalanceSheet = (props) => {
 	};
 
 	const updateSelectedDate = (option) => {
+		console.log("Option: ", option);
 		if (!option) {
 			setSelectedDate(null);
 			return;
 		}
+		const { startDate, endDate } = onDate(option.value);
 
 		switch (option.value) {
 			case "custom":
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: true,
-					// dateFilterValue: option.value
+					dateFilterValue: option.value,
 				});
 				setSelectedDate({
 					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
 					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
 				});
+				fetchData(startDate, endDate);
 
 				break;
 			default:
-				const { startDate, endDate } = onDate(option.value);
 				// onDate(option.value);
 				setDateData({
 					...dateData,
