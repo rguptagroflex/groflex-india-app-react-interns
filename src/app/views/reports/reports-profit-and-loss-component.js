@@ -189,10 +189,10 @@ function ReportsProfitAndLoss(props) {
 				startDate = fiscalYearStart.format("DD MMMM YYYY");
 				endDate = fiscalYearEnd.format("DD MMMM YYYY");
 				break;
-			// case "custom":
-			// 	startDate = dateData.customStartDate.format("DD MMMM YYYY");
-			// 	endDate = dateData.customEndDate.format("DD MMMM YYYY");
-			// 	break;
+			case "custom":
+				startDate = dateData.customStartDate.format("DD MMMM YYYY");
+				endDate = dateData.customEndDate.format("DD MMMM YYYY");
+				break;
 			default:
 				startDate = "";
 				endDate = "";
@@ -243,13 +243,16 @@ function ReportsProfitAndLoss(props) {
 			return;
 		}
 
+		const { startDate, endDate } = onDate(option.value);
+
 		switch (option.value) {
 			case "custom":
 				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
-				setSelectedDate({
-					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
-					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
-				});
+				// setSelectedDate({
+				// 	startDate: dateData.customStartDate.format("DD MMMM YYYY"),
+				// 	endDate: dateData.customEndDate.format("DD MMMM YYYY"),
+				// });
+				setSelectedDate({ startDate, endDate });
 
 				break;
 			default:
@@ -260,7 +263,6 @@ function ReportsProfitAndLoss(props) {
 				// 	dateFilterValue: option.value,
 				// });
 				// break;
-				const { startDate, endDate } = onDate(option.value);
 
 				setDateData({
 					...dateData,
@@ -268,19 +270,21 @@ function ReportsProfitAndLoss(props) {
 					dateFilterValue: option.value,
 				});
 				setSelectedDate({ startDate, endDate });
-				fetchData(startDate, endDate);
+				// fetchData(startDate, endDate);
 
 				break;
 		}
 	};
 	const handleStartDateChange = (name, value) => {
 		const startDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customStartDate: startDate });
+		// setDateData({ ...dateData, customStartDate: startDate });
+		setSelectedDate({ ...selectedDate, startDate: startDate });
 	};
 
 	const handleEndDateChange = (name, value) => {
 		const endDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customEndDate: endDate });
+		// setDateData({ ...dateData, customEndDate: endDate });
+		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 	useEffect(() => {
 		console.log("selected Date: ", selectedDate);

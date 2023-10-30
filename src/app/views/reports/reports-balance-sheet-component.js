@@ -112,14 +112,14 @@ const ReportBalanceSheet = (props) => {
 		fetchData();
 	}, []);
 	const [responseData, setResponseData] = useState(null);
-	const fetchData = async (startDate, endDate) => {
+	const fetchData = async () => {
 		let tableHeaders = [];
-		console.log("start: ", startDate);
+		// console.log("start: ", startDate);
 		try {
 			const response = await invoiz.request(
-				`${config.resourceHost}accountingReport/balanceSheet/${moment(startDate).format()}/${moment(
-					endDate
-				).format()}?type=json`,
+				`${config.resourceHost}accountingReport/balanceSheet/${moment(
+					selectedDate.startDate
+				).format()}/${moment(selectedDate.endDate).format()}?type=json`,
 				{ auth: true }
 			);
 			const responseData = response.body.data;
@@ -252,7 +252,6 @@ const ReportBalanceSheet = (props) => {
 	};
 
 	const updateSelectedDate = (option) => {
-		console.log("Option: ", option);
 		if (!option) {
 			setSelectedDate(null);
 			return;
@@ -266,11 +265,12 @@ const ReportBalanceSheet = (props) => {
 					showCustomDateRangeSelector: true,
 					dateFilterValue: option.value,
 				});
-				setSelectedDate({
-					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
-					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
-				});
-				fetchData(startDate, endDate);
+				// setSelectedDate({
+				// 	startDate: dateData.customStartDate.format("DD MMMM YYYY"),
+				// 	endDate: dateData.customEndDate.format("DD MMMM YYYY"),
+				// });
+				setSelectedDate({ startDate, endDate });
+				// fetchData(startDate, endDate);
 
 				break;
 			default:
@@ -281,7 +281,7 @@ const ReportBalanceSheet = (props) => {
 					dateFilterValue: option.value,
 				});
 				setSelectedDate({ startDate, endDate });
-				fetchData(startDate, endDate);
+				// fetchData(startDate, endDate);
 
 				break;
 		}
@@ -289,19 +289,25 @@ const ReportBalanceSheet = (props) => {
 
 	const handleStartDateChange = (name, value) => {
 		const startDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customStartDate: startDate });
+		// setDateData({ ...dateData, customStartDate: startDate });
+		setSelectedDate({ ...selectedDate, startDate: startDate });
 	};
 
 	const handleEndDateChange = (name, value) => {
 		const endDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customEndDate: endDate });
+		// setDateData({ ...dateData, customEndDate: endDate });
+		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 	useEffect(() => {
 		// Fetch initial data with the default date filter
 		const { startDate, endDate } = onDate(dateData.dateFilterValue);
 		fetchData(startDate, endDate);
 	}, []); //
-	console.log("headerData: ", tableHeaders);
+
+	useEffect(() => {
+		console.log("SelectedDate: ", selectedDate);
+		fetchData();
+	}, [selectedDate]);
 
 	const exportButtonClick = async () => {
 		console.log("startExport: ", selectedDate);

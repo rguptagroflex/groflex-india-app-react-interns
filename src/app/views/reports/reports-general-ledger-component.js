@@ -270,10 +270,10 @@ const ReportsGeneralLedger = (props) => {
 				startDate = fiscalYearStart.format("DD MMMM YYYY");
 				endDate = fiscalYearEnd.format("DD MMMM YYYY");
 				break;
-			// case "custom":
-			// 	startDate = dateData.customStartDate.format("DD MMMM YYYY");
-			// 	endDate = dateData.customEndDate.format("DD MMMM YYYY");
-			// 	break;
+			case "custom":
+				startDate = dateData.customStartDate.format("DD MMMM YYYY");
+				endDate = dateData.customEndDate.format("DD MMMM YYYY");
+				break;
 			default:
 				startDate = "";
 				endDate = "";
@@ -334,13 +334,16 @@ const ReportsGeneralLedger = (props) => {
 			return;
 		}
 
+		const { startDate, endDate } = onDate(option.value);
+
 		switch (option.value) {
 			case "custom":
 				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
-				setSelectedDate({
-					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
-					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
-				});
+				// setSelectedDate({
+				// 	startDate: dateData.customStartDate.format("DD MMMM YYYY"),
+				// 	endDate: dateData.customEndDate.format("DD MMMM YYYY"),
+				// });
+				setSelectedDate({ startDate, endDate });
 
 				break;
 			default:
@@ -350,18 +353,21 @@ const ReportsGeneralLedger = (props) => {
 					showCustomDateRangeSelector: false,
 					dateFilterValue: option.value,
 				});
+				setSelectedDate({ startDate, endDate });
 				break;
 		}
 	};
 
 	const handleStartDateChange = (name, value) => {
 		const startDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customStartDate: startDate });
+		// setDateData({ ...dateData, customStartDate: startDate });
+		setSelectedDate({ ...selectedDate, startDate: startDate });
 	};
 
 	const handleEndDateChange = (name, value) => {
 		const endDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customEndDate: endDate });
+		// setDateData({ ...dateData, customEndDate: endDate });
+		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 
 	const submenVisible = props.isSubmenuVisible;
@@ -551,72 +557,76 @@ const ReportsGeneralLedger = (props) => {
 						onFirstDataRendered={onFirstDataRendered}
 					></AgGridReact> */}
 
-					<div className="table-container">
-						<div className="general-ledger-table-header">
-							<h6 className="headingDate">Date</h6>
-							<h6 className="headingAccount">Account</h6>
-							<h6 className="headingDebit">Debit</h6>
-							<h6 className="headingCredit">Credit</h6>
-							<h6 className="headingBalance">Balance</h6>
-						</div>
+					{rowData.length > 0 ? (
+						<div className="table-container">
+							<div className="general-ledger-table-header">
+								<h6 className="headingDate">Date</h6>
+								<h6 className="headingAccount">Account</h6>
+								<h6 className="headingDebit">Debit</h6>
+								<h6 className="headingCredit">Credit</h6>
+								<h6 className="headingBalance">Balance</h6>
+							</div>
 
-						{tableHeaders.map((item) => {
-							return (
-								<div style={{ borderBottom: "1px solid #ddd" }}>
-									<Accordion elevation={0}>
-										<AccordionSummary
-											expandIcon={<ExpandMoreIcon />}
-											aria-controls="panel1a-content"
-											id="panel1a-header"
-										>
-											{" "}
-											<h6 style={{ paddingLeft: "23px" }}>
-												{item.charAt(0).toUpperCase() + item.slice(1)}
-											</h6>{" "}
-										</AccordionSummary>
+							{tableHeaders.map((item) => {
+								return (
+									<div style={{ borderBottom: "1px solid #ddd" }}>
+										<Accordion elevation={0}>
+											<AccordionSummary
+												expandIcon={<ExpandMoreIcon />}
+												aria-controls="panel1a-content"
+												id="panel1a-header"
+											>
+												{" "}
+												<h6 style={{ paddingLeft: "23px" }}>
+													{item.charAt(0).toUpperCase() + item.slice(1)}
+												</h6>{" "}
+											</AccordionSummary>
 
-										<AccordionDetails>
-											<div className="general-ledger-accordian-details">
-												{rowData
-													.filter(
-														(filteredItem) =>
-															filteredItem.chartOfAccount.accountTypeId === item
-													)
-													.map((subItem, index) => (
-														<React.Fragment>
-															<div className="accordian-details-row-entry">
-																<div className="row-entry-date">
-																	{moment(subItem.date).format("DD/MM/YYYY")}
-																</div>
-																<div className="row-entry-account">
-																	{subItem.chartOfAccount.accountSubTypeId
-																		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-																		.charAt(0)
-																		.toUpperCase() +
-																		subItem.chartOfAccount.accountSubTypeId
+											<AccordionDetails>
+												<div className="general-ledger-accordian-details">
+													{rowData
+														.filter(
+															(filteredItem) =>
+																filteredItem.chartOfAccount.accountTypeId === item
+														)
+														.map((subItem, index) => (
+															<React.Fragment>
+																<div className="accordian-details-row-entry">
+																	<div className="row-entry-date">
+																		{moment(subItem.date).format("DD/MM/YYYY")}
+																	</div>
+																	<div className="row-entry-account">
+																		{subItem.chartOfAccount.accountSubTypeId
 																			.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-																			.slice(1)}
+																			.charAt(0)
+																			.toUpperCase() +
+																			subItem.chartOfAccount.accountSubTypeId
+																				.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																				.slice(1)}
+																	</div>
+																	<div className="row-entry-debits">
+																		₹ {parseFloat(subItem.debits).toFixed(2)}
+																	</div>
+																	<div className="row-entry-credits">
+																		₹ {parseFloat(subItem.credits).toFixed(2)}
+																	</div>
+																	<div className="row-entry-balance">
+																		₹ {parseFloat(subItem.balance).toFixed(2)}
+																	</div>
 																</div>
-																<div className="row-entry-debits">
-																	₹ {parseFloat(subItem.debits).toFixed(2)}
-																</div>
-																<div className="row-entry-credits">
-																	₹ {parseFloat(subItem.credits).toFixed(2)}
-																</div>
-																<div className="row-entry-balance">
-																	₹ {parseFloat(subItem.balance).toFixed(2)}
-																</div>
-															</div>
-														</React.Fragment>
-													))}
-											</div>
-										</AccordionDetails>
-									</Accordion>
-								</div>
-							);
-						})}
-						<div></div>
-					</div>
+															</React.Fragment>
+														))}
+												</div>
+											</AccordionDetails>
+										</Accordion>
+									</div>
+								);
+							})}
+							<div></div>
+						</div>
+					) : (
+						<h6 style={{ display: "flex", justifyContent: "center" }}>No rows to display</h6>
+					)}
 				</div>
 			</div>{" "}
 		</div>
