@@ -21,6 +21,7 @@
 			.time-period-select-container {
 				display: flex;
 				justify-content: space-between;
+				margin-left: -45px;
 				.time-period-select {
 					flex: 1.5;
 					display: flex;
@@ -121,6 +122,35 @@
 		.general-heading {
 			margin-left: 20px;
 			margin-bottom: 30px;
+		}
+		.cash-flow-content {
+			border-top: 1px solid #ddd;
+
+			.cash-flow-content-wrapper {
+				.row-heading {
+					padding-left: 15px;
+					padding-bottom: 10px;
+					font-weight: 500;
+				}
+				.row-content {
+					.row-content-wrapper {
+						display: flex;
+						justify-content: space-between;
+						border-top: 1px solid #ddd;
+						border-bottom: 1px solid #ddd;
+						padding: 15px;
+						font-weight: 400;
+						.row-content-name {
+							width: 200px;
+						}
+						.row-content-value {
+							width: 170px;
+							text-align: right;
+							padding-right: 70px;
+						}
+					}
+				}
+			}
 		}
 	}
 }

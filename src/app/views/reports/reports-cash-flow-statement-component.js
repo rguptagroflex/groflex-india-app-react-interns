@@ -1,22 +1,3 @@
-// import React from 'react'
-// import TopbarComponent from '../../shared/topbar/topbar-start-page.component'
-
-// function ReportsCashFlowStatement() {
-//   return (
-//    <div>
-//     <TopbarComponent
-// 				title={"Cash Flow Statement"}
-// 				hasCancelButton={true}
-// 				cancelButtonCallback={() => {
-// 					window.history.back();
-// 				}}
-// 			/>
-
-//    </div>
-//   )
-// }
-
-// export default ReportsCashFlowStatement
 import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { AgGridReact } from "@ag-grid-community/react";
 import { AllModules, LicenseManager } from "@ag-grid-enterprise/all-modules";
@@ -40,7 +21,9 @@ const ReportsCashFlowStatement = (props) => {
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-	const [rowData, setRowData] = useState();
+	const [rowData, setRowData] = useState([]);
+	const [selectedDate, setSelectedDate] = useState(null);
+	const [contentHeaders, setcontentHeaders] = useState([]);
 	const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 
 	const [columnDefs, setColumnDefs] = useState([
@@ -159,17 +142,6 @@ const ReportsCashFlowStatement = (props) => {
 		};
 	}, []);
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
-			});
-	}, []);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const onDate = (value) => {
@@ -217,10 +189,10 @@ const ReportsCashFlowStatement = (props) => {
 				startDate = fiscalYearStart.format("DD MMMM YYYY");
 				endDate = fiscalYearEnd.format("DD MMMM YYYY");
 				break;
-			// case "custom":
-			// 	startDate = dateData.customStartDate.format("DD MMMM YYYY");
-			// 	endDate = dateData.customEndDate.format("DD MMMM YYYY");
-			// 	break;
+			case "custom":
+				startDate = dateData.customStartDate.format("DD MMMM YYYY");
+				endDate = dateData.customEndDate.format("DD MMMM YYYY");
+				break;
 			default:
 				startDate = "";
 				endDate = "";
@@ -241,7 +213,6 @@ const ReportsCashFlowStatement = (props) => {
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
-	const [selectedDate, setSelectedDate] = useState(null);
 
 	const [showDateFilter, setShowDateFilter] = useState(props.showDateFilter || false);
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
@@ -281,35 +252,68 @@ const ReportsCashFlowStatement = (props) => {
 			return;
 		}
 
+		const { startDate, endDate } = onDate(option.value);
+
 		switch (option.value) {
 			case "custom":
 				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
-				setSelectedDate({
-					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
-					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
-				});
+				// setSelectedDate({
+				// 	startDate: dateData.customStartDate.format("DD MMMM YYYY"),
+				// 	endDate: dateData.customEndDate.format("DD MMMM YYYY"),
+				// });
+				setSelectedDate({ startDate, endDate });
 
 				break;
 			default:
-				onDate(option.value);
+				// onDate(option.value);
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: false,
 					dateFilterValue: option.value,
 				});
+				setSelectedDate({ startDate, endDate });
 				break;
 		}
 	};
 
 	const handleStartDateChange = (name, value) => {
 		const startDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customStartDate: startDate });
+		// setDateData({ ...dateData, customStartDate: startDate });
+		setSelectedDate({ ...selectedDate, startDate: startDate });
 	};
 
 	const handleEndDateChange = (name, value) => {
 		const endDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customEndDate: endDate });
+		// setDateData({ ...dateData, customEndDate: endDate });
+		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
+
+	const fetchData = async () => {
+		const endpoint = `${config.resourceHost}accountingReport/cashflow/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}?type=json`;
+		let headers = [];
+
+		await invoiz.request(endpoint, { auth: true }).then((res) => {
+			console.log("result: ", res.body.data);
+			const response = res.body.data;
+			if (response) {
+				console.log(response.summaryData.transactions);
+				response.summaryData.transactions.forEach((item) => {
+					if (!headers.includes(item.accountTypeId)) {
+						headers.push(item.accountTypeId);
+					}
+				});
+				setcontentHeaders(headers);
+				setRowData(response.summaryData.transactions);
+			}
+		});
+	};
+	useEffect(() => {
+		fetchData();
+	}, [selectedDate]);
+
+	console.log("headers:  ", contentHeaders);
 
 	return (
 		<div className="reports-cash-flow-component">
@@ -464,7 +468,41 @@ const ReportsCashFlowStatement = (props) => {
 						// gridOptions={gridOptions}
 					></AgGridReact>
 				</div> */}
-				<div>Hello</div>
+				<div className="cash-flow-content">
+					{contentHeaders.map((item) => (
+						<div className="cash-flow-content-wrapper">
+							<div className="row-heading">
+								<h6>
+									{item
+										.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+										.charAt(0)
+										.toUpperCase() + item.replace(/([a-z0-9])([A-Z])/g, "$1 $2").slice(1)}
+								</h6>
+							</div>
+							<div className="row-content">
+								{rowData
+									.filter((filteredItem) => filteredItem.accountTypeId === item)
+									.map((subItem) => {
+										const rowContentName =
+											subItem.accountSubTypeId
+												.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+												.charAt(0)
+												.toUpperCase() +
+											subItem.accountSubTypeId.replace(/([a-z0-9])([A-Z])/g, "$1 $2").slice(1);
+										return (
+											<div className="row-content-wrapper">
+												{/* <div className="row-content-name">{string.split("Total")[0]}</div> */}
+												<div className="row-content-name">{rowContentName}</div>
+												<div className="row-content-value">
+													₹ {parseFloat(subItem.total).toFixed(2)}
+												</div>
+											</div>
+										);
+									})}
+							</div>
+						</div>
+					))}
+				</div>
 			</div>{" "}
 		</div>
 	);
