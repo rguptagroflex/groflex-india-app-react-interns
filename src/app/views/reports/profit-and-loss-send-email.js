@@ -18,6 +18,10 @@ import { handleImageError } from "helpers/errors";
 import { format } from "util";
 import ButtonComponent from "../../shared/button/button.component";
 import RadioInputComponent from "../../shared/inputs/radio-input/radio-input.component";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import moment from "../../../../node_modules/moment/moment";
 
 const attachmentConfig = {
 	attachmentUrl: `${config.resourceHost}email/attachment`,
@@ -62,21 +66,14 @@ const exportOption = [
 ];
 
 class profitAndLossSendEmail extends React.Component {
-	// componentDidMount() {
-	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-	// 	document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-	// }
-
-	// componentWillUnmount() {w
-	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-	// 	document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-	// }
 	constructor(props) {
 		super(props);
 		const { resources } = this.props;
 		console.log("resources", resources);
 
 		this.state = {
+			emailCheckBox: { pdf: false, csv: false },
+			emailFileType: "",
 			exportFormat: ".pdf",
 			customerId: this.props.customerId,
 			documentTitle: this.props.documentTitle,
@@ -114,6 +111,7 @@ class profitAndLossSendEmail extends React.Component {
 		};
 
 		this.filesToDelete = [];
+		this.handleEmailCheckBox = this.handleEmailCheckBox.bind(this);
 	}
 
 	componentDidMount() {
@@ -406,6 +404,23 @@ class profitAndLossSendEmail extends React.Component {
 		this.setState({ uploadedAttachments });
 	}
 
+	handleEmailCheckBox(event) {
+		this.setState(
+			{ emailCheckBox: { ...this.state.emailCheckBox, [event.target.name]: event.target.checked } },
+			() => {
+				if (this.state.emailCheckBox.pdf === true && this.state.emailCheckBox.csv === true) {
+					this.setState({ emailFileType: "both" });
+				} else if (this.state.emailCheckBox.pdf === true) {
+					this.setState({ emailFileType: "pdf" });
+				} else if (this.state.emailCheckBox.csv === true) {
+					this.setState({ emailFileType: "csv" });
+				} else {
+					this.setState({ emailFileType: "" });
+				}
+			}
+		);
+	}
+
 	render() {
 		const { exportFormat } = this.state;
 		const { resources } = this.props;
@@ -413,6 +428,7 @@ class profitAndLossSendEmail extends React.Component {
 		const buttonDisabled = this.isButtonDisabled();
 		const headline = this.state.model.headline;
 		const subHeadline = this.state.model.subheadline;
+		const { emailCheckBox } = this.state;
 
 		let attachmentList = null;
 		const allAttachments = this.state.uploadedAttachments;
@@ -437,48 +453,13 @@ class profitAndLossSendEmail extends React.Component {
 
 		return (
 			<div className="email-view-wrapper wrapper-has-topbar-with-margin">
-				<div
-					// style={{ marginTop: "-120px", marginBottom: "-120px" }}
-					className="add-chart-modal-container"
-					style={{ minHeight: "200px" }}
-				>
-					{/* <TopbarComponent
-					backButtonCallback={() => this.navigateToDetails()}
-					buttons={[
-						{
-							type: "primary",
-							// label: resources.str_sendEmail,
-							buttonIcon: "icon-mail",
-							action: "send",
-							dataQsId: "emailSend-topbar-btn-send",
-							customCssClass: buttonDisabled ? "disabled" : "",
-						},
-					]}
-					buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
-				>
-					<div className="topbar-title">{this.state.documentTitle}</div>
-					{this.state.model.dunning ? null : (
-						<div className="email-view-checkbox">
-							<CheckboxInputComponent
-								name={"sendCopy"}
-								// label={resources.str_copyToMe}
-								checked={this.state.sendCopy}
-								onChange={() => this.setState({ sendCopy: !this.state.sendCopy })}
-							/>
-						</div>
-					)}
-				</TopbarComponent> */}
-
-					{/* <div className="email-view-headline"> */}
-					{/* <h1>Send your General Ledger by email</h1> */}
-					{/* <h2>Send your General Ledger by email</h2> */}
+				<div className="add-chart-modal-container" style={{ minHeight: "200px" }}>
 					<div
 						style={{
 							padding: "20px",
 							boxShadow: "0px 1px 4px 0px #0000001F",
 						}}
 						className="modal-base-headline"
-						// className="email-view-textarea-label"
 					>
 						Send Profit and Loss
 					</div>
@@ -535,12 +516,7 @@ class profitAndLossSendEmail extends React.Component {
 
 							<div className="row">
 								<div className="col-xs-12">
-									{/* <div className="email-view-textarea-label">{resources.emailViewPreviewEmailText}</div> */}
-									<div
-										// className="email-view-textarea-label"
-										className="textarea_label"
-										style={{ marginTop: "5px", color: "#747474" }}
-									>
+									<div className="textarea_label" style={{ marginTop: "5px", color: "#747474" }}>
 										Message
 									</div>
 
@@ -558,7 +534,6 @@ class profitAndLossSendEmail extends React.Component {
 								<div className="col-xs-6">
 									{this.state.model.type === "dunning" ? (
 										<div className="email-view-dunning">
-											{/* <span>{resources.emaillViewAutomaticallyRemindersText}</span> */}
 											<span>{"to select an attachment"}</span>
 											<OvalToggleComponent
 												checked={this.state.autoDunningEnabled}
@@ -576,9 +551,6 @@ class profitAndLossSendEmail extends React.Component {
 
 							<div className="row profit-loss-email-bottom">
 								<div className="col-xs-12">
-									{/* <div className="textarea_label" style={{ color: "#747474", marginTop: "20px" }}>
-										{"Attachments"}
-									</div> */}
 									<div className="email-view-attachments">
 										<div className="row">
 											<div className="col-xs-7">
@@ -599,7 +571,16 @@ class profitAndLossSendEmail extends React.Component {
 															className="textarea_label"
 															style={{ color: "#747474", marginTop: "20px" }}
 														>
-															{"Attachments"}
+															{/* {"Attachments"} */}
+															{`ProfitAndLoss_${moment(
+																this.props.selectedDate.startDate
+															).format("DD-MM-YYYY")}_${moment(
+																this.props.selectedDate.endDate
+															).format("DD-MM-YYYY")}.${
+																this.state.emailFileType === "both"
+																	? "pdf/csv"
+																	: this.state.emailFileType
+															}`}
 														</div>
 														<div className="expenseEdit_fileIcon icon icon-attachment" />
 													</div>
@@ -609,16 +590,40 @@ class profitAndLossSendEmail extends React.Component {
 												{this.state.uploadedAttachments.length < 10 ? (
 													<div>
 														<div className="profit-loss-email-radio">
-															<RadioInputComponent
+															{/* <RadioInputComponent
 																useCustomStyle={true}
 																value={exportFormat}
 																onChange={(value) =>
 																	this.setState({ exportFormat: value })
 																}
 																options={exportOption}
-															/>
+															/> */}
+															<FormGroup row>
+																<FormControlLabel
+																	control={
+																		<Checkbox
+																			checked={emailCheckBox.pdf}
+																			onChange={this.handleEmailCheckBox}
+																			name="pdf"
+																			color="primary"
+																		/>
+																	}
+																	label="pdf"
+																/>
+																<FormControlLabel
+																	control={
+																		<Checkbox
+																			checked={emailCheckBox.csv}
+																			onChange={this.handleEmailCheckBox}
+																			name="csv"
+																			color="primary"
+																		/>
+																	}
+																	label="csv"
+																/>
+															</FormGroup>
 														</div>
-														<div
+														{/* <div
 															style={{
 																width: "585px",
 																borderRadius: "4px",
@@ -641,7 +646,7 @@ class profitAndLossSendEmail extends React.Component {
 																	accept={exportFormat}
 																/>
 															</label>
-														</div>
+														</div> */}
 													</div>
 												) : null}
 											</div>

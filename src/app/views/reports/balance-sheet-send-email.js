@@ -411,7 +411,6 @@ class balanceSheetSendEmail extends React.Component {
 		this.setState({ uploadedAttachments });
 	}
 	handleEmailCheckBox(event) {
-		// this.setState({ ...[emailCheckBox], [event.target.name]: event.target.checked });
 		this.setState(
 			{ emailCheckBox: { ...this.state.emailCheckBox, [event.target.name]: event.target.checked } },
 			() => {

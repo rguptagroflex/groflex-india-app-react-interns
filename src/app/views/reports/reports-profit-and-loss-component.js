@@ -138,7 +138,7 @@ function ReportsProfitAndLoss(props) {
 	}, []);
 
 	const sendEmail = () => {
-		ModalService.open(<ProfitAndLossSendEmail />, {
+		ModalService.open(<ProfitAndLossSendEmail selectedDate={selectedDate} />, {
 			modalClass: "edit-contact-person-modal-component",
 			width: 630,
 		});

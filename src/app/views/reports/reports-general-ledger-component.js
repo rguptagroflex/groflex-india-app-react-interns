@@ -285,7 +285,7 @@ const ReportsGeneralLedger = (props) => {
 	};
 
 	const sendEmail = () => {
-		ModalService.open(<GeneralLedgerSendEmail />, {
+		ModalService.open(<GeneralLedgerSendEmail selectedDate={selectedDate} />, {
 			modalClass: "edit-contact-person-modal-component",
 			width: 630,
 		});

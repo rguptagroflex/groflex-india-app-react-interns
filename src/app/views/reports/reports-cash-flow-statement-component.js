@@ -205,7 +205,7 @@ const ReportsCashFlowStatement = (props) => {
 	};
 
 	const sendEmail = () => {
-		ModalService.open(<CashAndFlowSendEmail />, {
+		ModalService.open(<CashAndFlowSendEmail selectedDate={selectedDate} />, {
 			modalClass: "edit-contact-person-modal-component",
 			width: 630,
 		});

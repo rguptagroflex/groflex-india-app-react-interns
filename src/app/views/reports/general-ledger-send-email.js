@@ -1,163 +1,3 @@
-// import React, { useState, useEffect } from "react";
-// import ModalService from "../../services/modal.service";
-// import ButtonComponent from "../../shared/button/button.component";
-// import TextInputComponent from "../../shared/inputs/text-input/text-input.component";
-// import TextInput from "../../shared/inputs/text-input-extended/text-input-extended.component";
-// import SvgInline from "react-svg-inline";
-
-// function generalLedgerSendEmail({ onConfirm }) {
-// 	useEffect(() => {
-// 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-// 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-// 		return () => {
-// 			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-// 			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-// 		};
-// 	});
-// 	const handleSave = () => {
-// 		ModalService.close();
-// 	};
-// 	return (
-// 		<div className="add-chart-modal-container" style={{ minHeight: "200px" }}>
-// 			<div
-// 				style={{
-// 					padding: "20px",
-// 					boxShadow: "0px 1px 4px 0px #0000001F",
-// 				}}
-// 				className="modal-base-headline"
-// 			>
-// 				Send your General Ledger by email
-// 			</div>
-// 			<div
-// 				style={{ padding: "20px" }}
-// 				// style={{ padding: "10px", backgroundColor: "#f5f5f5" }}
-// 			>
-// 				<div
-// 					style={{ display: "flex", flexDirection: "column", marginRight: "15px" }}
-// 					// style={{ padding: "35px 30px", backgroundColor: "white" }}
-// 				></div>
-// 				<div
-// 				// style={{ width: "100%", marginRight: "15px" }}
-// 				>
-// 					<div
-// 						//  style={{ paddingTop: "10px" }}
-// 						className="textarea"
-// 						// style={{ maxHeight: "30px", marginBottom: "100px" }}
-// 					>
-// 						<TextInputComponent
-// 							name="Email Address"
-// 							required
-// 							// value={chartData.accountName}
-// 							// onChange={handleAccountNameChange}
-// 							// aria-invalid={accountNameError}
-// 							// aria-describedby={accountNameError ? "accountNameError" : null}
-// 							label="Email Address"
-// 						/>
-// 					</div>
-// 					<div
-// 						//  style={{ paddingTop: "10px" }}
-
-// 						className="textarea"
-
-// 						// style={{ maxHeight: "30px", display: "flex", flexDirection: "column", marginRight: "15px" }}
-// 					>
-// 						<TextInputComponent
-// 							name="Subject"
-// 							required
-// 							// value={chartData.accountName}
-// 							// onChange={handleAccountNameChange}
-// 							// aria-invalid={accountNameError}
-// 							// aria-describedby={accountNameError ? "accountNameError" : null}
-// 							label="Subject"
-// 						/>
-// 					</div>
-// 					<div
-// 						//  style={{ paddingTop: "10px" }}
-// 						className="textarea"
-// 						// style={{ maxHeight: "30px", display: "flex", flexDirection: "column", marginRight: "15px" }}
-// 					>
-// 						<label style={{ fontSize: "16px" }} className="textarea_label">
-// 							Description
-// 						</label>
-// 						<textarea
-// 							className="textarea_input"
-// 							rows="3"
-// 							// onChange={handleDescriptionChange}
-// 							// value={chartData.description}
-// 						/>
-// 						<span className="textarea_bar" />
-// 					</div>
-// 					<div className="email-view-attachments">
-// 							<div className="row">
-// 								<div className="col-xs-7">
-// 									<div className="expense-receipt-list">
-// 										{/* {this.state.additionalDefaultAttachmentName ? ( */}
-// 											<div className="expenseEdit_fileListRow">
-// 												<div className="expenseEdit_fileIcon icon icon-attachment" />
-// 												<div className="list_item">
-// 													{/* {this.state.additionalDefaultAttachmentName}.pdf */}
-// 												</div>
-// 											</div>
-// 										{/* ) : null} */}
-// 										<div className="expenseEdit_fileListRow">
-// 											<div className="expenseEdit_fileIcon icon icon-attachment" />
-// 											{/* <div className="list_item">{this.state.defaultAttachmentName}.pdf</div> */}
-// 										</div>
-// 									</div>
-// 									{/* {attachmentList} */}
-
-// 									{/* {this.state.uploadedAttachments.length < 10 ? ( */}
-// 										<div
-// 											id="emailView-attachment-dropbox"
-// 											className="drop-box text-center u_mb_4"
-// 											data-qs-id="expense-edit-receipt-upload"
-// 										>
-// 											<label className="text-muted">
-// 												<p>
-// 													{/* {resources.emaillViewAttachmentDragText} */}
-// 													{/* &amp; {resources.emaillViewDropOrClickText}, */}
-// 													<br />
-// 													{/* {resources.emaillViewSelectAttachment} */}
-// 												</p>
-// 												<input
-// 													className="u_hidden"
-// 													type="file"
-// 													// onChange={this.addSelectedFile.bind(this)}
-// 												/>
-// 											</label>
-// 										</div>
-// 									{/* ) : null} */}
-// 								</div>
-// 							</div>
-// 						</div>
-// 					{/* <input
-// 						id="csv-upload"
-// 						className="u_hidden"
-// 						type="file"
-// 						// onChange={handleBankStatementFileChange}
-// 					/>
-// 					<label htmlFor="csv-upload" style={{ fontWeight: 600, color: "#00A353", cursor: "pointer" }}>
-// 						{/* <SvgInline svg={greenUploadIcon} width="20px" height="21px" /> */}
-
-// 						{/* <span style={{ marginLeft: "5px" }}>Upload </span> */}
-// 					{/* </label> */}
-// 				</div>
-// 			</div>
-
-// 			<div style={{ position: "relative" }} className="modal-base-footer">
-// 				<div className="modal-base-cancel">
-// 					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
-// 				</div>
-// 				<div className="modal-base-confirm">
-// 					<ButtonComponent buttonIcon="icon-check" callback={handleSave} label={"Save"} />
-// 				</div>
-// 			</div>
-// 		</div>
-// 	);
-// }
-
-// export default generalLedgerSendEmail;
-///////////////////////////////////////
 import invoiz from "services/invoiz.service";
 import React from "react";
 import _ from "lodash";
@@ -177,6 +17,10 @@ import { handleImageError } from "helpers/errors";
 import { format } from "util";
 import ButtonComponent from "../../shared/button/button.component";
 import RadioInputComponent from "../../shared/inputs/radio-input/radio-input.component";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import moment from "../../../../node_modules/moment/moment";
 
 const attachmentConfig = {
 	attachmentUrl: `${config.resourceHost}email/attachment`,
@@ -221,21 +65,14 @@ const exportOption = [
 ];
 
 class generalLedgerSendEmail extends React.Component {
-	// componentDidMount() {
-	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-	// 	document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-	// }
-
-	// componentWillUnmount() {w
-	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-	// 	document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-	// }
 	constructor(props) {
 		super(props);
 		const { resources } = this.props;
 		console.log("resources", resources);
 
 		this.state = {
+			emailCheckBox: { pdf: false, csv: false },
+			emailFileType: "",
 			exportFormat: ".pdf",
 			customerId: this.props.customerId,
 			documentTitle: this.props.documentTitle,
@@ -273,6 +110,7 @@ class generalLedgerSendEmail extends React.Component {
 		};
 
 		this.filesToDelete = [];
+		this.handleEmailCheckBox = this.handleEmailCheckBox.bind(this);
 	}
 
 	componentDidMount() {
@@ -566,9 +404,27 @@ class generalLedgerSendEmail extends React.Component {
 		this.setState({ uploadedAttachments });
 	}
 
+	handleEmailCheckBox(event) {
+		this.setState(
+			{ emailCheckBox: { ...this.state.emailCheckBox, [event.target.name]: event.target.checked } },
+			() => {
+				if (this.state.emailCheckBox.pdf === true && this.state.emailCheckBox.csv === true) {
+					this.setState({ emailFileType: "both" });
+				} else if (this.state.emailCheckBox.pdf === true) {
+					this.setState({ emailFileType: "pdf" });
+				} else if (this.state.emailCheckBox.csv === true) {
+					this.setState({ emailFileType: "csv" });
+				} else {
+					this.setState({ emailFileType: "" });
+				}
+			}
+		);
+	}
+
 	render() {
 		const { exportFormat } = this.state;
 		const { resources } = this.props;
+		const { emailCheckBox } = this.state;
 
 		const buttonDisabled = this.isButtonDisabled();
 		const headline = this.state.model.headline;
@@ -602,49 +458,16 @@ class generalLedgerSendEmail extends React.Component {
 					className="add-chart-modal-container"
 					style={{ minHeight: "200px" }}
 				>
-					{/* <TopbarComponent
-					backButtonCallback={() => this.navigateToDetails()}
-					buttons={[
-						{
-							type: "primary",
-							// label: resources.str_sendEmail,
-							buttonIcon: "icon-mail",
-							action: "send",
-							dataQsId: "emailSend-topbar-btn-send",
-							customCssClass: buttonDisabled ? "disabled" : "",
-						},
-					]}
-					buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
-				>
-					<div className="topbar-title">{this.state.documentTitle}</div>
-					{this.state.model.dunning ? null : (
-						<div className="email-view-checkbox">
-							<CheckboxInputComponent
-								name={"sendCopy"}
-								// label={resources.str_copyToMe}
-								checked={this.state.sendCopy}
-								onChange={() => this.setState({ sendCopy: !this.state.sendCopy })}
-							/>
-						</div>
-					)}
-				</TopbarComponent> */}
-
-					{/* <div
-					// className="email-view-headline"
-					> */}
-					{/* <h1>Send your General Ledger by email</h1> */}
-					{/* <h2>Send your General Ledger by email</h2> */}
 					<div
 						style={{
 							padding: "20px",
 							boxShadow: "0px 1px 4px 0px #0000001F",
 						}}
-						// className="email-view-textarea-label"
 						className="modal-base-headline"
 					>
 						Send General ledger
 					</div>
-					{/* </div> */}
+
 					<div
 						style={{
 							borderTop: "1px solid #C6C6C6",
@@ -653,18 +476,14 @@ class generalLedgerSendEmail extends React.Component {
 						<div
 							style={{
 								padding: "20px",
-								// padding: "35px 30px",
+
 								borderRadius: "8px",
 								backgroundColor: "white",
 							}}
 						>
 							<div className="row">
-								<div
-									className="col-xs-12"
-									// className="row"
-								>
+								<div className="col-xs-12">
 									<div className="email-view-select">
-										{/* <div className="email-view-select-label">{resources.str_emailAddress}</div> */}
 										<div className="email-view-select-label">E-Mail Address</div>
 										<SelectInputComponent
 											allowCreate={true}
@@ -677,14 +496,10 @@ class generalLedgerSendEmail extends React.Component {
 								</div>
 							</div>
 							<div className="row u_mt_20">
-								<div
-									// className="row"
-									className="col-xs-12"
-								>
+								<div className="col-xs-12">
 									<TextInputExtendedComponent
 										value={this.state.regard}
 										required={true}
-										// label={resources.str_subject}
 										label={"Subject"}
 										onChange={(val) => this.setState({ regard: val })}
 										style={{ padding: "0px" }}
@@ -695,7 +510,6 @@ class generalLedgerSendEmail extends React.Component {
 							<div className="row">
 								<div className="col-xs-12">
 									{this.state.showEmailError ? (
-										// <div className="email-error">{resources.emailViewRecipientEmailText}</div>
 										<div className="email-error">{"Please enter a recipient email address"}</div>
 									) : null}
 								</div>
@@ -703,50 +517,10 @@ class generalLedgerSendEmail extends React.Component {
 
 							<div className="row ">
 								<div className="col-xs-12">
-									{/* <div className="email-view-textarea-label">{resources.emailViewPreviewEmailText}</div> */}
-									<div
-										// className="email-view-textarea-label"
-										className="textarea_label"
-										style={{ marginTop: "5px", color: "#747474" }}
-									>
+									<div className="textarea_label" style={{ marginTop: "5px", color: "#747474" }}>
 										Message
 									</div>
-									{/* <div className="email-view-textarea">
-								<div className="email-view-textarea-inner">
-									<HtmlInputComponent
-										displayBlueLine={false}
-										// value={this.state.emailText}
-										value={
-											"Dear Ladies and Gentlemen,</br>Please find the current estimate attached."
-										}
-										onTextChange={(val) => this.setState({ emailText: val })}
-									/>
-									<div className="email-body-link">
-										&rarr;{" "}
-										{format(
-											// resources.emailBodyLinkText,
-											"View %s online",
-											this.state.model.type === "offer"
-												? "General Ledger"
-												: this.state.model.type === "purchaseOrder"
-												? "str_thePurchaseOrder"
-												: "the statement"
-										)}
-									</div>
-									<HtmlInputComponent
-										displayBlueLine={false}
-										value={this.state.emailTextAdditional}
-										onTextChange={(val) => this.setState({ emailTextAdditional: val })}
-										// placeholder={resources.str_yourSincerely}
-										placeholder={"Yours sincerely"}
-									/>
-								</div>
-								<div className="email-view-textarea-footer">
-									{/* <span>{resources.str_poweredBy}</span> */}
-									{/* <span>{"powered by"}</span>
-									<SVGInline width="45px" svg={imprezzLogo} />
-								</div> */}
-									{/* </div> */}
+
 									<textarea
 										style={{ borderRadius: "8px" }}
 										className="textarea_input"
@@ -761,7 +535,6 @@ class generalLedgerSendEmail extends React.Component {
 								<div className="col-xs-6">
 									{this.state.model.type === "dunning" ? (
 										<div className="email-view-dunning">
-											{/* <span>{resources.emaillViewAutomaticallyRemindersText}</span> */}
 											<span>{"to select an attachment"}</span>
 											<OvalToggleComponent
 												checked={this.state.autoDunningEnabled}
@@ -779,9 +552,6 @@ class generalLedgerSendEmail extends React.Component {
 
 							<div className="row general-ledger-email-bottom">
 								<div className="col-xs-12">
-									{/* <div className="textarea_label" style={{ color: "#747474", marginTop: "20px" }}>
-										{"Attachments"}
-									</div> */}
 									<div className="email-view-attachments">
 										<div className="row">
 											<div className="col-xs-7">
@@ -802,12 +572,18 @@ class generalLedgerSendEmail extends React.Component {
 															className="textarea_label"
 															style={{ color: "#747474", marginTop: "20px" }}
 														>
-															{"Attachments"}
+															{/* {"Attachments"} */}
+															{`GeneralLedger_${moment(
+																this.props.selectedDate.startDate
+															).format("DD-MM-YYYY")}_${moment(
+																this.props.selectedDate.endDate
+															).format("DD-MM-YYYY")}.${
+																this.state.emailFileType === "both"
+																	? "pdf/csv"
+																	: this.state.emailFileType
+															}`}
 														</div>
 														<div className="expenseEdit_fileIcon icon icon-attachment" />
-														{/* <div className="list_item">
-															{this.state.defaultAttachmentName}.pdf
-														</div> */}
 													</div>
 												</div>
 												{attachmentList}
@@ -815,16 +591,40 @@ class generalLedgerSendEmail extends React.Component {
 												{this.state.uploadedAttachments.length < 10 ? (
 													<div>
 														<div className="general-ledger-email-radio">
-															<RadioInputComponent
+															{/* <RadioInputComponent
 																useCustomStyle={true}
 																value={exportFormat}
 																onChange={(value) =>
 																	this.setState({ exportFormat: value })
 																}
 																options={exportOption}
-															/>
+															/> */}
+															<FormGroup row>
+																<FormControlLabel
+																	control={
+																		<Checkbox
+																			checked={emailCheckBox.pdf}
+																			onChange={this.handleEmailCheckBox}
+																			name="pdf"
+																			color="primary"
+																		/>
+																	}
+																	label="pdf"
+																/>
+																<FormControlLabel
+																	control={
+																		<Checkbox
+																			checked={emailCheckBox.csv}
+																			onChange={this.handleEmailCheckBox}
+																			name="csv"
+																			color="primary"
+																		/>
+																	}
+																	label="csv"
+																/>
+															</FormGroup>
 														</div>
-														<div
+														{/* <div
 															style={{
 																width: "585px",
 																borderRadius: "4px",
@@ -847,7 +647,7 @@ class generalLedgerSendEmail extends React.Component {
 																	accept={exportFormat}
 																/>
 															</label>
-														</div>
+														</div> */}
 													</div>
 												) : null}
 											</div>
