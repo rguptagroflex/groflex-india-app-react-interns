@@ -208,7 +208,7 @@ const ReportBalanceSheet = (props) => {
 	};
 
 	const sendEmail = () => {
-		ModalService.open(<BalanceSheetSendEmail />, {
+		ModalService.open(<BalanceSheetSendEmail selectedDate={selectedDate} />, {
 			modalClass: "edit-contact-person-modal-component",
 			width: 630,
 		});

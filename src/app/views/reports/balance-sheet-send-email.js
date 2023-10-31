@@ -17,6 +17,10 @@ import { handleImageError } from "helpers/errors";
 import { format } from "util";
 import ButtonComponent from "../../shared/button/button.component";
 import RadioInputComponent from "../../shared/inputs/radio-input/radio-input.component";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import moment from "../../../../node_modules/moment/moment";
 
 const attachmentConfig = {
 	attachmentUrl: `${config.resourceHost}email/attachment`,
@@ -75,6 +79,8 @@ class balanceSheetSendEmail extends React.Component {
 		console.log("resources", resources);
 
 		this.state = {
+			emailCheckBox: { pdf: false, csv: false },
+			emailFileType: "",
 			exportFormat: ".pdf",
 			customerId: this.props.customerId,
 			documentTitle: this.props.documentTitle,
@@ -112,6 +118,7 @@ class balanceSheetSendEmail extends React.Component {
 		};
 
 		this.filesToDelete = [];
+		this.handleEmailCheckBox = this.handleEmailCheckBox.bind(this);
 	}
 
 	componentDidMount() {
@@ -403,11 +410,30 @@ class balanceSheetSendEmail extends React.Component {
 
 		this.setState({ uploadedAttachments });
 	}
+	handleEmailCheckBox(event) {
+		// this.setState({ ...[emailCheckBox], [event.target.name]: event.target.checked });
+		this.setState(
+			{ emailCheckBox: { ...this.state.emailCheckBox, [event.target.name]: event.target.checked } },
+			() => {
+				if (this.state.emailCheckBox.pdf === true && this.state.emailCheckBox.csv === true) {
+					this.setState({ emailFileType: "both" });
+				} else if (this.state.emailCheckBox.pdf === true) {
+					this.setState({ emailFileType: "pdf" });
+				} else if (this.state.emailCheckBox.csv === true) {
+					this.setState({ emailFileType: "csv" });
+				} else {
+					this.setState({ emailFileType: "" });
+				}
+			}
+		);
+	}
 
 	render() {
 		const { resources } = this.props;
 		const { exportFormat } = this.state;
-		console.log(exportFormat);
+		const { emailCheckBox } = this.state;
+		console.log("File Type: ", this.state.emailFileType);
+		console.log("Date: ", this.props.selectedDate);
 
 		const buttonDisabled = this.isButtonDisabled();
 		const headline = this.state.model.headline;
@@ -433,51 +459,16 @@ class balanceSheetSendEmail extends React.Component {
 
 			attachmentList = <div className="expense-receipt-list">{attachments}</div>;
 		}
-
+		console.log(this.state.emailCheckBox);
 		return (
 			<div className="email-view-wrapper wrapper-has-topbar-with-margin">
-				<div
-					//  style={{ marginTop: "-120px", marginBottom: "-120px" }}
-					className="add-chart-modal-container"
-					style={{ minHeight: "200px" }}
-				>
-					{/* <TopbarComponent
-					backButtonCallback={() => this.navigateToDetails()}
-					buttons={[
-						{
-							type: "primary",
-							// label: resources.str_sendEmail,
-							buttonIcon: "icon-mail",
-							action: "send",
-							dataQsId: "emailSend-topbar-btn-send",
-							customCssClass: buttonDisabled ? "disabled" : "",
-						},
-					]}
-					buttonCallback={(ev, button) => this.onTopbarButtonClick(button.action)}
-				>
-					<div className="topbar-title">{this.state.documentTitle}</div>
-					{this.state.model.dunning ? null : (
-						<div className="email-view-checkbox">
-							<CheckboxInputComponent
-								name={"sendCopy"}
-								// label={resources.str_copyToMe}
-								checked={this.state.sendCopy}
-								onChange={() => this.setState({ sendCopy: !this.state.sendCopy })}
-							/>
-						</div>
-					)}
-				</TopbarComponent> */}
-
-					{/* <div className="email-view-headline"> */}
-					{/* <h1>Send your General Ledger by email</h1> */}
-					{/* <h2>Send your General Ledger by email</h2> */}
+				<div className="add-chart-modal-container" style={{ minHeight: "200px" }}>
 					<div
 						style={{
 							padding: "20px",
 							boxShadow: "0px 1px 4px 0px #0000001F",
 						}}
 						className="modal-base-headline"
-						//  className="email-view-textarea-label"
 					>
 						Send Balance Sheet
 					</div>
@@ -498,7 +489,6 @@ class balanceSheetSendEmail extends React.Component {
 							<div className="row">
 								<div className="col-xs-12">
 									<div className="email-view-select">
-										{/* <div className="email-view-select-label">{resources.str_emailAddress}</div> */}
 										<div className="email-view-select-label">E-Mail Address</div>
 										<SelectInputComponent
 											allowCreate={true}
@@ -534,50 +524,10 @@ class balanceSheetSendEmail extends React.Component {
 
 							<div className="row">
 								<div className="col-xs-12">
-									{/* <div className="email-view-textarea-label">{resources.emailViewPreviewEmailText}</div> */}
-									<div
-										// className="email-view-textarea-label"
-										className="textarea_label"
-										style={{ marginTop: "5px", color: "#747474" }}
-									>
+									<div className="textarea_label" style={{ marginTop: "5px", color: "#747474" }}>
 										Message
 									</div>
-									{/* <div className="email-view-textarea">
-								<div className="email-view-textarea-inner">
-									<HtmlInputComponent
-										displayBlueLine={false}
-										// value={this.state.emailText}
-										value={
-											"Dear Ladies and Gentlemen,</br>Please find the current estimate attached."
-										}
-										onTextChange={(val) => this.setState({ emailText: val })}
-									/>
-									<div className="email-body-link">
-										&rarr;{" "}
-										{format(
-											// resources.emailBodyLinkText,
-											"View %s online",
-											this.state.model.type === "offer"
-												? "General Ledger"
-												: this.state.model.type === "purchaseOrder"
-												? "str_thePurchaseOrder"
-												: "the statement"
-										)}
-									</div>
-									<HtmlInputComponent
-										displayBlueLine={false}
-										value={this.state.emailTextAdditional}
-										onTextChange={(val) => this.setState({ emailTextAdditional: val })}
-										// placeholder={resources.str_yourSincerely}
-										placeholder={"Yours sincerely"}
-									/>
-								</div>
-								<div className="email-view-textarea-footer">
-									{/* <span>{resources.str_poweredBy}</span> */}
-									{/* <span>{"powered by"}</span>
-									<SVGInline width="45px" svg={imprezzLogo} />
-								</div>
-							</div> */}
+
 									<textarea
 										style={{ borderRadius: "8px" }}
 										className="textarea_input"
@@ -592,7 +542,6 @@ class balanceSheetSendEmail extends React.Component {
 								<div className="col-xs-6">
 									{this.state.model.type === "dunning" ? (
 										<div className="email-view-dunning">
-											{/* <span>{resources.emaillViewAutomaticallyRemindersText}</span> */}
 											<span>{"to select an attachment"}</span>
 											<OvalToggleComponent
 												checked={this.state.autoDunningEnabled}
@@ -627,7 +576,16 @@ class balanceSheetSendEmail extends React.Component {
 															className="textarea_label"
 															style={{ color: "#747474", marginTop: "20px" }}
 														>
-															{"Attachments"}
+															{/* {"Attachments"} */}
+															{`BalanceSheet_${moment(
+																this.props.selectedDate.startDate
+															).format("DD-MM-YYYY")}_${moment(
+																this.props.selectedDate.endDate
+															).format("DD-MM-YYYY")}.${
+																this.state.emailFileType === "both"
+																	? "pdf/csv"
+																	: this.state.emailFileType
+															}`}
 														</div>
 														<div className="expenseEdit_fileIcon icon icon-attachment" />
 													</div>
@@ -637,16 +595,32 @@ class balanceSheetSendEmail extends React.Component {
 												{this.state.uploadedAttachments.length < 10 ? (
 													<div>
 														<div className="balance-sheet-email-radio">
-															<RadioInputComponent
-																useCustomStyle={true}
-																value={exportFormat}
-																onChange={(value) =>
-																	this.setState({ exportFormat: value })
-																}
-																options={exportOption}
-															/>
+															<FormGroup row>
+																<FormControlLabel
+																	control={
+																		<Checkbox
+																			checked={emailCheckBox.pdf}
+																			onChange={this.handleEmailCheckBox}
+																			name="pdf"
+																			color="primary"
+																		/>
+																	}
+																	label="pdf"
+																/>
+																<FormControlLabel
+																	control={
+																		<Checkbox
+																			checked={emailCheckBox.csv}
+																			onChange={this.handleEmailCheckBox}
+																			name="csv"
+																			color="primary"
+																		/>
+																	}
+																	label="csv"
+																/>
+															</FormGroup>
 														</div>
-														<div
+														{/* <div
 															style={{
 																width: "585px",
 																borderRadius: "4px",
@@ -667,10 +641,9 @@ class balanceSheetSendEmail extends React.Component {
 																	className="u_hidden"
 																	type="file"
 																	onChange={this.addSelectedFile.bind(this)}
-																	accept={exportFormat}
 																/>
 															</label>
-														</div>
+														</div> */}
 													</div>
 												) : null}
 											</div>
