@@ -124,24 +124,25 @@
 			margin-bottom: 30px;
 		}
 		.cash-flow-content {
-			border-top: 1px solid #ddd;
+			border-bottom: 1px solid #ddd;
 
 			.cash-flow-content-wrapper {
 				.row-heading {
 					padding-left: 15px;
 					padding-bottom: 10px;
 					font-weight: 500;
+					border-top: 1px solid #ddd;
 				}
 				.row-content {
 					.row-content-wrapper {
 						display: flex;
 						justify-content: space-between;
 						border-top: 1px solid #ddd;
-						border-bottom: 1px solid #ddd;
+						// border-bottom: 1px solid #ddd;
 						padding: 15px;
 						font-weight: 400;
 						.row-content-name {
-							width: 200px;
+							width: 300px;
 						}
 						.row-content-value {
 							width: 170px;
