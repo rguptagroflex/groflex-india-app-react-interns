@@ -454,57 +454,59 @@ const ReportsCashFlowStatement = (props) => {
 						</p>
 					)}
 				</div>
-
-				{/* <div style={gridStyle} className="ag-theme-alpine">
-					<AgGridReact
-						ref={gridRef}
-						rowData={rowData}
-						columnDefs={columnDefs}
-						defaultColDef={defaultColDef}
-						autoGroupColumnDef={autoGroupColumnDef}
-						animateRows={true}
-						onGridReady={onGridReady}
-						modules={AllModules}
-						// groupDisplayType={"groupRows"}
-						onFirstDataRendered={onFirstDataRendered}
-						// gridOptions={gridOptions}
-					></AgGridReact>
-				</div> */}
-				<div className="cash-flow-content">
-					{contentHeaders.map((item) => (
-						<div className="cash-flow-content-wrapper">
-							<div className="row-heading">
-								<h6>
-									{item
-										.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
-										.charAt(0)
-										.toUpperCase() + item.replace(/([a-z0-9])([A-Z])/g, "$1 $2").slice(1)}
-								</h6>
-							</div>
-							<div className="row-content">
-								{rowData
-									.filter((filteredItem) => filteredItem.accountTypeId === item)
-									.map((subItem) => {
-										const rowContentName =
-											subItem.accountSubTypeId
+				{rowData.length > 0 ? (
+					<div>
+						<div className="cash-flow-content">
+							{contentHeaders.map((item) => (
+								<div className="cash-flow-content-wrapper">
+									<div className="row-heading">
+										<h6>
+											{item
 												.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
 												.charAt(0)
-												.toUpperCase() +
-											subItem.accountSubTypeId.replace(/([a-z0-9])([A-Z])/g, "$1 $2").slice(1);
-										return (
-											<div className="row-content-wrapper">
-												{/* <div className="row-content-name">{string.split("Total")[0]}</div> */}
-												<div className="row-content-name">{rowContentName}</div>
-												<div className="row-content-value">
-													₹ {parseFloat(subItem.total).toFixed(2)}
-												</div>
-											</div>
-										);
-									})}
+												.toUpperCase() + item.replace(/([a-z0-9])([A-Z])/g, "$1 $2").slice(1)}
+										</h6>
+									</div>
+									<div className="row-content">
+										{rowData
+											.filter((filteredItem) => filteredItem.accountTypeId === item)
+											.map((subItem) => {
+												const rowContentName =
+													subItem.accountSubTypeId
+														.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+														.charAt(0)
+														.toUpperCase() +
+													subItem.accountSubTypeId
+														.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+														.slice(1);
+												return (
+													<div className="row-content-wrapper">
+														{/* <div className="row-content-name">{string.split("Total")[0]}</div> */}
+														<div className="row-content-name">{rowContentName}</div>
+														<div className="row-content-value">
+															₹ {parseFloat(subItem.total).toFixed(2)}
+														</div>
+													</div>
+												);
+											})}
+									</div>
+								</div>
+							))}
+						</div>
+						<div className="cash-flow-result">
+							<div className="year-beginning">
+								<h6>CASH AT THE BEGINNING OF THE YEAR</h6>
+								<h6 className="result-value">₹ {parseFloat("0").toFixed(2)}</h6>
+							</div>
+							<div className="year-ending">
+								<h6>CASH AT THE END OF THE YEAR</h6>
+								<h6 className="result-value">₹ {parseFloat("0").toFixed(2)}</h6>
 							</div>
 						</div>
-					))}
-				</div>
+					</div>
+				) : (
+					<h6 style={{ display: "flex", justifyContent: "center" }}>No rows to display</h6>
+				)}
 			</div>{" "}
 		</div>
 	);

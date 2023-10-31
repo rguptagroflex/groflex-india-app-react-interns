@@ -436,9 +436,23 @@ button.chart-type-toggle {
 					}
 					.headingBalance {
 						padding-right: 42px;
+						border-left: 1px solid #c6c6c6;
+						padding-left: 8px;
 					}
 					.headingDate {
 						padding-left: 24px;
+					}
+					.headingAccount {
+						border-left: 1px solid #c6c6c6;
+						padding-left: 8px;
+					}
+					.headingDebit {
+						border-left: 1px solid #c6c6c6;
+						padding-left: 8px;
+					}
+					.headingCredit {
+						border-left: 1px solid #c6c6c6;
+						padding-left: 8px;
 					}
 				}
 				.MuiDivider-root {

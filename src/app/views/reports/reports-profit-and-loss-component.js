@@ -442,7 +442,7 @@ function ReportsProfitAndLoss(props) {
 				<div className="table-container">
 					<div className="profit-loss-table-header">
 						<h6 className="headingLeft">Account</h6>
-						<h6 className="headinMiddle">Account Code</h6>
+						<h6 className="headingMiddle">Account Code</h6>
 						<h6 className="headingRight">Amount</h6>
 					</div>
 
