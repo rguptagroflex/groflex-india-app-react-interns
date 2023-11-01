@@ -2,14 +2,14 @@ import invoiz from "services/invoiz.service";
 import React from "react";
 import _ from "lodash";
 import config from "config";
-import ModalService from "../services/modal.service";
+import ModalService from "../../services/modal.service";
 import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
 import HtmlInputComponent from "shared/inputs/html-input/html-input.component";
 import SelectInputComponent from "shared/inputs/select-input/select-input.component";
 import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
 import CustomSelectOptionComponent from "shared/custom-select-option/custom-select-option.component";
 import SVGInline from "react-svg-inline";
-import ButtonComponent from "./button/button.component";
+import ButtonComponent from "../button/button.component";
 const checkCircleIcon = require("assets/images/icons/check_circle.svg");
 const trashcanIcon = require("assets/images/icons/trashcan.svg");
 
