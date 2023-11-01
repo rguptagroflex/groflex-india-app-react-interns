@@ -134,3 +134,14 @@
 .menuItem:hover {
 	border-left-color: $color-primary;
 }
+
+.menuItemTitle {
+	position: absolute;
+    font-size: 10px;
+    padding-top: 35px;
+    color: rgb(101, 103, 104);
+}
+
+.menuItemTitle:hover {
+	color: $color-primary;
+}

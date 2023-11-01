@@ -8,6 +8,8 @@ import RadioInputComponent from "shared/inputs/radio-input/radio-input.component
 import DateInputComponent from "shared/inputs/date-input/date-input.component";
 import ButtonComponent from "shared/button/button.component";
 import { formatClientDate, formatApiDate } from "helpers/formatDate";
+import modalService from "../../services/modal.service";
+import SendEmailModalComponent from "../send-email-modal.component";
 
 const exportOption = [
 	{
@@ -182,6 +184,50 @@ class LedgerComponent extends React.Component {
 			});
 	}
 
+	handleSendLedgerEmail(modalData) {
+		const { emailTextAdditional, emails, regard, sendType } = modalData;
+		console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+
+		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/CustomerLedger/${moment(
+			this.state.fromDate
+		).format()}/${moment(this.state.endDate).format()}`;
+
+		const method = "POST";
+		const data = {
+			recipients: emails.map((email) => email.value),
+			subject: regard,
+			text: emailTextAdditional,
+			sendCopy: false,
+			sendType: sendType,
+			customerId: this.props.customerId,
+		};
+
+		invoiz
+			.request(url, { auth: true, method, data })
+			.then((res) => {
+				console.log("Response:  for send email modal", res);
+				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
+				modalService.close();
+			})
+			.catch(invoiz.showNotification({ type: "error", message: "Couldn't send email" }));
+	}
+
+	openSendLedgerEmailModal() {
+		modalService.open(
+			<SendEmailModalComponent
+				heading={"Send Ledger"}
+				fileNameWithoutExt={`${this.props.customerName}_${moment(this.state.fromDate).format(
+					"DD-MM-YYYY"
+				)}_${moment(this.state.toDate).format("DD-MM-YYYY")}`}
+				onSubmit={(data) => this.handleSendLedgerEmail(data)}
+			/>,
+			{
+				modalClass: "send-ledger-email-modal-component-wrapper",
+				width: 630,
+			}
+		);
+	}
+
 	render() {
 		let { resources } = this.props;
 
@@ -209,7 +255,7 @@ class LedgerComponent extends React.Component {
 							}}
 						/>
 					</div>
-					<div className="col-xs-4 col-gutter-left-30 export-type">
+					<div className="col-xs-3 col-gutter-left-30 export-type">
 						<RadioInputComponent
 							useCustomStyle={true}
 							value={exportFormat}
@@ -217,18 +263,28 @@ class LedgerComponent extends React.Component {
 							options={exportOption}
 						/>
 					</div>
-					<div className="col-xs-3 col-gutter-left-60 statement-action">
+					<div className="col-xs-2 col-gutter-left-60 statement-action">
 						<ButtonComponent
 							buttonIcon={""}
-							type="primary"
+							type="secondaryNew"
 							callback={() => this.downloadLedger()}
 							label={"Export"}
 							disabled={!dateOption}
 							dataQsId="settings-documentExport-btn-createExport"
 						/>
 					</div>
+					<div className="col-xs-2 col-gutter-left-60 statement-action">
+						<ButtonComponent
+							buttonIcon={""}
+							type="secondaryNew"
+							callback={() => this.openSendLedgerEmailModal()}
+							label={"Email"}
+							disabled={!dateOption}
+							dataQsId="settings-documentExport-btn-createExport"
+						/>
+					</div>
 				</div>
-				<div className="row second-row">
+				<div className="row second-row u_mt_10">
 					{dateOption && dateOption.value === "custom" ? (
 						<div className=" col-xs-6 ">
 							<div className="row">

@@ -149,7 +149,34 @@ function ReportsListComponent(props) {
 								</p>
 							</div>
 						</div>
-						<div className="reports-content-bottom"></div>
+						<div className="reports-content-bottom">
+							<div className="reports-content-bottom-left">
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+									}}
+									onClick={() => {
+										invoiz.router.navigate("/expenses/reports/gst-export");
+									}}
+								>
+									<SVGInline
+										style={{
+											borderRadius: "50%",
+											padding: "8px",
+										}}
+										className="overlay-image"
+										svg={Vector}
+										alt={"Could not load image!"}
+									/>
+									<span style={{ cursor: "pointer" }}>GST Reports</span>
+								</div>
+								<p className="reports-content-detail">
+									A report showing your company's revenues, expenses, gains, and losses over a
+									specified period of time.
+								</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

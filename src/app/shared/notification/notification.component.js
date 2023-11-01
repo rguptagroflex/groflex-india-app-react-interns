@@ -1,8 +1,12 @@
-import React from 'react';
-import _ from 'lodash';
+import React from "react";
+import _ from "lodash";
+import SVGInline from "react-svg-inline";
+import toastSuccess from "../../../assets/images/svg/toastSuccess.svg";
+import toastError from "../../../assets/images/svg/toastError.svg";
 
 const FADE_TRANSITION_TIME = 400;
 const HIDE_AFTER_TIME = 3500;
+// const HIDE_AFTER_TIME = 35777700;
 
 class NotificationComponent extends React.Component {
 	constructor(props) {
@@ -10,7 +14,7 @@ class NotificationComponent extends React.Component {
 
 		this.state = {
 			isOpening: true,
-			isHiding: false
+			isHiding: false,
 		};
 
 		this.hideTimeout = null;
@@ -65,12 +69,14 @@ class NotificationComponent extends React.Component {
 		let message = this.props.message;
 
 		if (!_.isString(message)) {
-			message = 'error';
+			message = "error";
 		}
 
 		return (
 			<div
-				className={`notification-component ${isOpening ? 'opening' : ''} ${isHiding ? 'hiding' : ''}`}
+				className={`notification-component ${type === "success" ? "successBg" : "errorBg"} ${
+					isOpening ? "opening" : ""
+				} ${isHiding ? "hiding" : ""}`}
 				onClick={() => this.onClick()}
 				onMouseOver={() => this.clearTimeouts()}
 				onMouseOut={() => this.startTimeouts()}
@@ -78,16 +84,30 @@ class NotificationComponent extends React.Component {
 				<div className="icon icon-close2" onMouseUp={() => this.onRemove()} />
 				{points ? <div className="points-indicator">+{points}</div> : null}
 				<div className="content">
-					<div className={`left-col ${type || ''}`}>
-						{type ? (
-							<div className={`icon icon-${type === 'success' ? 'check_medium' : 'exclamation_mark2'}`} />
-						) : null}
-						{svgIcon ? <img src={`/assets/images/svg/${svgIcon}.svg`} width="38" height="38" /> : null}
+					<div className="type-box">
+						<div className={`left-col ${type || ""}`}>
+							{type ? (
+								// <div className={`icon icon-${type === "success" ? "check_medium" : "exclamation_mark2"}`} />
+								<SVGInline
+									svg={type === "success" ? toastSuccess : toastError}
+									width="21px"
+									height="21px"
+								/>
+							) : null}
+							{/* {svgIcon ? <img src={`/assets/images/svg/${svgIcon}.svg`} width="38" height="38" /> : null} */}
+						</div>
+						<div className="right-col">
+							<div className="title">{title}</div>
+							{/* <div className="message" dangerouslySetInnerHTML={{ __html: message }} /> */}
+							<div
+								className="message text-h3"
+								// dangerouslySetInnerHTML={{ __html: type === "success" ? "Success" : "Error" }}
+							>
+								{type === "success" ? "Success" : "Error"}
+							</div>
+						</div>
 					</div>
-					<div className="right-col">
-						<div className="title">{title}</div>
-						<div className="message" dangerouslySetInnerHTML={{ __html: message }} />
-					</div>
+					<div className="notification-message">{message}</div>
 				</div>
 			</div>
 		);

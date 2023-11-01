@@ -44,7 +44,9 @@ class ButtonComponent extends React.Component {
 		return (
 			<div className={`button-component-wrapper ${wrapperClass || ""}`}>
 				<button
-					className={`${buttonClasses} ${customCssClass || ""}`}
+					className={`${buttonClasses} ${customCssClass || ""} ${
+						this.state.disabled ? this.state.type.concat("-disabled") : ""
+					}`}
 					disabled={this.state.disabled || this.state.loading}
 					onClick={(event) => this.handleClick(event)}
 					data-qs-id={dataQsId}
