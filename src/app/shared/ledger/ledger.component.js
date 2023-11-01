@@ -9,7 +9,7 @@ import DateInputComponent from "shared/inputs/date-input/date-input.component";
 import ButtonComponent from "shared/button/button.component";
 import { formatClientDate, formatApiDate } from "helpers/formatDate";
 import modalService from "../../services/modal.service";
-import SendEmailModalComponent from "../send-email-modal.component";
+import SendEmailModalComponent from "../send-email/send-email-modal.component";
 
 const exportOption = [
 	{
@@ -190,7 +190,7 @@ class LedgerComponent extends React.Component {
 
 		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/CustomerLedger/${moment(
 			this.state.fromDate
-		).format()}/${moment(this.state.endDate).format()}`;
+		).format()}/${moment(this.state.toDate).format()}`;
 
 		const method = "POST";
 		const data = {
@@ -209,7 +209,10 @@ class LedgerComponent extends React.Component {
 				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
 				modalService.close();
 			})
-			.catch(invoiz.showNotification({ type: "error", message: "Couldn't send email" }));
+			.catch(() => {
+				invoiz.showNotification({ type: "error", message: "Couldn't send email" });
+				modalService.close();
+			});
 	}
 
 	openSendLedgerEmailModal() {
