@@ -1136,7 +1136,8 @@ const routes = [
 
 	// GST Export
 	{
-		path: "/document-export",
+		// path: "/document-export",
+		path: "/expenses/reports/gst-export",
 		type: RouteTypes.PRIVATE,
 		component: SettingsDocumentExportWrapper,
 		exact: true,

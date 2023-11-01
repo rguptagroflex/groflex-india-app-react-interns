@@ -1,32 +1,34 @@
 @import "../../abstracts/_variables";
 @import "../../abstracts/_mixins";
 
-.customer-statements {
+.customer-detail-wrapper {
 	// margin-bottom: 0 !important;
 	// padding-bottom: 17px !important;
+	.contact-ledger-component {
+		// .first-row {
+		// 	margin-bottom: 15px !important;
+		// }
 
-	.first-row {
-		margin-bottom: 15px !important;
-	}
-
-	.second-row {
-		display: flex;
-		flex-direction: row;
-		justify-content: flex-end;
-	}
-	.radio {
-		display: flex;
-		justify-content: space-between;
-		padding: 10px 30px 0 30px;
-	}
-	.button-component-wrapper {
-		padding-left: 20px;
-		padding-top: 0.2rem;
-		padding-bottom: 0.25rem;
-	}
-	.customer-statements-container-blank {
-		width: 356.828px;
-		height: 161.75px;
+		.second-row {
+			// display: flex;
+			// flex-direction: row;
+			// justify-content: flex-end;
+			// margin-top: 10px;
+		}
+		// .radio {
+		// 	display: flex;
+		// 	justify-content: space-between;
+		// 	padding: 10px 30px 0 30px;
+		// }
+		// .button-component-wrapper {
+		// 	padding-left: 20px;
+		// 	padding-top: 0.2rem;
+		// 	padding-bottom: 0.25rem;
+		// }
+		// .customer-statements-container-blank {
+		// 	width: 356.828px;
+		// 	height: 161.75px;
+		// }
 	}
 }
 /* .customer-statements-adjustment-1{

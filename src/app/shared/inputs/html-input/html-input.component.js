@@ -1,57 +1,54 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import ReactQuill from 'react-quill';
-import TextInputLabelComponent from 'shared/inputs/text-input/text-input-label.component';
-import TextInputHintComponent from 'shared/inputs/text-input/text-input-hint.component';
-import TextInputErrorComponent from 'shared/inputs/text-input/text-input-error.component';
-import { addMutationObserver } from 'helpers/mutationObserver';
-import { htmlInputEmptyStates } from 'helpers/constants';
-import { getResource } from 'helpers/resource';
+import React from "react";
+import PropTypes from "prop-types";
+import ReactQuill from "react-quill";
+import TextInputLabelComponent from "shared/inputs/text-input/text-input-label.component";
+import TextInputHintComponent from "shared/inputs/text-input/text-input-hint.component";
+import TextInputErrorComponent from "shared/inputs/text-input/text-input-error.component";
+import { addMutationObserver } from "helpers/mutationObserver";
+import { htmlInputEmptyStates } from "helpers/constants";
+import { getResource } from "helpers/resource";
 
 const Quill = ReactQuill.Quill;
-const Clipboard = Quill.import('modules/clipboard');
-const Delta = Quill.import('delta');
+const Clipboard = Quill.import("modules/clipboard");
+const Delta = Quill.import("delta");
 
 class PlainClipboard extends Clipboard {
 	onPaste(e) {
 		e.preventDefault();
 		const range = this.quill.getSelection();
-		const text = e.clipboardData.getData('text/plain');
-		const delta = new Delta()
-			.retain(range.index)
-			.delete(range.length)
-			.insert(text);
+		const text = e.clipboardData.getData("text/plain");
+		const delta = new Delta().retain(range.index).delete(range.length).insert(text);
 		const index = text.length + range.index;
 		const length = 0;
-		this.quill.updateContents(delta, 'silent');
+		this.quill.updateContents(delta, "silent");
 		this.quill.setSelection(index, length);
 		this.quill.scrollIntoView();
 	}
 }
-Quill.register('modules/clipboard', PlainClipboard, true);
+Quill.register("modules/clipboard", PlainClipboard, true);
 
-const font = Quill.import('formats/font');
+const font = Quill.import("formats/font");
 font.whitelist = [
-	'',
-	'sourceserifpro',
-	'caveat',
-	'dancingscript',
-	'economica',
-	'gruppo',
-	'kalam',
-	'merriweathersans',
-	'opensanscondensed',
-	'ptsansnarrow',
-	'shadowsintolight',
-	'tulpenone',
-	'voltaire'
+	"",
+	"sourceserifpro",
+	"caveat",
+	"dancingscript",
+	"economica",
+	"gruppo",
+	"kalam",
+	"merriweathersans",
+	"opensanscondensed",
+	"ptsansnarrow",
+	"shadowsintolight",
+	"tulpenone",
+	"voltaire",
 ];
 Quill.register(font, true);
 
 const { DEFAULT_HTML_EMPTY_STATE, HTML_LIST_EMPTY_STATE } = htmlInputEmptyStates;
 const emptyHtmlInputState = [DEFAULT_HTML_EMPTY_STATE, HTML_LIST_EMPTY_STATE];
 
-const hasEmptyInnerText = innerText => innerText === '' || innerText === '\n';
+const hasEmptyInnerText = (innerText) => innerText === "" || innerText === "\n";
 
 class HtmlInputComponent extends React.Component {
 	constructor(props) {
@@ -61,7 +58,7 @@ class HtmlInputComponent extends React.Component {
 		this.state = {
 			isFocused: focused,
 			errorMessage,
-			defaultFocus: defaultFocus || false
+			defaultFocus: defaultFocus || false,
 		};
 		this.quillRef = null; // Quill instance
 		this.toolbarEl = null; // Toolbar component
@@ -76,8 +73,8 @@ class HtmlInputComponent extends React.Component {
 				key: 9,
 				handler: () => {
 					return true;
-				}
-			}
+				},
+			},
 		};
 	}
 
@@ -95,25 +92,25 @@ class HtmlInputComponent extends React.Component {
 				quillEditor.blur();
 			});
 
-			quillEditor.setText('');
+			quillEditor.setText("");
 		}
 
 		$(quillEditor.theme.tooltip.root)
-			.find('.ql-toolbar')
-			.on('mousedown', evt => {
+			.find(".ql-toolbar")
+			.on("mousedown", (evt) => {
 				evt.preventDefault();
 			});
 		if (this.state.defaultFocus) {
 			this.setFocus();
 		}
 	}
-	setFocus () {
-		$('.htmlInput').addClass('htmlInput-active');
-		this.placeCaretAtEnd(document.getElementsByClassName('ql-editor'));
+	setFocus() {
+		$(".htmlInput").addClass("htmlInput-active");
+		this.placeCaretAtEnd(document.getElementsByClassName("ql-editor"));
 	}
 
 	placeCaretAtEnd(el) {
-		if (typeof window.getSelection !== 'undefined' && typeof document.createRange !== 'undefined') {
+		if (typeof window.getSelection !== "undefined" && typeof document.createRange !== "undefined") {
 			const range = document.createRange();
 			range.selectNodeContents(el[0]);
 			range.collapse(false);
@@ -141,14 +138,14 @@ class HtmlInputComponent extends React.Component {
 
 	onPaste() {
 		const {
-			root: { innerHTML: value }
+			root: { innerHTML: value },
 		} = this.quillRef;
 
 		this.handleTextChange(value);
 	}
 
 	attachQuillRefs() {
-		if (!this.reactQuillRef || typeof this.reactQuillRef.getEditor !== 'function') return;
+		if (!this.reactQuillRef || typeof this.reactQuillRef.getEditor !== "function") return;
 		this.quillRef = this.reactQuillRef.getEditor();
 	}
 
@@ -185,19 +182,19 @@ class HtmlInputComponent extends React.Component {
 		const { isFocused } = this.state;
 		const quillEditor = this.quillRef;
 		const {
-			root: { innerHTML: value }
+			root: { innerHTML: value },
 		} = quillEditor;
 
 		if (!isFocused) return;
 
 		if (isRequired && (emptyHtmlInputState.indexOf(value) > -1 || !value)) {
-			return this.setState({ errorMessage: getResource('mandatoryFieldValidation') });
+			return this.setState({ errorMessage: getResource("mandatoryFieldValidation") });
 		}
 
 		this.setState({ isFocused: false }, () => {
 			onBlur && onBlur({ quill: this.quillRef, value });
 		});
-		$('.htmlInput').removeClass('htmlInput-active');
+		$(".htmlInput").removeClass("htmlInput-active");
 	}
 
 	keydown(event) {
@@ -243,6 +240,7 @@ class HtmlInputComponent extends React.Component {
 	}
 
 	handleTextChange(value) {
+		this.props.onChange && this.props.onChange(value);
 		const quillEditor = this.quillRef;
 
 		if (!quillEditor) return;
@@ -256,10 +254,10 @@ class HtmlInputComponent extends React.Component {
 		}
 
 		if (hasEmptyInnerText(root.innerText)) {
-			quillEditor.formatLine(0, 0, 'list', false);
+			quillEditor.formatLine(0, 0, "list", false);
 		}
 
-		onTextChange && onTextChange(value && emptyHtmlInputState.indexOf(value) === -1 ? value : '');
+		onTextChange && onTextChange(value && emptyHtmlInputState.indexOf(value) === -1 ? value : "");
 	}
 
 	render() {
@@ -276,17 +274,17 @@ class HtmlInputComponent extends React.Component {
 			wrapperClass,
 			hintMessage,
 			keyboardBindings,
-			dataQsId
+			dataQsId,
 		} = this.props;
 
-		let inputClass = `htmlInput ${componentClass ? componentClass + ' ' : ''}`;
+		let inputClass = `htmlInput ${componentClass ? componentClass + " " : ""}`;
 
 		if (errorMessage) {
-			inputClass += 'htmlInput-invalid';
+			inputClass += "htmlInput-invalid";
 		} else if (isFocused) {
-			inputClass += 'htmlInput-active';
+			inputClass += "htmlInput-active";
 		} else if (disabled) {
-			inputClass += 'htmlInput-disabled';
+			inputClass += "htmlInput-disabled";
 		}
 
 		const blueLine = displayBlueLine ? <span className="htmlInput_bar" /> : null;
@@ -297,21 +295,21 @@ class HtmlInputComponent extends React.Component {
 					<TextInputLabelComponent className="htmlInput_label" text={label} />
 					<div ref={name} className="htmlInput_wrapper" onPaste={this.onPaste.bind(this)}>
 						<ReactQuill
-							ref={el => {
+							ref={(el) => {
 								this.reactQuillRef = el;
 							}}
 							className="htmlInput_input"
 							modules={{
 								toolbar: formats,
 								keyboard: {
-									bindings: Object.assign({}, keyboardBindings, this.keyboardBindings)
-								}
+									bindings: Object.assign({}, keyboardBindings, this.keyboardBindings),
+								},
 							}}
-							theme={'bubble'}
+							theme={"bubble"}
 							value={value}
 							placeholder={placeholder}
 							onFocus={this.focus.bind(this)}
-							onBlur={e => this.blur(e)}
+							onBlur={(e) => this.blur(e)}
 							onChange={this.handleTextChange.bind(this)}
 							onChangeSelection={this.handleSelectionChange.bind(this)}
 							onKeyUp={this.keyup.bind(this)}
@@ -354,27 +352,27 @@ HtmlInputComponent.propTypes = {
 	onBlur: PropTypes.func,
 	onFocus: PropTypes.func,
 	keyboardBindings: PropTypes.object,
-	formats: PropTypes.array
+	formats: PropTypes.array,
 };
 
 HtmlInputComponent.defaultProps = {
-	name: 'html',
-	value: '',
-	label: '',
-	placeholder: '',
+	name: "html",
+	value: "",
+	label: "",
+	placeholder: "",
 	disabled: false,
 	required: false,
 	displayBlueLine: true,
 	hideHtmlToolbar: false,
-	componentClass: '',
-	wrapperClass: '',
-	hintMessage: '',
-	inputClass: '',
-	errorMessage: '',
+	componentClass: "",
+	wrapperClass: "",
+	hintMessage: "",
+	inputClass: "",
+	errorMessage: "",
 	focused: false,
 	blurred: false,
-	formats: [['bold', 'italic', 'underline'], [{ list: 'bullet' }]],
-	keyboardBindings: {}
+	formats: [["bold", "italic", "underline"], [{ list: "bullet" }]],
+	keyboardBindings: {},
 };
 
 export default HtmlInputComponent;

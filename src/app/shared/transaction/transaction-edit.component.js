@@ -466,6 +466,7 @@ class TransactionEditComponent extends React.Component {
 							<span className="edit-icon" />
 							<div className="inline">
 								<HtmlInputComponent
+									label="Label"
 									ref={"transaction-introduction-ref"}
 									value={transaction.texts.introduction}
 									onBlur={(quill) => this.onIntroductionChange(quill.value)}

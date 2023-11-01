@@ -1129,7 +1129,11 @@ class CustomerDetailNewComponent extends React.Component {
 										</div>
 									</div>
 									<div className="contact-ledger-component">
-										<LedgerComponent customerId={customer.id} resources={resources} />
+										<LedgerComponent
+											customerId={customer.id}
+											resources={resources}
+											customerName={customer.name}
+										/>
 									</div>
 
 									<div className="row u_mt_16" style={{ width: "822px" }}>
