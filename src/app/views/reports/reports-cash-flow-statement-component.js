@@ -14,6 +14,7 @@ import CashAndFlowSendEmail from "./cash-and-flow-send-email";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 import { formatApiDate } from "../../helpers/formatDate";
 import { connect } from "react-redux";
+import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
 const ReportsCashFlowStatement = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -204,11 +205,54 @@ const ReportsCashFlowStatement = (props) => {
 		return { startDate, endDate };
 	};
 
+	const handleSendCashFlowEmail = (modalData) => {
+		const { emailTextAdditional, emails, regard, sendType } = modalData;
+		console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+
+		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/CashFlow/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}`;
+
+		const method = "POST";
+		const data = {
+			recipients: emails.map((email) => email.value),
+			subject: regard,
+			text: emailTextAdditional,
+			sendCopy: false,
+			sendType: sendType,
+		};
+
+		invoiz
+			.request(url, { auth: true, method, data })
+			.then((res) => {
+				console.log("Response:  for send email modal", res);
+				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
+				ModalService.close();
+			})
+			.catch(() => {
+				invoiz.showNotification({ type: "error", message: "Couldn't send email" });
+				ModalService.close();
+			});
+	};
+
 	const sendEmail = () => {
-		ModalService.open(<CashAndFlowSendEmail selectedDate={selectedDate} />, {
-			modalClass: "edit-contact-person-modal-component",
-			width: 630,
-		});
+		// ModalService.open(<CashAndFlowSendEmail selectedDate={selectedDate} />, {
+		// 	modalClass: "edit-contact-person-modal-component",
+		// 	width: 630,
+		// });
+		ModalService.open(
+			<SendEmailModalComponent
+				heading={"Send Cash Flow"}
+				fileNameWithoutExt={`CashFlow_${moment(selectedDate.startDate).format("DD-MM-YYYY")}_${moment(
+					selectedDate.endDate
+				).format("DD-MM-YYYY")}`}
+				onSubmit={(data) => handleSendCashFlowEmail(data)}
+			/>,
+			{
+				modalClass: "send-ledger-email-modal-component-wrapper",
+				width: 630,
+			}
+		);
 	};
 	const activeAction = OfferAction.PRINT;
 	const DateFilterType = {

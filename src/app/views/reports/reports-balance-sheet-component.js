@@ -23,7 +23,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
 import { formatApiDate } from "../../helpers/formatDate";
-import SendEmailModalComponent from "../../shared/send-email-modal.component";
+import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
+
 const ReportBalanceSheet = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -231,7 +232,10 @@ const ReportBalanceSheet = (props) => {
 				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
 				ModalService.close();
 			})
-			.catch(invoiz.showNotification({ type: "error", message: "Couldn't send email" }));
+			.catch(() => {
+				invoiz.showNotification({ type: "error", message: "Couldn't send email" });
+				ModalService.close();
+			});
 	};
 
 	const sendEmail = () => {

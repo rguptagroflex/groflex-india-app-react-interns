@@ -20,7 +20,8 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { connect } from "react-redux";
-import SendEmailModalComponent from "../../shared/send-email-modal.component";
+import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
+
 function ReportsProfitAndLoss(props) {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -140,7 +141,14 @@ function ReportsProfitAndLoss(props) {
 
 	const handleSendProfitAndLossEmail = (modalData) => {
 		const { emailTextAdditional, emails, regard, sendType } = modalData;
-		console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+		// console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+		console.log(
+			"recipients",
+			emails.map((email) => email.value)
+		);
+		console.log("text", emailTextAdditional);
+		console.log("subject", regard);
+		console.log("Type: ", sendType);
 
 		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/ProfitAndLoss/${moment(
 			selectedDate.startDate
@@ -162,7 +170,10 @@ function ReportsProfitAndLoss(props) {
 				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
 				ModalService.close();
 			})
-			.catch(invoiz.showNotification({ type: "error", message: "Couldn't send email" }));
+			.catch(() => {
+				invoiz.showNotification({ type: "error", message: "Couldn't send email" });
+				ModalService.close();
+			});
 	};
 
 	const sendEmail = () => {
@@ -172,8 +183,8 @@ function ReportsProfitAndLoss(props) {
 		// });
 		ModalService.open(
 			<SendEmailModalComponent
-				heading={"Send Balance Sheet"}
-				fileNameWithoutExt={`BalanceSheet_${moment(selectedDate.startDate).format("DD-MM-YYYY")}_${moment(
+				heading={"Send Profit And Loss"}
+				fileNameWithoutExt={`ProfitAndLoss_${moment(selectedDate.startDate).format("DD-MM-YYYY")}_${moment(
 					selectedDate.endDate
 				).format("DD-MM-YYYY")}`}
 				onSubmit={(data) => handleSendProfitAndLossEmail(data)}
@@ -341,8 +352,6 @@ function ReportsProfitAndLoss(props) {
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignProfitAndLoss" : "";
 
-	console.log("Profit: ", selectedDate);
-
 	return (
 		<div className="profit-loss-component">
 			<TopbarComponent
@@ -487,9 +496,9 @@ function ReportsProfitAndLoss(props) {
 						<h6 className="headingRight">Amount</h6>
 					</div>
 
-					{tableHeaders.map((item) => {
+					{tableHeaders.map((item, index) => {
 						return (
-							<div>
+							<div key={`Accordian-${index}`}>
 								<Accordion elevation={0}>
 									<AccordionSummary
 										expandIcon={<ExpandMoreIcon />}
@@ -503,8 +512,8 @@ function ReportsProfitAndLoss(props) {
 										<div className="balance-sheet-accordian-details">
 											{rowData
 												.filter((filteredItem) => filteredItem.accountTypeId === item)
-												.map((subItem, index) => (
-													<React.Fragment>
+												.map((subItem, subIndex) => (
+													<React.Fragment key={`Details-${subIndex}`}>
 														<div className="accordian-details-row-entry">
 															<div className="accordian-detail-name">
 																{subItem.accountSubTypeId
