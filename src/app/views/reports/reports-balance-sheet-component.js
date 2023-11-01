@@ -123,7 +123,7 @@ const ReportBalanceSheet = (props) => {
 				{ auth: true }
 			);
 			const responseData = response.body.data;
-			console.log("Response Data:", responseData);
+			// console.log("Response Data:", responseData);
 			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
 				const transactions = responseData.summaryData.transactions;
 				setTableTotal(responseData.summaryData);
@@ -133,7 +133,7 @@ const ReportBalanceSheet = (props) => {
 					}
 				});
 				setTableHeader(tableHeaders);
-				console.log("table header:: ", tableHeaders);
+
 				setRowData(transactions);
 				setResponseData(responseData);
 			} else {
@@ -147,7 +147,6 @@ const ReportBalanceSheet = (props) => {
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const onDate = (value) => {
-		console.log("Value:", value);
 		let startDate = "";
 		let endDate = "";
 
@@ -201,7 +200,7 @@ const ReportBalanceSheet = (props) => {
 				endDate = "";
 				break;
 		}
-		console.log("CustomStart: ", startDate);
+		// console.log("CustomStart: ", startDate);
 		setSelectedDate({ startDate, endDate });
 		// console.log("startDate", startDate);
 		return { startDate, endDate };
@@ -305,7 +304,6 @@ const ReportBalanceSheet = (props) => {
 	}, []); //
 
 	useEffect(() => {
-		console.log("SelectedDate: ", selectedDate);
 		fetchData();
 	}, [selectedDate]);
 
