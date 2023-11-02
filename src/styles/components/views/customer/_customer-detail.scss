@@ -51,8 +51,17 @@
 				justify-content: space-evenly;
 				margin-top: 13px;
 			}
-			.Select-control {
-				margin-left: 8px;
+			// .Select-control {
+			// 	margin-left: 8px;
+			// }
+			.Select-value {
+				padding-left: 0;
+			}
+			.selectInput {
+				margin-left: 10px !important;
+			}
+			.Select-placeholder {
+				padding-left: 0 !important;
 			}
 		}
 		.contact-overview {

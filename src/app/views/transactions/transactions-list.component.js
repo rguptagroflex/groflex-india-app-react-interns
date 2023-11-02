@@ -532,7 +532,7 @@ class TransactionsListComponent extends React.Component {
 						}}
 						exportFilename={`Exported transactions list ${moment().format(config.dateFormat.client)}`}
 						gatherRemovedSelectedRowsBy="id"
-						multiSelect={true}
+						multiSelect={false}
 						usePagination={true}
 						searchFieldPlaceholder={lang.customerSearchCategory}
 						loadingRowsMessage={"Loading Transactions list..."}

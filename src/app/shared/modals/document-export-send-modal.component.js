@@ -1,14 +1,14 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import config from 'config';
-import { formatClientDate } from 'helpers/formatDate';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import config from "config";
+import { formatClientDate } from "helpers/formatDate";
 // import moment from 'moment';
-import SelectInputComponent from 'shared/inputs/select-input/select-input.component';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
-import ModalService from 'services/modal.service';
-import ButtonComponent from 'shared/button/button.component';
-import CustomSelectOptionComponent from 'shared/custom-select-option/custom-select-option.component';
-import LoaderComponent from 'shared/loader/loader.component';
+import SelectInputComponent from "shared/inputs/select-input/select-input.component";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
+import ModalService from "services/modal.service";
+import ButtonComponent from "shared/button/button.component";
+import CustomSelectOptionComponent from "shared/custom-select-option/custom-select-option.component";
+import LoaderComponent from "shared/loader/loader.component";
 
 class DocumentExportSendModal extends React.Component {
 	constructor(props) {
@@ -16,13 +16,13 @@ class DocumentExportSendModal extends React.Component {
 		const { resources } = this.props;
 		this.state = {
 			regard: resources.str_bookingDocuments,
-			messageText: '',
+			messageText: "",
 			recipients: [],
-			recipientsError: '',
+			recipientsError: "",
 			isSubmitting: false,
 			isLoadingEmails: false,
 			documentExportItem: null,
-			senderEmail: ''
+			senderEmail: "",
 		};
 	}
 
@@ -36,8 +36,8 @@ class DocumentExportSendModal extends React.Component {
 				`${resources.str_ladiesAndGentlemenText},\n\n`,
 				resources.sendAccountingDocumentsForThePeriodText,
 				` ${documentExportItem.displayPeriod}.\n\n`,
-				resources.str_yourSincerely
-			].join('')
+				resources.str_yourSincerely,
+			].join(""),
 		});
 	}
 
@@ -49,7 +49,7 @@ class DocumentExportSendModal extends React.Component {
 		const newRecipients = [];
 
 		if (selectOptions && selectOptions.length > 0) {
-			selectOptions.forEach(option => {
+			selectOptions.forEach((option) => {
 				if (config.emailCheck.test(option.value)) {
 					newRecipients.push(option);
 				}
@@ -58,7 +58,7 @@ class DocumentExportSendModal extends React.Component {
 
 		this.setState({
 			recipients: newRecipients,
-			recipientsError: ''
+			recipientsError: "",
 		});
 	}
 
@@ -77,14 +77,14 @@ class DocumentExportSendModal extends React.Component {
 					subject: regard,
 					// recipients: recipients.map(recipient => recipient.value),
 					recipients: [senderEmail],
-					text: messageText.replace(/\n/g, '<br>')
+					text: messageText.replace(/\n/g, "<br>"),
 				};
 
 				invoiz
 					.request(`${config.settings.endpoints.accountantExportUrl}${documentExportItem.id}/send`, {
 						auth: true,
 						data,
-						method: 'POST'
+						method: "POST",
 					})
 					.then(() => {
 						// documentExportItem.sentAt = moment().format('DD.MM.YYYY');
@@ -94,7 +94,7 @@ class DocumentExportSendModal extends React.Component {
 						ModalService.close();
 					})
 					.catch(() => {
-						this.showToast({ type: 'error', message: resources.documentExportSendError });
+						this.showToast({ type: "error", message: resources.documentExportSendError });
 						this.setState({ isSubmitting: false });
 					});
 			});
@@ -113,10 +113,10 @@ class DocumentExportSendModal extends React.Component {
 						<div className="row">
 							<TextInputExtendedComponent
 								ref="regardInput"
-								customWrapperClass={'col-xs-12'}
-								name={'regard'}
+								customWrapperClass={"col-xs-12"}
+								name={"regard"}
 								value={regard}
-								onChange={val => this.setState({ regard: val })}
+								onChange={(val) => this.setState({ regard: val })}
 								label={resources.str_subject}
 								autoComplete="off"
 								spellCheck="false"
@@ -145,10 +145,10 @@ class DocumentExportSendModal extends React.Component {
 							/> */}
 							<TextInputExtendedComponent
 								ref="regardInput"
-								customWrapperClass={'col-xs-12'}
-								name={'senderEmail'}
+								customWrapperClass={"col-xs-12"}
+								name={"senderEmail"}
 								value={senderEmail}
-								onChange={senderEmail => this.setState({ senderEmail })}
+								onChange={(senderEmail) => this.setState({ senderEmail })}
 								label={`Enter e-mail address`}
 								autoComplete="off"
 								spellCheck="false"
@@ -165,28 +165,28 @@ class DocumentExportSendModal extends React.Component {
 							<textarea
 								className="textarea_input"
 								value={messageText}
-								onChange={evt => this.onMessageTextChange(evt.nativeEvent.target.value)}
+								onChange={(evt) => this.onMessageTextChange(evt.nativeEvent.target.value)}
 							/>
 							<div className="textarea_bar" />
 						</div>
 
 						<div className="modal-base-footer">
+							<div className="modal-base-confirm">
+								<ButtonComponent
+									buttonIcon={"icon-mail"}
+									type={"primary"}
+									disabled={this.state.isSubmitting}
+									callback={() => this.onSubmitClicked()}
+									label={resources.str_sendEmail}
+									dataQsId="modal-btn-confirm"
+								/>
+							</div>
 							<div className="modal-base-cancel">
 								<ButtonComponent
 									type="cancel"
 									callback={() => ModalService.close(true)}
 									label={resources.str_abortStop}
 									dataQsId="modal-btn-cancel"
-								/>
-							</div>
-							<div className="modal-base-confirm">
-								<ButtonComponent
-									buttonIcon={'icon-mail'}
-									type={'primary'}
-									disabled={this.state.isSubmitting}
-									callback={() => this.onSubmitClicked()}
-									label={resources.str_sendEmail}
-									dataQsId="modal-btn-confirm"
 								/>
 							</div>
 						</div>

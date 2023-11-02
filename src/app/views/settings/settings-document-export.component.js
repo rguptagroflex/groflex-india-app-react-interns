@@ -38,6 +38,7 @@ class SettingsDocumentExportComponent extends React.Component {
 		const currYear = moment().year();
 
 		this.state = {
+			tenant: null,
 			documentExportState: props.documentExportState,
 			selectedDate: null,
 			customStartDate: `01-01-${currYear}`,
@@ -59,6 +60,8 @@ class SettingsDocumentExportComponent extends React.Component {
 			invoiz.user.logout(true);
 		}
 		this.props.fetchDocumentExportList(true);
+
+		this.fetchTenantDetails();
 	}
 
 	createDocumentExportTableRows(items) {
@@ -307,6 +310,16 @@ class SettingsDocumentExportComponent extends React.Component {
 		this.setState({ exportFormat: value });
 	}
 
+	fetchTenantDetails() {
+		const tenantURL = `${config.resourceHost}tenant`;
+		invoiz.request(tenantURL, { auth: true }).then((res) => {
+			const {
+				body: { data },
+			} = res;
+			this.setState({ tenant: data });
+		});
+	}
+
 	render() {
 		const {
 			selectedDate,
@@ -316,6 +329,7 @@ class SettingsDocumentExportComponent extends React.Component {
 			canChangeAccountData,
 			canCreateGstExports,
 			planRestricted,
+			tenant,
 		} = this.state;
 		const {
 			isLoading,
@@ -326,6 +340,9 @@ class SettingsDocumentExportComponent extends React.Component {
 			totalPages,
 			resources,
 		} = this.props;
+
+		console.log(tenant, "tenant from gst");
+
 		return (
 			<React.Fragment>
 				{planRestricted ? (
@@ -344,11 +361,23 @@ class SettingsDocumentExportComponent extends React.Component {
 					/>
 				) : null}
 
-				<div className="settings-document-export-component">
+				<div
+					className={`settings-document-export-component ${
+						this.props.isSubmenuVisible ? "gstExportLeftAlign" : ""
+					}`}
+				>
 					<TopbarComponent title={resources.str_accountantsExport} viewIcon={`icon-settings`} />
 
-					<div className="box">
-						<h2 className="u_pb_16">{resources.str_accountantsExport}</h2>
+					<div className="box u_p_16">
+						<div className="row col-xs-12 company-name-and-gst-in">
+							<span className="color-primary font-600 font-15px u_mr_20">
+								{tenant && tenant.companyAddress.companyName}
+							</span>
+							<span>
+								{" "}
+								<span className="gstin-label">GSTIN</span> {tenant && tenant.companyAddress.gstNumber}
+							</span>
+						</div>
 						{/* <div className="u_pb_60 text-muted">
 						{resources.documentExportHeading}
 						<br />
@@ -362,7 +391,30 @@ class SettingsDocumentExportComponent extends React.Component {
 					</div> */}
 
 						<div className="document-export-configuration">
-							<div className="document-export-date">
+							<div className="document-export-type">
+								<label className="font-14px font-600 export-type-label">GST-Report:</label>
+								<SelectInputComponent
+									allowCreate={false}
+									notAsync={true}
+									loadedOptions={this.getExportTypeOptios()}
+									value={exportFormat}
+									options={{
+										clearable: false,
+										noResultsText: false,
+										labelKey: "label",
+										valueKey: "value",
+										matchProp: "label",
+										placeholder: `Select export type`,
+										handleChange: (option) => {
+											this.setState({ exportFormat: option && option.value }, () => {
+												this.updateCreateExportDates();
+											});
+										},
+									}}
+								/>
+							</div>
+
+							<div className="document-export-date u_ml_20">
 								<SelectInputComponent
 									allowCreate={false}
 									notAsync={true}
@@ -406,27 +458,6 @@ class SettingsDocumentExportComponent extends React.Component {
 								</div>
 							) : null}
 
-							<div className="document-export-type">
-								<SelectInputComponent
-									allowCreate={false}
-									notAsync={true}
-									loadedOptions={this.getExportTypeOptios()}
-									value={exportFormat}
-									options={{
-										clearable: false,
-										noResultsText: false,
-										labelKey: "label",
-										valueKey: "value",
-										matchProp: "label",
-										placeholder: `Select export type`,
-										handleChange: (option) => {
-											this.setState({ exportFormat: option && option.value }, () => {
-												this.updateCreateExportDates();
-											});
-										},
-									}}
-								/>
-							</div>
 							{/* <div className='export-type'>
 							<RadioInputComponent
 								useCustomStyle={true}
@@ -435,23 +466,23 @@ class SettingsDocumentExportComponent extends React.Component {
 								options={exportOption}
 							/>
 						</div> */}
-							<ButtonComponent
-								buttonIcon={"icon-arrow_right"}
-								type="primary"
-								callback={() => {
-									console.log("can create gst export", canCreateGstExports);
-									if (canCreateGstExports) {
-										return this.onCreateExportClicked();
-									}
-									this.setState({ planRestricted: true });
-								}}
-								label={`Export`}
-								disabled={!selectedDate || !exportFormat}
-								dataQsId="settings-documentExport-btn-createExport"
-							/>
 						</div>
+						<ButtonComponent
+							wrapperClass="runReportBtnWrapper"
+							type="primary"
+							callback={() => {
+								console.log("can create gst export", canCreateGstExports);
+								if (canCreateGstExports) {
+									return this.onCreateExportClicked();
+								}
+								this.setState({ planRestricted: true });
+							}}
+							label="Run Report"
+							disabled={!selectedDate || !exportFormat}
+							dataQsId="settings-documentExport-btn-createExport"
+						/>
 					</div>
-					<div className="box">
+					<div className="box u_p_16">
 						<div className="text-h3 export-head u_mb_30">{resources.str_latestExports}</div>
 
 						{errorOccurred ? (
@@ -508,6 +539,7 @@ const mapStateToProps = (state) => {
 	const { isLoading, errorOccurred, documentExportData, columns, currentPage, totalPages } =
 		state.settings.documentExport;
 	const { resources } = state.language.lang;
+	const isSubmenuVisible = state.global.isSubmenuVisible;
 	return {
 		isLoading,
 		errorOccurred,
@@ -516,6 +548,7 @@ const mapStateToProps = (state) => {
 		currentPage,
 		totalPages,
 		resources,
+		isSubmenuVisible,
 	};
 };
 

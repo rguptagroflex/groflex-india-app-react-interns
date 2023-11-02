@@ -195,13 +195,13 @@
 			color: $color-primary;
 			background: transparent;
 		}
-	}
-	.secondaryNew-disabled {
-		border: 1px solid #c6c6c6 !important;
-		color: #c6c6c6 !important;
-		background-color: transparent !important;
-		&:hover {
+		&:disabled {
+			border: 1px solid #c6c6c6 !important;
+			color: #c6c6c6 !important;
 			background-color: transparent !important;
+			&:hover {
+				background-color: transparent !important;
+			}
 		}
 	}
 }

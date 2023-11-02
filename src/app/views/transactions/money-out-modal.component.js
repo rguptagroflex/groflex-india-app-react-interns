@@ -38,7 +38,7 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 		notes: "",
 		date: "",
 		credits: 0, //credits will be edited in this modal
-		debits: 0, 
+		debits: 0,
 		bankDetailId: null,
 		chartOfAccountId: null,
 	});
@@ -226,11 +226,11 @@ const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
 			</div>
 
 			<div style={{ position: "relative" }} className="modal-base-footer">
-				<div className="modal-base-cancel">
-					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
-				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent disabled={false} buttonIcon="icon-check" callback={handleSave} label={"Save"} />
+				</div>
+				<div className="modal-base-cancel">
+					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
 				</div>
 			</div>
 		</div>

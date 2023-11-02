@@ -947,16 +947,16 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 				<TextInputErrorComponent errorMessage={formError} visible={!!formError} />
 			</div>
 
-			<div style={{ position: "relative" }} className="modal-base-footer">
-				<div className="modal-base-cancel">
-					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
-				</div>
+			<div className="modal-base-footer">
 				<div className="modal-base-confirm">
 					<ButtonComponent
 						label={"Match and reconcile"}
 						callback={handleMatchAndReconcile}
 						disabled={!(selectedTransactionsList.length && selectedBankStatementList.length)}
 					/>
+				</div>
+				<div className="modal-base-cancel">
+					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
 				</div>
 			</div>
 		</div>

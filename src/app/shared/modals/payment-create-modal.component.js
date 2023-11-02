@@ -13,7 +13,7 @@ import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-i
 import { formatApiDate } from "helpers/formatDate";
 import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
 import SelectInput from "../inputs/select-input/select-input.component";
-import userPermissions from 'enums/user-permissions.enum';
+import userPermissions from "enums/user-permissions.enum";
 
 const PAYMENT_TYPE = {
 	PAYMENT: "payment",
@@ -76,11 +76,14 @@ class PaymentCreateModalComponent extends React.Component {
 	}
 
 	componentDidMount() {
-		this.setState({
-			canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
-		}, () => {
-			this.getBanksList();
-		});
+		this.setState(
+			{
+				canViewExpense: invoiz.user && invoiz.user.hasPermission(userPermissions.VIEW_EXPENSE),
+			},
+			() => {
+				this.getBanksList();
+			}
+		);
 	}
 
 	getBanksList() {
@@ -88,8 +91,8 @@ class PaymentCreateModalComponent extends React.Component {
 		invoiz.request(`${config.resourceHost}bank`, { auth: true }).then((response) => {
 			const { body } = response;
 			let paymentMethodList = [];
-			if(body && body.data && body.data.length === 0 && canViewExpense) {
-				invoiz.page.showToast({ type: "error", message: 'Please create Cash and Bank first' });
+			if (body && body.data && body.data.length === 0 && canViewExpense) {
+				invoiz.page.showToast({ type: "error", message: "Please create Cash and Bank first" });
 			}
 			if (body && body.data && body.data.length > 0) {
 				paymentMethodList = body.data.map((item) => {
@@ -131,8 +134,15 @@ class PaymentCreateModalComponent extends React.Component {
 	}
 
 	save() {
-		const { isSaving, totalAmount, isUsingPreviousBalance, isClearingDues, paymentAmount, usingPreviousBalance, canViewExpense } =
-			this.state;
+		const {
+			isSaving,
+			totalAmount,
+			isUsingPreviousBalance,
+			isClearingDues,
+			paymentAmount,
+			usingPreviousBalance,
+			canViewExpense,
+		} = this.state;
 		const { payment, onSave, resources, customer } = this.props;
 
 		payment.amount = paymentAmount;
@@ -162,12 +172,12 @@ class PaymentCreateModalComponent extends React.Component {
 		}
 		if (canViewExpense) {
 			if (!this.state.bankDetailId) {
-				invoiz.page.showToast({type: "error", message: "Please select payment method"});
+				invoiz.page.showToast({ type: "error", message: "Please select payment method" });
 				return;
 			}
 			payment.bankDetailId = this.state.bankDetailId;
 		}
-		
+
 		this.setState({ isSaving: true }, () => {
 			invoiz
 				.request(`${config.resourceHost}invoice/${payment.invoiceId}/payment`, {
@@ -348,7 +358,7 @@ class PaymentCreateModalComponent extends React.Component {
 			clearingDues,
 			totalDues,
 			hasDues,
-			canViewExpense
+			canViewExpense,
 		} = this.state;
 		if (payment.date && payment.date instanceof Date) {
 			// payment.date = moment(payment.date).format(config.dateFormat.api);
@@ -364,26 +374,26 @@ class PaymentCreateModalComponent extends React.Component {
 					</div>
 					{canViewExpense ? (
 						<div className="col-xs-6">
-						<SelectInput
-							allowCreate={false}
-							notAsync={true}
-							loadedOptions={this.state.paymentMethodList}
-							value={this.state.bankDetailId}
-							options={{
-								clearable: false,
-								noResultsText: false,
-								labelKey: "label",
-								valueKey: "value",
-								matchProp: "label",
-								placeholder: "Payment method",
-								handleChange: (option) => {
-									this.setState({ ...this.state, bankDetailId: option.value });
-								},
-							}}
-						/>
-					</div>
+							<SelectInput
+								allowCreate={false}
+								notAsync={true}
+								loadedOptions={this.state.paymentMethodList}
+								value={this.state.bankDetailId}
+								options={{
+									clearable: false,
+									noResultsText: false,
+									labelKey: "label",
+									valueKey: "value",
+									matchProp: "label",
+									placeholder: "Payment method",
+									handleChange: (option) => {
+										this.setState({ ...this.state, bankDetailId: option.value });
+									},
+								}}
+							/>
+						</div>
 					) : null}
-					
+
 					{invoice.exchangeRate && invoice.baseCurrency ? (
 						<div className="col-xs-6">
 							<div className="payment-create-label">{`Invoice amount (1 ${
@@ -564,15 +574,6 @@ class PaymentCreateModalComponent extends React.Component {
 				)}
 
 				<div className="modal-base-footer">
-					<div className="modal-base-cancel">
-						<ButtonComponent
-							dataQsId="createPayment-btn-cancel"
-							callback={() => ModalService.close()}
-							type="cancel"
-							label={resources.str_abortStop}
-						/>
-					</div>
-
 					<div className="modal-base-confirm">
 						<ButtonComponent
 							buttonIcon={isNormalPayment ? "icon-check" : ""}
@@ -592,6 +593,14 @@ class PaymentCreateModalComponent extends React.Component {
 								// payment.amount === payment.outstandingBalance
 								isNormalPayment ? resources.str_toSave : resources.str_continue
 							}
+						/>
+					</div>
+					<div className="modal-base-cancel">
+						<ButtonComponent
+							dataQsId="createPayment-btn-cancel"
+							callback={() => ModalService.close()}
+							type="cancel"
+							label={resources.str_abortStop}
 						/>
 					</div>
 				</div>
