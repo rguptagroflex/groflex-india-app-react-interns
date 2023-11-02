@@ -562,7 +562,12 @@ const ReportBalanceSheet = (props) => {
 							</div>
 						);
 					})}
-					<div></div>
+					<div className="balance-sheet-result">
+						<div className="result-container">
+							<h6>TOTAL BALANCE</h6>
+							<h6 className="result-value">₹ {parseFloat(tableTotals.finalBalanceTotal).toFixed(2)}</h6>
+						</div>
+					</div>
 				</div>
 			</div>{" "}
 		</div>

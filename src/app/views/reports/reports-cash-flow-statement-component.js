@@ -26,6 +26,7 @@ const ReportsCashFlowStatement = (props) => {
 	const [rowData, setRowData] = useState([]);
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [contentHeaders, setcontentHeaders] = useState([]);
+	const [totalCashFlow, setTotalCashFlow] = useState("");
 	const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 
 	const [columnDefs, setColumnDefs] = useState([
@@ -351,6 +352,7 @@ const ReportsCashFlowStatement = (props) => {
 				});
 				setcontentHeaders(headers);
 				setRowData(response.summaryData.transactions);
+				setTotalCashFlow(response.summaryData.finalCashFlowTotal);
 			}
 		});
 	};
@@ -539,12 +541,8 @@ const ReportsCashFlowStatement = (props) => {
 						</div>
 						<div className="cash-flow-result">
 							<div className="year-beginning">
-								<h6>CASH AT THE BEGINNING OF THE YEAR</h6>
-								<h6 className="result-value">₹ {parseFloat("0").toFixed(2)}</h6>
-							</div>
-							<div className="year-ending">
-								<h6>CASH AT THE END OF THE YEAR</h6>
-								<h6 className="result-value">₹ {parseFloat("0").toFixed(2)}</h6>
+								<h6>TOTAL CASH IN FLOW</h6>
+								<h6 className="result-value">₹ {parseFloat(totalCashFlow).toFixed(2)}</h6>
 							</div>
 						</div>
 					</div>
