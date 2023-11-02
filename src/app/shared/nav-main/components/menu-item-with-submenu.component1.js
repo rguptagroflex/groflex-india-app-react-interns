@@ -294,7 +294,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		// const activeClass = active ? "icon-arr_down menuItem-active" : "icon-arr_right";
 		// console.log(active);
 		const activeClass = active ? "menuItem-active" : "";
-		// console.log("Store: ", isSubmenuVisible);
+
 		const submenuActive = activeClass === "menuItem-active";
 
 		const menuIcons = {
@@ -309,70 +309,57 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 
 		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
 		const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
-		// console.log(submenuItems);
 
 		return (
 			<li key={name} id={name}>
 				<div>
-					<Tooltip
-						title={menuIconsToolTipTitle[icon]}
-						placement="right"
-						arrow
-						PopperProps={{ style: { zIndex: 100000 } }}
-					>
-						<div className={`sub-menu-main ${submenuVisible ? "visible" : ""}`}>
-							<div
-								ref="subMenuBarCollapsed"
-								// onMouseEnter={() => this.showSubmenu(name)}
-								// onMouseEnter={() => console.log(name)}
-								className={className}
-								data-href={submenuItems[0].url}
-								data-qs-id={`global-menu-item-${name}`}
-								onMouseEnter={() => {
-									this.showSubmenu();
-									this.iconChangeOnHover();
-									setSubmenuVisibleHoverTrue();
-								}}
-								onMouseLeave={() => {
-									this.iconChangeOnHover();
-									setSubmenuVisibleHoverTrue();
-								}}
-								onClick={() => {
-									closeSearchOnMenuItemClick();
-									closeNotificationOnMenuItemClick();
-								}}
-								// onMouseLeave={() => {
-								// 	this.hideSubmenu();
-								// }}
-							>
-								<SVGInline svg={menuIcons[icon]} width="24px" height="24px" className="menuItemIcon" />
-							</div>
-
-							<SubMenuBarComponent
-								key={`sub-item-${isSubmenuVisible.name}`}
-								visible={submenuVisible}
-								title={title}
-								name={name}
-								hasImprintAndPrivacy={hasImprintAndPrivacy}
-								resourceKey={resourceKey}
-								resources={resources}
-								visibleOnclick={submenuVisibleOnclick}
-								hideSubmenu={this.hideSubmenu}
-								showSubmenu={() => this.showSubmenu()}
-								submenuItemClicked={this.submenuItemClicked}
-								submenuCloseIconClicked={this.submenuCloseIconClicked}
-								submenuClick={submenuClick}
-								active={active}
-								closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
-								closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
-								// submenuHover={submenuHover}
-								submenuHover={this.props.submenuHover}
-								setSubmenuVisibleHoverFalse={setSubmenuVisibleHoverFalse}
-							>
-								{submenuItemComponents}
-							</SubMenuBarComponent>
+					<div className={`sub-menu-main ${submenuVisible ? "visible" : ""}`}>
+						<div
+							ref="subMenuBarCollapsed"
+							className={className}
+							data-href={submenuItems[0].url}
+							data-qs-id={`global-menu-item-${name}`}
+							onMouseEnter={() => {
+								this.showSubmenu();
+								this.iconChangeOnHover();
+								setSubmenuVisibleHoverTrue();
+							}}
+							onMouseLeave={() => {
+								this.iconChangeOnHover();
+								setSubmenuVisibleHoverTrue();
+							}}
+							onClick={() => {
+								closeSearchOnMenuItemClick();
+								closeNotificationOnMenuItemClick();
+							}}
+						>
+							<SVGInline svg={menuIcons[icon]} width="24px" height="24px" className="menuItemIcon" />
 						</div>
-					</Tooltip>
+
+						<SubMenuBarComponent
+							key={`sub-item-${isSubmenuVisible.name}`}
+							visible={submenuVisible}
+							title={title}
+							name={name}
+							hasImprintAndPrivacy={hasImprintAndPrivacy}
+							resourceKey={resourceKey}
+							resources={resources}
+							visibleOnclick={submenuVisibleOnclick}
+							hideSubmenu={this.hideSubmenu}
+							showSubmenu={() => this.showSubmenu()}
+							submenuItemClicked={this.submenuItemClicked}
+							submenuCloseIconClicked={this.submenuCloseIconClicked}
+							submenuClick={submenuClick}
+							active={active}
+							closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
+							closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
+							// submenuHover={submenuHover}
+							submenuHover={this.props.submenuHover}
+							setSubmenuVisibleHoverFalse={setSubmenuVisibleHoverFalse}
+						>
+							{submenuItemComponents}
+						</SubMenuBarComponent>
+					</div>
 				</div>
 			</li>
 		);

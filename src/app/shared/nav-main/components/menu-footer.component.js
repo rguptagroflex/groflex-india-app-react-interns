@@ -203,43 +203,42 @@ class MenuFooterComponent extends React.Component {
 					</div>
 				</Tooltip>
 
-				<Tooltip title="User Profile" placement="right" arrow PopperProps={{ style: { zIndex: 100000 } }}>
-					<div
-						className="menuItem profile_logo"
-						onMouseLeave={() => {
-							this.iconChangeOnHover();
-						}}
-						onMouseEnter={() => {
-							this.iconChangeOnHover();
-						}}
-					>
-						{/* <span className=" icon icon-user_outlined"></span> */}
-						{profileHoverActive ? (
-							<SVGInline svg={profile_hover} width="24px" height="24px" />
-						) : (
-							<SVGInline svg={profile} width="24px" height="24px" />
-						)}
-						{/* <SVGInline svg={profile} width="24px" height="24px" /> */}
-						<div className="menu-profile-popup">
-							<div className="menu-profile-popup-head">
-								<div className="icon icon-user_outlined"></div>
+				<div
+					className="menuItem profile_logo"
+					onMouseLeave={() => {
+						this.iconChangeOnHover();
+					}}
+					onMouseEnter={() => {
+						this.iconChangeOnHover();
+					}}
+				>
+					{/* <span className=" icon icon-user_outlined"></span> */}
+					{profileHoverActive ? (
+						<SVGInline svg={profile_hover} width="24px" height="24px" />
+					) : (
+						<SVGInline svg={profile} width="24px" height="24px" />
+					)}
+					{/* <SVGInline svg={profile} width="24px" height="24px" /> */}
+					<div className="menu-profile-popup">
+						<div className="menu-profile-popup-head">
+							<div className="icon icon-user_outlined"></div>
 
-								<div className="text-info">
-									{this.state.tenant.companyAddress.companyName || "Business Name"}
-								</div>
+							<div className="text-info">
+								{this.state.tenant.companyAddress.companyName || "Business Name"}
 							</div>
-							<div className="menu-profile-popup-middle1">
-								<a
-									className={`menuItem small icon icon-settings_outlined ${
-										activeSubmenuItem == "account" ? "menuItem-active" : ""
-									}`}
-									onClick={() => this.navigateToPage("/settings/account")}
-									data-href="/settings/account"
-									data-qs-id={`global-menu-item-Account-details`}
-								>
-									{"Account details"}
-								</a>
-								{/* <a
+						</div>
+						<div className="menu-profile-popup-middle1">
+							<a
+								className={`menuItem small icon icon-settings_outlined ${
+									activeSubmenuItem == "account" ? "menuItem-active" : ""
+								}`}
+								onClick={() => this.navigateToPage("/settings/account")}
+								data-href="/settings/account"
+								data-qs-id={`global-menu-item-Account-details`}
+							>
+								{"Account details"}
+							</a>
+							{/* <a
 								className={`menuItem small icon icon-settings_outlined ${
 									activeSubmenuItem == "account-setting" ? "menuItem-active" : ""
 								}`}
@@ -250,52 +249,52 @@ class MenuFooterComponent extends React.Component {
 								{"Account Settings"}
 							</a> */}
 
-								<a
-									className={`menuItem small icon icon-credit_card ${
-										activeSubmenuItem == "billing" ? "menuItem-active" : ""
-									}`}
-									onClick={() => this.navigateToPage("/settings/billing")}
-									data-href="/settings/billing"
-									data-qs-id={`global-menu-item-Your-billing`}
-								>
-									{"Your billing"}
-								</a>
-								<a
-									className={`menuItem small icon icon-teams ${
-										activeSubmenuItem == "user" ? "menuItem-active" : ""
-									}`}
-									onClick={() => this.navigateToPage("/settings/user")}
-									data-href="/settings/user"
-									data-qs-id={`global-menu-item-Your-Teams`}
-								>
-									{"Teams"}
-								</a>
-							</div>
+							<a
+								className={`menuItem small icon icon-credit_card ${
+									activeSubmenuItem == "billing" ? "menuItem-active" : ""
+								}`}
+								onClick={() => this.navigateToPage("/settings/billing")}
+								data-href="/settings/billing"
+								data-qs-id={`global-menu-item-Your-billing`}
+							>
+								{"Your billing"}
+							</a>
+							<a
+								className={`menuItem small icon icon-teams ${
+									activeSubmenuItem == "user" ? "menuItem-active" : ""
+								}`}
+								onClick={() => this.navigateToPage("/settings/user")}
+								data-href="/settings/user"
+								data-qs-id={`global-menu-item-Your-Teams`}
+							>
+								{"Teams"}
+							</a>
+						</div>
 
-							<div className="menu-profile-popup-middle2">
-								<a
-									className="menuItem small icon icon-help_outlined"
-									href="https://groflex.in"
-									target="_blank"
-								>
-									{/* {"Groflex Help Center"} */}
-									{"Help"}
-								</a>
-								<a
-									className="menuItem small icon icon-vpn_policy"
-									href="https://groflex.in/privacy-policy"
-									target="_blank"
-								>
-									{/* {"Terms & Conditions"} */}
-									{"Privacy Policy"}
-								</a>
-							</div>
-							<div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>
-								{resources.str_logout}
-							</div>
+						<div className="menu-profile-popup-middle2">
+							<a
+								className="menuItem small icon icon-help_outlined"
+								href="https://groflex.in"
+								target="_blank"
+							>
+								{/* {"Groflex Help Center"} */}
+								{"Help"}
+							</a>
+							<a
+								className="menuItem small icon icon-vpn_policy"
+								href="https://groflex.in/privacy-policy"
+								target="_blank"
+							>
+								{/* {"Terms & Conditions"} */}
+								{"Privacy Policy"}
+							</a>
+						</div>
+						<div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>
+							{resources.str_logout}
 						</div>
 					</div>
-				</Tooltip>
+				</div>
+
 				{/* <div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>
 					{resources.str_logout}
 				</div> */}

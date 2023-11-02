@@ -819,7 +819,7 @@ class ArticleDetailComponent extends React.Component {
 						</div>
 
 						{article.trackedInInventory ? (
-							<div className="box" style={{ height: 699 }}>
+							<div className="box" style={{ height: 699, display: "none" }}>
 								<div className="pagebox_heading text-h4">{`Stock movement`}</div>
 								<div className="pagebox_content articleHistory_container">
 									{errorOccurred ? (
