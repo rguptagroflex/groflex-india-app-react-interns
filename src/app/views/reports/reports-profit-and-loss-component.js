@@ -41,8 +41,8 @@ function ReportsProfitAndLoss(props) {
 	const fetchData = async () => {
 		const startDate = moment(selectedDate.startDate).format();
 		const endDate = moment(selectedDate.endDate).format();
-		console.log("Start Date: ", startDate);
-		console.log("End Date: ", endDate);
+		// console.log("Start Date: ", startDate);
+		// console.log("End Date: ", endDate);
 		let tableHeaders = [];
 		try {
 			const response = await invoiz.request(
@@ -142,13 +142,6 @@ function ReportsProfitAndLoss(props) {
 	const handleSendProfitAndLossEmail = (modalData) => {
 		const { emailTextAdditional, emails, regard, sendType } = modalData;
 		// console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
-		console.log(
-			"recipients",
-			emails.map((email) => email.value)
-		);
-		console.log("text", emailTextAdditional);
-		console.log("subject", regard);
-		console.log("Type: ", sendType);
 
 		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/ProfitAndLoss/${moment(
 			selectedDate.startDate
@@ -166,7 +159,7 @@ function ReportsProfitAndLoss(props) {
 		invoiz
 			.request(url, { auth: true, method, data })
 			.then((res) => {
-				console.log("Response:  for send email modal", res);
+				// console.log("Response:  for send email modal", res);
 				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
 				ModalService.close();
 			})
@@ -251,7 +244,7 @@ function ReportsProfitAndLoss(props) {
 				break;
 		}
 		setSelectedDate({ startDate, endDate });
-		console.log("startDate", startDate);
+		// console.log("startDate", startDate);
 		return { startDate, endDate };
 	};
 	const DateFilterType = {
@@ -339,7 +332,7 @@ function ReportsProfitAndLoss(props) {
 		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 	useEffect(() => {
-		console.log("selected Date: ", selectedDate);
+		// console.log("selected Date: ", selectedDate);
 		fetchData();
 	}, [selectedDate]);
 

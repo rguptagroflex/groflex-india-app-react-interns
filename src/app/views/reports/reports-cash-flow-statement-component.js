@@ -202,13 +202,13 @@ const ReportsCashFlowStatement = (props) => {
 				break;
 		}
 		setSelectedDate({ startDate, endDate });
-		console.log("startDate", startDate);
+		// console.log("startDate", startDate);
 		return { startDate, endDate };
 	};
 
 	const handleSendCashFlowEmail = (modalData) => {
 		const { emailTextAdditional, emails, regard, sendType } = modalData;
-		console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+		// console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
 
 		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/CashFlow/${moment(
 			selectedDate.startDate
@@ -226,7 +226,7 @@ const ReportsCashFlowStatement = (props) => {
 		invoiz
 			.request(url, { auth: true, method, data })
 			.then((res) => {
-				console.log("Response:  for send email modal", res);
+				// console.log("Response:  for send email modal", res);
 				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
 				ModalService.close();
 			})
@@ -341,10 +341,10 @@ const ReportsCashFlowStatement = (props) => {
 		let headers = [];
 
 		await invoiz.request(endpoint, { auth: true }).then((res) => {
-			console.log("result: ", res.body.data);
+			// console.log("result: ", res.body.data);
 			const response = res.body.data;
 			if (response) {
-				console.log(response.summaryData.transactions);
+				// console.log(response.summaryData.transactions);
 				response.summaryData.transactions.forEach((item) => {
 					if (!headers.includes(item.accountTypeId)) {
 						headers.push(item.accountTypeId);

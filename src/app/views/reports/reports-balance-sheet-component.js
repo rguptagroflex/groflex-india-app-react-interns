@@ -210,7 +210,7 @@ const ReportBalanceSheet = (props) => {
 
 	const handleSendBalanceSheetEmail = (modalData) => {
 		const { emailTextAdditional, emails, regard, sendType } = modalData;
-		console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+		// console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
 
 		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/BalanceSheet/${moment(
 			selectedDate.startDate
@@ -228,7 +228,7 @@ const ReportBalanceSheet = (props) => {
 		invoiz
 			.request(url, { auth: true, method, data })
 			.then((res) => {
-				console.log("Response:  for send email modal", res);
+				// console.log("Response:  for send email modal", res);
 				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
 				ModalService.close();
 			})
@@ -353,12 +353,12 @@ const ReportBalanceSheet = (props) => {
 	}, [selectedDate]);
 
 	const exportButtonClick = async () => {
-		console.log("startExport: ", selectedDate);
+		// console.log("startExport: ", selectedDate);
 		const endpoint = `${config.resourceHost}accountingReport/balanceSheet/${moment(
 			selectedDate.startDate
 		).format()}/${moment(selectedDate.endDate).format()}?type=csv`;
 		await invoiz.request(endpoint, { auth: true }).then((res) => {
-			console.log("Res: ", res);
+			// console.log("Res: ", res);
 		});
 	};
 

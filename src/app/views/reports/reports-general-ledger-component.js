@@ -184,7 +184,7 @@ const ReportsGeneralLedger = (props) => {
 		(params) => {
 			const startDate = moment(selectedDate.startDate).format("YYYY-MM-DD");
 			const endDate = moment(selectedDate.endDate).format("YYYY-MM-DD");
-			console.log("Api ID: ", customerId);
+			// console.log("Api ID: ", customerId);
 			if (customerId === "") {
 				setRowData([]);
 			} else {
@@ -216,7 +216,7 @@ const ReportsGeneralLedger = (props) => {
 						setTableHeader(tableHeaders);
 
 						setCustomerName(res.body.data.summaryData.customer.name);
-						console.log("Filtered Response: ", filterdResponse);
+						// console.log("Filtered Response: ", filterdResponse);
 
 						setRowData(filterdResponse);
 					});
@@ -287,7 +287,7 @@ const ReportsGeneralLedger = (props) => {
 
 	const handleSendGeneralLedgerEmail = (modalData) => {
 		const { emailTextAdditional, emails, regard, sendType } = modalData;
-		console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+		// console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
 
 		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/GeneralLedger/${moment(
 			selectedDate.startDate
@@ -306,7 +306,7 @@ const ReportsGeneralLedger = (props) => {
 		invoiz
 			.request(url, { auth: true, method, data })
 			.then((res) => {
-				console.log("Response:  for send email modal", res);
+				// console.log("Response:  for send email modal", res);
 				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
 				ModalService.close();
 			})
@@ -417,8 +417,8 @@ const ReportsGeneralLedger = (props) => {
 
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignGeneralLedger" : "";
-	console.log("Table Heads: ", tableHeaders);
-	console.log("Row Data: ", rowData);
+	// console.log("Table Heads: ", tableHeaders);
+	// console.log("Row Data: ", rowData);
 
 	return (
 		<div style={containerStyle} className="general-ledger-component-main">
@@ -465,7 +465,7 @@ const ReportsGeneralLedger = (props) => {
 											if (!option) return;
 											// this.onCustomerChange(option.customer);
 											setCustomerDropDown(option);
-											console.log("Option", option);
+											// console.log("Option", option);
 										},
 									}}
 									title={"Customers"}
