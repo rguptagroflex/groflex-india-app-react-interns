@@ -1,7 +1,7 @@
-import React from 'react';
-import CheckboxInputComponent from 'shared/inputs/checkbox-input/checkbox-input.component';
-import LinesEllipsis from 'react-lines-ellipsis';
-import ListAdvancedComponent from '../list-advanced/list-advanced.component';
+import React from "react";
+import CheckboxInputComponent from "shared/inputs/checkbox-input/checkbox-input.component";
+import LinesEllipsis from "react-lines-ellipsis";
+import ListAdvancedComponent from "../list-advanced/list-advanced.component";
 
 class ListComponent extends React.Component {
 	constructor(props) {
@@ -14,7 +14,7 @@ class ListComponent extends React.Component {
 			columns: this.props.columns || [],
 			columnCallback: this.props.columnCallback || null,
 			expandable: !!this.props.expandable,
-			expandableHeight: this.props.expandableHeight || '200px',
+			expandableHeight: this.props.expandableHeight || "200px",
 			selectable: !!this.props.selectable,
 			selectedAllCallback: this.props.selectedAllCallback || null,
 			selectedCallback: this.props.selectedCallback || null,
@@ -22,8 +22,8 @@ class ListComponent extends React.Component {
 			sortable: !!this.props.sortable,
 			rows: this.props.rows || [],
 			placeholderRow: this.props.placeholderRow || null,
-			tableId: this.props.tableId || '',
-			emptyFallbackElement: this.props.emptyFallbackElement || null
+			tableId: this.props.tableId || "",
+			emptyFallbackElement: this.props.emptyFallbackElement || null,
 		};
 	}
 
@@ -35,7 +35,7 @@ class ListComponent extends React.Component {
 			columns: props.columns || [],
 			columnCallback: props.columnCallback || null,
 			expandable: !!props.expandable,
-			expandableHeight: props.expandableHeight || '200px',
+			expandableHeight: props.expandableHeight || "200px",
 			selectable: !!props.selectable,
 			selectedAllCallback: props.selectedAllCallback || null,
 			selectedCallback: props.selectedCallback || null,
@@ -43,8 +43,8 @@ class ListComponent extends React.Component {
 			sortable: !!props.sortable,
 			rows: props.rows || [],
 			placeholderRow: props.placeholderRow || null,
-			tableId: props.tableId || '',
-			emptyFallbackElement: props.emptyFallbackElement || null
+			tableId: props.tableId || "",
+			emptyFallbackElement: props.emptyFallbackElement || null,
 		});
 	}
 
@@ -57,7 +57,7 @@ class ListComponent extends React.Component {
 				<td className="list-table-head-cell list-table-cell column-selectable" key={`column-selectable`}>
 					<CheckboxInputComponent
 						checked={this.state.allSelected}
-						onChange={checked => this.onToggleSelectAll(checked)}
+						onChange={(checked) => this.onToggleSelectAll(checked)}
 					/>
 				</td>
 			);
@@ -65,16 +65,17 @@ class ListComponent extends React.Component {
 
 		this.state.columns.forEach((column, index) => {
 			const columnStyle = {
-				width: column.width || 'auto',
-				minWidth: column.minWidth || '0',
-				textAlign: column.align || 'left'
+				// width: column.width || 'auto',
+				width: "fit-content",
+				minWidth: column.minWidth || "0",
+				textAlign: column.align || "left",
 			};
 			const customStyle = column.headStyle;
 			columns.push(
 				<td
 					className={`list-table-head-cell list-table-cell ${
-						this.state.sortable && !column.notSortable ? 'column-sortable' : ''
-					} ${!column.notSortable && column.sorted ? 'column-sorted' : ''}`}
+						this.state.sortable && !column.notSortable ? "column-sortable" : ""
+					} ${!column.notSortable && column.sorted ? "column-sorted" : ""}`}
 					key={`${this.state.tableId}-column-${index}`}
 					onClick={() => this.handleColumnClick(column)}
 					style={customStyle || columnStyle}
@@ -82,7 +83,7 @@ class ListComponent extends React.Component {
 					{/* {column.title} */}
 					{resources.columnHeader[column.resourceKey]}
 					{this.state.sortable && !column.notSortable ? (
-						<div className={`icon ${column.sorted === 'desc' ? 'icon-sort_down' : 'icon-sort_up'}`} />
+						<div className={`icon ${column.sorted === "desc" ? "icon-sort_down" : "icon-sort_up"}`} />
 					) : null}
 				</td>
 			);
@@ -97,12 +98,12 @@ class ListComponent extends React.Component {
 			if (this.state.selectable) {
 				cells.push(
 					<td
-						className={`list-table-cell cell-selectable ${row.selected ? 'visible' : ''}`}
+						className={`list-table-cell cell-selectable ${row.selected ? "visible" : ""}`}
 						key={`selectable-checkbox-column-${rowIndex}`}
 					>
 						<CheckboxInputComponent
 							checked={row.selected}
-							onChange={checked => this.onToggleSelect(row.id, checked)}
+							onChange={(checked) => this.onToggleSelect(row.id, checked)}
 						/>
 					</td>
 				);
@@ -116,7 +117,7 @@ class ListComponent extends React.Component {
 					count++;
 					const clickable = this.state.columns[index] && !this.state.columns[index].notClickable;
 					const cellStyle = {
-						textAlign: this.state.columns[index] && this.state.columns[index].align
+						textAlign: this.state.columns[index] && this.state.columns[index].align,
 					};
 
 					const subValueStyle =
@@ -138,18 +139,12 @@ class ListComponent extends React.Component {
 					cells.push(
 						<td
 							className="list-table-cell"
-							onClick={evt => this.handleRowClick(clickable, row.id, row, evt)}
+							onClick={(evt) => this.handleRowClick(clickable, row.id, row, evt)}
 							key={`${this.state.tableId}-cell-${count}`}
 							style={valueStyle || cellStyle}
 						>
-							{cell.value && ellipsis ? <LinesEllipsis
-								text={cell.value}
-								{...ellipsis}
-							/> : cell.value }
-							{subCell && ellipsis ? <LinesEllipsis
-								text={subCell}
-								{...ellipsis}
-							/> : subCell }
+							{cell.value && ellipsis ? <LinesEllipsis text={cell.value} {...ellipsis} /> : cell.value}
+							{subCell && ellipsis ? <LinesEllipsis text={subCell} {...ellipsis} /> : subCell}
 						</td>
 					);
 				});
@@ -157,7 +152,7 @@ class ListComponent extends React.Component {
 
 			const displayElement = (
 				<tr
-					className={`list-table-row ${row.additionalClass || ''}`}
+					className={`list-table-row ${row.additionalClass || ""}`}
 					style={rowStyle}
 					key={`${this.state.tableId}-row-${rowIndex}`}
 				>
@@ -240,8 +235,8 @@ class ListComponent extends React.Component {
 				{this.state.title && <div className="text-h4">{this.state.title}</div>}
 
 				<table
-					className={`list-table ${this.state.clickable ? 'list-table-hoverable' : ''} ${
-						this.state.selectable ? 'list-table-selectable' : ''
+					className={`list-table ${this.state.clickable ? "list-table-hoverable" : ""} ${
+						this.state.selectable ? "list-table-selectable" : ""
 					}`}
 				>
 					<thead>{tableHead}</thead>
@@ -267,7 +262,7 @@ class ListComponent extends React.Component {
 
 	handleRowExpand(row, close) {
 		const { rows } = this.state;
-		const newRows = rows.map(r => {
+		const newRows = rows.map((r) => {
 			r.expanded = false;
 
 			if (!close && r.id === row.id) {

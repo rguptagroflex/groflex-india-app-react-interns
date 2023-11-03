@@ -341,7 +341,8 @@ class SettingsDocumentExportComponent extends React.Component {
 			resources,
 		} = this.props;
 
-		console.log(tenant, "tenant from gst");
+		// console.log(tenant, "tenant from gst");
+		console.log(columns, "Columns from gst");
 
 		return (
 			<React.Fragment>
