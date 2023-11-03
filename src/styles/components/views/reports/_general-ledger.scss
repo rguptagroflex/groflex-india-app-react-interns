@@ -510,30 +510,36 @@ button.chart-type-toggle {
 							display: flex;
 							justify-content: space-between;
 							.row-entry-date {
-								width: 170px;
+								// width: 170px;
+								width: 30%;
 								padding-left: 29px;
 							}
 							.row-entry-account {
-								width: 170px;
-								padding-left: 30px;
+								// width: 170px;
+								width: 30%;
+								// padding-left: 30px;
+								padding-left: 82px;
 							}
 							.row-entry-debits {
 								display: flex;
-								width: 170px;
+								// width: 170px;
+								width: 30%;
 								text-align: right;
-								padding-left: 98px;
+								justify-content: flex-end;
 							}
 							.row-entry-credits {
-								width: 170px;
+								// width: 170px;
+								width: 30%;
 								text-align: right;
 								display: flex;
-								padding-left: 125px;
+								justify-content: flex-end;
 							}
 							.row-entry-balance {
-								width: 170px;
+								// width: 170px;
+								width: 30%;
 								text-align: right;
 								display: flex;
-								padding-left: 100px;
+								justify-content: flex-end;
 							}
 						}
 					}
