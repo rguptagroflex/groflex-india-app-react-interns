@@ -66,7 +66,7 @@ class ListComponent extends React.Component {
 		this.state.columns.forEach((column, index) => {
 			const columnStyle = {
 				// width: column.width || 'auto',
-				width: "fit-content",
+				width: index === 4 ? "28%" : "18%",
 				minWidth: column.minWidth || "0",
 				textAlign: column.align || "left",
 			};
