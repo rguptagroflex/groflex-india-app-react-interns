@@ -527,17 +527,12 @@ const ReportBalanceSheet = (props) => {
 								<span className="icon-text">Send email</span>
 							</div>
 							<div className="icon-separtor"></div>
-							<div className="icon-print2" onClick={onBtPrint}>
-								<span className="pdf_print"></span>
-								<span className="icon-text">Print</span>
-							</div>
-							<div className="icon-separtor_second"></div>
 
 							{/* <div className="icon-download" onClick={exportButtonClick}> */}
 							<div className="icon-download" id="Export-dropdown-btn">
 								<span className="download"></span>
 								<span className="icon-text">Export</span>
-								<div>
+								<div className="export-btn-popup">
 									<PopoverComponent
 										showOnClick={true}
 										contentClass={`Export-dropdown-content`}
@@ -545,14 +540,14 @@ const ReportBalanceSheet = (props) => {
 										entries={[
 											[
 												{
-													label: "PDF",
-													action: "pdf",
-													dataQsId: "export-type-pdf",
-												},
-												{
-													label: "CSV",
+													label: "As CSV",
 													action: "csv",
 													dataQsId: "export-type-csv",
+												},
+												{
+													label: "As PDF",
+													action: "pdf",
+													dataQsId: "export-type-pdf",
 												},
 											],
 										]}
@@ -564,6 +559,11 @@ const ReportBalanceSheet = (props) => {
 										useOverlay={true}
 									/>
 								</div>
+							</div>
+							<div className="icon-separtor_second"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
 							</div>
 						</div>
 					</div>
