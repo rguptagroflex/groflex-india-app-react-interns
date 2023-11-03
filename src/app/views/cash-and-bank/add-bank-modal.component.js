@@ -317,11 +317,11 @@ const AddBankModalComponent = ({ onConfirm }) => {
 			</div>
 
 			<div style={{ position: "relative" }} className="modal-base-footer">
-				<div className="modal-base-cancel">
-					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
-				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent disabled={false} buttonIcon="icon-check" callback={handleSave} label={"Save"} />
+				</div>
+				<div className="modal-base-cancel">
+					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
 				</div>
 			</div>
 		</div>
