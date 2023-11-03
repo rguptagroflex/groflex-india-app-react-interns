@@ -327,7 +327,7 @@ const ReportsGeneralLedger = (props) => {
 				fileNameWithoutExt={`GeneralLedger_${moment(selectedDate.startDate).format("DD-MM-YYYY")}_${moment(
 					selectedDate.endDate
 				).format("DD-MM-YYYY")}`}
-				onSubmit={(data) => handleSendCashFlowEmail(data)}
+				onSubmit={(data) => handleSendGeneralLedgerEmail(data)}
 			/>,
 			{
 				modalClass: "send-ledger-email-modal-component-wrapper",

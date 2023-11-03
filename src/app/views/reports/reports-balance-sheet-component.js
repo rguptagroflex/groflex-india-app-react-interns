@@ -24,6 +24,7 @@ import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
 import { formatApiDate } from "../../helpers/formatDate";
 import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
+import PopoverComponent from "../../shared/popover/popover.component";
 
 const ReportBalanceSheet = (props) => {
 	LicenseManager.setLicenseKey(
@@ -37,6 +38,7 @@ const ReportBalanceSheet = (props) => {
 	const [rowData, setRowData] = useState([]);
 	const [tableHeaders, setTableHeader] = useState([]);
 	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
+	const [exportFormat, setExportFormat] = useState("");
 
 	const CustomCellRenderer = ({ value, colDef }) => (
 		<span>{colDef.field === "total" && value !== undefined ? `₹ ${value}` : value}</span>
@@ -261,7 +263,7 @@ const ReportBalanceSheet = (props) => {
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
-	const [selectedDate, setSelectedDate] = useState(null);
+	const [selectedDate, setSelectedDate] = useState("");
 
 	const [showDateFilter, setShowDateFilter] = useState(props.showDateFilter || false);
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
@@ -352,18 +354,71 @@ const ReportBalanceSheet = (props) => {
 		fetchData();
 	}, [selectedDate]);
 
-	const exportButtonClick = async () => {
-		// console.log("startExport: ", selectedDate);
-		const endpoint = `${config.resourceHost}accountingReport/balanceSheet/${moment(
+	// const exportButtonClick = async () => {
+	// 	const endpoint = `${config.resourceHost}accountingReport/balanceSheet/${moment(
+	// 		selectedDate.startDate
+	// 	).format()}/${moment(selectedDate.endDate).format()}?type=csv`;
+	// 	await invoiz.request(endpoint, { auth: true }).then((res) => {
+	// 		console.log("Res: ", res);
+	// 	});
+	// };
+
+	const exportButtonClick = () => {
+		console.log("Export Format: ", exportFormat);
+		const url = `${config.resourceHost}accountingReport/balanceSheet/${moment(
 			selectedDate.startDate
-		).format()}/${moment(selectedDate.endDate).format()}?type=csv`;
-		await invoiz.request(endpoint, { auth: true }).then((res) => {
-			// console.log("Res: ", res);
-		});
+		).format()}/${moment(selectedDate.endDate).format()}?type=${exportFormat}`;
+
+		invoiz
+			.request(url, {
+				auth: true,
+				method: "GET",
+				headers: { "Content-Type": `application/${exportFormat}` },
+			})
+			.then(({ body }) => {
+				console.log("Api Called", body);
+				invoiz.page.showToast({ message: props.resources.ledgerExportCreateSuccess });
+				var blob = new Blob([body], { type: "application/text" });
+				console.log("Blob", blob);
+				var link = document.createElement("a");
+				link.href = window.URL.createObjectURL(blob);
+				link.download = `${moment(selectedDate.startDate).format()}_${moment(
+					selectedDate.endDate
+				).format()}.${exportFormat}`;
+
+				document.body.appendChild(link);
+
+				link.click();
+
+				document.body.removeChild(link);
+				setExportFormat("");
+			})
+			.catch((err) => {
+				setExportFormat("");
+				invoiz.page.showToast({ type: "error", message: props.resources.ledgerExportCreateError });
+			});
 	};
 
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignBalanceSheet" : "";
+	const onExportButtonItemClicked = (entry) => {
+		switch (entry.action) {
+			case "pdf":
+				setExportFormat("pdf");
+
+				break;
+			case "csv":
+				setExportFormat("csv");
+
+				break;
+		}
+	};
+
+	useEffect(() => {
+		if (exportFormat !== "") {
+			exportButtonClick();
+		}
+	}, [exportFormat]);
 
 	return (
 		<div className="reports-balance-sheet-component">
@@ -478,9 +533,37 @@ const ReportBalanceSheet = (props) => {
 							</div>
 							<div className="icon-separtor_second"></div>
 
-							<div className="icon-download" onClick={exportButtonClick}>
+							{/* <div className="icon-download" onClick={exportButtonClick}> */}
+							<div className="icon-download" id="Export-dropdown-btn">
 								<span className="download"></span>
 								<span className="icon-text">Export</span>
+								<div>
+									<PopoverComponent
+										showOnClick={true}
+										contentClass={`Export-dropdown-content`}
+										elementId={"Export-dropdown-btn"}
+										entries={[
+											[
+												{
+													label: "PDF",
+													action: "pdf",
+													dataQsId: "export-type-pdf",
+												},
+												{
+													label: "CSV",
+													action: "csv",
+													dataQsId: "export-type-csv",
+												},
+											],
+										]}
+										onClick={(entry) => {
+											onExportButtonItemClicked(entry);
+										}}
+										offsetLeft={7}
+										offsetTop={7}
+										useOverlay={true}
+									/>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -576,8 +659,10 @@ const ReportBalanceSheet = (props) => {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
 	return {
 		isSubmenuVisible,
+		resources,
 	};
 };
 
