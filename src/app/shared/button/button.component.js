@@ -33,9 +33,9 @@ class ButtonComponent extends React.Component {
 	}
 
 	render() {
-		const buttonClasses = `${this.state.wrapperClass} button button-${this.state.type} ${
-			!this.state.isSquare ? "button-rounded" : ""
-		} ${this.state.isWide ? "button-wide" : ""} ${this.state.float}`;
+		const buttonClasses = `button button-${this.state.type} ${!this.state.isSquare ? "button-rounded" : ""} ${
+			this.state.isWide ? "button-wide" : ""
+		} ${this.state.float}`;
 		const buttonIcon = this.state.buttonIcon ? (
 			<div className={`icon ${this.state.loading ? "loader_spinner" : this.state.buttonIcon}`} />
 		) : null;
@@ -44,9 +44,7 @@ class ButtonComponent extends React.Component {
 		return (
 			<div className={`button-component-wrapper ${wrapperClass || ""}`}>
 				<button
-					className={`${buttonClasses} ${customCssClass || ""} ${
-						this.state.disabled ? this.state.type.concat("-disabled") : ""
-					}`}
+					className={`${buttonClasses} ${customCssClass || ""}`}
 					disabled={this.state.disabled || this.state.loading}
 					onClick={(event) => this.handleClick(event)}
 					data-qs-id={dataQsId}

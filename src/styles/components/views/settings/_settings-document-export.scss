@@ -5,169 +5,235 @@
 	height: 100%;
 	width: 100%;
 
-.settings-document-export-component {
-	width: 924px;
-	margin-right: auto;
-	margin-left: auto;
-	position: relative;
-	top: 100px;
-	.document-export-configuration {
-		display: flex;
-		align-items: center;
-
-		.document-export-date {
-			width: 27%;
-			padding-top: 15px;
-			padding-right: 20px;
-		}
-
-		.document-export-type {
-			width: 30%;
-			padding-top: 15px;
-			padding-right: 20px;
-		}
-
-		.Select-menu-outer {
-			min-width: 0;
-			width: 186px;
-			max-height: 270px;
-		}
-
-		.Select-menu {
-			max-height: 270px;
-		}
-
-		.document-export-datePicker {
+	.settings-document-export-component {
+		width: 924px;
+		margin-right: auto;
+		margin-left: auto;
+		position: relative;
+		top: 100px;
+		.document-export-configuration {
 			display: flex;
-			width: 42%;
-			padding: 0 4px 0 10px;
-			margin-top: 6px;
+			align-items: center;
 
-			.dateInput {
-				&_input {
-					width: 75%;
-				}
-
-				&_wrapper {
-					&:after {
-						margin-right: 40px;
-					}
-					.dateInput_input {
-						border-bottom: 1px solid #dddddd;
-					}
-				}
+			.document-export-date {
+				width: 27%;
+				padding-top: 15px;
+				padding-right: 20px;
 			}
-		}
 
-		.button-component-wrapper {
-			//margin-top: 8px;
-			height: 38px;
-			.button {	
-				padding-left: 30px;
+			.document-export-type {
+				width: 30%;
+				padding-top: 15px;
+				padding-right: 20px;
 			}
-		}
-		.export-type {
-			display: flex;
-			margin: 0px 40px;
-			.form_input {
+
+			.Select-menu-outer {
+				min-width: 0;
+				width: 186px;
+				max-height: 270px;
+			}
+
+			.Select-menu {
+				max-height: 270px;
+			}
+
+			.document-export-datePicker {
 				display: flex;
-				.radio-custom-wrapper {
-					margin: 0px 10px;
+				width: 42%;
+				padding: 0 4px 0 10px;
+				margin-top: 6px;
+
+				.dateInput {
+					&_input {
+						width: 75%;
+					}
+
+					&_wrapper {
+						&:after {
+							margin-right: 40px;
+						}
+						.dateInput_input {
+							border-bottom: 1px solid #dddddd;
+						}
+					}
 				}
 			}
-		}
-	}
 
-	.export-head {
-		font-weight: 600;
-		margin-bottom: 10px;
-	}
-
-	.list-component {
-		.list-table {
-				border: 1px solid #c4c4c4;
-			thead {
-				background: #EBF5FF;
-			}
-			.list-table-cell {
-				padding: 25px 15px !important;
-				border-bottom: 1px solid #c4c4c4;
-				text-align: center!important;
-				vertical-align: middle;
-				.status-failed {
-					color: red;
+			.button-component-wrapper {
+				//margin-top: 8px;
+				height: 38px;
+				.button {
+					padding-left: 30px;
 				}
-
-				.actions {
+			}
+			.export-type {
+				display: flex;
+				margin: 0px 40px;
+				.form_input {
 					display: flex;
-					margin-left: 24px;
-					a {
-						font-weight: 600;
-						font-size: 12px;
+					.radio-custom-wrapper {
+						margin: 0px 10px;
 					}
-					div:nth-child(1) {
-						padding-right: 20px;
-						border-right: 1px solid #c4c4c4;
+				}
+			}
+		}
+
+		.export-head {
+			font-weight: 600;
+			margin-bottom: 10px;
+		}
+
+		.list-component {
+			.list-table {
+				border: 1px solid #c4c4c4;
+				thead {
+					background: #ebf5ff;
+				}
+				.list-table-cell {
+					padding: 25px 15px !important;
+					border-bottom: 1px solid #c4c4c4;
+					text-align: center !important;
+					vertical-align: middle;
+					.status-failed {
+						color: red;
+					}
+
+					.actions {
 						display: flex;
-						flex-direction: column;
-						.SVGInline {
-						margin-right: 5px;
+						margin-left: 24px;
+						a {
+							font-weight: 600;
+							font-size: 12px;
 						}
-					}
-					div:nth-child(2) {
-						padding-left: 20px;
-						display: flex;
-						flex-direction: column;
-						.SVGInline {
-							margin-right: 5px;
+						div:nth-child(1) {
+							padding-right: 20px;
+							border-right: 1px solid #c4c4c4;
+							display: flex;
+							flex-direction: column;
+							.SVGInline {
+								margin-right: 5px;
 							}
+						}
+						div:nth-child(2) {
+							padding-left: 20px;
+							display: flex;
+							flex-direction: column;
+							.SVGInline {
+								margin-right: 5px;
+							}
+						}
 					}
-
-
 				}
-			}
 
-			&.list-table-hoverable {
-				:not(.list-table-head).list-table-row:not(.list-table-placeholder-row) {
-					cursor: pointer;
-	
-					&:hover {
-						background: #EBF5FF;
-	
-						.cell-selectable {
-							border-bottom: 1px solid $color-line-light;
+				&.list-table-hoverable {
+					:not(.list-table-head).list-table-row:not(.list-table-placeholder-row) {
+						cursor: pointer;
+
+						&:hover {
+							background: #ebf5ff;
+
+							.cell-selectable {
+								border-bottom: 1px solid $color-line-light;
+							}
 						}
 					}
 				}
 			}
 		}
-	}
 
-	.document-export-list-pagination {
-		text-align: center;
-		padding: 50px 0 0 0;
-	}
+		.document-export-list-pagination {
+			text-align: center;
+			padding: 50px 0 0 0;
+		}
 
-	.document-export-error {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		flex-direction: column;
+		.document-export-error {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
 
-		.error-headline {
-			margin-bottom: 20px;
+			.error-headline {
+				margin-bottom: 20px;
 
-			h1 {
-				font-weight: 500;
-				font-size: 20px;
+				h1 {
+					font-weight: 500;
+					font-size: 20px;
+				}
 			}
 		}
 	}
-	
+	.tally-export-warning {
+		color: coral;
+		text-align: justify;
+		padding-top: 20px;
+	}
 }
-.tally-export-warning {
-	color: coral;
-	text-align: justify;
-	padding-top: 20px;
-}
+
+//design changes
+
+.full-width-wrapper {
+	.settings-document-export-component {
+		.Select-placeholder,
+		.Select-value {
+			padding-left: 0 !important;
+		}
+		width: 94%;
+		.company-name-and-gst-in {
+			.gstin-label {
+				font-weight: 600;
+				color: $color-grey-new;
+			}
+		}
+		.document-export-configuration {
+			align-items: flex-end;
+			margin-top: 20px;
+			.document-export-type {
+				padding-top: 0;
+				width: 15%;
+				.export-type-label {
+					color: $color-grey-new;
+				}
+			}
+			.document-export-date {
+				width: 15%;
+			}
+			.document-export-datePicker {
+				width: 26%;
+			}
+		}
+	}
+	.runReportBtnWrapper {
+		margin-top: 26px;
+	}
+	.gstExportLeftAlign {
+		position: relative;
+		width: 83%;
+		left: 95px;
+	}
+	.document-export-custom {
+		.list-table-head {
+			text-transform: uppercase;
+			font-weight: 600;
+			font-size: 14px;
+			color: $color-grey-new;
+			background-color: #f1f8fb;
+			&:hover {
+				background-color: #f1f8fb;
+			}
+			.list-table-head-cell {
+				&:nth-child(4) {
+					width: 115px;
+				}
+			}
+		}
+		.list-table-row {
+			&:hover {
+				background-color: #ecfcf4;
+			}
+
+			.actions {
+				justify-content: center;
+			}
+		}
+	}
 }

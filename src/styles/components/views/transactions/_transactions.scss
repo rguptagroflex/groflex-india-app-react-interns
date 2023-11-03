@@ -175,4 +175,46 @@
 			height: 350px;
 		}
 	}
+
+	.modal-base-footer {
+		position: relative;
+		display: flex;
+		flex-direction: row-reverse;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 70px;
+		padding: 15px 20px 0;
+		border-top: 1px solid #e3e3e3;
+
+		.modal-base-cancel {
+			height: 40px;
+		}
+	}
+}
+
+// #modal-component-wrapper .modal-base .modal-base-view .modal-base-footer
+
+#modal-component-wrapper {
+	.modal-base {
+		.modal-base-view {
+			.match-and-reconcile-modal-container {
+				.modal-base-footer {
+					position: relative;
+					display: flex;
+					flex-direction: row-reverse;
+					// bottom: 0;
+					// left: 0;
+					// width: 100%;
+					// height: 70px;
+					// padding: 15px 20px 0;
+					// border-top: 1px solid #e3e3e3;
+
+					.modal-base-cancel {
+						height: 40px;
+					}
+				}
+			}
+		}
+	}
 }

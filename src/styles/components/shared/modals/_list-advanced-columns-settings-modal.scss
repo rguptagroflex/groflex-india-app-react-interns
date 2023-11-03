@@ -57,15 +57,16 @@
 			}
 		}
 	}
-	// .modal-base-footer {
-	// 	display: flex;
-	// 	// flex-direction: row-reverse;
-	// 	gap: 16px;
-	// 	.modal-base-confirm {
-	// 		float: none;
-	// 	}
-	// 	.modal-base-cancel {
-	// 		float: none;
-	// 	}
-	// }
+	.modal-base-footer {
+		display: flex;
+		flex-direction: row-reverse;
+		gap: 16px;
+		.modal-base-confirm {
+			float: none;
+		}
+		.modal-base-cancel {
+			float: none;
+			border: none !important;
+		}
+	}
 }
