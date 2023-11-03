@@ -15,6 +15,7 @@ import DateInputComponent from "../../shared/inputs/date-input/date-input.compon
 import { formatApiDate } from "../../helpers/formatDate";
 import { connect } from "react-redux";
 import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
+import PopoverComponent from "../../shared/popover/popover.component";
 const ReportsCashFlowStatement = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -27,6 +28,7 @@ const ReportsCashFlowStatement = (props) => {
 	const [selectedDate, setSelectedDate] = useState(null);
 	const [contentHeaders, setcontentHeaders] = useState([]);
 	const [totalCashFlow, setTotalCashFlow] = useState("");
+	const [exportFormat, setExportFormat] = useState("");
 	const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 
 	const [columnDefs, setColumnDefs] = useState([
@@ -363,6 +365,61 @@ const ReportsCashFlowStatement = (props) => {
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignCashAndFlow" : "";
 
+	const exportButtonClick = () => {
+		console.log("Export Format: ", exportFormat);
+		const url = `${config.resourceHost}accountingReport/cashflow/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}?type=${exportFormat}`;
+
+		invoiz
+			.request(url, {
+				auth: true,
+				method: "GET",
+				headers: { "Content-Type": `application/${exportFormat}` },
+			})
+			.then(({ body }) => {
+				console.log("Api Called", body);
+				invoiz.page.showToast({ message: props.resources.ledgerExportCreateSuccess });
+				var blob = new Blob([body], { type: "application/text" });
+				console.log("Blob", blob);
+				var link = document.createElement("a");
+				link.href = window.URL.createObjectURL(blob);
+				link.download = `${moment(selectedDate.startDate).format()}_${moment(
+					selectedDate.endDate
+				).format()}.${exportFormat}`;
+
+				document.body.appendChild(link);
+
+				link.click();
+
+				document.body.removeChild(link);
+				setExportFormat("");
+			})
+			.catch((err) => {
+				setExportFormat("");
+				invoiz.page.showToast({ type: "error", message: props.resources.ledgerExportCreateError });
+			});
+	};
+
+	const onExportButtonItemClicked = (entry) => {
+		switch (entry.action) {
+			case "pdf":
+				setExportFormat("pdf");
+
+				break;
+			case "csv":
+				setExportFormat("csv");
+
+				break;
+		}
+	};
+
+	useEffect(() => {
+		if (exportFormat !== "") {
+			exportButtonClick();
+		}
+	}, [exportFormat]);
+
 	return (
 		<div className="reports-cash-flow-component">
 			<TopbarComponent
@@ -470,15 +527,42 @@ const ReportsCashFlowStatement = (props) => {
 								<span className="icon-text">Send email</span>
 							</div>
 							<div className="icon-separtor-first"></div>
+
+							<div className="icon-download" id="Export-dropdown-btn">
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
+								<div className="export-btn-popup">
+									<PopoverComponent
+										showOnClick={true}
+										contentClass={`Export-dropdown-content`}
+										elementId={"Export-dropdown-btn"}
+										entries={[
+											[
+												{
+													label: "As CSV",
+													action: "csv",
+													dataQsId: "export-type-csv",
+												},
+												{
+													label: "As PDF",
+													action: "pdf",
+													dataQsId: "export-type-pdf",
+												},
+											],
+										]}
+										onClick={(entry) => {
+											onExportButtonItemClicked(entry);
+										}}
+										offsetLeft={7}
+										offsetTop={7}
+										useOverlay={true}
+									/>
+								</div>
+							</div>
+							<div className="icon-separtor-second"></div>
 							<div className="icon-print2" onClick={onBtPrint}>
 								<span className="pdf_print"></span>
 								<span className="icon-text">Print</span>
-							</div>
-							<div className="icon-separtor-second"></div>
-
-							<div className="icon-download" onClick={onBtExport}>
-								<span className="download"></span>
-								<span className="icon-text">Export</span>
 							</div>
 						</div>
 					</div>
@@ -556,8 +640,10 @@ const ReportsCashFlowStatement = (props) => {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
 	return {
 		isSubmenuVisible,
+		resources,
 	};
 };
 

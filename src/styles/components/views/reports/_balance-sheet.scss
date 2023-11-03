@@ -55,6 +55,7 @@
 				border-radius: 4px;
 				margin-top: -70px;
 				.icon-mail {
+					gap: 5px;
 					width: 110px;
 					display: flex;
 					align-items: center;
@@ -65,11 +66,11 @@
 					.pdf_mail {
 						display: inline-block;
 						font-size: 16px;
-						width: 1em;
+						// width: 1em;
 						height: 1em;
 					}
 					.icon-text {
-						margin-left: -5px;
+						margin-bottom: 3px;
 					}
 				}
 				.icon-separtor {
@@ -77,12 +78,13 @@
 					height: 100%;
 					position: absolute;
 					// left: 44%;
-					left: 39%;
+					left: 38%;
 					top: 0;
 					bottom: 0;
 					transform: translate(-50%);
 				}
 				.icon-print2 {
+					gap: 5px;
 					display: flex;
 					align-items: center;
 					cursor: pointer;
@@ -92,11 +94,12 @@
 					.pdf_print {
 						display: inline-block;
 						font-size: 16px;
-						width: 1em;
+						// width: 1em;
 						height: 1em;
 					}
 					.icon-text {
-						margin-left: -5px;
+						// margin-left: -5px;
+						margin-bottom: 3px;
 					}
 				}
 				.icon-separtor_second {
@@ -114,7 +117,8 @@
 					align-items: center;
 					cursor: pointer;
 					height: 18px;
-					padding-right: 20px;
+					// padding-right: 20px;
+					padding-right: 30px;
 					gap: 5px;
 
 					.download {
@@ -129,8 +133,8 @@
 					}
 					.export-btn-popup {
 						.popover-wrapper {
-							top: 174.4px !important;
-							right: 176.7625px !important;
+							top: 170.4px !important;
+							right: 184.7625px !important;
 							.Export-dropdown-content {
 								.popover-entry {
 									color: #888787;
@@ -262,7 +266,8 @@
 				.icon-download {
 					.export-btn-popup {
 						.popover-wrapper {
-							right: 166.7625px !important;
+							right: 172.7625px !important;
+							top: 170.4px !important;
 						}
 					}
 				}

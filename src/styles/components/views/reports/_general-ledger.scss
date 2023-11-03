@@ -313,28 +313,32 @@ button.chart-type-toggle {
 					position: relative;
 					border-radius: 4px;
 					// margin-top: -100px;
-					margin-bottom: 77px;
+					// margin-bottom: 77px;
+					margin-bottom: 94px;
 					.icon-mail {
 						display: flex;
 						align-items: center;
 						cursor: pointer;
 						height: 18px;
 						margin-right: 20px;
+						gap: 5px;
 						.pdf_mail {
 							display: inline-block;
 							font-size: 16px;
-							width: 1em;
+							// width: 1em;
 							height: 1em;
 						}
 						.icon-text {
-							margin-top: -5px;
+							// margin-top: -5px;
+							margin-bottom: 3px;
 						}
 					}
 					.icon-separtor-first {
 						border-left: 1px solid #ccc;
 						height: 100%;
 						position: absolute;
-						left: 44%;
+						// left: 44%;
+						left: 39%;
 						top: 0;
 						bottom: 0;
 						transform: translate(-50%);
@@ -345,22 +349,24 @@ button.chart-type-toggle {
 						cursor: pointer;
 						height: 18px;
 						margin-right: 20px;
-						margin-left: 5px;
+						// margin-left: 5px;
+						margin-left: 10px;
+						gap: 5px;
 						.pdf_print {
 							display: inline-block;
 							font-size: 16px;
-							width: 1em;
+							// width: 1em;
 							height: 1em;
 						}
 						.icon-text {
-							margin-left: -5px;
+							margin-bottom: 3px;
 						}
 					}
 					.icon-separtor-second {
 						border: 1px solid #ccc;
 						height: 100%;
 						position: absolute;
-						left: 70%;
+						left: 68%;
 						top: 0;
 						bottom: 0;
 						transform: translate(-50%);
@@ -370,14 +376,31 @@ button.chart-type-toggle {
 						align-items: center;
 						cursor: pointer;
 						height: 18px;
+						padding-right: 10px;
 						.download {
 							display: inline-block;
 							font-size: 16px;
-							width: 1em;
+							// width: 1em;
 							height: 1em;
 						}
 						.icon-text {
-							margin-top: -5px;
+							margin-bottom: 3px;
+							padding-left: 8px;
+						}
+						.export-btn-popup {
+							.popover-wrapper {
+								top: 185.9px !important;
+								right: 172.425px !important;
+								.Export-dropdown-content {
+									.popover-entry {
+										color: #888787;
+									}
+									.popover-entry:hover {
+										color: #272d30;
+										background: #ecfcf4;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -544,4 +567,19 @@ button.chart-type-toggle {
 	position: relative;
 	left: 173px;
 	width: 83% !important;
+	&.general-ledger-content {
+		.general-ledger-content-top {
+			.utility-icons-container {
+				.utility-icons {
+					.icon-download {
+						.export-btn-popup {
+							.popover-wrapper {
+								right: 158px !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

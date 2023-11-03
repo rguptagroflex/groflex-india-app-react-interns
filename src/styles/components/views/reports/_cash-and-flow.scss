@@ -64,13 +64,15 @@
 						}
 						.icon-text {
 							margin-left: -5px;
+							margin-bottom: 3px;
 						}
 					}
 					.icon-separtor-first {
 						border-left: 1px solid #ccc;
 						height: 100%;
 						position: absolute;
-						left: 44%;
+						// left: 44%;
+						left: 39%;
 						top: 0;
 						bottom: 0;
 						transform: translateX(-50%);
@@ -81,7 +83,8 @@
 						cursor: pointer;
 						height: 18px;
 						margin-right: 20px;
-						margin-left: 5px;
+						// margin-left: 5px;
+						margin-left: 24px;
 						.pdf_print {
 							display: inline-block;
 							font-size: 16px;
@@ -90,13 +93,15 @@
 						}
 						.icon-text {
 							margin-left: -5px;
+							margin-bottom: 3px;
 						}
 					}
 					.icon-separtor-second {
 						border-left: 1px solid #ccc;
 						height: 100%;
 						position: absolute;
-						left: 70%;
+						// left: 70%;
+						left: 69%;
 						top: 0;
 						bottom: 0;
 						transform: translateX(-50%);
@@ -114,6 +119,23 @@
 						}
 						.icon-text {
 							margin-left: -5px;
+							margin-bottom: 3px;
+						}
+
+						.export-btn-popup {
+							.popover-wrapper {
+								top: 170.4px !important;
+								right: 196.7625px !important;
+								.Export-dropdown-content {
+									.popover-entry {
+										color: #888787;
+									}
+									.popover-entry:hover {
+										color: #272d30;
+										background: #ecfcf4;
+									}
+								}
+							}
 						}
 					}
 				}
@@ -186,4 +208,19 @@
 	position: relative;
 	left: 167px;
 	width: 83% !important;
+	&.cash-flow-component-wrapper {
+		.general-ledger-component {
+			.utility-icons-wrapper {
+				.utility-icons {
+					.icon-download {
+						.export-btn-popup {
+							.popover-wrapper {
+								right: 162.7625px !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

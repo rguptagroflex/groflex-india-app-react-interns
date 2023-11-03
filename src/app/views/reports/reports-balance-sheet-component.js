@@ -528,7 +528,6 @@ const ReportBalanceSheet = (props) => {
 							</div>
 							<div className="icon-separtor"></div>
 
-							{/* <div className="icon-download" onClick={exportButtonClick}> */}
 							<div className="icon-download" id="Export-dropdown-btn">
 								<span className="download"></span>
 								<span className="icon-text">Export</span>

@@ -21,6 +21,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { connect } from "react-redux";
 import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
+import PopoverComponent from "../../shared/popover/popover.component";
 
 function ReportsProfitAndLoss(props) {
 	LicenseManager.setLicenseKey(
@@ -34,6 +35,7 @@ function ReportsProfitAndLoss(props) {
 	const [tableHeaders, setTableHeaders] = useState([]);
 	const [tableTotals, setTableTotal] = useState([]);
 	const [netProfit, setNetProfit] = useState("");
+	const [exportFormat, setExportFormat] = useState("");
 	const CustomCellRenderer = ({ value, colDef }) => (
 		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
 	);
@@ -345,6 +347,61 @@ function ReportsProfitAndLoss(props) {
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignProfitAndLoss" : "";
 
+	const exportButtonClick = () => {
+		const startDate = moment(selectedDate.startDate).format();
+		const endDate = moment(selectedDate.endDate).format();
+		console.log("Export Format: ", exportFormat);
+		const url = `${config.resourceHost}accountingReport/profitandloss/${startDate}/${endDate}?type=${exportFormat}`;
+
+		invoiz
+			.request(url, {
+				auth: true,
+				method: "GET",
+				headers: { "Content-Type": `application/${exportFormat}` },
+			})
+			.then(({ body }) => {
+				console.log("Api Called", body);
+				invoiz.page.showToast({ message: props.resources.ledgerExportCreateSuccess });
+				var blob = new Blob([body], { type: "application/text" });
+				console.log("Blob", blob);
+				var link = document.createElement("a");
+				link.href = window.URL.createObjectURL(blob);
+				link.download = `${moment(selectedDate.startDate).format()}_${moment(
+					selectedDate.endDate
+				).format()}.${exportFormat}`;
+
+				document.body.appendChild(link);
+
+				link.click();
+
+				document.body.removeChild(link);
+				setExportFormat("");
+			})
+			.catch((err) => {
+				setExportFormat("");
+				invoiz.page.showToast({ type: "error", message: props.resources.ledgerExportCreateError });
+			});
+	};
+
+	const onExportButtonItemClicked = (entry) => {
+		switch (entry.action) {
+			case "pdf":
+				setExportFormat("pdf");
+
+				break;
+			case "csv":
+				setExportFormat("csv");
+
+				break;
+		}
+	};
+
+	useEffect(() => {
+		if (exportFormat !== "") {
+			exportButtonClick();
+		}
+	}, [exportFormat]);
+
 	return (
 		<div className="profit-loss-component">
 			<TopbarComponent
@@ -450,15 +507,41 @@ function ReportsProfitAndLoss(props) {
 								<span className="icon-text">Send email</span>
 							</div>
 							<div className="icon-separtor-first"></div>
+							<div className="icon-download" id="Export-dropdown-btn">
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
+								<div className="export-btn-popup">
+									<PopoverComponent
+										showOnClick={true}
+										contentClass={`Export-dropdown-content`}
+										elementId={"Export-dropdown-btn"}
+										entries={[
+											[
+												{
+													label: "As CSV",
+													action: "csv",
+													dataQsId: "export-type-csv",
+												},
+												{
+													label: "As PDF",
+													action: "pdf",
+													dataQsId: "export-type-pdf",
+												},
+											],
+										]}
+										onClick={(entry) => {
+											onExportButtonItemClicked(entry);
+										}}
+										offsetLeft={7}
+										offsetTop={7}
+										useOverlay={true}
+									/>
+								</div>
+							</div>
+							<div className="icon-separtor-second"></div>
 							<div className="icon-print2" onClick={onBtPrint}>
 								<span className="pdf_print"></span>
 								<span className="icon-text">Print</span>
-							</div>
-							<div className="icon-separtor-second"></div>
-
-							<div className="icon-download" onClick={onBtExport}>
-								<span className="download"></span>
-								<span className="icon-text">Export</span>
 							</div>
 						</div>
 					</div>
@@ -560,8 +643,10 @@ function ReportsProfitAndLoss(props) {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
 	return {
 		isSubmenuVisible,
+		resources,
 	};
 };
 
