@@ -624,10 +624,8 @@ const ReportsCashFlowStatement = (props) => {
 							))}
 						</div>
 						<div className="cash-flow-result">
-							<div className="year-beginning">
-								<h6>TOTAL CASH IN FLOW</h6>
-								<h6 className="result-value">₹ {parseFloat(totalCashFlow).toFixed(2)}</h6>
-							</div>
+							<h6 className="result-name">TOTAL CASH IN FLOW</h6>
+							<h6 className="result-value">₹ {parseFloat(totalCashFlow).toFixed(2)}</h6>
 						</div>
 					</div>
 				) : (
