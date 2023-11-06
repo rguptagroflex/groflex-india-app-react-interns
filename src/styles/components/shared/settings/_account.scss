@@ -3,12 +3,12 @@
 
 .settings-account-component {
 	display: inline-flex;
-				flex-direction: column;
-				align-items: flex-end;
-				gap: 16px;
-				border-radius: 8px;
-				border: 1px solid #C6C6C6;
-				background: #FFF;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 16px;
+	border-radius: 8px;
+	border: 1px solid #c6c6c6;
+	background: #fff;
 	.update-email-link {
 		text-align: right;
 		margin-top: -12px;
@@ -20,7 +20,7 @@
 	}
 
 	.accountSettingsCompanyAddressInfo {
-		margin: 10px 0 15px 0
+		margin: 10px 0 15px 0;
 	}
 
 	.button-component-wrapper {
@@ -35,9 +35,8 @@
 		margin-top: 30px;
 		padding-right: 6px;
 	}
-	.settings-mobile{
+	.settings-mobile {
 		padding-left: 0px;
-
 	}
 }
 .settings-autofilled-Field-hidden {
@@ -46,7 +45,7 @@
 	z-index: -5;
 }
 .settings-account-wrapper {
-	.tabs-container .tab-list{
+	.tabs-container .tab-list {
 		border-radius: 8px 8px 0 0 !important;
 		background-color: #f5f5f5 !important;
 	}
@@ -57,13 +56,13 @@
 			align-items: center;
 			padding: 16px;
 			height: 49px;
-			background: #FFFFFF;
+			background: #ffffff;
 			border: 1px solid $color-primary;
 			margin-right: 15px;
 		}
-		.radio_label{
+		.radio_label {
 			color: $color-primary;
-    		font-weight: 600;
+			font-weight: 600;
 		}
 	}
 	.plan-price-text {
@@ -77,17 +76,34 @@
 	.active.icon-check_circle::before {
 		color: $color-primary;
 	}
-	.text-next-payment{
+	.text-next-payment {
 		font-weight: 600;
 		font-size: 14px;
 		line-height: 21px;
-		color: #272D30;
+		color: #272d30;
 	}
-	.text-start-date{
+	.text-start-date {
 		float: left;
-    	display: contents;
+		display: contents;
 	}
-	.text-end-date{
+	.text-end-date {
 		float: right;
+	}
+}
+
+//css changes
+.plan-type-toggle {
+	#accountingTrial {
+		margin-top: 20px;
+	}
+}
+
+.settings-account-wrapper {
+	.accountingSubscriptionContainer {
+		border-radius: 8px;
+		border: 1px solid #c6c6c6;
+		background: #fff;
+		margin-top: 10px;
+		margin-top: 18px;
 	}
 }
