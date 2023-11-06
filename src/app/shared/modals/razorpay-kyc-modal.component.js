@@ -19,7 +19,7 @@ import RazorpayOverviewComponent from "shared/razorpay/razorpay-overview.compone
 import RazorpayDocumentUploadComponent from "shared/razorpay/razorpay-document-upload.component";
 import _ from "lodash";
 import { handleRazorpayErrors } from "helpers/errors";
-import LoaderComponent from 'shared/loader/loader.component';
+import LoaderComponent from "shared/loader/loader.component";
 class RazorpayKycModal extends React.Component {
 	constructor(props) {
 		super(props);
@@ -80,19 +80,22 @@ class RazorpayKycModal extends React.Component {
 	}
 
 	componentDidMount() {
-		amplitude.getInstance().logEvent('KYC_initiated');
+		amplitude.getInstance().logEvent("KYC_initiated");
 
 		const { account } = this.props;
 		Promise.all([
 			invoiz.request(config.razorpay.endpoints.getAccount, { auth: true, method: "GET" }),
 			invoiz.request(config.razorpay.endpoints.getStakeholder, { auth: true, method: "GET" }),
 			invoiz.request(config.razorpay.endpoints.getBank, { auth: true, method: "GET" }),
-			invoiz.request(config.razorpay.endpoints.getAccountDetails, { auth: true, method: "GET" })
+			invoiz.request(config.razorpay.endpoints.getAccountDetails, { auth: true, method: "GET" }),
 		])
 			.then(([accountResponse, stakeholderResponse, bankResponse, documentResponse]) => {
-				
 				this.setState({
-					accountDetails: {...accountResponse.body.data, mobile: parseInt(account.mobile), email: account.userEmail  },
+					accountDetails: {
+						...accountResponse.body.data,
+						mobile: parseInt(account.mobile),
+						email: account.userEmail,
+					},
 					accountId: accountResponse.body.meta.accountId,
 					bankDetails: bankResponse.body.data.bankDetails,
 					stakeholderDetails: stakeholderResponse.body.data,
@@ -139,7 +142,7 @@ class RazorpayKycModal extends React.Component {
 			switch (currentStep) {
 				case 0:
 					this.setState({ currentStep: 1, isSaving: false });
-					break
+					break;
 				case 1:
 					this.saveAccount();
 					break;
@@ -162,9 +165,8 @@ class RazorpayKycModal extends React.Component {
 	getDisabled() {
 		const { currentStep, kycProgress, completedKyc } = this.state;
 		if (currentStep === 0 && kycProgress !== COMPLETED) {
-			return false
-		}
-		else if (kycProgress === COMPLETED) {
+			return false;
+		} else if (kycProgress === COMPLETED) {
 			return true;
 		} else if (currentStep === 4 && !completedKyc) {
 			return true;
@@ -207,7 +209,12 @@ class RazorpayKycModal extends React.Component {
 			.request(url, { auth: true, method: accountId ? "PUT" : "POST", data: accountDetails })
 			.then((response) => {
 				invoiz.page.showToast({ message: `Saved account details!`, type: "success" });
-				this.setState({ currentStep: currentStep + 1, isSaving: false, kycProgress: !accountId ? response.body.meta.kycProgress : kycProgress, accountId: response.body.meta.accountId });
+				this.setState({
+					currentStep: currentStep + 1,
+					isSaving: false,
+					kycProgress: !accountId ? response.body.meta.kycProgress : kycProgress,
+					accountId: response.body.meta.accountId,
+				});
 			})
 			.catch((err) => {
 				if (err.body.name === `RazorpayError` && err.body.message.error.field === `email`) {
@@ -217,8 +224,13 @@ class RazorpayKycModal extends React.Component {
 					accountErrors.mobile = `This mobile already exists with Razorpay!`;
 					this.setState({ accountErrors: accountErrors, isSaving: false });
 				} else {
-				const errors = handleRazorpayErrors(err.body.meta, this.state.accountErrors, this.state.stakeholderErrors, this.state.bankErrors);
-				this.setState({ accountErrors: errors.accountErrors, isSaving: false });
+					const errors = handleRazorpayErrors(
+						err.body.meta,
+						this.state.accountErrors,
+						this.state.stakeholderErrors,
+						this.state.bankErrors
+					);
+					this.setState({ accountErrors: errors.accountErrors, isSaving: false });
 				}
 			});
 	}
@@ -246,11 +258,16 @@ class RazorpayKycModal extends React.Component {
 					currentStep: currentStep + 1,
 					documentDetails: response.body.data,
 					isSaving: false,
-					configId: response.body.meta.configId
+					configId: response.body.meta.configId,
 				});
 			})
 			.catch((err) => {
-				const errors = handleRazorpayErrors(err.body.meta, this.state.accountErrors, this.state.stakeholderErrors, this.state.bankErrors);
+				const errors = handleRazorpayErrors(
+					err.body.meta,
+					this.state.accountErrors,
+					this.state.stakeholderErrors,
+					this.state.bankErrors
+				);
 				this.setState({ bankErrors: errors.bankErrors, isSaving: false });
 			});
 	}
@@ -285,10 +302,19 @@ class RazorpayKycModal extends React.Component {
 			})
 			.then((response) => {
 				invoiz.page.showToast({ message: `Saved stakeholder details!`, type: "success" });
-				this.setState({ currentStep: currentStep + 1, isSaving: false, stakeholderId: response.body.meta.stakeholderId });
+				this.setState({
+					currentStep: currentStep + 1,
+					isSaving: false,
+					stakeholderId: response.body.meta.stakeholderId,
+				});
 			})
 			.catch((err) => {
-				const errors = handleRazorpayErrors(err.body.meta, this.state.accountErrors, this.state.stakeholderErrors, this.state.bankErrors);
+				const errors = handleRazorpayErrors(
+					err.body.meta,
+					this.state.accountErrors,
+					this.state.stakeholderErrors,
+					this.state.bankErrors
+				);
 				this.setState({ stakeholderErrors: errors.stakeholderErrors, isSaving: false });
 			});
 	}
@@ -307,15 +333,21 @@ class RazorpayKycModal extends React.Component {
 					data: { completeKyc: completedKyc },
 				})
 				.then((response) => {
-					amplitude.getInstance().logEvent('KYC_completed');
-					
+					amplitude.getInstance().logEvent("KYC_completed");
+
 					invoiz.page.showToast({ message: `Completed KYC submission!`, type: "success" });
 					this.setState({ currentStep: 0, documentErrors: {}, isSaving: false });
 					ModalService.close();
 					invoiz.router.reload();
 				})
 				.catch((err) => {
-					const errors = handleRazorpayErrors(err.body.meta, this.state.accountErrors, this.state.stakeholderErrors, this.state.bankErrors, documentErrors);
+					const errors = handleRazorpayErrors(
+						err.body.meta,
+						this.state.accountErrors,
+						this.state.stakeholderErrors,
+						this.state.bankErrors,
+						documentErrors
+					);
 					this.setState({ documentErrors: errors, isSaving: false });
 				});
 		} else {
@@ -407,6 +439,16 @@ class RazorpayKycModal extends React.Component {
 					</div>
 				)}
 				<div className="modal-base-footer">
+					<div className="modal-base-confirm">
+						<ButtonComponent
+							// buttonIcon={'icon-check'}
+							type={"primary"}
+							callback={() => this.setStep()}
+							label={confirmButtonLabel}
+							dataQsId="modal-btn-confirm"
+							disabled={this.getDisabled()}
+						/>
+					</div>
 					<div className="modal-base-cancel">
 						<ButtonComponent
 							type="cancel"
@@ -416,16 +458,6 @@ class RazorpayKycModal extends React.Component {
 							}}
 							label={resources.str_abortStop}
 							dataQsId="modal-btn-cancel"
-						/>
-					</div>
-					<div className="modal-base-confirm">
-						<ButtonComponent
-							// buttonIcon={'icon-check'}
-							type={"primary"}
-							callback={() => this.setStep()}
-							label={confirmButtonLabel}
-							dataQsId="modal-btn-confirm"
-							disabled={this.getDisabled()}
 						/>
 					</div>
 				</div>

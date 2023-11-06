@@ -1522,6 +1522,7 @@ class ListAdvancedComponent extends React.Component {
 												matchProp: "label",
 												// placeholder: "Select Bank",
 												handleChange: (filterItem) => {
+													if (!filterItem) return;
 													this.onTabbedFilterItemClick(filterItem);
 													this.setState({
 														...this.state,

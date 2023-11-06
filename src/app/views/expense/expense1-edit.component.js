@@ -165,6 +165,7 @@ class ExpenseEditComponent extends React.Component {
 	}
 
 	handlePaymentMethodChange(option) {
+		if (!option) return;
 		let bankdetails = this.state.paymentMethodOptions.find((x) => x.value == option.value);
 		const { expense } = this.state;
 		expense.payKind = bankdetails.type;
