@@ -1,10 +1,10 @@
-import invoiz from 'services/invoiz.service';
-import React from 'react';
-import TextInputExtendedComponent from 'shared/inputs/text-input-extended/text-input-extended.component';
-import ModalService from 'services/modal.service';
-import ButtonComponent from 'shared/button/button.component';
-import config from 'config';
-import { errorCodes } from 'helpers/constants';
+import invoiz from "services/invoiz.service";
+import React from "react";
+import TextInputExtendedComponent from "shared/inputs/text-input-extended/text-input-extended.component";
+import ModalService from "services/modal.service";
+import ButtonComponent from "shared/button/button.component";
+import config from "config";
+import { errorCodes } from "helpers/constants";
 
 const { NOT_ALLOWED, INCORRECT, INVALID, NOT_CONFIRMED } = errorCodes;
 
@@ -14,12 +14,12 @@ class ChangeEmailModal extends React.Component {
 
 		this.state = {
 			accountEmail: props.accountEmail,
-			newEmail: '',
-			password: '',
-			emailError: '',
-			passwordError: '',
+			newEmail: "",
+			password: "",
+			emailError: "",
+			passwordError: "",
 			wasEmailChanged: false,
-			isSubmitting: false
+			isSubmitting: false,
 		};
 	}
 
@@ -30,7 +30,7 @@ class ChangeEmailModal extends React.Component {
 	getEmailError(email) {
 		const { resources } = this.props;
 		const { accountEmail } = this.state;
-		let emailError = '';
+		let emailError = "";
 
 		if (email.length === 0) {
 			emailError = resources.mandatoryFieldValidation;
@@ -55,14 +55,14 @@ class ChangeEmailModal extends React.Component {
 	onEmailChanged(val) {
 		const { wasEmailChanged } = this.state;
 		const emailError = this.getEmailError(val.trim());
-		this.setState({ newEmail: val, emailError: wasEmailChanged ? emailError : '' });
+		this.setState({ newEmail: val, emailError: wasEmailChanged ? emailError : "" });
 	}
 
 	onSubmitClicked() {
 		const { resources } = this.props;
 		const { newEmail, password } = this.state;
 		let emailError = this.getEmailError(newEmail.trim());
-		let passwordError = '';
+		let passwordError = "";
 
 		if (password.trim().length === 0) {
 			passwordError = resources.mandatoryFieldValidation;
@@ -71,8 +71,8 @@ class ChangeEmailModal extends React.Component {
 		if (emailError.length > 0 || passwordError.length > 0) {
 			this.setState({ emailError, passwordError });
 		} else {
-			this.setState({ emailError: '', passwordError: '', isSubmitting: true }, () => {
-				const handleSubmitSuccess = response => {
+			this.setState({ emailError: "", passwordError: "", isSubmitting: true }, () => {
+				const handleSubmitSuccess = (response) => {
 					invoiz.page.showToast({ message: resources.accountEmailSuccessMessage });
 					ModalService.close(true);
 				};
@@ -94,15 +94,15 @@ class ChangeEmailModal extends React.Component {
 						passwordError = message = resources.accountWrongPasswordMessage;
 					}
 
-					invoiz.page.showToast({ type: 'error', message });
+					invoiz.page.showToast({ type: "error", message });
 					this.setState({ emailError, passwordError, isSubmitting: false });
 				};
 
 				invoiz
 					.request(config.account.endpoints.changeEmail, {
-						method: 'PUT',
+						method: "PUT",
 						data: { email: newEmail, password },
-						auth: true
+						auth: true,
 					})
 					.then(handleSubmitSuccess)
 					.catch(handleSubmitFailure);
@@ -118,10 +118,10 @@ class ChangeEmailModal extends React.Component {
 			<div className="change-email-modal">
 				<div className="row">
 					<TextInputExtendedComponent
-						customWrapperClass={'col-xs-12'}
-						name={'accountEmail'}
+						customWrapperClass={"col-xs-12"}
+						name={"accountEmail"}
 						value={newEmail}
-						onChange={val => this.onEmailChanged(val)}
+						onChange={(val) => this.onEmailChanged(val)}
 						onBlur={() => this.onEmailBlur()}
 						label={resources.newEmailAddress}
 						autoComplete="off"
@@ -133,10 +133,10 @@ class ChangeEmailModal extends React.Component {
 
 				<div className="row">
 					<TextInputExtendedComponent
-						customWrapperClass={'col-xs-12'}
-						name={'password'}
+						customWrapperClass={"col-xs-12"}
+						name={"password"}
 						value={password}
-						onChange={val => this.setState({ password: val })}
+						onChange={(val) => this.setState({ password: val })}
 						label={resources.str_password}
 						autoComplete="off"
 						spellCheck="false"
@@ -147,28 +147,26 @@ class ChangeEmailModal extends React.Component {
 				</div>
 
 				<div className="row">
-					<div className="col-xs-12 change-email-hint">
-						{resources.newEmailMessage}
-					</div>
+					<div className="col-xs-12 change-email-hint">{resources.newEmailMessage}</div>
 				</div>
 
 				<div className="modal-base-footer">
+					<div className="modal-base-confirm">
+						<ButtonComponent
+							buttonIcon={"icon-check"}
+							type={"primary"}
+							disabled={this.state.isSubmitting}
+							callback={() => this.onSubmitClicked()}
+							label={resources.str_changeNow}
+							dataQsId="modal-btn-confirm"
+						/>
+					</div>
 					<div className="modal-base-cancel">
 						<ButtonComponent
 							type="cancel"
 							callback={() => ModalService.close(true)}
 							label={resources.str_abortStop}
 							dataQsId="modal-btn-cancel"
-						/>
-					</div>
-					<div className="modal-base-confirm">
-						<ButtonComponent
-							buttonIcon={'icon-check'}
-							type={'primary'}
-							disabled={this.state.isSubmitting}
-							callback={() => this.onSubmitClicked()}
-							label={resources.str_changeNow}
-							dataQsId="modal-btn-confirm"
 						/>
 					</div>
 				</div>

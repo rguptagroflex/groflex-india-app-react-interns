@@ -1,16 +1,16 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import config from 'config';
-import { format } from 'util';
-import ModalService from 'services/modal.service';
-import ButtonComponent from 'shared/button/button.component';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import config from "config";
+import { format } from "util";
+import ModalService from "services/modal.service";
+import ButtonComponent from "shared/button/button.component";
 
 class CreateDunningModalComponent extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			isDunning: false
+			isDunning: false,
 		};
 	}
 
@@ -18,18 +18,18 @@ class CreateDunningModalComponent extends React.Component {
 		const { isDunning } = this.state;
 		const { nextDunningLevel, resources } = this.props;
 
-		let dunningType = '';
+		let dunningType = "";
 		switch (nextDunningLevel.dunningLevel) {
-			case 'paymentReminder':
+			case "paymentReminder":
 				dunningType = resources.str_paymentReminder;
 				break;
-			case 'firstReminder':
+			case "firstReminder":
 				dunningType = resources.str_theFirstReminder;
 				break;
-			case 'secondReminder':
+			case "secondReminder":
 				dunningType = resources.str_theSecondReminder;
 				break;
-			case 'lastReminder':
+			case "lastReminder":
 				dunningType = resources.str_theLastReminder;
 				break;
 		}
@@ -39,15 +39,15 @@ class CreateDunningModalComponent extends React.Component {
 				<div className="modal-base-close" onClick={() => ModalService.close()} />
 				{format(resources.invoicePaymentReminderMessage, dunningType)}
 				<div className="modal-base-footer">
-					<div className="modal-base-cancel">
+					<div className="modal-base-confirm create-dunning-modal-send">
 						<ButtonComponent
-							dataQsId="dunInvoice-btn-cancel"
-							callback={() => ModalService.close()}
-							type="cancel"
-							label={resources.str_abortStop}
+							buttonIcon="icon-mail"
+							dataQsId="dunInvoice-btn-sendmail"
+							loading={isDunning}
+							callback={() => this.createDunning(true)}
+							label={resources.str_sendViaEmail}
 						/>
 					</div>
-
 					<div className="modal-base-confirm create-dunning-modal-show">
 						<ButtonComponent
 							buttonIcon="icon-pdf"
@@ -57,14 +57,12 @@ class CreateDunningModalComponent extends React.Component {
 							label={resources.str_showPdf}
 						/>
 					</div>
-
-					<div className="modal-base-confirm create-dunning-modal-send">
+					<div className="modal-base-cancel">
 						<ButtonComponent
-							buttonIcon="icon-mail"
-							dataQsId="dunInvoice-btn-sendmail"
-							loading={isDunning}
-							callback={() => this.createDunning(true)}
-							label={resources.str_sendViaEmail}
+							dataQsId="dunInvoice-btn-cancel"
+							callback={() => ModalService.close()}
+							type="cancel"
+							label={resources.str_abortStop}
 						/>
 					</div>
 				</div>
@@ -83,21 +81,21 @@ class CreateDunningModalComponent extends React.Component {
 		this.setState({ isDunning: true }, () => {
 			invoiz
 				.request(`${config.resourceHost}dunning/${invoice.id}`, {
-					method: 'POST',
+					method: "POST",
 					auth: true,
-					data: { dunningLevel: nextDunningLevel.dunningLevel }
+					data: { dunningLevel: nextDunningLevel.dunningLevel },
 				})
-				.then(response => {
+				.then((response) => {
 					const {
 						body: {
-							data: { id }
-						}
+							data: { id },
+						},
 					} = response;
-					let route = '';
+					let route = "";
 
 					if (sendMail) {
 						invoiz.page.showToast({
-							message: resources.dunningCreateSuccessMessage
+							message: resources.dunningCreateSuccessMessage,
 						});
 						route = `/dunning/send/${invoice.id}/${id}`;
 					} else {
@@ -109,7 +107,7 @@ class CreateDunningModalComponent extends React.Component {
 					invoiz.router.navigate(route);
 				})
 				.catch(() => {
-					invoiz.page.showToast({ type: 'error', message: resources.dunningCreateErrorMessage });
+					invoiz.page.showToast({ type: "error", message: resources.dunningCreateErrorMessage });
 					ModalService.close();
 				});
 		});

@@ -295,9 +295,22 @@
 
 //tabs
 .chart-card-tab-component .tabs .tab-list .tab.active p {
-	color: $color-primary !important;
+	color: $color-primary;
 }
 
 .chart-card-tab-component .tabs .tab-list .tab.active {
-	border-bottom: 2px solid $color-primary !important;
+	border-bottom: 2px solid $color-primary;
+}
+
+//Changing time select everywhere paddings everywhere
+.time-period-select {
+	.Select-placeholder {
+		padding-left: 30px !important;
+	}
+	.Select-value-label {
+		padding-left: 20px !important;
+	}
+	.Select-input {
+		padding-left: 30px !important;
+	}
 }

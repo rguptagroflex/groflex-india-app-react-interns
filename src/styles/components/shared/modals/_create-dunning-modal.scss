@@ -3,10 +3,13 @@
 
 .create-dunning-modal-component {
 	.create-dunning-modal-show {
-		margin-left: 30px;
+		// margin-left: 30px;
 
 		.icon-pdf {
 			color: $color-white;
 		}
+	}
+	.create-dunning-modal-send {
+		margin-left: 10px;
 	}
 }
