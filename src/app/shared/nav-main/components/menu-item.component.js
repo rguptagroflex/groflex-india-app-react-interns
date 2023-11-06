@@ -13,6 +13,7 @@ import articles_hover from "assets/images/icons/articles_hover.svg";
 import contacts_hover from "assets/images/icons/contacts_hover.svg";
 import expense from "assets/images/icons/accounting_icon.svg";
 import expense_hover from "assets/images/icons/expense_hover.svg";
+import Tooltip from "@material-ui/core/Tooltip";
 import profile_new from "assets/images/icons/profile_new.svg";
 import profile_hover from "assets/images/icons/profile_hover.svg";
 const MenuItemComponent = (props) => {
@@ -43,6 +44,14 @@ const MenuItemComponent = (props) => {
 		settings: iconHoverActive ? profile_hover : profile_new,
 	};
 
+	const menuIconsToolTipTitle = {
+		home_blank: "Home",
+		dashboard: "Dashboard",
+		customer: "Contacts",
+		article_outlined: "Articles",
+		expense: "Accounting",
+	};
+
 	const activeClass = active ? "menuItem-active" : "";
 	const submenuVisibleClass = submenuVisible ? "menuItem-notFocused" : "";
 	// const className = `menuItem ${iconClass} ${activeClass} ${submenuVisibleClass}`;
@@ -60,21 +69,24 @@ const MenuItemComponent = (props) => {
 		invoiz.router.navigate(url);
 	};
 	// console.log(menuIcons[icon]);
-	// console.log(icon);
+	console.log("Icon: ", icon);
 	return (
-		<a
-			className={className}
-			onClick={() => navigateToPage(url)}
-			data-href={url}
-			data-qs-id={`global-menu-item-${name}`}
-			onMouseEnter={() => {
-				setIconHoverActive(true), setSubmenuVisibleHoverFalse();
-			}}
-			onMouseLeave={() => setIconHoverActive(false)}
-		>
-			<SVGInline svg={menuIcons[icon]} className="menu-item-svg" />
-			{/* <span className="menuItemTitle">{resources.menuItems[resourceKey]}</span> */}
-		</a>
+		<div>
+			<Tooltip title={menuIconsToolTipTitle[icon]} placement="right" arrow>
+				<a
+					className={className}
+					onClick={() => navigateToPage(url)}
+					data-href={url}
+					data-qs-id={`global-menu-item-${name}`}
+					onMouseEnter={() => {
+						setIconHoverActive(true), setSubmenuVisibleHoverFalse();
+					}}
+					onMouseLeave={() => setIconHoverActive(false)}
+				>
+					<SVGInline svg={menuIcons[icon]} className="menu-item-svg" />
+				</a>
+			</Tooltip>
+		</div>
 	);
 };
 

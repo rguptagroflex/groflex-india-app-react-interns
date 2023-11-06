@@ -62,13 +62,15 @@
 					}
 					.icon-text {
 						margin-left: -5px;
+						margin-bottom: 3px;
 					}
 				}
 				.icon-separtor-first {
 					border-left: 1px solid #ccc;
 					height: 100%;
 					position: absolute;
-					left: 44%;
+					// left: 44%;
+					left: 38%;
 					top: 0;
 					bottom: 0;
 					transform: translate(-50%);
@@ -79,7 +81,8 @@
 					cursor: pointer;
 					height: 18px;
 					margin-right: 20px;
-					margin-left: 5px;
+					// margin-left: 5px;
+					margin-left: 31px;
 					.pdf_print {
 						display: inline-block;
 						font-size: 16px;
@@ -88,13 +91,15 @@
 					}
 					.icon-text {
 						margin-left: -5px;
+						margin-bottom: 3px;
 					}
 				}
 				.icon-separtor-second {
 					border-left: 1px solid #ccc;
 					height: 100%;
 					position: absolute;
-					left: 70%;
+					// left: 70%;
+					left: 69%;
 					top: 0;
 					bottom: 0;
 					transform: translate(-50%);
@@ -112,6 +117,22 @@
 					}
 					.icon-text {
 						margin-left: -5px;
+						margin-bottom: 3px;
+					}
+					.export-btn-popup {
+						.popover-wrapper {
+							top: 170.4px !important;
+							right: 191.7625px !important;
+							.Export-dropdown-content {
+								.popover-entry {
+									color: #888787;
+								}
+								.popover-entry:hover {
+									color: #272d30;
+									background: #ecfcf4;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -122,18 +143,43 @@
 		margin-bottom: 30px;
 	}
 	.table-container {
+		.currency-container {
+			width: 100%;
+			text-align: right;
+		}
+		.netProfit {
+			display: flex;
+			justify-content: space-between;
+			background: #ecfcf4;
+			height: 56px;
+			padding: 17px;
+			.netProfit-name {
+				width: 33%;
+			}
+			.netProfit-value {
+				// width: 170px;
+				width: 33%;
+				display: flex;
+			}
+		}
 		.Total-container {
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid #ddd;
 			.Total {
+				font-weight: initial;
 				padding: 15px 16px 26px;
 				// margin-left: 10px;
-				background: #ecfcf4;
+				// background: #ecfcf4;
 				padding-left: 15px;
 				display: flex;
 				justify-content: space-between;
+				.totalName {
+					width: 33%;
+				}
 				.totalValue {
-					min-width: 150px;
-					text-align: left;
-					padding-left: 34px;
+					width: 33%;
+					text-align: right;
+					display: flex;
 				}
 			}
 		}
@@ -142,6 +188,8 @@
 			font-weight: bold;
 		}
 		.profit-loss-table-header {
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid #ddd;
 			display: flex;
 			justify-content: space-between;
 			color: #888787;
@@ -149,9 +197,18 @@
 			padding-bottom: 10px;
 			.headingLeft {
 				margin-left: 24px;
+				width: 33%;
 			}
 			.headingRight {
-				margin-right: 100px;
+				// margin-right: 179px;
+				border-left: 1px solid #c6c6c6;
+				padding-left: 8px;
+				width: 33%;
+			}
+			.headingMiddle {
+				border-left: 1px solid #c6c6c6;
+				padding-left: 8px;
+				width: 33%;
 			}
 		}
 		.MuiDivider-root {
@@ -186,12 +243,17 @@
 					display: flex;
 					justify-content: space-between;
 					.accordian-detail-total {
-						padding-left: 15px;
-						min-width: 130px;
-						text-align: left;
+						width: 33%;
+						display: flex;
 					}
 					.accordian-detail-name {
 						margin-left: 10px;
+						// width: 170px;
+						width: 33%;
+					}
+					.account-code {
+						width: 33%;
+						padding-left: 20px;
 					}
 				}
 			}
@@ -203,4 +265,20 @@
 	left: 163px;
 	position: relative;
 	width: 83%;
+	&.profit-loss-component-wrapper {
+		.general-ledger-component {
+			.utility-icons-wrapper {
+				.utility-icons {
+					.icon-download {
+						.export-btn-popup {
+							.popover-wrapper {
+								top: 168.4px !important;
+								right: 171.7625px !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
 }

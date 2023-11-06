@@ -1,22 +1,3 @@
-// import React from 'react'
-// import TopbarComponent from '../../shared/topbar/topbar-start-page.component'
-
-// function ReportsCashFlowStatement() {
-//   return (
-//    <div>
-//     <TopbarComponent
-// 				title={"Cash Flow Statement"}
-// 				hasCancelButton={true}
-// 				cancelButtonCallback={() => {
-// 					window.history.back();
-// 				}}
-// 			/>
-
-//    </div>
-//   )
-// }
-
-// export default ReportsCashFlowStatement
 import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { AgGridReact } from "@ag-grid-community/react";
 import { AllModules, LicenseManager } from "@ag-grid-enterprise/all-modules";
@@ -32,6 +13,9 @@ import moment from "moment";
 import CashAndFlowSendEmail from "./cash-and-flow-send-email";
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 import { formatApiDate } from "../../helpers/formatDate";
+import { connect } from "react-redux";
+import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
+import PopoverComponent from "../../shared/popover/popover.component";
 const ReportsCashFlowStatement = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -40,7 +24,11 @@ const ReportsCashFlowStatement = (props) => {
 	const gridRef = useRef();
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
-	const [rowData, setRowData] = useState();
+	const [rowData, setRowData] = useState([]);
+	const [selectedDate, setSelectedDate] = useState(null);
+	const [contentHeaders, setcontentHeaders] = useState([]);
+	const [totalCashFlow, setTotalCashFlow] = useState("");
+	const [exportFormat, setExportFormat] = useState("");
 	const CustomCellRenderer = ({ value, colDef }) => <span>{value !== undefined ? `₹ ${value}` : value}</span>;
 
 	const [columnDefs, setColumnDefs] = useState([
@@ -159,17 +147,6 @@ const ReportsCashFlowStatement = (props) => {
 		};
 	}, []);
 
-	const onGridReady = useCallback((params) => {
-		invoiz
-			.request(
-				`${config.resourceHost}bankTransaction?offset=0&searchText=&limit=9999999&orderBy=date&desc=true`,
-				{ auth: true }
-			)
-			.then((res) => {
-				console.log("response of data :", res.body.data);
-				setRowData(res.body.data);
-			});
-	}, []);
 	const [startDate, setStartDate] = useState("");
 	const [endDate, setEndDate] = useState("");
 	const onDate = (value) => {
@@ -217,31 +194,73 @@ const ReportsCashFlowStatement = (props) => {
 				startDate = fiscalYearStart.format("DD MMMM YYYY");
 				endDate = fiscalYearEnd.format("DD MMMM YYYY");
 				break;
-			// case "custom":
-			// 	startDate = dateData.customStartDate.format("DD MMMM YYYY");
-			// 	endDate = dateData.customEndDate.format("DD MMMM YYYY");
-			// 	break;
+			case "custom":
+				startDate = dateData.customStartDate.format("DD MMMM YYYY");
+				endDate = dateData.customEndDate.format("DD MMMM YYYY");
+				break;
 			default:
 				startDate = "";
 				endDate = "";
 				break;
 		}
 		setSelectedDate({ startDate, endDate });
-		console.log("startDate", startDate);
+		// console.log("startDate", startDate);
 		return { startDate, endDate };
 	};
 
+	const handleSendCashFlowEmail = (modalData) => {
+		const { emailTextAdditional, emails, regard, sendType } = modalData;
+		// console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+
+		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/CashFlow/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}`;
+
+		const method = "POST";
+		const data = {
+			recipients: emails.map((email) => email.value),
+			subject: regard,
+			text: emailTextAdditional,
+			sendCopy: false,
+			sendType: sendType,
+		};
+
+		invoiz
+			.request(url, { auth: true, method, data })
+			.then((res) => {
+				// console.log("Response:  for send email modal", res);
+				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
+				ModalService.close();
+			})
+			.catch(() => {
+				invoiz.showNotification({ type: "error", message: "Couldn't send email" });
+				ModalService.close();
+			});
+	};
+
 	const sendEmail = () => {
-		ModalService.open(<CashAndFlowSendEmail />, {
-			modalClass: "edit-contact-person-modal-component",
-			width: 630,
-		});
+		// ModalService.open(<CashAndFlowSendEmail selectedDate={selectedDate} />, {
+		// 	modalClass: "edit-contact-person-modal-component",
+		// 	width: 630,
+		// });
+		ModalService.open(
+			<SendEmailModalComponent
+				heading={"Send Cash Flow"}
+				fileNameWithoutExt={`CashFlow_${moment(selectedDate.startDate).format("DD-MM-YYYY")}_${moment(
+					selectedDate.endDate
+				).format("DD-MM-YYYY")}`}
+				onSubmit={(data) => handleSendCashFlowEmail(data)}
+			/>,
+			{
+				modalClass: "send-ledger-email-modal-component-wrapper",
+				width: 630,
+			}
+		);
 	};
 	const activeAction = OfferAction.PRINT;
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
-	const [selectedDate, setSelectedDate] = useState(null);
 
 	const [showDateFilter, setShowDateFilter] = useState(props.showDateFilter || false);
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
@@ -281,38 +300,128 @@ const ReportsCashFlowStatement = (props) => {
 			return;
 		}
 
+		const { startDate, endDate } = onDate(option.value);
+
 		switch (option.value) {
 			case "custom":
 				setDateData({ ...dateData, showCustomDateRangeSelector: true, dateFilterValue: option.value });
-				setSelectedDate({
-					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
-					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
-				});
+				// setSelectedDate({
+				// 	startDate: dateData.customStartDate.format("DD MMMM YYYY"),
+				// 	endDate: dateData.customEndDate.format("DD MMMM YYYY"),
+				// });
+				setSelectedDate({ startDate, endDate });
 
 				break;
 			default:
-				onDate(option.value);
+				// onDate(option.value);
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: false,
 					dateFilterValue: option.value,
 				});
+				setSelectedDate({ startDate, endDate });
 				break;
 		}
 	};
 
 	const handleStartDateChange = (name, value) => {
 		const startDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customStartDate: startDate });
+		// setDateData({ ...dateData, customStartDate: startDate });
+		setSelectedDate({ ...selectedDate, startDate: startDate });
 	};
 
 	const handleEndDateChange = (name, value) => {
 		const endDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customEndDate: endDate });
+		// setDateData({ ...dateData, customEndDate: endDate });
+		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 
+	const fetchData = async () => {
+		const endpoint = `${config.resourceHost}accountingReport/cashflow/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}?type=json`;
+		let headers = [];
+
+		await invoiz.request(endpoint, { auth: true }).then((res) => {
+			// console.log("result: ", res.body.data);
+			const response = res.body.data;
+			if (response) {
+				// console.log(response.summaryData.transactions);
+				response.summaryData.transactions.forEach((item) => {
+					if (!headers.includes(item.accountTypeId)) {
+						headers.push(item.accountTypeId);
+					}
+				});
+				setcontentHeaders(headers);
+				setRowData(response.summaryData.transactions);
+				setTotalCashFlow(response.summaryData.finalCashFlowTotal);
+			}
+		});
+	};
+	useEffect(() => {
+		fetchData();
+	}, [selectedDate]);
+
+	const submenVisible = props.isSubmenuVisible;
+	const classLeft = submenVisible ? "leftAlignCashAndFlow" : "";
+
+	const exportButtonClick = () => {
+		console.log("Export Format: ", exportFormat);
+		const url = `${config.resourceHost}accountingReport/cashflow/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}?type=${exportFormat}`;
+
+		invoiz
+			.request(url, {
+				auth: true,
+				method: "GET",
+				headers: { "Content-Type": `application/${exportFormat}` },
+			})
+			.then(({ body }) => {
+				console.log("Api Called", body);
+				invoiz.page.showToast({ message: props.resources.ledgerExportCreateSuccess });
+				var blob = new Blob([body], { type: "application/text" });
+				console.log("Blob", blob);
+				var link = document.createElement("a");
+				link.href = window.URL.createObjectURL(blob);
+				link.download = `${moment(selectedDate.startDate).format()}_${moment(
+					selectedDate.endDate
+				).format()}.${exportFormat}`;
+
+				document.body.appendChild(link);
+
+				link.click();
+
+				document.body.removeChild(link);
+				setExportFormat("");
+			})
+			.catch((err) => {
+				setExportFormat("");
+				invoiz.page.showToast({ type: "error", message: props.resources.ledgerExportCreateError });
+			});
+	};
+
+	const onExportButtonItemClicked = (entry) => {
+		switch (entry.action) {
+			case "pdf":
+				setExportFormat("pdf");
+
+				break;
+			case "csv":
+				setExportFormat("csv");
+
+				break;
+		}
+	};
+
+	useEffect(() => {
+		if (exportFormat !== "") {
+			exportButtonClick();
+		}
+	}, [exportFormat]);
+
 	return (
-		<div style={containerStyle}>
+		<div className="reports-cash-flow-component">
 			<TopbarComponent
 				title={"Cash Flow Statement"}
 				hasCancelButton={true}
@@ -320,47 +429,16 @@ const ReportsCashFlowStatement = (props) => {
 					window.history.back();
 				}}
 			/>
-			<div
-				style={{
-					// height: "500px",
-					height: "1186px",
-					width: "1120px",
-					backgroundColor: "#fff",
-					border: "1px solid #ccc",
-					marginTop: "30px",
-					marginLeft: "50px",
-					marginRight: "50px",
-					fontWeight: "600",
-					borderRadius: "8px",
-					marginTop: "130px",
-				}}
-			>
-				<div
-					className="general-ledger-component"
-					style={{
-						marginTop: "20px",
-						marginLeft: "20px",
-						display: "flex",
-						flexDirection: "column",
-						// height:"32px",
-						// width:"1120px",
-						padding: "0px, 24px, 0px, 24px",
-						justifyContent: "space-between",
-					}}
-				>
+			<div className={`cash-flow-component-wrapper ${classLeft}`}>
+				<div className="general-ledger-component">
 					<div
 						className="time-period-select-container"
 						style={{
 							width: dateData.showCustomDateRangeSelector ? "500px" : "200px",
-							display: "flex",
-							justifyContent: "space-between",
 						}}
 					>
-						<div
-							style={{ flex: "1.5", display: "flex", alignItems: "center" }}
-							className="time-period-select"
-						>
-							<div style={{ position: "relative", width: "100%", flex: "1" }}>
+						<div className="time-period-select">
+							<div className="time-period-select-subDiv">
 								<SelectInputComponent
 									allowCreate={false}
 									notAsync={true}
@@ -442,185 +520,54 @@ const ReportsCashFlowStatement = (props) => {
 						</div>
 					</div>
 
-					{/* <div
-					style={{
-						display: "flex",
-						alignItems: "center",
-						justifyContent: "flex-end",
-					}}
-				>
-					<div
-						className="icon-mail"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={sendEmail}
-					>
-						<span
-							className="pdf_mail"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Send email
-						</span>
-					</div>
-					<div
-						className="icon-print2"
-						onClick={onBtPrint}
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-					>
-						<span
-							className="pdf_print"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginRight: "-5px" }}>
-							Print
-						</span>
-					</div>
-					<div
-						className="icon-download"
-						style={{ display: "flex", alignItems: "center", marginRight: "10px" }}
-						onClick={onBtExport}
-					>
-						<span
-							className="download"
-							style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-						></span>
-						<span className="icon-text" style={{ marginLeft: "-5px" }}>
-							Export
-						</span>
-					</div>
-					{/* <div
-						id="list-advanced-export-btn"
-						className="icon-btn"
-						onClick={() => {
-							exportList(ListExportTypes.EXCEL);
-						}}
-					>
-						<div className="icon icon-download2"></div>
-						<div className="icon-label">Export</div>
-					</div> */}
-					{/* </div> */}
-					<div
-						style={{
-							display: "flex",
-							alignItems: "center",
-							justifyContent: "flex-end",
-							padding: " 0px 16px 0px 16px",
-							height: "32px",
-							/* width: 326px; */
-
-							position: "relative",
-							borderRadius: "4px",
-							gap: "16px",
-						}}
-					>
-						<div
-							style={{
-								border: "1px solid #ccc",
-								padding: "10px",
-								display: "flex",
-								alignItems: "center",
-								position: "relative",
-								borderRadius: "4px",
-								marginTop: "-70px",
-							}}
-						>
-							<div
-								className="icon-mail"
-								onClick={sendEmail}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-								}}
-							>
-								<span
-									className="pdf_mail"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Send email
-								</span>
+					<div className="utility-icons-wrapper">
+						<div className="utility-icons">
+							<div className="icon-mail" onClick={sendEmail}>
+								<span className="pdf_mail"></span>
+								<span className="icon-text">Send email</span>
 							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "44%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
-							<div
-								className="icon-print2"
-								onClick={onBtPrint}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-									marginRight: "20px",
-									marginLeft: "5px",
-								}}
-							>
-								<span
-									className="pdf_print"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Print
-								</span>
-							</div>
-							<div
-								style={{
-									borderLeft: "1px solid #ccc",
-									height: "100%",
-									position: "absolute",
-									left: "70%",
-									top: "0",
-									bottom: "0",
-									transform: "translateX(-50%)",
-								}}
-							></div>
+							<div className="icon-separtor-first"></div>
 
-							<div
-								className="icon-download"
-								onClick={onBtExport}
-								style={{
-									display: "flex",
-									alignItems: "center",
-									cursor: "pointer",
-									// marginLeft: "10px",
-									width: "101 px",
-									height: " 18px",
-								}}
-							>
-								<span
-									className="download"
-									style={{ display: "inline-block", fontSize: "16px", width: "1em", height: "1em" }}
-								></span>
-								<span className="icon-text" style={{ marginLeft: "-5px" }}>
-									Export
-								</span>
+							<div className="icon-download" id="Export-dropdown-btn">
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
+								<div className="export-btn-popup">
+									<PopoverComponent
+										showOnClick={true}
+										contentClass={`Export-dropdown-content`}
+										elementId={"Export-dropdown-btn"}
+										entries={[
+											[
+												{
+													label: "As CSV",
+													action: "csv",
+													dataQsId: "export-type-csv",
+												},
+												{
+													label: "As PDF",
+													action: "pdf",
+													dataQsId: "export-type-pdf",
+												},
+											],
+										]}
+										onClick={(entry) => {
+											onExportButtonItemClicked(entry);
+										}}
+										offsetLeft={7}
+										offsetTop={7}
+										useOverlay={true}
+									/>
+								</div>
+							</div>
+							<div className="icon-separtor-second"></div>
+							<div className="icon-print2" onClick={onBtPrint}>
+								<span className="pdf_print"></span>
+								<span className="icon-text">Print</span>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div
-					className="general-heading"
-					style={{
-						// width: "80vw",
-						// padding: "20px",
-						marginLeft: "20px",
-						marginBottom: "30px",
-					}}
-				>
+				<div className="general-heading">
 					<div>
 						<h3>
 							{invoiz.user.companyAddress.companyName.charAt(0).toUpperCase() +
@@ -637,24 +584,71 @@ const ReportsCashFlowStatement = (props) => {
 						</p>
 					)}
 				</div>
-
-				<div style={gridStyle} className="ag-theme-alpine">
-					<AgGridReact
-						ref={gridRef}
-						rowData={rowData}
-						columnDefs={columnDefs}
-						defaultColDef={defaultColDef}
-						autoGroupColumnDef={autoGroupColumnDef}
-						animateRows={true}
-						onGridReady={onGridReady}
-						modules={AllModules}
-						// groupDisplayType={"groupRows"}
-						onFirstDataRendered={onFirstDataRendered}
-						// gridOptions={gridOptions}
-					></AgGridReact>
-				</div>
+				{rowData.length > 0 ? (
+					<div>
+						<div className="cash-flow-content">
+							{contentHeaders.map((item) => (
+								<div className="cash-flow-content-wrapper">
+									<div className="row-heading">
+										<h6>
+											{item
+												.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+												.charAt(0)
+												.toUpperCase() + item.replace(/([a-z0-9])([A-Z])/g, "$1 $2").slice(1)}
+										</h6>
+									</div>
+									<div className="row-content">
+										{rowData
+											.filter((filteredItem) => filteredItem.accountTypeId === item)
+											.map((subItem) => {
+												const rowContentName =
+													subItem.accountSubTypeId
+														.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+														.charAt(0)
+														.toUpperCase() +
+													subItem.accountSubTypeId
+														.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+														.slice(1);
+												return (
+													<div className="row-content-wrapper">
+														{/* <div className="row-content-name">{string.split("Total")[0]}</div> */}
+														<div className="row-content-name">{rowContentName}</div>
+														<div className="row-content-value">
+															<div className="currency-container">
+																₹ {parseFloat(subItem.total).toFixed(2)}
+															</div>
+														</div>
+													</div>
+												);
+											})}
+									</div>
+								</div>
+							))}
+						</div>
+						<div className="cash-flow-result">
+							<h6 className="result-name">TOTAL CASH IN FLOW</h6>
+							<h6 className="result-value">
+								{" "}
+								<div className="currency-container">₹ {parseFloat(totalCashFlow).toFixed(2)}</div>
+							</h6>
+						</div>
+					</div>
+				) : (
+					<h6 style={{ display: "flex", justifyContent: "center" }}>No rows to display</h6>
+				)}
 			</div>{" "}
 		</div>
 	);
 };
-export default ReportsCashFlowStatement;
+
+const mapStateToProps = (state) => {
+	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
+	return {
+		isSubmenuVisible,
+		resources,
+	};
+};
+
+export default connect(mapStateToProps, null)(ReportsCashFlowStatement);
+// export default ReportsCashFlowStatement;

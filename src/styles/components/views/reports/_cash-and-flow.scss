@@ -1,0 +1,218 @@
+.reports-cash-flow-component {
+	// width: 100%;
+	// height: 100%;
+	.cash-flow-component-wrapper {
+		height: 1186px;
+		width: 92%;
+		background-color: #fff;
+		border: 1px solid #ccc;
+		margin-top: 30px;
+		margin-left: 50px;
+		font-weight: 600;
+		border-radius: 8px;
+		margin-top: 83px;
+		.general-ledger-component {
+			margin-top: 20px;
+			margin-left: 20px;
+			display: flex;
+			flex-direction: column;
+			padding: 0px 24px 0px 24px;
+			justify-content: space-between;
+			.time-period-select-container {
+				display: flex;
+				justify-content: space-between;
+				margin-left: -45px;
+				.time-period-select {
+					flex: 1.5;
+					display: flex;
+					align-items: center;
+					.time-period-select-subDiv {
+						position: relative;
+						width: 100%;
+						flex: 1;
+					}
+				}
+			}
+			.utility-icons-wrapper {
+				display: flex;
+				align-items: center;
+				justify-content: flex-end;
+				padding: 0px 16px 0px 16px;
+				height: 32px;
+				position: relative;
+				border-radius: 4px;
+				gap: 16px;
+				.utility-icons {
+					border: 1px solid #ccc;
+					padding: 10px;
+					display: flex;
+					align-items: center;
+					position: relative;
+					border-radius: 4px;
+					margin-top: -70px;
+					.icon-mail {
+						display: flex;
+						align-items: center;
+						cursor: pointer;
+						height: 18px;
+						margin-right: 20px;
+						.pdf_mail {
+							display: inline-block;
+							font-size: 16px;
+							width: 1em;
+							height: 1em;
+						}
+						.icon-text {
+							margin-left: -5px;
+							margin-bottom: 3px;
+						}
+					}
+					.icon-separtor-first {
+						border-left: 1px solid #ccc;
+						height: 100%;
+						position: absolute;
+						// left: 44%;
+						left: 39%;
+						top: 0;
+						bottom: 0;
+						transform: translateX(-50%);
+					}
+					.icon-print2 {
+						display: flex;
+						align-items: center;
+						cursor: pointer;
+						height: 18px;
+						margin-right: 20px;
+						// margin-left: 5px;
+						margin-left: 24px;
+						.pdf_print {
+							display: inline-block;
+							font-size: 16px;
+							width: 1em;
+							height: 1em;
+						}
+						.icon-text {
+							margin-left: -5px;
+							margin-bottom: 3px;
+						}
+					}
+					.icon-separtor-second {
+						border-left: 1px solid #ccc;
+						height: 100%;
+						position: absolute;
+						// left: 70%;
+						left: 69%;
+						top: 0;
+						bottom: 0;
+						transform: translateX(-50%);
+					}
+					.icon-download {
+						display: flex;
+						align-items: center;
+						cursor: pointer;
+						height: 18px;
+						.download {
+							display: inline-block;
+							font-size: 16px;
+							width: 1em;
+							height: 1em;
+						}
+						.icon-text {
+							margin-left: -5px;
+							margin-bottom: 3px;
+						}
+
+						.export-btn-popup {
+							.popover-wrapper {
+								top: 170.4px !important;
+								right: 196.7625px !important;
+								.Export-dropdown-content {
+									.popover-entry {
+										color: #888787;
+									}
+									.popover-entry:hover {
+										color: #272d30;
+										background: #ecfcf4;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		.currency-container {
+			width: 100%;
+			text-align: right;
+		}
+		.general-heading {
+			margin-left: 20px;
+			margin-bottom: 30px;
+		}
+		.cash-flow-content {
+			border-bottom: 1px solid #ddd;
+
+			.cash-flow-content-wrapper {
+				.row-heading {
+					padding-left: 15px;
+					padding-bottom: 10px;
+					font-weight: 500;
+					border-top: 1px solid #ddd;
+				}
+				.row-content {
+					.row-content-wrapper {
+						display: flex;
+						justify-content: space-between;
+						border-top: 1px solid #ddd;
+						// border-bottom: 1px solid #ddd;
+						padding: 15px;
+						font-weight: 400;
+						.row-content-name {
+							// width: 300px;
+							width: 80%;
+						}
+						.row-content-value {
+							// width: 170px;
+							// text-align: right;
+							// padding-right: 70px;
+							width: 20%;
+						}
+					}
+				}
+			}
+		}
+		.cash-flow-result {
+			border-bottom: 1px solid #ddd;
+			display: flex;
+			justify-content: space-between;
+			padding: 7px 15px;
+			.result-name {
+				width: 80%;
+			}
+			.result-value {
+				width: 20%;
+			}
+		}
+	}
+}
+
+.leftAlignCashAndFlow {
+	position: relative;
+	left: 167px;
+	width: 83% !important;
+	&.cash-flow-component-wrapper {
+		.general-ledger-component {
+			.utility-icons-wrapper {
+				.utility-icons {
+					.icon-download {
+						.export-btn-popup {
+							.popover-wrapper {
+								right: 162.7625px !important;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

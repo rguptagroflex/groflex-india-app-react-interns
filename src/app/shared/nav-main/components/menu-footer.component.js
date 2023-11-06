@@ -13,6 +13,7 @@ import search from "assets/images/icons/search_new.svg";
 import search_hover from "assets/images/icons/search_hover.svg";
 import bell_hover from "assets/images/icons/bell_new.svg";
 import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
+import Tooltip from "@material-ui/core/Tooltip";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -142,69 +143,66 @@ class MenuFooterComponent extends React.Component {
 		}
 
 		const iconClass = "icon icon-logout_outlined";
-		// const iconClass = "icon icon-logout_new";
+
 		const logoutClass = `menuItem small ${iconClass} ${submenuVisibleVar ? "menuItem-notFocused" : ""}`;
-		// const notificationClass = `menuItem icon icon-bell_2`;
+
 		const notificationClass = `menuItem notificationIcon`;
 
 		return (
 			<div className="menuFooter">
-				<div
-					className="search-footer menuItem"
-					onClick={() => {
-						closeNotificationOnMenuItemClick(), this.onSearchClick();
-					}}
-					onMouseLeave={() => {
-						this.searchIconHover();
-					}}
-					onMouseEnter={() => {
-						this.searchIconHover();
-					}}
-				>
-					{/* <div className="menuHeader_search icon icon-search" /> */}
+				<Tooltip title="Search" placement="right" arrow>
+					<div
+						className="search-footer menuItem"
+						onClick={() => {
+							closeNotificationOnMenuItemClick(), this.onSearchClick();
+						}}
+						onMouseLeave={() => {
+							this.searchIconHover();
+						}}
+						onMouseEnter={() => {
+							this.searchIconHover();
+						}}
+					>
+						{searchHoverActive ? (
+							<SVGInline svg={search_hover} width="24px" height="24px" />
+						) : (
+							<SVGInline svg={search} width="24px" height="24px" />
+						)}
+					</div>
+				</Tooltip>
 
-					{searchHoverActive ? (
-						<SVGInline svg={search_hover} width="24px" height="24px" />
-					) : (
-						<SVGInline svg={search} width="24px" height="24px" />
-					)}
-					{/* <SVGInline svg={search} width="24px" height="24px" /> */}
-					{/* <h5>Search</h5> */}
-				</div>
+				<Tooltip title="Notifications" placement="right" arrow>
+					<div
+						className={notificationClass}
+						onClick={() => {
+							this.onNewsfeedClick();
+							closeSearchOnMenuItemClick();
+						}}
+						onMouseLeave={() => {
+							this.notificationIconHover();
+						}}
+						onMouseEnter={() => {
+							this.notificationIconHover();
+						}}
+					>
+						{notificationHoverActive ? (
+							<div>
+								<SVGInline svg={bell_hover} width="24px" height="24px" />
+								{newsfeedUnreadCount > 0 ? (
+									<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
+								) : null}
+							</div>
+						) : (
+							<div>
+								<SVGInline svg={bell} width="24px" height="24px" />
+								{newsfeedUnreadCount > 0 ? (
+									<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
+								) : null}
+							</div>
+						)}
+					</div>
+				</Tooltip>
 
-				<div
-					className={notificationClass}
-					onClick={() => {
-						this.onNewsfeedClick();
-						closeSearchOnMenuItemClick();
-					}}
-					onMouseLeave={() => {
-						this.notificationIconHover();
-					}}
-					onMouseEnter={() => {
-						this.notificationIconHover();
-					}}
-				>
-					{/* {resources.str_notification}{" "} */}
-					{notificationHoverActive ? (
-						<div>
-							<SVGInline svg={bell_hover} width="24px" height="24px" />
-							{newsfeedUnreadCount > 0 ? (
-								<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
-							) : null}
-						</div>
-					) : (
-						<div>
-							<SVGInline svg={bell} width="24px" height="24px" />
-							{newsfeedUnreadCount > 0 ? (
-								<span className="menuHeader_badge">({newsfeedUnreadCount})</span>
-							) : null}
-						</div>
-					)}
-					{/* <SVGInline svg={bell} width="24px" height="24px" />
-
-					{newsfeedUnreadCount > 0 ? <span className="menuHeader_badge">({newsfeedUnreadCount})</span> : null} */}
-				</div>
 				<div
 					className="menuItem profile_logo"
 					onMouseLeave={() => {
@@ -296,6 +294,7 @@ class MenuFooterComponent extends React.Component {
 						</div>
 					</div>
 				</div>
+
 				{/* <div className={logoutClass} onClick={this.onLogoutClick.bind(this)}>
 					{resources.str_logout}
 				</div> */}

@@ -55,6 +55,8 @@
 				border-radius: 4px;
 				margin-top: -70px;
 				.icon-mail {
+					gap: 5px;
+					width: 110px;
 					display: flex;
 					align-items: center;
 					cursor: pointer;
@@ -64,23 +66,25 @@
 					.pdf_mail {
 						display: inline-block;
 						font-size: 16px;
-						width: 1em;
+						// width: 1em;
 						height: 1em;
 					}
 					.icon-text {
-						margin-left: -5px;
+						margin-bottom: 3px;
 					}
 				}
 				.icon-separtor {
 					border-left: 1px solid #ccc;
 					height: 100%;
 					position: absolute;
-					left: 44%;
+					// left: 44%;
+					left: 38%;
 					top: 0;
 					bottom: 0;
 					transform: translate(-50%);
 				}
 				.icon-print2 {
+					gap: 5px;
 					display: flex;
 					align-items: center;
 					cursor: pointer;
@@ -90,11 +94,12 @@
 					.pdf_print {
 						display: inline-block;
 						font-size: 16px;
-						width: 1em;
+						// width: 1em;
 						height: 1em;
 					}
 					.icon-text {
-						margin-left: -5px;
+						// margin-left: -5px;
+						margin-bottom: 3px;
 					}
 				}
 				.icon-separtor_second {
@@ -105,20 +110,41 @@
 					top: 0;
 					bottom: 0;
 					transform: translate(-50%);
+					padding-left: 10px;
 				}
 				.icon-download {
 					display: flex;
 					align-items: center;
 					cursor: pointer;
 					height: 18px;
+					// padding-right: 20px;
+					padding-right: 30px;
+					gap: 5px;
+
 					.download {
 						display: inline-block;
 						font-size: 16px;
-						width: 1em;
+						// width: 1em;
 						height: 1em;
 					}
 					.icon-text {
-						margin-left: -5px;
+						// margin-left: -5px;
+						padding-bottom: 5px;
+					}
+					.export-btn-popup {
+						.popover-wrapper {
+							top: 170.4px !important;
+							right: 184.7625px !important;
+							.Export-dropdown-content {
+								.popover-entry {
+									color: #888787;
+								}
+								.popover-entry:hover {
+									color: #272d30;
+									background: #ecfcf4;
+								}
+							}
+						}
 					}
 				}
 			}
@@ -130,7 +156,13 @@
 	}
 
 	.table-container {
+		.currency-container {
+			width: 100%;
+			text-align: right;
+		}
 		.Total-container {
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid #ddd;
 			.Total {
 				padding: 15px 16px 26px;
 				// margin-left: 10px;
@@ -138,10 +170,15 @@
 				padding-left: 15px;
 				display: flex;
 				justify-content: space-between;
+				.totalName {
+					width: 80%;
+				}
 				.totalValue {
-					min-width: 150px;
-					text-align: left;
-					padding-left: 34px;
+					width: 20%;
+
+					display: flex;
+
+					// padding-left: 55px;
 				}
 			}
 		}
@@ -150,6 +187,8 @@
 			font-weight: bold;
 		}
 		.balance-sheet-table-header {
+			border-bottom: 1px solid #ddd;
+			border-top: 1px solid #ddd;
 			display: flex;
 			justify-content: space-between;
 			color: #888787;
@@ -157,9 +196,14 @@
 			padding-bottom: 10px;
 			.headingLeft {
 				margin-left: 24px;
+				width: 80%;
 			}
 			.headingRight {
-				margin-right: 100px;
+				// margin-right: 100px;
+				// margin-right: 168px;
+				border-left: 1px solid #c6c6c6;
+				padding-left: 8px;
+				width: 20%;
 			}
 		}
 		.MuiDivider-root {
@@ -194,13 +238,33 @@
 					display: flex;
 					justify-content: space-between;
 					.accordian-detail-total {
-						padding-left: 15px;
-						min-width: 130px;
-						text-align: left;
+						width: 20%;
+
+						display: flex;
 					}
 					.accordian-detail-name {
 						margin-left: 10px;
+						width: 80%;
 					}
+				}
+			}
+		}
+		.balance-sheet-result {
+			border-bottom: 1px solid #ddd;
+			.result-container {
+				display: flex;
+				justify-content: space-between;
+				border-bottom: 1px solid #ddd;
+				padding-left: 15px;
+				padding-bottom: 10px;
+				.result-name {
+					width: 80%;
+				}
+				.result-value {
+					// width: 170px;
+					width: 20%;
+					// padding-left: 40px;
+					padding-right: 11px;
 				}
 			}
 		}
@@ -211,4 +275,20 @@
 	position: relative;
 	width: 83% !important;
 	left: 170px;
+	.general-ledger-component {
+		.balance-sheet-utility-icons {
+			.utilityIcons {
+				.icon-download {
+					.export-btn-popup {
+						.popover-wrapper {
+							right: 172.7625px !important;
+							top: 170.4px !important;
+						}
+					}
+				}
+			}
+		}
+	}
 }
+
+//send email radio

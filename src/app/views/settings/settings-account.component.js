@@ -77,7 +77,7 @@ class SettingsAccountComponent extends React.Component {
 								: `icon-user_outlined_black`
 						}
 					/>
-					
+
 					{pathName === "/settings/account" || pathName === "/settings/account-setting" ? (
 						<div className="row">
 							<div
@@ -154,11 +154,13 @@ class SettingsAccountComponent extends React.Component {
 										<div className="col-xs-5">
 											<AccountKycProgressComponent account={account} resources={resources} />
 											{canSeeSubscription || canEditSubscription ? (
-												<AccountSubscriptionComponent
-													canEditSubscription={canEditSubscription}
-													subscriptionDetail={subscriptionDetail}
-													resources={resources}
-												/>
+												<div className="accountingSubscriptionContainer">
+													<AccountSubscriptionComponent
+														canEditSubscription={canEditSubscription}
+														subscriptionDetail={subscriptionDetail}
+														resources={resources}
+													/>
+												</div>
 											) : null}
 										</div>
 									</div>

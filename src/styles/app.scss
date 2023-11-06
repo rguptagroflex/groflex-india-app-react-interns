@@ -189,10 +189,15 @@
 @import "components/shared/ledger";
 
 // VIEWS
+@import "components/views/reports/cash-and-flow";
+@import "components/views//reports/cash-and-flow-send-email";
 @import "components/views//reports/profit-loss";
+@import "components/views//reports//profit-loss-send-email";
 @import "components/views//reports/reports-list";
 @import "components/views/reports//general-ledger";
+@import "components/views//reports/general-ledger-send-email";
 @import "components/views/reports/balance-sheet";
+@import "components/views/reports/balance-sheet-send-email";
 @import "components/views/account/forgot-password";
 @import "components/views/account/login";
 @import "components/views/account/mobile-redirect";

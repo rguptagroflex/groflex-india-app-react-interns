@@ -1,0 +1,19 @@
+.cash-flow-email-bottom {
+	.cash-flow-email-radio {
+		.radio {
+			display: flex;
+			gap: 5px;
+		}
+	}
+	.expense-receipt-list {
+		display: flex;
+		justify-content: flex-start;
+		.expenseEdit_fileListRow {
+			margin-top: -10px;
+			gap: 5px;
+			.expenseEdit_fileIcon {
+				margin-top: 5px;
+			}
+		}
+	}
+}

@@ -23,6 +23,9 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
 import { connect } from "react-redux";
 import { formatApiDate } from "../../helpers/formatDate";
+import SendEmailModalComponent from "../../shared/send-email/send-email-modal.component";
+import PopoverComponent from "../../shared/popover/popover.component";
+
 const ReportBalanceSheet = (props) => {
 	LicenseManager.setLicenseKey(
 		"CompanyName=Buhl Data Service GmbH,LicensedApplication=invoiz,LicenseType=SingleApplication,LicensedConcurrentDeveloperCount=1,LicensedProductionInstancesCount=1,AssetReference=AG-008434,ExpiryDate=8_June_2021_[v2]_MTYyMzEwNjgwMDAwMA==f2451b642651a836827a110060ebb5dd"
@@ -35,6 +38,7 @@ const ReportBalanceSheet = (props) => {
 	const [rowData, setRowData] = useState([]);
 	const [tableHeaders, setTableHeader] = useState([]);
 	const [expandedAccountTypes, setExpandedAccountTypes] = useState([]);
+	const [exportFormat, setExportFormat] = useState("");
 
 	const CustomCellRenderer = ({ value, colDef }) => (
 		<span>{colDef.field === "total" && value !== undefined ? `₹ ${value}` : value}</span>
@@ -112,15 +116,18 @@ const ReportBalanceSheet = (props) => {
 		fetchData();
 	}, []);
 	const [responseData, setResponseData] = useState(null);
-	const fetchData = async (startDate, endDate) => {
+	const fetchData = async () => {
 		let tableHeaders = [];
+		// console.log("start: ", startDate);
 		try {
 			const response = await invoiz.request(
-				`${config.resourceHost}accountingReport/balanceSheet/${startDate}/${endDate}?type=json`,
+				`${config.resourceHost}accountingReport/balanceSheet/${moment(
+					selectedDate.startDate
+				).format()}/${moment(selectedDate.endDate).format()}?type=json`,
 				{ auth: true }
 			);
 			const responseData = response.body.data;
-			console.log("Response Data:", responseData);
+			// console.log("Response Data:", responseData);
 			if (responseData && responseData.summaryData && responseData.summaryData.transactions) {
 				const transactions = responseData.summaryData.transactions;
 				setTableTotal(responseData.summaryData);
@@ -130,7 +137,7 @@ const ReportBalanceSheet = (props) => {
 					}
 				});
 				setTableHeader(tableHeaders);
-				console.log("table header:: ", tableHeaders);
+
 				setRowData(transactions);
 				setResponseData(responseData);
 			} else {
@@ -188,31 +195,75 @@ const ReportBalanceSheet = (props) => {
 				startDate = fiscalYearStart.format("DD MMMM YYYY");
 				endDate = fiscalYearEnd.format("DD MMMM YYYY");
 				break;
-			// case "custom":
-			// 	startDate = dateData.customStartDate.format("DD MMMM YYYY");
-			// 	endDate = dateData.customEndDate.format("DD MMMM YYYY");
-			// 	break;
+			case "custom":
+				startDate = dateData.customStartDate.format("DD MMMM YYYY");
+				endDate = dateData.customEndDate.format("DD MMMM YYYY");
+				break;
 			default:
 				startDate = "";
 				endDate = "";
 				break;
 		}
+		// console.log("CustomStart: ", startDate);
 		setSelectedDate({ startDate, endDate });
 		// console.log("startDate", startDate);
 		return { startDate, endDate };
 	};
 
+	const handleSendBalanceSheetEmail = (modalData) => {
+		const { emailTextAdditional, emails, regard, sendType } = modalData;
+		// console.log(emailTextAdditional, emails, regard, sendType, "data friom modal emai lvierw");
+
+		const url = `${config.resourceHost}accountingReport/sendAccountingReportEmail/BalanceSheet/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}`;
+
+		const method = "POST";
+		const data = {
+			recipients: emails.map((email) => email.value),
+			subject: regard,
+			text: emailTextAdditional,
+			sendCopy: false,
+			sendType: sendType,
+		};
+
+		invoiz
+			.request(url, { auth: true, method, data })
+			.then((res) => {
+				// console.log("Response:  for send email modal", res);
+				invoiz.showNotification({ type: "success", message: "Ledger email sent" });
+				ModalService.close();
+			})
+			.catch(() => {
+				invoiz.showNotification({ type: "error", message: "Couldn't send email" });
+				ModalService.close();
+			});
+	};
+
 	const sendEmail = () => {
-		ModalService.open(<BalanceSheetSendEmail />, {
-			modalClass: "edit-contact-person-modal-component",
-			width: 630,
-		});
+		// ModalService.open(<BalanceSheetSendEmail selectedDate={selectedDate} />, {
+		// 	modalClass: "edit-contact-person-modal-component",
+		// 	width: 630,
+		// });
+		ModalService.open(
+			<SendEmailModalComponent
+				heading={"Send Balance Sheet"}
+				fileNameWithoutExt={`BalanceSheet_${moment(selectedDate.startDate).format("DD-MM-YYYY")}_${moment(
+					selectedDate.endDate
+				).format("DD-MM-YYYY")}`}
+				onSubmit={(data) => handleSendBalanceSheetEmail(data)}
+			/>,
+			{
+				modalClass: "send-ledger-email-modal-component-wrapper",
+				width: 630,
+			}
+		);
 	};
 	const activeAction = OfferAction.PRINT;
 	const DateFilterType = {
 		FISCAL_YEAR: "fiscalYear",
 	};
-	const [selectedDate, setSelectedDate] = useState(null);
+	const [selectedDate, setSelectedDate] = useState("");
 
 	const [showDateFilter, setShowDateFilter] = useState(props.showDateFilter || false);
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
@@ -251,22 +302,24 @@ const ReportBalanceSheet = (props) => {
 			setSelectedDate(null);
 			return;
 		}
+		const { startDate, endDate } = onDate(option.value);
 
 		switch (option.value) {
 			case "custom":
 				setDateData({
 					...dateData,
 					showCustomDateRangeSelector: true,
-					// dateFilterValue: option.value
+					dateFilterValue: option.value,
 				});
-				setSelectedDate({
-					startDate: dateData.customStartDate.format("DD MMMM YYYY"),
-					endDate: dateData.customEndDate.format("DD MMMM YYYY"),
-				});
+				// setSelectedDate({
+				// 	startDate: dateData.customStartDate.format("DD MMMM YYYY"),
+				// 	endDate: dateData.customEndDate.format("DD MMMM YYYY"),
+				// });
+				setSelectedDate({ startDate, endDate });
+				// fetchData(startDate, endDate);
 
 				break;
 			default:
-				const { startDate, endDate } = onDate(option.value);
 				// onDate(option.value);
 				setDateData({
 					...dateData,
@@ -274,29 +327,98 @@ const ReportBalanceSheet = (props) => {
 					dateFilterValue: option.value,
 				});
 				setSelectedDate({ startDate, endDate });
-				fetchData(startDate, endDate);
+				// fetchData(startDate, endDate);
+
 				break;
 		}
 	};
 
 	const handleStartDateChange = (name, value) => {
 		const startDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customStartDate: startDate });
+		// setDateData({ ...dateData, customStartDate: startDate });
+		setSelectedDate({ ...selectedDate, startDate: startDate });
 	};
 
 	const handleEndDateChange = (name, value) => {
 		const endDate = moment(value, "DD-MM-YYYY");
-		setDateData({ ...dateData, customEndDate: endDate });
+		// setDateData({ ...dateData, customEndDate: endDate });
+		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 	useEffect(() => {
 		// Fetch initial data with the default date filter
 		const { startDate, endDate } = onDate(dateData.dateFilterValue);
 		fetchData(startDate, endDate);
 	}, []); //
-	console.log("headerData: ", tableHeaders);
+
+	useEffect(() => {
+		fetchData();
+	}, [selectedDate]);
+
+	// const exportButtonClick = async () => {
+	// 	const endpoint = `${config.resourceHost}accountingReport/balanceSheet/${moment(
+	// 		selectedDate.startDate
+	// 	).format()}/${moment(selectedDate.endDate).format()}?type=csv`;
+	// 	await invoiz.request(endpoint, { auth: true }).then((res) => {
+	// 		console.log("Res: ", res);
+	// 	});
+	// };
+
+	const exportButtonClick = () => {
+		console.log("Export Format: ", exportFormat);
+		const url = `${config.resourceHost}accountingReport/balanceSheet/${moment(
+			selectedDate.startDate
+		).format()}/${moment(selectedDate.endDate).format()}?type=${exportFormat}`;
+
+		invoiz
+			.request(url, {
+				auth: true,
+				method: "GET",
+				headers: { "Content-Type": `application/${exportFormat}` },
+			})
+			.then(({ body }) => {
+				console.log("Api Called", body);
+				invoiz.page.showToast({ message: props.resources.ledgerExportCreateSuccess });
+				var blob = new Blob([body], { type: "application/text" });
+				console.log("Blob", blob);
+				var link = document.createElement("a");
+				link.href = window.URL.createObjectURL(blob);
+				link.download = `${moment(selectedDate.startDate).format()}_${moment(
+					selectedDate.endDate
+				).format()}.${exportFormat}`;
+
+				document.body.appendChild(link);
+
+				link.click();
+
+				document.body.removeChild(link);
+				setExportFormat("");
+			})
+			.catch((err) => {
+				setExportFormat("");
+				invoiz.page.showToast({ type: "error", message: props.resources.ledgerExportCreateError });
+			});
+	};
 
 	const submenVisible = props.isSubmenuVisible;
 	const classLeft = submenVisible ? "leftAlignBalanceSheet" : "";
+	const onExportButtonItemClicked = (entry) => {
+		switch (entry.action) {
+			case "pdf":
+				setExportFormat("pdf");
+
+				break;
+			case "csv":
+				setExportFormat("csv");
+
+				break;
+		}
+	};
+
+	useEffect(() => {
+		if (exportFormat !== "") {
+			exportButtonClick();
+		}
+	}, [exportFormat]);
 
 	return (
 		<div className="reports-balance-sheet-component">
@@ -405,15 +527,42 @@ const ReportBalanceSheet = (props) => {
 								<span className="icon-text">Send email</span>
 							</div>
 							<div className="icon-separtor"></div>
+
+							<div className="icon-download" id="Export-dropdown-btn">
+								<span className="download"></span>
+								<span className="icon-text">Export</span>
+								<div className="export-btn-popup">
+									<PopoverComponent
+										showOnClick={true}
+										contentClass={`Export-dropdown-content`}
+										elementId={"Export-dropdown-btn"}
+										entries={[
+											[
+												{
+													label: "As CSV",
+													action: "csv",
+													dataQsId: "export-type-csv",
+												},
+												{
+													label: "As PDF",
+													action: "pdf",
+													dataQsId: "export-type-pdf",
+												},
+											],
+										]}
+										onClick={(entry) => {
+											onExportButtonItemClicked(entry);
+										}}
+										offsetLeft={7}
+										offsetTop={7}
+										useOverlay={true}
+									/>
+								</div>
+							</div>
+							<div className="icon-separtor_second"></div>
 							<div className="icon-print2" onClick={onBtPrint}>
 								<span className="pdf_print"></span>
 								<span className="icon-text">Print</span>
-							</div>
-							<div className="icon-separtor_second"></div>
-
-							<div className="icon-download" onClick={onBtExport}>
-								<span className="download"></span>
-								<span className="icon-text">Export</span>
 							</div>
 						</div>
 					</div>
@@ -444,7 +593,7 @@ const ReportBalanceSheet = (props) => {
 					{tableHeaders.map((item) => {
 						return (
 							<div>
-								<Accordion>
+								<Accordion elevation={0}>
 									<AccordionSummary
 										expandIcon={<ExpandMoreIcon />}
 										aria-controls="panel1a-content"
@@ -462,33 +611,23 @@ const ReportBalanceSheet = (props) => {
 													<React.Fragment>
 														<div className="accordian-details-row-entry">
 															<div className="accordian-detail-name">
-																{subItem.accountSubTypeId}{" "}
+																{subItem.accountSubTypeId
+																	.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																	.charAt(0)
+																	.toUpperCase() +
+																	subItem.accountSubTypeId
+																		.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
+																		.slice(1)}
 															</div>
 															<div className="accordian-detail-total">
-																{subItem.credits === 0
-																	? subItem.debits
-																	: subItem.credits}{" "}
+																<div className="currency-container">
+																	₹
+																	{subItem.credits === 0
+																		? parseFloat(subItem.debits).toFixed(2)
+																		: parseFloat(subItem.credits).toFixed(2)}
+																</div>
 															</div>
 														</div>
-
-														{/* {index ===
-														rowData.filter(
-															(filteredItem) => filteredItem.accountTypeId === item
-														).length -
-															1 ? (
-															<React.Fragment>
-																<div className="Total">
-																	<div>Total {item}</div>
-																	<div className="totalValue">
-																		{parseFloat(
-																			tableTotals[item + "Total"]
-																		).toFixed(2)}
-																	</div>
-																</div>
-															</React.Fragment>
-														) : (
-															""
-														)} */}
 													</React.Fragment>
 												))}
 										</div>
@@ -497,9 +636,11 @@ const ReportBalanceSheet = (props) => {
 								<div className="Total-container">
 									<React.Fragment>
 										<div className="Total">
-											<div>Total {item}</div>
+											<div className="totalName">Total {item}</div>
 											<div className="totalValue">
-												{parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+												<div className="currency-container">
+													<div>₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}</div>
+												</div>
 											</div>
 										</div>
 									</React.Fragment>
@@ -507,7 +648,16 @@ const ReportBalanceSheet = (props) => {
 							</div>
 						);
 					})}
-					<div></div>
+					<div className="balance-sheet-result">
+						<div className="result-container">
+							<h6 className="result-name">TOTAL BALANCE</h6>
+							<h6 className="result-value">
+								<div className="currency-container">
+									₹ {parseFloat(tableTotals.finalBalanceTotal).toFixed(2)}
+								</div>{" "}
+							</h6>
+						</div>
+					</div>
 				</div>
 			</div>{" "}
 		</div>
@@ -516,8 +666,10 @@ const ReportBalanceSheet = (props) => {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const { resources } = state.language.lang;
 	return {
 		isSubmenuVisible,
+		resources,
 	};
 };
 

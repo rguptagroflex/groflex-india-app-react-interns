@@ -18,7 +18,7 @@ import { format } from "util";
 import ZohoPlan from "enums/zoho-plan.enum";
 import ChargebeeAddon from "../../enums/chargebee-addon.enum";
 import RadioInputComponent from "shared/inputs/radio-input/radio-input.component";
-import LoaderComponent from 'shared/loader/loader.component';
+import LoaderComponent from "shared/loader/loader.component";
 
 class AccountSubscriptionComponent extends React.Component {
 	constructor(props) {
@@ -32,7 +32,7 @@ class AccountSubscriptionComponent extends React.Component {
 			updatedSubscriptionDetail: null,
 			planType: "yearly",
 			planPrice: "₹3999/ Year",
-			isLoading: false
+			isLoading: false,
 		};
 
 		// invoiz.on('userModelSubscriptionDataSet', () => {
@@ -43,7 +43,9 @@ class AccountSubscriptionComponent extends React.Component {
 		this._isMounted = true;
 		invoiz.on("userModelSubscriptionDataSet", () => {
 			if (this._isMounted) {
-				this.setState({ updatedSubscriptionDetail: { ...this.props.subscriptionDetail, ...invoiz.user.subscriptionData} });
+				this.setState({
+					updatedSubscriptionDetail: { ...this.props.subscriptionDetail, ...invoiz.user.subscriptionData },
+				});
 			}
 		});
 	}
@@ -70,9 +72,9 @@ class AccountSubscriptionComponent extends React.Component {
 
 		if (
 			(subscriptionDetail.planId !== ChargebeePlan.UNLIMITED &&
-			subscriptionDetail.planId !== ChargebeePlan.UNLIMITED_999 &&
-			subscriptionDetail.planId !== ChargebeePlan.UNLIMITED_YEARLY &&
-			subscriptionDetail.planId !== RazorpayPlan.UNLIMITED_YEARLY ) ||
+				subscriptionDetail.planId !== ChargebeePlan.UNLIMITED_999 &&
+				subscriptionDetail.planId !== ChargebeePlan.UNLIMITED_YEARLY &&
+				subscriptionDetail.planId !== RazorpayPlan.UNLIMITED_YEARLY) ||
 			subscriptionDetail.planId !== RazorpayPlan.UNLIMITED_MONTHLY
 		) {
 			subscriptionQuotaFormatted = formatCurrencySymbolDisplayInFront(subscriptionDetail.usedContingent);
@@ -135,7 +137,7 @@ class AccountSubscriptionComponent extends React.Component {
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED_MONTHLY ||
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED_INTERNAL ||
 						subscriptionDetail.planId === ChargebeePlan.UNLIMITED_YEARLY_21 ||
-						subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021 || 
+						subscriptionDetail.planId === ChargebeePlan.FREE_PLAN_2021 ||
 						subscriptionDetail.planId === ChargebeePlan.FREE_PLAN;
 					title = (
 						<div>
@@ -180,7 +182,6 @@ class AccountSubscriptionComponent extends React.Component {
 							) : null}
 						</div>
 					);
-
 
 					//buttonTitle = resources.str_manageTariff;
 					buttonTitle = `Upgrade plan`;
@@ -231,7 +232,7 @@ class AccountSubscriptionComponent extends React.Component {
 			case ChargebeePlan.STANDARD_YEARLY:
 			case ChargebeePlan.STARTER_MONTHLY:
 			case ChargebeePlan.STANDARD_MONTHLY:
-			case ChargebeePlan.STANDARD_YEARLY_21:{
+			case ChargebeePlan.STANDARD_YEARLY_21: {
 				isUnlimited = false;
 				break;
 			}
@@ -316,7 +317,7 @@ class AccountSubscriptionComponent extends React.Component {
 			}
 			this.setState({ isLoading: true });
 			redirectToChargebee(plan, false);
-		} 
+		}
 		// else if (
 		// 	subscriptionDetail.planId === ChargebeePlan.TRIAL ||
 		// 	subscriptionDetail.planId === ChargebeePlan.TRIAL_21 ||
@@ -348,11 +349,11 @@ class AccountSubscriptionComponent extends React.Component {
 		let { subscriptionDetail } = this.props;
 		if (subscriptionDetail.planId === ChargebeePlan.FREE_PLAN) {
 			return `Free Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN) { 
+		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN) {
 			return `Accounting Monthly Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN) { 
+		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN) {
 			return `Accounting Yearly Plan`;
-		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN) { 
+		} else if (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN) {
 			return `Accounting Trial Plan`;
 		} else {
 			return ``;
@@ -361,7 +362,7 @@ class AccountSubscriptionComponent extends React.Component {
 
 	checkAddonExists(subscriptionDetail, addon) {
 		let addonExists = false;
-		if(subscriptionDetail.chargebeeSubscription.customer) {
+		if (subscriptionDetail.chargebeeSubscription.customer) {
 			if (subscriptionDetail.chargebeeSubscription.customer.addons) {
 				addonExists = Object.keys(subscriptionDetail.chargebeeSubscription.customer.addons).includes(addon);
 			}
@@ -374,14 +375,13 @@ class AccountSubscriptionComponent extends React.Component {
 		// // let { planType } = this.state;
 		// planType
 		// customer[key] = value;
-		if(value === "yearly") {
-			this.setState({ planType:value, planPrice: "₹3999/ Year" });
-		} else if(value === "monthly") {
-			this.setState({ planType:value, planPrice: "₹399/ Month"  });
+		if (value === "yearly") {
+			this.setState({ planType: value, planPrice: "₹3999/ Year" });
+		} else if (value === "monthly") {
+			this.setState({ planType: value, planPrice: "₹399/ Month" });
 		} else {
-			this.setState({ planType:value, planPrice: "Accounting Trial Plan 14 days"  });
+			this.setState({ planType: value, planPrice: "Accounting Trial Plan 14 days" });
 		}
-		
 	}
 
 	getPlanDetails() {
@@ -401,16 +401,15 @@ class AccountSubscriptionComponent extends React.Component {
 			: null;
 
 		const subscriptionCurrentTermStartDate = subscriptionDetail.currentTermStart
-		? formatDate(subscriptionDetail.currentTermStart)
-		: null;
+			? formatDate(subscriptionDetail.currentTermStart)
+			: null;
 
 		const subscriptionCurrentTermEndDate = subscriptionDetail.currentTermEnd
-		? formatDate(subscriptionDetail.currentTermEnd)
-		: null;
-		
+			? formatDate(subscriptionDetail.currentTermEnd)
+			: null;
 
 		let subscriptionDatePercentage = 0;
-		let subscriptionDateColor = '#00A353';
+		let subscriptionDateColor = "#00A353";
 		if (
 			subscriptionDetail.status === SubscriptionStatus.CANCELLED ||
 			subscriptionDetail.status === SubscriptionStatus.NON_RENEWING
@@ -429,43 +428,49 @@ class AccountSubscriptionComponent extends React.Component {
 			let b = moment(subscriptionDetail.currentTermStart);
 			let a = moment(subscriptionDetail.currentTermEnd);
 			let c = moment();
-			let totalDays = a.diff(b, 'days');
-			let remainingDays = c.diff(b, 'days');
+			let totalDays = a.diff(b, "days");
+			let remainingDays = c.diff(b, "days");
 			subscriptionDatePercentage = (remainingDays / totalDays) * 100;
 			if (subscriptionDatePercentage > 100) {
-				subscriptionDatePercentage = 100
-				subscriptionDateColor = '#F03636'
+				subscriptionDatePercentage = 100;
+				subscriptionDateColor = "#F03636";
 			} else if (subscriptionDatePercentage > 85 && subscriptionDatePercentage < 99) {
-				subscriptionDateColor = '#dd7474'
+				subscriptionDateColor = "#dd7474";
 			}
 			switch (subscriptionDetail.planId) {
 				case ChargebeePlan.ACCOUNTING_MONTHLY_PLAN:
 				case ChargebeePlan.ACCOUNTING_YEARLY_PLAN:
 				case ChargebeePlan.ACCOUNTING_TRIAL_PLAN:
 				case ChargebeePlan.FREE_PLAN:
-
-				content = (
+					content = (
 						<div>
-							{(
+							{
 								<div>
-									<span className="text-medium text-start-date" >{'Start Date'} : {subscriptionCurrentTermStartDate}</span>
+									<span className="text-medium text-start-date">
+										{"Start Date"} : {subscriptionCurrentTermStartDate}
+									</span>
 									<span className="text-medium text-end-date">
-										{'End Date'} : {subscriptionCurrentTermEndDate}
+										{"End Date"} : {subscriptionCurrentTermEndDate}
 									</span>
 									<div className="subscription-quota-bar">
 										<div
 											className="subscription-quota-used"
-											style={{ width: `${subscriptionDatePercentage}%`, background:`${subscriptionDateColor}`  }}
+											style={{
+												width: `${subscriptionDatePercentage}%`,
+												background: `${subscriptionDateColor}`,
+											}}
 										/>
 									</div>
 								</div>
-							)}
-							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE && subscriptionDetail.planId !=  ChargebeePlan.ACCOUNTING_TRIAL_PLAN ? (
+							}
+							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE &&
+							subscriptionDetail.planId != ChargebeePlan.ACCOUNTING_TRIAL_PLAN ? (
 								<div className="text-semibold text-next-payment">
 									{format(resources.subscriptionNextPlanInfo, subscriptionNextPaymentDate)}
 								</div>
 							) : null}
-							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE && subscriptionDetail.planId ===  ChargebeePlan.ACCOUNTING_TRIAL_PLAN ? (
+							{subscriptionDetail.vendor === SubscriptionVendor.CHARGEBEE &&
+							subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN ? (
 								<div className="text-semibold text-next-payment">
 									{format(resources.subscriptionTrialExpirePlanInfo, subscriptionNextPaymentDate)}
 								</div>
@@ -479,7 +484,14 @@ class AccountSubscriptionComponent extends React.Component {
 			}
 		}
 
-		return { title, subscriptionCurrentTermStartDate, subscriptionCurrentTermEndDate, subscriptionNextPaymentDate, content, buttonTitle };
+		return {
+			title,
+			subscriptionCurrentTermStartDate,
+			subscriptionCurrentTermEndDate,
+			subscriptionNextPaymentDate,
+			content,
+			buttonTitle,
+		};
 	}
 
 	render() {
@@ -530,7 +542,7 @@ class AccountSubscriptionComponent extends React.Component {
 		// 			disabled={!canEditSubscription}
 		// 		/>
 		// 	);
-		// } 
+		// }
 		// else if (
 		// 	subscriptionDetail.vendor === SubscriptionVendor.ZOHO &&
 		// 	!(
@@ -568,7 +580,7 @@ class AccountSubscriptionComponent extends React.Component {
 		// let purchasedQuotationAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_QUOTATION);
 		// let purchasedImprezzQuotationAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_IMPREZZ_QUOTATION);
 		// let purchasedInventoryAddon = this.checkAddonExists(subscriptionDetail, ChargebeeAddon.CHARGEBEE_ADDON_INVENTORY);
-		
+
 		return (
 			// <div className="settings-subscription-component">
 			// 	{
@@ -609,7 +621,7 @@ class AccountSubscriptionComponent extends React.Component {
 			// 							</div>
 			// 						)} */}
 			// 						{
-			// 							purchasedQuotationAddon 
+			// 							purchasedQuotationAddon
 			// 								? <div>
 			// 									<p style={{display: 'inline', backgroundColor: "#D9F9D4", width: 'min-content', padding: '5px 10px', borderRadius: '4px'}}>Active</p>
 			// 									<p style={{display: 'inline-block', marginLeft: '10px'}}>valid till {formatDate(subscriptionDetail.nextBillingAt)}</p>
@@ -721,47 +733,49 @@ class AccountSubscriptionComponent extends React.Component {
 			// 		</div>
 			// 	}
 			// </div>
-			
-			subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.FREE_PLAN ? 
+
+			subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.FREE_PLAN ? (
 				<div>
-					{isLoading ? (
-						<LoaderComponent text={"Loading..."} visible={isLoading} />
-					) : (null)}
-					<div className="" style={{padding: "26px 32px"}}>
+					{isLoading ? <LoaderComponent text={"Loading..."} visible={isLoading} /> : null}
+					<div className="" style={{ padding: "26px 32px" }}>
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
 							<div className="col-xs-12">
-								<div className="text-h5 u_mb_8">{'Free Plan'}</div>
+								<div className="text-h5 u_mb_8">{"Free Plan"}</div>
 							</div>
 						</div>
 					</div>
 					{/* Uncomment when accounting live */}
-					<div className="" style={{padding: "26px 32px"}}>
+					<div className="" style={{ padding: "26px 32px" }}>
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_10">{"Accounting Module"}</div>
-							<div className="col-xs-12 text-h6 u_pb_20">{"Your one-stop solution for all your accounting needs ! Here’s what you will get in the accounting module. "}</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="col-xs-12 text-h6 u_pb_20">
+								{
+									"Your one-stop solution for all your accounting needs ! Here’s what you will get in the accounting module. "
+								}
+							</div>
+							<div className="text-h6 u_pl_10">
 								<div className="icon icon-check_circle">&nbsp;Cash and Bank</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon icon-check_circle">&nbsp;Transactions</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon icon-check_circle">&nbsp;Chart of Accounts</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon icon-check_circle">&nbsp;Bank Reconciliation</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon icon-check_circle">&nbsp;Cash Flow</div>
 							</div>
-							<div className="col-xs-12 u_pt_20 u_pb_20">							
-								<div className="text-h5 u_mb_8">{'Choose Plan'}</div>
+							<div className="col-xs-12 u_pt_20 u_pb_20">
+								<div className="text-h5 u_mb_8">{"Choose Plan"}</div>
 							</div>
 							<div className="col-xs-12">
 								<div className="row">
 									<RadioInputComponent
-										wrapperClass={`plan-type-toggle col-xs-6`}
+										wrapperClass={`plan-type-toggle col-xs-12`}
 										options={[
 											{ label: "Yearly (Save 20%)", value: "yearly" },
 											{ label: "Monthly", value: "monthly" },
@@ -773,10 +787,10 @@ class AccountSubscriptionComponent extends React.Component {
 									/>
 								</div>
 							</div>
-							<div className="col-xs-12 u_pt_10">							
+							<div className="col-xs-12 u_pt_10">
 								<div className="text-h5 plan-price-text">{planPrice}</div>
 							</div>
-							<div className="col-xs-12" style={{"textAlign": "right"}}>							
+							<div className="col-xs-12" style={{ textAlign: "left" }}>
 								<ButtonComponent
 									buttonIcon={"icon-check"}
 									type="primary"
@@ -790,38 +804,37 @@ class AccountSubscriptionComponent extends React.Component {
 						</div>
 					</div>
 				</div>
-			: 
-			(subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN ) ? 
+			) : subscriptionDetail.planId && subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_TRIAL_PLAN ? (
 				<div className="settings-subscription-component u_p_20 u_mt_16">
-					{isLoading ? (
-						<LoaderComponent text={"Loading..."} visible={isLoading} />
-					) : (null)}
-					<div >
-					{/* className="" style={{padding: "26px 32px"}} */}
+					{isLoading ? <LoaderComponent text={"Loading..."} visible={isLoading} /> : null}
+					<div>
+						{/* className="" style={{padding: "26px 32px"}} */}
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
 							<div className="col-xs-12">
 								<div className="text-h5 u_mb_8">{title}</div>
 							</div>
-							<div className="col-xs-12 text-h6 u_pb_20">{"You can now access these premium features "}</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="col-xs-12 text-h6 u_pb_20">
+								{"You can now access these premium features "}
+							</div>
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Cash and Bank</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Transactions</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Chart of Accounts</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Bank Reconciliation</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Cash Flow</div>
 							</div>
 							<div className="col-xs-12 u_pt_20">{content}</div>
-							<div className="col-xs-12 u_pt_20 u_pb_20">							
-								<div className="text-h5 u_mb_8">{'Choose Plan'}</div>
+							<div className="col-xs-12 u_pt_20 u_pb_20">
+								<div className="text-h5 u_mb_8">{"Choose Plan"}</div>
 							</div>
 							<div className="col-xs-12">
 								<div className="row">
@@ -837,10 +850,10 @@ class AccountSubscriptionComponent extends React.Component {
 									/>
 								</div>
 							</div>
-							<div className="col-xs-12 u_pt_10">							
+							<div className="col-xs-12 u_pt_10">
 								<div className="text-h5 plan-price-text">{planPrice}</div>
 							</div>
-							<div className="col-xs-12" style={{"textAlign": "right"}}>							
+							<div className="col-xs-12" style={{ textAlign: "right" }}>
 								<ButtonComponent
 									buttonIcon={"icon-check"}
 									type="primary"
@@ -855,30 +868,33 @@ class AccountSubscriptionComponent extends React.Component {
 						</div>
 					</div>
 				</div>
-			:
-			(subscriptionDetail.planId && ( subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN || subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN )) ? 
+			) : subscriptionDetail.planId &&
+			  (subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_MONTHLY_PLAN ||
+					subscriptionDetail.planId === ChargebeePlan.ACCOUNTING_YEARLY_PLAN) ? (
 				<div className="settings-subscription-component u_p_20 u_mt_16">
-					<div >
-					{/* className="" style={{padding: "26px 32px"}} */}
+					<div>
+						{/* className="" style={{padding: "26px 32px"}} */}
 						<div className="row">
 							<div className="col-xs-12 text-h4 u_pb_20">{resources.str_yourTariff}</div>
 							<div className="col-xs-12">
 								<div className="text-h5 u_mb_8">{title}</div>
 							</div>
-							<div className="col-xs-12 text-h6 u_pb_20">{"You can now access these premium features "}</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="col-xs-12 text-h6 u_pb_20">
+								{"You can now access these premium features "}
+							</div>
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Cash and Bank</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Transactions</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Chart of Accounts</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Bank Reconciliation</div>
 							</div>
-							<div className="text-h6 u_pl_10">	
+							<div className="text-h6 u_pl_10">
 								<div className="icon active icon-check_circle">&nbsp;Cash Flow</div>
 							</div>
 							<div className="col-xs-12 u_pt_20">{content}</div>
@@ -886,8 +902,7 @@ class AccountSubscriptionComponent extends React.Component {
 						</div>
 					</div>
 				</div>
-			: 
-			null
+			) : null
 		);
 	}
 }
