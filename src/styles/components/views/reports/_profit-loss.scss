@@ -149,8 +149,12 @@
 			background: #ecfcf4;
 			height: 56px;
 			padding: 17px;
+			.netProfit-name {
+				width: 33%;
+			}
 			.netProfit-value {
-				width: 170px;
+				// width: 170px;
+				width: 33%;
 				display: flex;
 				text-align: right;
 				padding-left: 90px;
@@ -167,8 +171,12 @@
 				padding-left: 15px;
 				display: flex;
 				justify-content: space-between;
+				.totalName {
+					width: 33%;
+				}
 				.totalValue {
-					min-width: 170px;
+					// min-width: 170px;
+					width: 33%;
 					text-align: right;
 					display: flex;
 					padding-left: 86px;
@@ -189,16 +197,18 @@
 			padding-bottom: 10px;
 			.headingLeft {
 				margin-left: 24px;
+				width: 33%;
 			}
 			.headingRight {
-				// margin-right: 100px;
-				margin-right: 179px;
+				// margin-right: 179px;
 				border-left: 1px solid #c6c6c6;
 				padding-left: 8px;
+				width: 33%;
 			}
 			.headingMiddle {
 				border-left: 1px solid #c6c6c6;
 				padding-left: 8px;
+				width: 33%;
 			}
 		}
 		.MuiDivider-root {
@@ -234,16 +244,19 @@
 					justify-content: space-between;
 					.accordian-detail-total {
 						padding-left: 90px;
-						min-width: 170px;
-						text-align: right;
+						// min-width: 170px;
+						width: 33%;
+						// text-align: right;
 						display: flex;
 					}
 					.accordian-detail-name {
 						margin-left: 10px;
-						width: 170px;
+						// width: 170px;
+						width: 33%;
 					}
 					.account-code {
-						width: 140px;
+						width: 33%;
+						padding-left: 20px;
 					}
 				}
 			}

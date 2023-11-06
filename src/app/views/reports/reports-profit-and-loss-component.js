@@ -617,7 +617,7 @@ function ReportsProfitAndLoss(props) {
 								<div className="Total-container">
 									<React.Fragment>
 										<div className="Total">
-											<div>Total {item}</div>
+											<div className="totalName">Total {item}</div>
 											<div className="totalValue">
 												₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}
 											</div>
@@ -629,7 +629,7 @@ function ReportsProfitAndLoss(props) {
 					})}
 					{rowData.length > 0 ? (
 						<div className="netProfit">
-							<div>Net Profit</div>
+							<div className="netProfit-name">Net Profit</div>
 							<div className="netProfit-value">₹ {parseFloat(netProfit).toFixed(2)}</div>
 						</div>
 					) : (

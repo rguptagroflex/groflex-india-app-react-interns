@@ -461,21 +461,26 @@ button.chart-type-toggle {
 						padding-right: 42px;
 						border-left: 1px solid #c6c6c6;
 						padding-left: 8px;
+						width: 30%;
 					}
 					.headingDate {
 						padding-left: 24px;
+						width: 30%;
 					}
 					.headingAccount {
 						border-left: 1px solid #c6c6c6;
 						padding-left: 8px;
+						width: 30%;
 					}
 					.headingDebit {
 						border-left: 1px solid #c6c6c6;
 						padding-left: 8px;
+						width: 30%;
 					}
 					.headingCredit {
 						border-left: 1px solid #c6c6c6;
 						padding-left: 8px;
+						width: 30%;
 					}
 				}
 				.MuiDivider-root {
@@ -515,31 +520,32 @@ button.chart-type-toggle {
 								padding-left: 29px;
 							}
 							.row-entry-account {
-								// width: 170px;
 								width: 30%;
-								// padding-left: 30px;
-								padding-left: 82px;
+
+								// padding-left: 82px;
+								padding-left: 15px;
 							}
 							.row-entry-debits {
 								display: flex;
-								// width: 170px;
+
 								width: 30%;
 								text-align: right;
-								justify-content: flex-end;
+								// justify-content: flex-end;
+								padding-left: 65px;
 							}
 							.row-entry-credits {
-								// width: 170px;
 								width: 30%;
 								text-align: right;
 								display: flex;
-								justify-content: flex-end;
+								// justify-content: flex-end;
+								padding-left: 57px;
 							}
 							.row-entry-balance {
-								// width: 170px;
 								width: 30%;
 								text-align: right;
 								display: flex;
-								justify-content: flex-end;
+								// justify-content: flex-end;
+								padding-left: 65px;
 							}
 						}
 					}

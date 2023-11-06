@@ -634,7 +634,7 @@ const ReportBalanceSheet = (props) => {
 								<div className="Total-container">
 									<React.Fragment>
 										<div className="Total">
-											<div>Total {item}</div>
+											<div className="totalName">Total {item}</div>
 											<div className="totalValue">
 												₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}
 											</div>
@@ -646,7 +646,7 @@ const ReportBalanceSheet = (props) => {
 					})}
 					<div className="balance-sheet-result">
 						<div className="result-container">
-							<h6>TOTAL BALANCE</h6>
+							<h6 className="result-name">TOTAL BALANCE</h6>
 							<h6 className="result-value">₹ {parseFloat(tableTotals.finalBalanceTotal).toFixed(2)}</h6>
 						</div>
 					</div>
