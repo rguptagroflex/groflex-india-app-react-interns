@@ -511,18 +511,24 @@ button.chart-type-toggle {
 						.accordian-details-row-entry {
 							border-bottom: 1px solid #ddd;
 							font-weight: initial;
-							padding: 20px 16px 30px;
+							// padding: 20px 16px 30px;
+							padding: 20px 30px 30px;
 							display: flex;
 							justify-content: space-between;
+							.currency-container {
+								width: 100%;
+								text-align: right;
+								white-space: nowrap;
+								padding-right: 12px;
+							}
 							.row-entry-date {
 								// width: 170px;
 								width: 30%;
-								padding-left: 29px;
+								padding-left: 13px;
 							}
 							.row-entry-account {
 								width: 30%;
 
-								// padding-left: 82px;
 								padding-left: 15px;
 							}
 							.row-entry-debits {
@@ -531,21 +537,21 @@ button.chart-type-toggle {
 								width: 30%;
 								text-align: right;
 								// justify-content: flex-end;
-								padding-left: 65px;
+								// padding-left: 65px;
 							}
 							.row-entry-credits {
 								width: 30%;
 								text-align: right;
 								display: flex;
 								// justify-content: flex-end;
-								padding-left: 57px;
+								// padding-left: 57px;
 							}
 							.row-entry-balance {
 								width: 30%;
 								text-align: right;
 								display: flex;
 								// justify-content: flex-end;
-								padding-left: 65px;
+								// padding-left: 65px;
 							}
 						}
 					}

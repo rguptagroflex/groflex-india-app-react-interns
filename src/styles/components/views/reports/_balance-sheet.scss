@@ -156,6 +156,10 @@
 	}
 
 	.table-container {
+		.currency-container {
+			width: 100%;
+			text-align: right;
+		}
 		.Total-container {
 			border-bottom: 1px solid #ddd;
 			border-top: 1px solid #ddd;
@@ -170,12 +174,11 @@
 					width: 80%;
 				}
 				.totalValue {
-					// min-width: 170px;
 					width: 20%;
-					text-align: right;
+
 					display: flex;
-					// padding-left: 91px;
-					padding-left: 55px;
+
+					// padding-left: 55px;
 				}
 			}
 		}
@@ -235,12 +238,9 @@
 					display: flex;
 					justify-content: space-between;
 					.accordian-detail-total {
-						// min-width: 170px;
 						width: 20%;
-						text-align: right;
+
 						display: flex;
-						// padding-left: 25px;
-						padding-left: 55px;
 					}
 					.accordian-detail-name {
 						margin-left: 10px;
@@ -263,7 +263,8 @@
 				.result-value {
 					// width: 170px;
 					width: 20%;
-					padding-left: 40px;
+					// padding-left: 40px;
+					padding-right: 11px;
 				}
 			}
 		}

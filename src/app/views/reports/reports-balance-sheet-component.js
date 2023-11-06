@@ -620,10 +620,12 @@ const ReportBalanceSheet = (props) => {
 																		.slice(1)}
 															</div>
 															<div className="accordian-detail-total">
-																₹{" "}
-																{subItem.credits === 0
-																	? parseFloat(subItem.debits).toFixed(2)
-																	: parseFloat(subItem.credits).toFixed(2)}
+																<div className="currency-container">
+																	₹
+																	{subItem.credits === 0
+																		? parseFloat(subItem.debits).toFixed(2)
+																		: parseFloat(subItem.credits).toFixed(2)}
+																</div>
 															</div>
 														</div>
 													</React.Fragment>
@@ -636,7 +638,9 @@ const ReportBalanceSheet = (props) => {
 										<div className="Total">
 											<div className="totalName">Total {item}</div>
 											<div className="totalValue">
-												₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+												<div className="currency-container">
+													<div>₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}</div>
+												</div>
 											</div>
 										</div>
 									</React.Fragment>
@@ -647,7 +651,11 @@ const ReportBalanceSheet = (props) => {
 					<div className="balance-sheet-result">
 						<div className="result-container">
 							<h6 className="result-name">TOTAL BALANCE</h6>
-							<h6 className="result-value">₹ {parseFloat(tableTotals.finalBalanceTotal).toFixed(2)}</h6>
+							<h6 className="result-value">
+								<div className="currency-container">
+									₹ {parseFloat(tableTotals.finalBalanceTotal).toFixed(2)}
+								</div>{" "}
+							</h6>
 						</div>
 					</div>
 				</div>

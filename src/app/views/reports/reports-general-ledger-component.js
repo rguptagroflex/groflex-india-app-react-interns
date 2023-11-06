@@ -734,13 +734,19 @@ const ReportsGeneralLedger = (props) => {
 																				.slice(1)}
 																	</div>
 																	<div className="row-entry-debits">
-																		₹ {parseFloat(subItem.debits).toFixed(2)}
+																		<div className="currency-container">
+																			₹ {parseFloat(subItem.debits).toFixed(2)}
+																		</div>
 																	</div>
 																	<div className="row-entry-credits">
-																		₹ {parseFloat(subItem.credits).toFixed(2)}
+																		<div className="currency-container">
+																			₹ {parseFloat(subItem.credits).toFixed(2)}
+																		</div>
 																	</div>
 																	<div className="row-entry-balance">
-																		₹ {parseFloat(subItem.balance).toFixed(2)}
+																		<div className="currency-container">
+																			₹ {parseFloat(subItem.balance).toFixed(2)}
+																		</div>
 																	</div>
 																</div>
 															</React.Fragment>

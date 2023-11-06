@@ -603,10 +603,12 @@ function ReportsProfitAndLoss(props) {
 															<div className="account-code">-</div>
 
 															<div className="accordian-detail-total">
-																₹{" "}
-																{subItem.credits === 0
-																	? parseFloat(subItem.debits).toFixed(2)
-																	: parseFloat(subItem.credits).toFixed(2)}
+																<div className="currency-container">
+																	₹
+																	{subItem.credits === 0
+																		? parseFloat(subItem.debits).toFixed(2)
+																		: parseFloat(subItem.credits).toFixed(2)}
+																</div>
 															</div>
 														</div>
 													</React.Fragment>
@@ -619,7 +621,10 @@ function ReportsProfitAndLoss(props) {
 										<div className="Total">
 											<div className="totalName">Total {item}</div>
 											<div className="totalValue">
-												₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+												<div className="currency-container">
+													{" "}
+													₹ {parseFloat(tableTotals[item + "Total"]).toFixed(2)}
+												</div>
 											</div>
 										</div>
 									</React.Fragment>
@@ -630,7 +635,9 @@ function ReportsProfitAndLoss(props) {
 					{rowData.length > 0 ? (
 						<div className="netProfit">
 							<div className="netProfit-name">Net Profit</div>
-							<div className="netProfit-value">₹ {parseFloat(netProfit).toFixed(2)}</div>
+							<div className="netProfit-value">
+								<div className="currency-container">₹ {parseFloat(netProfit).toFixed(2)}</div>
+							</div>
 						</div>
 					) : (
 						""

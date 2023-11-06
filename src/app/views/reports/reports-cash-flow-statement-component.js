@@ -614,7 +614,9 @@ const ReportsCashFlowStatement = (props) => {
 														{/* <div className="row-content-name">{string.split("Total")[0]}</div> */}
 														<div className="row-content-name">{rowContentName}</div>
 														<div className="row-content-value">
-															₹ {parseFloat(subItem.total).toFixed(2)}
+															<div className="currency-container">
+																₹ {parseFloat(subItem.total).toFixed(2)}
+															</div>
 														</div>
 													</div>
 												);
@@ -625,7 +627,10 @@ const ReportsCashFlowStatement = (props) => {
 						</div>
 						<div className="cash-flow-result">
 							<h6 className="result-name">TOTAL CASH IN FLOW</h6>
-							<h6 className="result-value">₹ {parseFloat(totalCashFlow).toFixed(2)}</h6>
+							<h6 className="result-value">
+								{" "}
+								<div className="currency-container">₹ {parseFloat(totalCashFlow).toFixed(2)}</div>
+							</h6>
 						</div>
 					</div>
 				) : (
