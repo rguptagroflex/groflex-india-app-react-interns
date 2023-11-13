@@ -65,6 +65,6 @@ export const setSideBarVisibleHover = (payload) => {
 			type: SIDEBAR_VISIBLE_HOVER,
 			payload,
 		});
-		console.log("global state is :", payload);
+		// console.log("global state is :", payload);
 	};
 };

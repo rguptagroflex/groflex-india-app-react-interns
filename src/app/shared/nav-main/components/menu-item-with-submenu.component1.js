@@ -348,12 +348,12 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 							onMouseEnter={() => {
 								this.showSubmenu();
 								this.iconChangeOnHover();
-								setSubmenuVisibleHoverTrue();
+								// setSubmenuVisibleHoverTrue();
 								this.setGlobalSideBarVisibleHoverTrue();
 							}}
 							onMouseLeave={() => {
 								this.iconChangeOnHover();
-								setSubmenuVisibleHoverTrue();
+								// setSubmenuVisibleHoverTrue();
 								// this.setGlobalSideBarVisibleHoverFalse();
 							}}
 							onClick={() => {

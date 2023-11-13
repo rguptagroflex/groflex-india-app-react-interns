@@ -276,8 +276,8 @@ class MenuBarComponent extends React.Component {
 						permissions={permissions}
 						closeSearchOnMenuItemClick={closeSearchOnMenuItemClick}
 						closeNotificationOnMenuItemClick={closeNotificationOnMenuItemClick}
-						setSubmenuVisibleHoverTrue={() => this.setSubmenuVisibleHoverTrue()}
-						setSubmenuVisibleHoverFalse={() => this.setSubmenuVisibleHoverFalse()}
+						// setSubmenuVisibleHoverTrue={() => this.setSubmenuVisibleHoverTrue()}
+						// setSubmenuVisibleHoverFalse={() => this.setSubmenuVisibleHoverFalse()}
 						submenuHover={submenuHover}
 
 						// activeName={activeItem}

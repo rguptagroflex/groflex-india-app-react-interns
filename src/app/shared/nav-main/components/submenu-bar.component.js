@@ -103,7 +103,7 @@ const SubmenuBarComponent = ({
 			<div
 				className={className}
 				onMouseLeave={() => {
-					hideSubmenu(), setSubmenuVisibleHoverFalse(), setSideBarVisibleHoverFalse();
+					hideSubmenu(), setSideBarVisibleHoverFalse();
 				}}
 				onMouseEnter={() => showSubmenu()}
 			>
