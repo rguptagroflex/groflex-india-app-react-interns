@@ -69,7 +69,7 @@ const MenuItemComponent = (props) => {
 		invoiz.router.navigate(url);
 	};
 	// console.log(menuIcons[icon]);
-	console.log("Icon: ", icon);
+	// console.log("Icon: ", icon);
 	return (
 		<div>
 			<Tooltip title={menuIconsToolTipTitle[icon]} placement="right" arrow>

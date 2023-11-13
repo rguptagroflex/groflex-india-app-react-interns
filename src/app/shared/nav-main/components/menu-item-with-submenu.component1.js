@@ -12,6 +12,7 @@ import sales_hover from "assets/images/icons/sales_hover.svg";
 import expense_hover from "assets/images/icons/expense_hover.svg";
 import SVGInline from "react-svg-inline";
 import Tooltip from "@material-ui/core/Tooltip";
+import { setSideBarVisibleHover } from "../../../redux/ducks/global";
 // import store from "../../redux/store";
 const buildSubmenuComponents = (
 	permissions,
@@ -112,6 +113,8 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.submenuItemClicked = this.submenuItemClicked.bind(this);
 		this.submenuCloseIconClicked = this.submenuCloseIconClicked.bind(this);
 		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
+		this.setGlobalSideBarVisibleHoverTrue = this.setGlobalSideBarVisibleHoverTrue.bind(this);
+		this.setGlobalSideBarVisibleHoverFalse = this.setGlobalSideBarVisibleHoverFalse.bind(this);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -245,8 +248,30 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.setState({ submenuClick: false });
 	}
 
+	setGlobalSideBarVisibleHoverTrue() {
+		if (this.props.name === "invoices") {
+			this.props.setSideBarVisibleHover({
+				invoices: { name: "invoices", sidebarVisible: true },
+				expenditure: { name: "expenditure", sidebarVisible: false },
+			});
+		} else if (this.props.name === "expenditure") {
+			this.props.setSideBarVisibleHover({
+				invoices: { name: "invoices", sidebarVisible: false },
+				expenditure: { name: "expenditure", sidebarVisible: true },
+			});
+		}
+	}
+
+	setGlobalSideBarVisibleHoverFalse() {
+		this.props.setSideBarVisibleHover({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+	}
+
 	render() {
 		// console.log("Mid submenu", this.props.submenuHover);
+		// console.log(this.props.sideBarVisiblity[this.props.name]);
 		const {
 			submenuVisible,
 			activeSubmenuItem,
@@ -309,6 +334,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 
 		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
 		const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
+		// console.log(icon);
 
 		return (
 			<li key={name} id={name}>
@@ -323,10 +349,12 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 								this.showSubmenu();
 								this.iconChangeOnHover();
 								setSubmenuVisibleHoverTrue();
+								this.setGlobalSideBarVisibleHoverTrue();
 							}}
 							onMouseLeave={() => {
 								this.iconChangeOnHover();
 								setSubmenuVisibleHoverTrue();
+								this.setGlobalSideBarVisibleHoverFalse();
 							}}
 							onClick={() => {
 								closeSearchOnMenuItemClick();
@@ -389,12 +417,22 @@ MenuItemWithSubmenuComponent1.defaultProps = {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleHover = state.global.sideBarVisibleHover;
 
 	return {
 		isSubmenuVisible,
+		sideBarVisibleHover,
 	};
 };
 
-export default connect(mapStateToProps, null)(MenuItemWithSubmenuComponent1);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setSideBarVisibleHover: (payload) => {
+			dispatch(setSideBarVisibleHover(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuItemWithSubmenuComponent1);
 
 // export default MenuItemWithSubmenuComponent1;

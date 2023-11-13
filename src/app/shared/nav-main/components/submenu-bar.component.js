@@ -28,6 +28,7 @@ const SubmenuBarComponent = ({
 	closeNotificationOnMenuItemClick,
 	submenuHover,
 	setSubmenuVisibleHoverFalse,
+	sideBarVisibleHover,
 }) => {
 	// console.log("Slected Key", selectedName);
 	let hoverClass = "";
@@ -47,9 +48,9 @@ const SubmenuBarComponent = ({
 	useEffect(() => {
 		setIconClose(visible);
 	}, [visible]);
-	// const visibleClass = visible || submenuClick ? "submenu-visible" : "u_hidden";
 
-	const visibleClass = submenuHover || submenuClick ? "submenu-visible" : "u_hidden";
+	// const visibleClass = submenuHover || submenuClick ? "submenu-visible" : "u_hidden";
+	const visibleClass = sideBarVisibleHover[name].sidebarVisible ? "submenu-visible" : "u_hidden";
 
 	// const visibleClass = "submenu-visible";
 	// console.log("key ", resourceKey);
@@ -87,7 +88,7 @@ const SubmenuBarComponent = ({
 	const ulClicked = () => {
 		alert("click");
 	};
-	// console.log("child submenu", submenuHover);
+	// console.log("Visiblie: ", sideBarVisiblity);
 	return (
 		<div>
 			<div
@@ -129,9 +130,11 @@ SubmenuBarComponent.defaultProps = {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleHover = state.global.sideBarVisibleHover;
 
 	return {
 		isSubmenuVisible,
+		sideBarVisibleHover,
 	};
 };
 
