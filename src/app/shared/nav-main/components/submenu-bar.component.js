@@ -6,6 +6,7 @@ import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 import arrowLeft from "assets/images/svg/semicircular-left-arrow.svg";
 import collapse from "assets/images/icons/collapse.svg";
 import SVGInline from "react-svg-inline";
+import { setSideBarVisibleHover } from "../../../redux/ducks/global";
 const SubmenuBarComponent = ({
 	title,
 	name,
@@ -29,6 +30,7 @@ const SubmenuBarComponent = ({
 	submenuHover,
 	setSubmenuVisibleHoverFalse,
 	sideBarVisibleHover,
+	setSideBarVisibleHover,
 }) => {
 	// console.log("Slected Key", selectedName);
 	let hoverClass = "";
@@ -88,13 +90,20 @@ const SubmenuBarComponent = ({
 	const ulClicked = () => {
 		alert("click");
 	};
-	// console.log("Visiblie: ", sideBarVisiblity);
+
+	const setSideBarVisibleHoverFalse = () => {
+		setSideBarVisibleHover({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+	};
+
 	return (
 		<div>
 			<div
 				className={className}
 				onMouseLeave={() => {
-					hideSubmenu(), setSubmenuVisibleHoverFalse();
+					hideSubmenu(), setSubmenuVisibleHoverFalse(), setSideBarVisibleHoverFalse();
 				}}
 				onMouseEnter={() => showSubmenu()}
 			>
@@ -142,6 +151,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
 			dispatch(setSubmenuVisibleGlobal(payload));
+		},
+		setSideBarVisibleHover: (payload) => {
+			dispatch(setSideBarVisibleHover(payload));
 		},
 	};
 };

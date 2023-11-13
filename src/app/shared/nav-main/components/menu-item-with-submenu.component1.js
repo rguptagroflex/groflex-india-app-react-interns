@@ -354,7 +354,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 							onMouseLeave={() => {
 								this.iconChangeOnHover();
 								setSubmenuVisibleHoverTrue();
-								this.setGlobalSideBarVisibleHoverFalse();
+								// this.setGlobalSideBarVisibleHoverFalse();
 							}}
 							onClick={() => {
 								closeSearchOnMenuItemClick();
