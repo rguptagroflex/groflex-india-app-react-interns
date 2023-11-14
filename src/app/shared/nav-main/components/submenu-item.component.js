@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 const SubmenuItemComponent = ({
 	url,
 	active,
@@ -13,13 +14,37 @@ const SubmenuItemComponent = ({
 	closeSearchOnMenuItemClick,
 	closeNotificationOnMenuItemClick,
 	isSubmenuVisible,
+	setSideBarVisibleStatic,
 }) => {
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
+
+	const setGlobalSideBarVisibleStatic = () => {
+		if (name === "invoice" || name === "offer" || name === "recurringInvoice" || name === "timetracking") {
+			setSideBarVisibleStatic({
+				invoices: { name: "invoices", sidebarVisible: true },
+				expenditure: { name: "expenditure", sidebarVisible: false },
+			});
+		} else if (
+			name === "transactions" ||
+			name === "cashAndBank" ||
+			name === "debitNotes" ||
+			name === "creditNotes" ||
+			name === "expenditures" ||
+			name === "reports" ||
+			name === "chartOfAccounts"
+		) {
+			setSideBarVisibleStatic({
+				invoices: { name: "invoices", sidebarVisible: false },
+				expenditure: { name: "expenditure", sidebarVisible: true },
+			});
+		}
+	};
 
 	const navigateToPage = (url) => {
 		console.log("Side state: ", isSubmenuVisible);
 		closeNotificationOnMenuItemClick();
 		closeSearchOnMenuItemClick();
+		setGlobalSideBarVisibleStatic();
 
 		// if (url === '/offers') {
 		// 	invoiz.offerListNaviagtion = true;
@@ -29,6 +54,8 @@ const SubmenuItemComponent = ({
 		invoiz.trigger("updateNewsfeedCount");
 		invoiz.router.navigate(url);
 	};
+
+	console.log("Name: ", name);
 
 	return (
 		<li className={className}>
@@ -70,6 +97,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		submenuVisible: (payload) => {
 			dispatch(setSubmenuVisibleGlobal(payload));
+		},
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
 		},
 	};
 };

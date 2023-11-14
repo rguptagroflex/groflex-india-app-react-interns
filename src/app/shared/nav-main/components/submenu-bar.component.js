@@ -7,6 +7,7 @@ import arrowLeft from "assets/images/svg/semicircular-left-arrow.svg";
 import collapse from "assets/images/icons/collapse.svg";
 import SVGInline from "react-svg-inline";
 import { setSideBarVisibleHover } from "../../../redux/ducks/global";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 const SubmenuBarComponent = ({
 	title,
 	name,
@@ -31,6 +32,8 @@ const SubmenuBarComponent = ({
 	setSubmenuVisibleHoverFalse,
 	sideBarVisibleHover,
 	setSideBarVisibleHover,
+	sideBarVisibleStatic,
+	setSideBarVisibleStatic,
 }) => {
 	// console.log("Slected Key", selectedName);
 	let hoverClass = "";
@@ -52,7 +55,10 @@ const SubmenuBarComponent = ({
 	}, [visible]);
 
 	// const visibleClass = submenuHover || submenuClick ? "submenu-visible" : "u_hidden";
-	const visibleClass = sideBarVisibleHover[name].sidebarVisible ? "submenu-visible" : "u_hidden";
+	const visibleClass =
+		sideBarVisibleHover[name].sidebarVisible || sideBarVisibleStatic[name].sidebarVisible
+			? "submenu-visible"
+			: "u_hidden";
 
 	// const visibleClass = "submenu-visible";
 	// console.log("key ", resourceKey);
@@ -73,11 +79,19 @@ const SubmenuBarComponent = ({
 		</div>
 	);
 
+	const setSideBarVisibleStaticFalse = () => {
+		setSideBarVisibleStatic({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+	};
+
 	const onCloseClick = () => {
 		hideSubmenu();
 		submenuCloseIconClicked();
 		submenuVisible(false);
-		setSubmenuVisibleHoverFalse();
+		// setSubmenuVisibleHoverFalse();
+		setSideBarVisibleStaticFalse();
 	};
 	const subMenuOverlay = () => {
 		setIconClose(false);
@@ -140,10 +154,12 @@ SubmenuBarComponent.defaultProps = {
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleHover = state.global.sideBarVisibleHover;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
 		isSubmenuVisible,
 		sideBarVisibleHover,
+		sideBarVisibleStatic,
 	};
 };
 
@@ -154,6 +170,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setSideBarVisibleHover: (payload) => {
 			dispatch(setSideBarVisibleHover(payload));
+		},
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
 		},
 	};
 };

@@ -13,6 +13,7 @@ import expense_hover from "assets/images/icons/expense_hover.svg";
 import SVGInline from "react-svg-inline";
 import Tooltip from "@material-ui/core/Tooltip";
 import { setSideBarVisibleHover } from "../../../redux/ducks/global";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 // import store from "../../redux/store";
 const buildSubmenuComponents = (
 	permissions,
@@ -418,10 +419,12 @@ MenuItemWithSubmenuComponent1.defaultProps = {
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleHover = state.global.sideBarVisibleHover;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
 		isSubmenuVisible,
 		sideBarVisibleHover,
+		sideBarVisibleStatic,
 	};
 };
 
@@ -429,6 +432,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setSideBarVisibleHover: (payload) => {
 			dispatch(setSideBarVisibleHover(payload));
+		},
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
 		},
 	};
 };
