@@ -464,7 +464,7 @@ class InvoiceListNewComponent extends React.Component {
 			canRegisterPayment,
 			submenuVisible,
 		} = this.state;
-		const classLeft = submenuVisible ? "alignLeftContent" : "";
+		const classLeft = this.props.sideBarVisibleStatic["invoices"].sidebarVisible ? "alignLeftContent" : "";
 		return (
 			<div className="invoice-list-component-wrapper">
 				{this.createTopbar()}
@@ -1097,9 +1097,11 @@ class InvoiceListNewComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

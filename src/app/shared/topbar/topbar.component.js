@@ -109,7 +109,12 @@ class TopbarComponent extends React.Component {
 			);
 		}
 
-		const classLeft = submenuVisible ? "alignLeft" : "";
+		const classLeft =
+			submenuVisible ||
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeft"
+				: "";
 		// console.log(this.props.isSubmenuVisible, "FROm ORIGINAL TOPBAR");
 
 		return (
@@ -205,9 +210,10 @@ class TopbarComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
-
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 
