@@ -590,9 +590,9 @@ const ReportBalanceSheet = (props) => {
 						<h6 className="headingRight">Total</h6>
 					</div>
 
-					{tableHeaders.map((item) => {
+					{tableHeaders.map((item, index) => {
 						return (
-							<div>
+							<div key={index}>
 								<Accordion elevation={0}>
 									<AccordionSummary
 										expandIcon={<ExpandMoreIcon />}
@@ -607,8 +607,8 @@ const ReportBalanceSheet = (props) => {
 										<div className="balance-sheet-accordian-details">
 											{rowData
 												.filter((filteredItem) => filteredItem.accountTypeId === item)
-												.map((subItem, index) => (
-													<React.Fragment>
+												.map((subItem, subIndex) => (
+													<React.Fragment key={subIndex}>
 														<div className="accordian-details-row-entry">
 															<div className="accordian-detail-name">
 																{subItem.accountSubTypeId

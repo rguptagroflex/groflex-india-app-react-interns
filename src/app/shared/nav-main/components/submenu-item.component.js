@@ -19,7 +19,8 @@ const SubmenuItemComponent = ({
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
 	const setGlobalSideBarVisibleStatic = () => {
-		if (name === "invoice" || name === "offer" || name === "recurringInvoice" || name === "timetracking") {
+		// console.log("Name: ", name);
+		if (name === "offer" || name === "recurringInvoice" || name === "timetracking" || name === "invoice") {
 			setSideBarVisibleStatic({
 				invoices: { name: "invoices", sidebarVisible: true },
 				expenditure: { name: "expenditure", sidebarVisible: false },
@@ -41,7 +42,7 @@ const SubmenuItemComponent = ({
 	};
 
 	const navigateToPage = (url) => {
-		console.log("Side state: ", isSubmenuVisible);
+		// console.log("Side state: ", isSubmenuVisible);
 		closeNotificationOnMenuItemClick();
 		closeSearchOnMenuItemClick();
 
@@ -54,7 +55,7 @@ const SubmenuItemComponent = ({
 		invoiz.router.navigate(url);
 	};
 
-	console.log("Name: ", name);
+	// console.log("Name: ", name);
 
 	return (
 		<li className={className}>

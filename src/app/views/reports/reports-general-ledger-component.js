@@ -696,9 +696,9 @@ const ReportsGeneralLedger = (props) => {
 								<h6 className="headingBalance">Balance</h6>
 							</div>
 
-							{tableHeaders.map((item) => {
+							{tableHeaders.map((item, index) => {
 								return (
-									<div style={{ borderBottom: "1px solid #ddd" }}>
+									<div style={{ borderBottom: "1px solid #ddd" }} key={index}>
 										<Accordion elevation={0}>
 											<AccordionSummary
 												expandIcon={<ExpandMoreIcon />}
@@ -718,8 +718,8 @@ const ReportsGeneralLedger = (props) => {
 															(filteredItem) =>
 																filteredItem.chartOfAccount.accountTypeId === item
 														)
-														.map((subItem, index) => (
-															<React.Fragment>
+														.map((subItem, subIndex) => (
+															<React.Fragment key={subIndex}>
 																<div className="accordian-details-row-entry">
 																	<div className="row-entry-date">
 																		{moment(subItem.date).format("DD/MM/YYYY")}

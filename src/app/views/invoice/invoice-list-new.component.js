@@ -147,7 +147,7 @@ class InvoiceListNewComponent extends React.Component {
 		const { isLoading, selectedRows, canCreateInvoice, canDeleteInvoice } = this.state;
 		const { resources } = this.props;
 		const topbarButtons = [];
-		console.log(canCreateInvoice);
+		// console.log(canCreateInvoice);
 		if (!isLoading) {
 			if (selectedRows && selectedRows.length > 0) {
 				let allDeletable = true;

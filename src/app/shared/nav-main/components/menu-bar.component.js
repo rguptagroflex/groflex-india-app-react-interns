@@ -318,14 +318,14 @@ class MenuBarComponent extends React.Component {
 MenuBarComponent.propTypes = {
 	activeItem: PropTypes.string,
 	activeSubmenuItem: PropTypes.string,
-	submenuVisible: PropTypes.bool,
+	// submenuVisible: PropTypes.bool,
 	onSubmenuChanged: PropTypes.func,
 };
 
 MenuBarComponent.defaultProps = {
 	activeItem: "",
 	activeSubmenuItem: "",
-	submenuVisible: false,
+	// submenuVisible: false,
 };
 
 const mapStateToProps = (state) => {

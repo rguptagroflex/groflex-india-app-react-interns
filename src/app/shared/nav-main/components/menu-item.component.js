@@ -116,7 +116,7 @@ MenuItemComponent.propTypes = {
 	url: PropTypes.string,
 	icon: PropTypes.string,
 	active: PropTypes.bool,
-	submenuVisible: PropTypes.bool,
+	// submenuVisible: PropTypes.bool,
 	resourceKey: PropTypes.string,
 };
 
@@ -125,7 +125,7 @@ MenuItemComponent.defaultProps = {
 	url: "",
 	icon: "",
 	active: false,
-	submenuVisible: false,
+	// submenuVisible: false,
 	resourceKey: "",
 };
 

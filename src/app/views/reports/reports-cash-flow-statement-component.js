@@ -25,7 +25,7 @@ const ReportsCashFlowStatement = (props) => {
 	const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
 	const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
 	const [rowData, setRowData] = useState([]);
-	const [selectedDate, setSelectedDate] = useState(null);
+	const [selectedDate, setSelectedDate] = useState("");
 	const [contentHeaders, setcontentHeaders] = useState([]);
 	const [totalCashFlow, setTotalCashFlow] = useState("");
 	const [exportFormat, setExportFormat] = useState("");
@@ -587,8 +587,8 @@ const ReportsCashFlowStatement = (props) => {
 				{rowData.length > 0 ? (
 					<div>
 						<div className="cash-flow-content">
-							{contentHeaders.map((item) => (
-								<div className="cash-flow-content-wrapper">
+							{contentHeaders.map((item, index) => (
+								<div className="cash-flow-content-wrapper" key={index}>
 									<div className="row-heading">
 										<h6>
 											{item
@@ -600,7 +600,7 @@ const ReportsCashFlowStatement = (props) => {
 									<div className="row-content">
 										{rowData
 											.filter((filteredItem) => filteredItem.accountTypeId === item)
-											.map((subItem) => {
+											.map((subItem, subIndex) => {
 												const rowContentName =
 													subItem.accountSubTypeId
 														.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
@@ -610,7 +610,7 @@ const ReportsCashFlowStatement = (props) => {
 														.replace(/([a-z0-9])([A-Z])/g, "$1 $2")
 														.slice(1);
 												return (
-													<div className="row-content-wrapper">
+													<div className="row-content-wrapper" key={subIndex}>
 														{/* <div className="row-content-name">{string.split("Total")[0]}</div> */}
 														<div className="row-content-name">{rowContentName}</div>
 														<div className="row-content-value">

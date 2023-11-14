@@ -36,6 +36,7 @@ function ReportsProfitAndLoss(props) {
 	const [tableTotals, setTableTotal] = useState([]);
 	const [netProfit, setNetProfit] = useState("");
 	const [exportFormat, setExportFormat] = useState("");
+	const [selectedDate, setSelectedDate] = useState("");
 	const CustomCellRenderer = ({ value, colDef }) => (
 		<span>{colDef.field === "balance" && value !== undefined ? `₹ ${value}` : value}</span>
 	);
@@ -253,7 +254,7 @@ function ReportsProfitAndLoss(props) {
 		FISCAL_YEAR: "fiscalYear",
 	};
 	const [showAccountType, setShowAccountType] = useState(false);
-	const [selectedDate, setSelectedDate] = useState(null);
+
 	const [selectedDateFilter, setSelectedDateFilter] = useState("");
 	const [dateData, setDateData] = useState({
 		currentMonthName: moment().format("MMMM"),
