@@ -44,7 +44,6 @@ const SubmenuItemComponent = ({
 		console.log("Side state: ", isSubmenuVisible);
 		closeNotificationOnMenuItemClick();
 		closeSearchOnMenuItemClick();
-		setGlobalSideBarVisibleStatic();
 
 		// if (url === '/offers') {
 		// 	invoiz.offerListNaviagtion = true;
@@ -61,8 +60,9 @@ const SubmenuItemComponent = ({
 		<li className={className}>
 			<a
 				onClick={() => {
-					navigateToPage(url);
 					submenuVisible(true);
+					setGlobalSideBarVisibleStatic();
+					navigateToPage(url);
 				}}
 				data-href={url}
 				data-qs-id={`global-submenu-item-${name}`}

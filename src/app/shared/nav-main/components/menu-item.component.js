@@ -18,6 +18,7 @@ import profile_new from "assets/images/icons/profile_new.svg";
 import profile_hover from "assets/images/icons/profile_hover.svg";
 import { connect } from "react-redux";
 import { setSideBarVisibleHover } from "../../../redux/ducks/global";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 const MenuItemComponent = (props) => {
 	const {
 		name,
@@ -31,6 +32,7 @@ const MenuItemComponent = (props) => {
 		submenuHover,
 		// setSubmenuVisibleHoverFalse,
 		setSideBarVisibleHover,
+		setSideBarVisibleStatic,
 	} = props;
 
 	const [iconHoverActive, setIconHoverActive] = useState(false);
@@ -80,12 +82,21 @@ const MenuItemComponent = (props) => {
 			expenditure: { name: "expenditure", sidebarVisible: false },
 		});
 	};
+
+	const setSideBarVisibleStaticFalse = () => {
+		setSideBarVisibleStatic({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+	};
 	return (
 		<div>
 			<Tooltip title={menuIconsToolTipTitle[icon]} placement="right" arrow>
 				<a
 					className={className}
-					onClick={() => navigateToPage(url)}
+					onClick={() => {
+						navigateToPage(url), setSideBarVisibleStaticFalse();
+					}}
 					data-href={url}
 					data-qs-id={`global-menu-item-${name}`}
 					onMouseEnter={() => {
@@ -125,6 +136,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		setSideBarVisibleHover: (payload) => {
 			dispatch(setSideBarVisibleHover(payload));
+		},
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
 		},
 	};
 };
