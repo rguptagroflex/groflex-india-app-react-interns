@@ -1630,7 +1630,10 @@ class InvoiceDetailNewComponent extends React.Component {
 		const headerContent = (
 			<div
 				className={`detail-view-head-wrapper-new ${
-					this.props.isSubmenuVisible ? "detailHeadOnSidebarActive" : ""
+					this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+					this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+						? "detailHeadOnSidebarActive"
+						: ""
 				}`}
 			>
 				<PopoverComponent
@@ -1999,9 +2002,11 @@ class InvoiceDetailNewComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

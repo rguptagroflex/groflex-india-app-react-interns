@@ -194,7 +194,11 @@ class TimeTrackingListComponent extends React.Component {
 		const { canUpdateTimesheet, canDeleteTimesheet, canChangeAccountData, planRestricted, submenuVisible } =
 			this.state;
 
-		const classLeft = submenuVisible ? "alignLeftContent" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
 			<div className="timetracking-list-component-wrapper">
 				{planRestricted ? (
@@ -469,9 +473,11 @@ class TimeTrackingListComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

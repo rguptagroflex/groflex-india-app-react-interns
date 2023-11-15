@@ -418,7 +418,11 @@ const ReportsGeneralLedger = (props) => {
 	};
 
 	const submenVisible = props.isSubmenuVisible;
-	const classLeft = submenVisible ? "leftAlignGeneralLedger" : "";
+	const classLeft =
+		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+		props.sideBarVisibleStatic["expenditure"].sidebarVisible
+			? "leftAlignGeneralLedger"
+			: "";
 	// console.log("Table Heads: ", tableHeaders);
 	// console.log("Row Data: ", rowData);
 
@@ -771,9 +775,11 @@ const ReportsGeneralLedger = (props) => {
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		isSubmenuVisible,
 		resources,
+		sideBarVisibleStatic,
 	};
 };
 

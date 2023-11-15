@@ -221,7 +221,11 @@ class CancellationListComponent extends React.Component {
 	render() {
 		const { resources } = this.props;
 		const { cancelType, planRestricted, canChangeAccountData, submenuVisible } = this.state;
-		const classLeft = submenuVisible ? "alignLeftCredit" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftCredit"
+				: "";
 		return (
 			<div className="cancellation-list-component-wrapper">
 				{planRestricted ? (
@@ -565,9 +569,11 @@ class CancellationListComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

@@ -473,7 +473,11 @@ class OfferListNewComponent extends React.Component {
 			submenuVisible,
 		} = this.state;
 
-		const classLeft = submenuVisible ? "alignLeftContent" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
 			<div className="invoice-list-component-wrapper">
 				{planRestricted ? (
@@ -849,10 +853,12 @@ class OfferListNewComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	const { resources } = state.language.lang;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

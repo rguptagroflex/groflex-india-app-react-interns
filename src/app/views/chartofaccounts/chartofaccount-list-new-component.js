@@ -278,7 +278,11 @@ class ChartofaccountNewComponent extends React.Component {
 	render() {
 		const { resources } = this.props;
 		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, customerData, submenuVisible } = this.state;
-		const classLeft = submenuVisible ? "alignChartOfAccount" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignChartOfAccount"
+				: "";
 		return (
 			<div className="customer-list-component-wrapper">
 				{this.createTopbar()}
@@ -573,9 +577,11 @@ class ChartofaccountNewComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

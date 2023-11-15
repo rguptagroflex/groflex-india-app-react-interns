@@ -134,7 +134,11 @@ class CustomTopbarComponent extends React.Component {
 				</div>
 			);
 		}
-		const classLeft = isSubmenuVisible ? "alignLeft" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeft"
+				: "";
 
 		// console.log(this.state, "TOPBAR STATE");
 		return (
@@ -388,9 +392,11 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

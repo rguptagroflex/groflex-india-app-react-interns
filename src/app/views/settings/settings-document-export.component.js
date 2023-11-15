@@ -364,7 +364,10 @@ class SettingsDocumentExportComponent extends React.Component {
 
 				<div
 					className={`settings-document-export-component ${
-						this.props.isSubmenuVisible ? "gstExportLeftAlign" : ""
+						this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+						this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+							? "gstExportLeftAlign"
+							: ""
 					}`}
 				>
 					<TopbarComponent title={resources.str_accountantsExport} viewIcon={`icon-settings`} />
@@ -541,6 +544,7 @@ const mapStateToProps = (state) => {
 		state.settings.documentExport;
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		isLoading,
 		errorOccurred,
@@ -550,6 +554,7 @@ const mapStateToProps = (state) => {
 		totalPages,
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

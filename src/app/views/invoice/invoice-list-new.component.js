@@ -464,7 +464,11 @@ class InvoiceListNewComponent extends React.Component {
 			canRegisterPayment,
 			submenuVisible,
 		} = this.state;
-		const classLeft = this.props.sideBarVisibleStatic["invoices"].sidebarVisible ? "alignLeftContent" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
 			<div className="invoice-list-component-wrapper">
 				{this.createTopbar()}

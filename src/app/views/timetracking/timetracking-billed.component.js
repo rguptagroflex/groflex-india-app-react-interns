@@ -85,8 +85,16 @@ class TimetrackingBilledComponent extends React.Component {
 			});
 		});
 
-		const classLeft = submenuVisible ? "alignTimeSheetLeft" : "";
-		const billingTimeListLeft = submenuVisible ? "billedTimeListLeft" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignTimeSheetLeft"
+				: "";
+		const billingTimeListLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "billedTimeListLeft"
+				: "";
 
 		// console.log(tableRows[0].cells[4].value.props.to, "tablerows");
 		// console.log(tableRows);
@@ -325,9 +333,11 @@ class TimetrackingBilledComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

@@ -258,7 +258,11 @@ class TransactionsListComponent extends React.Component {
 	render() {
 		const { resources } = this.props;
 		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, transactions, submenuVisible } = this.state;
-		const classLeft = submenuVisible ? "alignLeftContent" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
 			<div className={`transaction-list-component-wrapper ${classLeft}`}>
 				{this.createTopbar()}
@@ -620,9 +624,11 @@ class TransactionsListComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

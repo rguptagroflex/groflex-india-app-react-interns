@@ -236,7 +236,11 @@ class ExpenseListNewComponent extends React.Component {
 	render() {
 		const { resources } = this.props;
 		const { canChangeAccountData, planRestricted, submenuVisible } = this.state;
-		const classLeft = submenuVisible ? "alignLeftExpense" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftExpense"
+				: "";
 		return (
 			<div className="expense-list-component-wrapper">
 				{planRestricted ? (
@@ -607,9 +611,11 @@ class ExpenseListNewComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

@@ -346,7 +346,11 @@ function ReportsProfitAndLoss(props) {
 	}, []); //
 
 	const submenVisible = props.isSubmenuVisible;
-	const classLeft = submenVisible ? "leftAlignProfitAndLoss" : "";
+	const classLeft =
+		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+		props.sideBarVisibleStatic["expenditure"].sidebarVisible
+			? "leftAlignProfitAndLoss"
+			: "";
 
 	const exportButtonClick = () => {
 		const startDate = moment(selectedDate.startDate).format();
@@ -651,10 +655,12 @@ function ReportsProfitAndLoss(props) {
 
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	const { resources } = state.language.lang;
 	return {
 		isSubmenuVisible,
 		resources,
+		sideBarVisibleStatic,
 	};
 };
 

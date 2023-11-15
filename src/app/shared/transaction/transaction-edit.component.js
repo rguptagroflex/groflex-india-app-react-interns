@@ -348,7 +348,11 @@ class TransactionEditComponent extends React.Component {
 			paymentSetting.usePayPal = transaction.useAdvancedPaymentPayPal;
 			paymentSetting.useTransfer = transaction.useAdvancedPaymentTransfer;
 		}
-		const classLeft = submenuVisible ? "alignLeftEdit" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftEdit"
+				: "";
 
 		return (
 			<div className="transaction-edit-component-wrapper wrapper-has-topbar-with-margin">
@@ -1644,9 +1648,11 @@ class TransactionEditComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

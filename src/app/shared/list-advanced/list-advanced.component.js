@@ -1484,7 +1484,12 @@ class ListAdvancedComponent extends React.Component {
 								// hasSecondHeadBar ? "has-second-head-bar" : ""
 								false ? "has-second-head-bar" : ""
 						  } ${searchFieldInSecondHeadBar ? "search-field-in-second-head-bar" : ""}
-							${!this.props.isSubmenuVisible ? "listAdvancedinactiveSidebarSectionGap" : ""}
+							${
+								this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+								this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+									? ""
+									: "listAdvancedinactiveSidebarSectionGap"
+							}
 							`
 						: `list-advanced-component-manual-entry ag-theme-alpine no-pagination`
 				}`}
@@ -1618,9 +1623,11 @@ class ListAdvancedComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {

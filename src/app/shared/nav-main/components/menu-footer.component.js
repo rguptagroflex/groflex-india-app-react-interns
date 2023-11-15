@@ -14,6 +14,7 @@ import search_hover from "assets/images/icons/search_hover.svg";
 import bell_hover from "assets/images/icons/bell_new.svg";
 import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 import Tooltip from "@material-ui/core/Tooltip";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -99,6 +100,10 @@ class MenuFooterComponent extends React.Component {
 	navigateToPage(url) {
 		const { submenuVisible, isSubmenuVisible } = this.props;
 		submenuVisible(false);
+		this.props.setSideBarVisibleStatic({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
 		// console.log("Footer: ", isSubmenuVisible);
 		invoiz.trigger("updateNewsfeedCount");
 		invoiz.trigger("triggerSubmenuHide");
@@ -329,6 +334,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		submenuVisible: (payload) => {
 			dispatch(setSubmenuVisibleGlobal(payload));
+		},
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
 		},
 	};
 };

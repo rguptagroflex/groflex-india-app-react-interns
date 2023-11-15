@@ -110,7 +110,6 @@ class TopbarComponent extends React.Component {
 		}
 
 		const classLeft =
-			submenuVisible ||
 			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
 			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
 				? "alignLeft"

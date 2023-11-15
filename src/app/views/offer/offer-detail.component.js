@@ -683,7 +683,10 @@ class OfferDetailComponent extends React.Component {
 		return (
 			<div
 				className={`offer-detail-wrapper wrapper-has-topbar ${!timelineIsHorizontal ? "viewport-large" : ""} ${
-					this.props.isSubmenuVisible ? "offerDetailOnSidebarActive" : ""
+					this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+					this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+						? "offerDetailOnSidebarActive"
+						: ""
 				}`}
 			>
 				{canUpdateOffer && canDeleteOffer ? (
@@ -1128,9 +1131,11 @@ class OfferDetailComponent extends React.Component {
 }
 const mapStateToProps = (state) => {
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

@@ -248,7 +248,11 @@ class CancellationInvoiceDetailComponent extends React.Component {
 			});
 		});
 
-		const classLeft = submenuVisible ? "alignLeftDebit" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftDebit"
+				: "";
 
 		console.log(headContents, "HEAD CONTENTS CANCELLATION");
 		// console.log(this.props.cancellationType, "Cancellation type");
@@ -435,9 +439,11 @@ class CancellationInvoiceDetailComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
 	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
 		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 
