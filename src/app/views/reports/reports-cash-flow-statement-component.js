@@ -362,7 +362,6 @@ const ReportsCashFlowStatement = (props) => {
 		fetchData();
 	}, [selectedDate]);
 
-	const submenVisible = props.isSubmenuVisible;
 	const classLeft =
 		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
 		props.sideBarVisibleStatic["expenditure"].sidebarVisible
@@ -646,11 +645,9 @@ const ReportsCashFlowStatement = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	const { resources } = state.language.lang;
 	return {
-		isSubmenuVisible,
 		resources,
 		sideBarVisibleStatic,
 	};

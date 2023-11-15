@@ -1130,21 +1130,15 @@ class OfferDetailComponent extends React.Component {
 	}
 }
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
-		isSubmenuVisible,
 		sideBarVisibleStatic,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OfferDetailComponent);

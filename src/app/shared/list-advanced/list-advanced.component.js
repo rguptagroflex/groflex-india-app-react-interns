@@ -1319,7 +1319,6 @@ class ListAdvancedComponent extends React.Component {
 		// 		gridOptions.api.getFilterModel()
 		// 	);
 		// }
-		// console.log(this.props.isSubmenuVisible, "Is submenu visible in list davanced");
 
 		const emptyListContent = emptyState ? (
 			<div className="list-advanced-component-empty-list">
@@ -1622,20 +1621,16 @@ class ListAdvancedComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListAdvancedComponent);

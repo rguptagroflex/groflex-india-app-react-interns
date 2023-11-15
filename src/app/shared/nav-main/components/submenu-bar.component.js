@@ -18,8 +18,7 @@ const SubmenuBarComponent = ({
 	resources,
 	visibleOnclick,
 	hideSubmenu,
-	submenuVisible,
-	isSubmenuVisible,
+
 	submenuClick,
 	submenuItemClicked,
 	submenuCloseIconClicked,
@@ -89,7 +88,7 @@ const SubmenuBarComponent = ({
 	const onCloseClick = () => {
 		hideSubmenu();
 		submenuCloseIconClicked();
-		submenuVisible(false);
+
 		// setSubmenuVisibleHoverFalse();
 		setSideBarVisibleStaticFalse();
 	};
@@ -152,12 +151,10 @@ SubmenuBarComponent.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleHover = state.global.sideBarVisibleHover;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
-		isSubmenuVisible,
 		sideBarVisibleHover,
 		sideBarVisibleStatic,
 	};
@@ -165,9 +162,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		submenuVisible: (payload) => {
-			dispatch(setSubmenuVisibleGlobal(payload));
-		},
 		setSideBarVisibleHover: (payload) => {
 			dispatch(setSideBarVisibleHover(payload));
 		},

@@ -98,13 +98,11 @@ class MenuFooterComponent extends React.Component {
 	}
 
 	navigateToPage(url) {
-		const { submenuVisible, isSubmenuVisible } = this.props;
-		submenuVisible(false);
 		this.props.setSideBarVisibleStatic({
 			invoices: { name: "invoices", sidebarVisible: false },
 			expenditure: { name: "expenditure", sidebarVisible: false },
 		});
-		// console.log("Footer: ", isSubmenuVisible);
+
 		invoiz.trigger("updateNewsfeedCount");
 		invoiz.trigger("triggerSubmenuHide");
 		invoiz.router.navigate(url);
@@ -132,7 +130,7 @@ class MenuFooterComponent extends React.Component {
 
 	render() {
 		const { submenuVisibleVar, resources, activeItem, activeSubmenuItem } = this.props;
-		const { submenuVisible } = this.props;
+
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
 		const {
@@ -311,13 +309,11 @@ class MenuFooterComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { unreadCount, resetCount } = state.newsfeed;
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 
 	return {
 		resources,
 		newsfeedUnreadCount: unreadCount,
 		resetNewsFeedCount: resetCount,
-		isSubmenuVisible,
 	};
 };
 
@@ -332,9 +328,7 @@ const mapDispatchToProps = (dispatch) => {
 		updateNewsfeedCountReset: () => {
 			dispatch(updateNewsfeedCountReset());
 		},
-		submenuVisible: (payload) => {
-			dispatch(setSubmenuVisibleGlobal(payload));
-		},
+
 		setSideBarVisibleStatic: (payload) => {
 			dispatch(setSideBarVisibleStatic(payload));
 		},

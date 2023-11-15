@@ -35,16 +35,7 @@ class TimeTrackingListComponent extends React.Component {
 			canDeleteTimesheet: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_TIMESHEET),
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_TIMESHEET),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentWillUnmount() {
@@ -191,8 +182,7 @@ class TimeTrackingListComponent extends React.Component {
 	}
 
 	render() {
-		const { canUpdateTimesheet, canDeleteTimesheet, canChangeAccountData, planRestricted, submenuVisible } =
-			this.state;
+		const { canUpdateTimesheet, canDeleteTimesheet, canChangeAccountData, planRestricted } = this.state;
 
 		const classLeft =
 			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
@@ -471,22 +461,17 @@ class TimeTrackingListComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimeTrackingListComponent);

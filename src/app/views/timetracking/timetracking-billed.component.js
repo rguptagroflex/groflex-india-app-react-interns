@@ -36,21 +36,12 @@ class TimetrackingBilledComponent extends React.Component {
 			trackedTimes: this.props.trackedTimes,
 			totalMoney,
 			totalTime,
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	render() {
 		const { resources, customer } = this.props;
-		const { trackedTimes, totalTime, totalMoney, submenuVisible } = this.state;
+		const { trackedTimes, totalTime, totalMoney } = this.state;
 
 		const tableColumns = [
 			{ title: resources.str_date },
@@ -331,12 +322,11 @@ class TimetrackingBilledComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };

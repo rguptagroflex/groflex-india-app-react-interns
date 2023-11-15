@@ -543,7 +543,7 @@ const mapStateToProps = (state) => {
 	const { isLoading, errorOccurred, documentExportData, columns, currentPage, totalPages } =
 		state.settings.documentExport;
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		isLoading,
@@ -553,7 +553,7 @@ const mapStateToProps = (state) => {
 		currentPage,
 		totalPages,
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };

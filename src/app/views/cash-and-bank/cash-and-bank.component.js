@@ -6,14 +6,11 @@ import CashListComponent from "./cash-list.component";
 import invoiz from "../../services/invoiz.service";
 import { connect } from "react-redux";
 const CashAndBankComponent = (props) => {
-	const submenVisible = props.isSubmenuVisible;
 	useEffect(() => {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
 			invoiz.user.logout(true);
 		}
 	}, []);
-
-	const [submenuVisible, setSubmenuVisible] = useState(props.isSubmenuVisible);
 
 	const classLeft =
 		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
@@ -30,10 +27,8 @@ const CashAndBankComponent = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
-		isSubmenuVisible,
 		sideBarVisibleStatic,
 	};
 };

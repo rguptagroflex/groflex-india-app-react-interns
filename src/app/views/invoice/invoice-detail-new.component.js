@@ -479,7 +479,6 @@ class InvoiceDetailNewComponent extends React.Component {
 			// todoItems: [],
 			// hideTodoActivityTabs: false,
 			canvasWidth: null,
-			submenuVisible: this.props.isSubmenuVisible,
 		};
 
 		this.perfectScrollbar = null;
@@ -576,13 +575,6 @@ class InvoiceDetailNewComponent extends React.Component {
 
 	componentWillUnmount() {
 		window.removeEventListener("resize", this.handleResize);
-	}
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	getHistory() {
@@ -1538,7 +1530,7 @@ class InvoiceDetailNewComponent extends React.Component {
 	}
 
 	render() {
-		const { pdf, historyItems, todoItems, letterPaperType, submenuVisible } = this.state;
+		const { pdf, historyItems, todoItems, letterPaperType } = this.state;
 		const { resources } = this.props;
 		const topbarButtons = createTopbarButtons(this.state.invoice, this.state, null, resources);
 		const topbarDropdownItems = createTopbarDropdown(this.state.invoice, resources);
@@ -1817,7 +1809,11 @@ class InvoiceDetailNewComponent extends React.Component {
 				)} */}
 			</React.Fragment>
 		);
-		const classLeft = submenuVisible ? "alignLeftDetail" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftDetail"
+				: "";
 
 		return (
 			<div
@@ -2001,20 +1997,16 @@ class InvoiceDetailNewComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 // export default InvoiceDetailNewComponent;

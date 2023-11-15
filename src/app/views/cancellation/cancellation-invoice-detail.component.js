@@ -126,17 +126,8 @@ class CancellationInvoiceDetailComponent extends React.Component {
 			letterPaperType: cancellation.printCustomDocument
 				? TransactionPrintSetting.CUSTOM_LETTER_PAPER
 				: TransactionPrintSetting.DEFAULT_LETTER_PAPER,
-			submenuVisible: this.props.isSubmenuVisible,
 		};
 		this.pdfWrapper = React.createRef();
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentDidMount() {
@@ -192,7 +183,7 @@ class CancellationInvoiceDetailComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { cancellation, submenuVisible } = this.state;
+		const { cancellation } = this.state;
 		const activeAction = this.state.downloading
 			? CancellationInvoiceAction.DOWNLOAD_PDF
 			: this.state.printing
@@ -438,11 +429,11 @@ class CancellationInvoiceDetailComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };

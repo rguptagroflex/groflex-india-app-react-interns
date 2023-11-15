@@ -366,7 +366,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						</div>
 
 						<SubMenuBarComponent
-							key={`sub-item-${isSubmenuVisible.name}`}
+							key={`sub-item`}
 							visible={submenuVisible}
 							title={title}
 							name={name}
@@ -417,12 +417,10 @@ MenuItemWithSubmenuComponent1.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleHover = state.global.sideBarVisibleHover;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
-		isSubmenuVisible,
 		sideBarVisibleHover,
 		sideBarVisibleStatic,
 	};

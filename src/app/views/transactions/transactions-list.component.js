@@ -55,7 +55,6 @@ class TransactionsListComponent extends React.Component {
 			canCreateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CUSTOMER),
 			canUpdateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_CUSTOMER),
 			canDeleteCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_CUSTOMER),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
 	}
 
@@ -90,13 +89,6 @@ class TransactionsListComponent extends React.Component {
 
 	componentWillUnmount() {
 		this.isUnmounted = true;
-	}
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	createTopbar() {
@@ -257,7 +249,7 @@ class TransactionsListComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, transactions, submenuVisible } = this.state;
+		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, transactions } = this.state;
 		const classLeft =
 			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
 			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
@@ -623,20 +615,16 @@ class TransactionsListComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TransactionsListComponent);

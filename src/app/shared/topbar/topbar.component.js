@@ -23,15 +23,7 @@ class TopbarComponent extends React.Component {
 			subtitle: this.props.subtitle || null,
 			viewIcon: this.props.viewIcon || null,
 			fullPageWidth: this.props.fullPageWidth || null,
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentWillReceiveProps(props) {
@@ -55,7 +47,6 @@ class TopbarComponent extends React.Component {
 	}
 
 	render() {
-		const { submenuVisible } = this.state;
 		let backButton = null;
 		let viewIcon = null;
 		if (this.state.backButtonRoute || this.state.backButtonCallback) {
@@ -114,7 +105,6 @@ class TopbarComponent extends React.Component {
 			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
 				? "alignLeft"
 				: "";
-		// console.log(this.props.isSubmenuVisible, "FROm ORIGINAL TOPBAR");
 
 		return (
 			<div className={`topbar-wrapper ${this.state.fullPageWidth ? "full-page-width" : ""} ${classLeft}`}>
@@ -208,20 +198,14 @@ class TopbarComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
-		isSubmenuVisible,
 		sideBarVisibleStatic,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TopbarComponent);

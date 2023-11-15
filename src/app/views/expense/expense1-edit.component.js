@@ -1346,11 +1346,9 @@ class ExpenseEditComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
-		isSubmenuVisible,
 		sideBarVisibleStatic,
 	};
 };

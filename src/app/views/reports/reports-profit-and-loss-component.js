@@ -345,7 +345,6 @@ function ReportsProfitAndLoss(props) {
 		fetchData(startDate, endDate);
 	}, []); //
 
-	const submenVisible = props.isSubmenuVisible;
 	const classLeft =
 		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
 		props.sideBarVisibleStatic["expenditure"].sidebarVisible
@@ -654,11 +653,9 @@ function ReportsProfitAndLoss(props) {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	const { resources } = state.language.lang;
 	return {
-		isSubmenuVisible,
 		resources,
 		sideBarVisibleStatic,
 	};

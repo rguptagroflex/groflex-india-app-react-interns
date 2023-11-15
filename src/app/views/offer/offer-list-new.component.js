@@ -53,16 +53,7 @@ class OfferListNewComponent extends React.Component {
 			canSetOfferOpen: invoiz.user && invoiz.user.hasPermission(userPermissions.SET_OPEN_OFFER),
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_OFFER),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentWillUnmount() {
@@ -470,7 +461,6 @@ class OfferListNewComponent extends React.Component {
 			canUpdateImprezzOffer,
 			canChangeAccountData,
 			planRestricted,
-			submenuVisible,
 		} = this.state;
 
 		const classLeft =
@@ -852,22 +842,17 @@ class OfferListNewComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	const { resources } = state.language.lang;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OfferListNewComponent);

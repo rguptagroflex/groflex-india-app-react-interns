@@ -417,7 +417,6 @@ const ReportsGeneralLedger = (props) => {
 		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 
-	const submenVisible = props.isSubmenuVisible;
 	const classLeft =
 		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
 		props.sideBarVisibleStatic["expenditure"].sidebarVisible
@@ -773,11 +772,9 @@ const ReportsGeneralLedger = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
-		isSubmenuVisible,
 		resources,
 		sideBarVisibleStatic,
 	};

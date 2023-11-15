@@ -201,16 +201,7 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			canViewRecurringInvoice: null,
 			canStartRecurringInvoice: null,
 			canFinishRecurringInvoice: null,
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentDidMount() {
@@ -245,7 +236,6 @@ class RecurringInvoiceDetailComponent extends React.Component {
 			canStartRecurringInvoice,
 			canUpdateRecurringInvoice,
 			canDeleteRecurringInvoice,
-			submenuVisible,
 		} = this.state;
 		const topbarButtons = createTopbarButtons(this.state.recInvoice, resources);
 		const topbarPermittedButtons = createTopbarPermissionButtons(topbarButtons, this.state, resources);
@@ -678,12 +668,11 @@ class RecurringInvoiceDetailComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	const { resources } = state.language.lang;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };

@@ -10,10 +10,10 @@ const SubmenuItemComponent = ({
 	name,
 	resourceKey,
 	resources,
-	submenuVisible,
+
 	closeSearchOnMenuItemClick,
 	closeNotificationOnMenuItemClick,
-	isSubmenuVisible,
+
 	setSideBarVisibleStatic,
 }) => {
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
@@ -42,7 +42,6 @@ const SubmenuItemComponent = ({
 	};
 
 	const navigateToPage = (url) => {
-		// console.log("Side state: ", isSubmenuVisible);
 		closeNotificationOnMenuItemClick();
 		closeSearchOnMenuItemClick();
 
@@ -61,7 +60,6 @@ const SubmenuItemComponent = ({
 		<li className={className}>
 			<a
 				onClick={() => {
-					submenuVisible(true);
 					setGlobalSideBarVisibleStatic();
 					navigateToPage(url);
 				}}
@@ -87,18 +85,11 @@ SubmenuItemComponent.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
-
-	return {
-		isSubmenuVisible,
-	};
+	return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		submenuVisible: (payload) => {
-			dispatch(setSubmenuVisibleGlobal(payload));
-		},
 		setSideBarVisibleStatic: (payload) => {
 			dispatch(setSideBarVisibleStatic(payload));
 		},

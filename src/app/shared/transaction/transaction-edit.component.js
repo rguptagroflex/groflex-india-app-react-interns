@@ -107,7 +107,6 @@ class TransactionEditComponent extends React.Component {
 			isReloadingLetterHeader: false,
 			canCreateOffer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_OFFER),
 			canCreateChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CHALLAN),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
 		this.footerOriginalValues = props.letter.footer.map((column) => column.metaData.html);
 		this.onDocumentClick = this.onDocumentClick.bind(this);
@@ -147,14 +146,6 @@ class TransactionEditComponent extends React.Component {
 	componentWillUnmount() {
 		window.removeEventListener("click", this.onDocumentClick);
 		changeDetection.unbindEventListeners();
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	getInvoizPayPage() {
@@ -291,7 +282,7 @@ class TransactionEditComponent extends React.Component {
 			recurringInvoice,
 			project,
 			paymentSetting,
-			submenuVisible,
+
 			// ,initialInvoizPayData
 		} = this.state;
 		const { isRecurring, isProject, isDeposit, isClosing, isOffer, resources, isPurchaseOrder, isDeliveryChallan } =
@@ -1647,20 +1638,16 @@ class TransactionEditComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
 		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 // export default TransactionEditComponent;
