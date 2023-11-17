@@ -1,32 +1,35 @@
-import React from 'react';
-import invoiz from 'services/invoiz.service';
-import config from 'config';
-import ModalService from 'services/modal.service';
-import ButtonComponent from 'shared/button/button.component';
-import { updateSubscriptionDetails } from 'helpers/updateSubsciptionDetails';
-import { format } from 'util';
-import TabInputComponent from 'shared/inputs/tab-input/tab-input.component';
+import React from "react";
+import invoiz from "services/invoiz.service";
+import config from "config";
+import ModalService from "services/modal.service";
+import ButtonComponent from "shared/button/button.component";
+import { updateSubscriptionDetails } from "helpers/updateSubsciptionDetails";
+import { format } from "util";
+import TabInputComponent from "shared/inputs/tab-input/tab-input.component";
 class CancelExpenseModalComponent extends React.Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			notes: '',
-			refundType: 'debits'
+			notes: "",
+			refundType: "debits",
 		};
 	}
 
 	onRefundTypeChange(type) {
-		this.setState({ refundType: type })
+		this.setState({ refundType: type });
 	}
 
 	render() {
 		const { isSaving } = this.state;
 		const { resources } = this.props;
-		
+
 		return (
 			<div>
-				<div className="modal-base-headline"> {format(resources.str_cancelExpense || 'Cancel Expenditure %s:', this.props.expense.receiptNumber)}</div>
+				<div className="modal-base-headline">
+					{" "}
+					{format(resources.str_cancelExpense || "Cancel Expenditure %s:", this.props.expense.receiptNumber)}
+				</div>
 				<div className="cancel-invoice-notes">
 					<div className="textarea">
 						<label className="textarea_label">{resources.str_cancellationReason}</label>
@@ -34,7 +37,7 @@ class CancelExpenseModalComponent extends React.Component {
 							data-qs-id="cancel-invoice-notes"
 							className="textarea_input"
 							rows="4"
-							onChange={event => this.setState({ notes: event.target.value })}
+							onChange={(event) => this.setState({ notes: event.target.value })}
 						/>
 						<span className="textarea_bar" />
 					</div>
@@ -56,15 +59,6 @@ class CancelExpenseModalComponent extends React.Component {
 				</div> */}
 
 				<div className="modal-base-footer">
-					<div className="modal-base-cancel">
-						<ButtonComponent
-							dataQsId="cancelInvoice-btn-cancel"
-							callback={() => ModalService.close()}
-							type="cancel"
-							label={'Close'}
-						/>
-					</div>
-
 					<div className="modal-base-confirm">
 						<ButtonComponent
 							buttonIcon=""
@@ -74,6 +68,14 @@ class CancelExpenseModalComponent extends React.Component {
 							label={resources.str_cancel}
 						/>
 					</div>
+					<div className="modal-base-cancel">
+						<ButtonComponent
+							dataQsId="cancelInvoice-btn-cancel"
+							callback={() => ModalService.close()}
+							type="cancel"
+							label={"Close"}
+						/>
+					</div>
 				</div>
 			</div>
 		);
@@ -81,7 +83,7 @@ class CancelExpenseModalComponent extends React.Component {
 
 	cancelInvoice() {
 		const { notes, isSaving, refundType } = this.state;
-		const {  expense, resources } = this.props;
+		const { expense, resources } = this.props;
 
 		if (isSaving) {
 			return;
@@ -90,12 +92,12 @@ class CancelExpenseModalComponent extends React.Component {
 		this.setState({ isSaving: true }, () => {
 			invoiz
 				.request(`${config.resourceHost}expense/${expense.id}/cancel`, {
-					method: 'POST',
+					method: "POST",
 					auth: true,
 					data: {
 						notes,
-						refundType
-					}
+						refundType,
+					},
 				})
 				.then(() => {
 					updateSubscriptionDetails();
@@ -104,7 +106,7 @@ class CancelExpenseModalComponent extends React.Component {
 					ModalService.close();
 				})
 				.catch(() => {
-					invoiz.page.showToast({ message: resources.defaultErrorMessage, type: 'error' });
+					invoiz.page.showToast({ message: resources.defaultErrorMessage, type: "error" });
 					ModalService.close();
 				});
 		});

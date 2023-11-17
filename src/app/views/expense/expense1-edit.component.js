@@ -173,7 +173,8 @@ class ExpenseEditComponent extends React.Component {
 	}
 
 	render() {
-		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo, paymentMethod } = this.state;
+		const { expense, letterRecipientState, miscOptions, saving, errorMessageReceiptNo, paymentMethod, isPaid } =
+			this.state;
 		let title = expense.receiptNumber ? `Expenditure ${expense.receiptNumber}` : `Create expenditure`;
 		let subtitle;
 		// console.log(this.state, ": IS PAid STATE");
@@ -219,7 +220,7 @@ class ExpenseEditComponent extends React.Component {
 						dataQsId: "expense-topbar-button-save",
 						loading: saving,
 						// disabled: expense.status !== "open",
-						disabled: !paymentMethod,
+						disabled: isPaid && !paymentMethod,
 					},
 					{
 						type: "default",
@@ -228,7 +229,7 @@ class ExpenseEditComponent extends React.Component {
 						action: "cancel",
 						dataQsId: "expense-topbar-button-cancel",
 						loading: saving,
-						disabled: expense.status !== "paid",
+						// disabled: expense.status !== "paid",
 					},
 				]}
 			/>
@@ -1065,6 +1066,7 @@ class ExpenseEditComponent extends React.Component {
 
 				break;
 			case "cancel": {
+				this.setState({ isPaid: false });
 				this.cancelExpense();
 			}
 		}
