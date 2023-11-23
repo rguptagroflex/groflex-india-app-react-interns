@@ -219,7 +219,7 @@
 	"str_toTheBill": "To the invoice",
 	"str_billedTimes": "Invoiced times",
 	"str_select": "one",
-	
+
 	"str_contactInfo": "Contact info",
 	"str_description": "Description",
 	"str_bank": "Bank",
@@ -1012,7 +1012,7 @@
 		"credits": "Credit notes",
 		"pos_receipt": "POS Receipts"
 	},
-	
+
 	"columnHeader": {
 		"all": "All",
 		"communication": "Communications",
@@ -2030,6 +2030,7 @@
 		"expenditure": "Expenses",
 		"expenseCreate": "Create Expenditure",
 		"expenseEdit": "Edit Expenditure",
+		"expenseDetail": "Expenditure Details",
 		"settingsAccount": "Settings - Account",
 		"settingsTaxExport": "GST Export",
 		"settingsImport": "Settings - Import",

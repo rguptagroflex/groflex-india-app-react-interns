@@ -98,6 +98,7 @@ import ReportsGeneralLedger from "./app/views/reports/reports-general-ledger-com
 
 import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
 import TransactionsListWrapper from "./app/views/transactions/transactions-list-wrapper";
+import expenseDetailWrapper from "./app/views/expense/expense-detail.wrapper";
 
 // import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
 // import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
@@ -1082,6 +1083,16 @@ const routes = [
 		menuItem: "expenditure",
 		submenuItem: "expenses",
 		resourceKey: "expenseEdit",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+	},
+	{
+		path: "/expense/:id",
+		type: RouteTypes.PRIVATE,
+		component: expenseDetailWrapper,
+		exact: true, 
+		menuItem: "expenditure",
+		submenuItem: "expenses",
+		resourceKey: "expenseDetail",
 		pageClass: PageClassNames.NO_SIDE_MARGIN,
 	},
 	// chart of accounts

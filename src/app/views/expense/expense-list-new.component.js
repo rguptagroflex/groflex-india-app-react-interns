@@ -589,7 +589,8 @@ class ExpenseListNewComponent extends React.Component {
 							}
 						}}
 						onRowClicked={(expense) => {
-							this.onRowOrPopupClick(expense);
+							// this.onRowOrPopupClick(expense);
+							invoiz.router.navigate(`/expense/${expense.id}`);
 						}}
 						onRowSelectionChanged={(selectedRows) => {
 							if (!this.isUnmounted) {
