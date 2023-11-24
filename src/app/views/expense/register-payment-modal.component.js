@@ -9,7 +9,7 @@ import TextInputComponent from "../../shared/inputs/text-input/text-input.compon
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 import { formatApiDate } from "../../helpers/formatDate";
 
-const RegisterPaymentModalComponent = ({ expense }) => {
+const RegisterPaymentModalComponent = ({ expense, fromEdit = false }) => {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
@@ -27,7 +27,7 @@ const RegisterPaymentModalComponent = ({ expense }) => {
 		paymentMethod: null,
 		bankDetailId: null,
 		paymentMethodOptions: [],
-		expense: expense,
+		expense: { ...expense },
 		paymentAmount: 0,
 		paymentDate: null,
 		description: "",
@@ -51,7 +51,7 @@ const RegisterPaymentModalComponent = ({ expense }) => {
 
 	const handlePaymentMethodChange = (option) => {
 		if (!option) return;
-		const newExpense = { ...expense };
+		const newExpense = { ...modalState.expense };
 		newExpense.payKind = option.type;
 		newExpense.status = "paid";
 		newExpense.bankDetailId = option.value;
@@ -69,7 +69,7 @@ const RegisterPaymentModalComponent = ({ expense }) => {
 	};
 
 	const handleDateChange = (name, value, date) => {
-		const newExpense = { ...expense };
+		const newExpense = { ...modalState.expense };
 		newExpense.payDate = formatApiDate(date);
 		console.log("PAYMENT METHOD DATE", formatApiDate(date));
 		setModalState({ ...modalState, expense: newExpense, paymentDate: formatApiDate(date) });
@@ -86,6 +86,7 @@ const RegisterPaymentModalComponent = ({ expense }) => {
 				method: "PUT",
 				data: {
 					...modalState.expense,
+					payee: modalState.expense.payee === null ? "" : modalState.expense.payee,
 				},
 			})
 			.then((res) => {

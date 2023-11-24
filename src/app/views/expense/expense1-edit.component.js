@@ -38,6 +38,7 @@ import { connect } from "react-redux";
 import groflexLetterFooterIcon from "../../../assets/images/groflex_name_logo_color_no_tag.png";
 import editSvg from "../../../assets/images/svg/editSvg.svg";
 import SVGInline from "react-svg-inline";
+import RegisterPaymentModalComponent from "./register-payment-modal.component";
 
 const changeDetection = new ChangeDetection();
 
@@ -627,6 +628,18 @@ class ExpenseEditComponent extends React.Component {
 										// checked={expense.payKind !== "open"}
 										checked={expense.payKind === "cash" || expense.payKind === "bank"}
 										onChange={() => this.onPaidChange()}
+										// onChange={() => {
+										// 	this.setState
+										// 	ModalService.open(
+										// 		<RegisterPaymentModalComponent
+										// 			fromEdit={true}
+										// 			expense={this.state.expense}
+										// 		/>,
+										// 		{
+										// 			width: 630,
+										// 		}
+										// 	);
+										// }}
 									/>
 									{isPaidElements}
 								</div>

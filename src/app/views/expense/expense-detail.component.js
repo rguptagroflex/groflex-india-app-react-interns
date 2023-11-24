@@ -85,11 +85,11 @@ const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisi
 		switch (expense.type) {
 			case "expense":
 				// iconClass = "icon-offen";
-				badgeString = "Purchase";
+				badgeString = "Expense";
 				break;
 			case "purchase":
 				// iconClass = "icon-check";
-				badgeString = "Expense";
+				badgeString = "Purchase";
 				// badgeClass = "detail-view-badge-accepted";
 				break;
 		}
@@ -154,6 +154,7 @@ const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisi
 					label: "Date of Invoice",
 					value: dateObjToAbbreviation(expense.date),
 				};
+				break;
 			case "paid":
 				activityData.activityList.push({
 					formattedDate: dateObjToAbbreviation(expense.payDate),
@@ -187,36 +188,38 @@ const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisi
 		return activityData;
 	};
 	const activityData = getActivityDataList();
-	const subtitle = (
-		<div>
-			(Debit note no.{" "}
-			<a
-				onClick={() =>
-					invoiz.router.redirectTo(
-						`/expenses/cancellation/${expense.metaData.expenseCancellation.id}`,
-						false,
-						false,
-						true
-					)
-				}
-			>
-				{expense.metaData.expenseCancellation.number}
-			</a>{" "}
-			{expense.metaData.expenseCancellation.paidAmount > 0 ? `available for utilization` : null})
-		</div>
-	);
+	const subtitle = () => {
+		return (
+			<div>
+				Debit note no.{" "}
+				<a
+					onClick={() =>
+						invoiz.router.redirectTo(
+							`/expenses/cancellation/${expense.metaData.expenseCancellation.id}`,
+							false,
+							false,
+							true
+						)
+					}
+				>
+					{expense.metaData.expenseCancellation.number}
+				</a>{" "}
+				{expense.metaData.expenseCancellation.paidAmount > 0 ? `available for utilization` : null})
+			</div>
+		);
+	};
 
-	// console.log(getActivityDataList(), "ACTIVITY DATA LIST");
-	// console.log(
-	// 	`%cExpense detail logfrom Expense detail`,
-	// 	"color: white; background-color: #3498db; padding: 8px; border-radius: 4px;",
-	// 	expense
-	// );
+	console.log(getActivityDataList(), "ACTIVITY DATA LIST");
+	console.log(
+		`%cExpense detail logfrom Expense detail`,
+		"color: white; background-color: #3498db; padding: 8px; border-radius: 4px;",
+		expense
+	);
 	return (
 		<div className={`expense-detail-component-wrapper ${isSubmenuVisible ? "expenseDetailOnSidebarActive" : ""}`}>
 			<TopbarComponent
 				title={`Expenditure ${expense.receiptNumber}`}
-				subtitle={subtitle}
+				subtitle={expense.status === "cancelled" ? subtitle() : ""}
 				buttonCallback={(event, button) => onTopbarButtonClick(button.action)}
 				backButtonRoute={"/expenses"}
 				dropdownEntries={createTopbarDropdown()}
