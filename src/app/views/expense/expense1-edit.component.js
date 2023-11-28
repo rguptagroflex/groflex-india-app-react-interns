@@ -221,7 +221,7 @@ class ExpenseEditComponent extends React.Component {
 						dataQsId: "expense-topbar-button-save",
 						loading: saving,
 						// disabled: expense.status !== "open",
-						disabled: isPaid && !paymentMethod,
+						disabled: isPaid && !expense.bankDetailId,
 					},
 					{
 						type: "default",
@@ -627,21 +627,11 @@ class ExpenseEditComponent extends React.Component {
 										label={resources.str_paid}
 										// checked={expense.payKind !== "open"}
 										checked={expense.payKind === "cash" || expense.payKind === "bank"}
-										onChange={() => this.onPaidChange()}
-										// onChange={() => {
-										// 	this.setState
-										// 	ModalService.open(
-										// 		<RegisterPaymentModalComponent
-										// 			fromEdit={true}
-										// 			expense={this.state.expense}
-										// 		/>,
-										// 		{
-										// 			width: 630,
-										// 		}
-										// 	);
-										// }}
+										// checked={this.state.isPaid}
+										// onChange={() => this.onPaidChange()}
+										onChange={() => this.newOnPaidChange()}
 									/>
-									{isPaidElements}
+									{/* {isPaidElements} */}
 								</div>
 								<div className="letter-total-container">
 									<LetterPositionsTotalComponent
@@ -974,6 +964,44 @@ class ExpenseEditComponent extends React.Component {
 		}
 
 		this.setState({ expense, isPaid });
+	}
+
+	newOnPaidChange() {
+		const { expense } = this.state;
+
+		if (expense.payKind === "cash" || expense.payKind === "bank") {
+			let tempExpense = { ...expense };
+			delete tempExpense.bankDetailId;
+			tempExpense = {
+				...tempExpense,
+				payKind: "open",
+				status: "open",
+				payDate: new Date().toLocaleDateString("IN").split("/").reverse().join("-"),
+			};
+			this.setState({ expense: { ...tempExpense }, isPaid: false });
+			return;
+		} else {
+			// console.log("To FILL", this.state.isPaid);
+			if (!this.state.expense.totalGross) {
+				invoiz.showNotification({ type: "error", message: "Please select an article" });
+				this.setState({ expense: { ...expense, payKind: "open" }, isPaid: false });
+				return;
+			} else {
+				ModalService.open(
+					<RegisterPaymentModalComponent
+						fromEdit={true}
+						editState={this.state}
+						setEditState={(fullState) => {
+							this.setState({ ...fullState });
+						}}
+						expense={this.state.expense}
+					/>,
+					{
+						width: 630,
+					}
+				);
+			}
+		}
 	}
 
 	onDateChange(name, value, date) {

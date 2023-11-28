@@ -9,7 +9,7 @@ import TextInputComponent from "../../shared/inputs/text-input/text-input.compon
 import DateInputComponent from "../../shared/inputs/date-input/date-input.component";
 import { formatApiDate } from "../../helpers/formatDate";
 
-const RegisterPaymentModalComponent = ({ expense, fromEdit = false }) => {
+const RegisterPaymentModalComponent = ({ expense, fromEdit = false, setEditState, editState }) => {
 	useEffect(() => {
 		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
 		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
@@ -79,7 +79,21 @@ const RegisterPaymentModalComponent = ({ expense, fromEdit = false }) => {
 		setModalState({ ...modalState, description: e.target.value });
 	};
 
+	const handleSubmitFromEdit = () => {
+		setEditState({
+			...editState,
+			isPaid: true,
+			expense: { ...modalState.expense },
+			paymentMethod: modalState.bankDetailId,
+		});
+		modalService.close();
+	};
+
 	const handleSubmit = () => {
+		if (fromEdit) {
+			handleSubmitFromEdit();
+			return;
+		}
 		invoiz
 			.request(`${config.resourceHost}expense/${expense.id}`, {
 				auth: true,
@@ -92,6 +106,7 @@ const RegisterPaymentModalComponent = ({ expense, fromEdit = false }) => {
 			.then((res) => {
 				invoiz.showNotification({ type: "success", message: "Payment Registered succesfully" });
 				invoiz.router.reload();
+				//TODO:
 			})
 			.catch((res) => {
 				invoiz.showNotification({ type: "error", message: "Payment Registeration failed" });
@@ -202,7 +217,21 @@ const RegisterPaymentModalComponent = ({ expense, fromEdit = false }) => {
 				<div className="modal-base-cancel">
 					<ButtonComponent
 						dataQsId="cancelInvoice-btn-cancel"
-						callback={() => modalService.close()}
+						callback={() => {
+							if (fromEdit) {
+								// console.log("Ran in cancel");
+								let tempExpense = { ...expense };
+								delete tempExpense.bankDetailId;
+								tempExpense = {
+									...tempExpense,
+									payKind: "open",
+									status: "open",
+									payDate: new Date().toLocaleDateString("IN").split("/").reverse().join("-"),
+								};
+								setEditState({ ...editState, expense: { ...tempExpense } });
+							}
+							modalService.close();
+						}}
 						type="cancel"
 						label={"Cancel"}
 					/>
