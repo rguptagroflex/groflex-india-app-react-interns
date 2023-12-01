@@ -9,7 +9,7 @@ import CancelExpenseModalComponent from "../../shared/modals/cancel-expense-moda
 import ModalService from "../../services/modal.service";
 import RegisterPaymentModalComponent from "./register-payment-modal.component";
 
-const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisible }) => {
+const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisible, sideBarVisibleStatic }) => {
 	const handleTopbarDropdownClick = (item) => {
 		switch (item.action) {
 			case "copyAndEdit":
@@ -216,7 +216,13 @@ const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisi
 		expense
 	);
 	return (
-		<div className={`expense-detail-component-wrapper ${isSubmenuVisible ? "expenseDetailOnSidebarActive" : ""}`}>
+		<div
+			className={`expense-detail-component-wrapper ${
+				sideBarVisibleStatic["invoices"].sidebarVisible || sideBarVisibleStatic["expenditure"].sidebarVisible
+					? "expenseDetailOnSidebarActive"
+					: ""
+			}`}
+		>
 			<TopbarComponent
 				title={`Expenditure ${expense.receiptNumber}`}
 				subtitle={expense.status === "cancelled" ? subtitle() : ""}
@@ -274,10 +280,9 @@ const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisi
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
-	return {
-		isSubmenuVisible,
-	};
+	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
+	return { resources, sideBarVisibleStatic };
 };
 
 const mapDispatchToProps = (dispatch) => {

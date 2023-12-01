@@ -74,7 +74,8 @@ const ExpenseDetailWrapper = ({ resources, match }) => {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	return { resources };
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
+	return { resources, sideBarVisibleStatic };
 };
 
 export default connect(mapStateToProps)(ExpenseDetailWrapper);

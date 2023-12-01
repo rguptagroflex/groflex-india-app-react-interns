@@ -194,6 +194,7 @@ class TransactionsListComponent extends React.Component {
 			/>,
 			{
 				width: 630,
+				padding: 0,
 			}
 		);
 	}
