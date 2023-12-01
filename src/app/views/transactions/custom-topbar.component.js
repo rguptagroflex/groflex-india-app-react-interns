@@ -30,7 +30,6 @@ class CustomTopbarComponent extends React.Component {
 			subtitle: this.props.subtitle || null,
 			viewIcon: this.props.viewIcon || null,
 			fullPageWidth: this.props.fullPageWidth || null,
-			isSubmenuVisible: this.props.isSubmenuVisible,
 		};
 
 		this.openTopbarDropdown = this.openTopbarDropdown.bind(this);
@@ -40,13 +39,6 @@ class CustomTopbarComponent extends React.Component {
 	// componentDidUpdate(){
 
 	// }
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ isSubmenuVisible: isSubmenuVisible });
-		}
-	}
 
 	componentWillReceiveProps(props) {
 		// const buttons = this.createButtons(props, this.state.topbarDropdown);
@@ -79,9 +71,6 @@ class CustomTopbarComponent extends React.Component {
 	}
 
 	render() {
-		const { isSubmenuVisible } = this.state;
-		const { submenuVisible } = this.props;
-
 		let backButton = null;
 		let viewIcon = null;
 		if (this.state.backButtonRoute || this.state.backButtonCallback) {
@@ -134,7 +123,11 @@ class CustomTopbarComponent extends React.Component {
 				</div>
 			);
 		}
-		const classLeft = isSubmenuVisible ? "alignLeft" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeft"
+				: "";
 
 		// console.log(this.state, "TOPBAR STATE");
 		return (
@@ -379,18 +372,14 @@ class CustomTopbarComponent extends React.Component {
 }
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(setSubmenuVisibleGlobal(payload));
-		},
-	};
+	return {};
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
-		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

@@ -53,18 +53,10 @@ class InvoiceListNewComponent extends React.Component {
 			canUpdateInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_INVOICE),
 			canRegisterPayment: invoiz.user && invoiz.user.hasPermission(userPermissions.ENTER_INVOICE_PAYMENT),
 			canCreateReminder: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_INVOICE_REMINDER),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
 	}
 	componentWillUnmount() {
 		this.isUnmounted = true;
-	}
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	addPayment(invoice) {
@@ -147,7 +139,7 @@ class InvoiceListNewComponent extends React.Component {
 		const { isLoading, selectedRows, canCreateInvoice, canDeleteInvoice } = this.state;
 		const { resources } = this.props;
 		const topbarButtons = [];
-		console.log(canCreateInvoice);
+		// console.log(canCreateInvoice);
 		if (!isLoading) {
 			if (selectedRows && selectedRows.length > 0) {
 				let allDeletable = true;
@@ -456,15 +448,13 @@ class InvoiceListNewComponent extends React.Component {
 	}
 	render() {
 		const { resources } = this.props;
-		const {
-			canCreateInvoice,
-			canDeleteInvoice,
-			canUpdateInvoice,
-			canCreateReminder,
-			canRegisterPayment,
-			submenuVisible,
-		} = this.state;
-		const classLeft = submenuVisible ? "alignLeftContent" : "";
+		const { canCreateInvoice, canDeleteInvoice, canUpdateInvoice, canCreateReminder, canRegisterPayment } =
+			this.state;
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
 			<div className="invoice-list-component-wrapper">
 				{this.createTopbar()}
@@ -1096,18 +1086,16 @@ class InvoiceListNewComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
+		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 // export default connect(mapStateToProps)(InvoiceListNewComponent);

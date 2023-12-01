@@ -37,17 +37,9 @@ class ChartofaccountNewComponent extends React.Component {
 			canCreateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CUSTOMER),
 			canUpdateCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_CUSTOMER),
 			canDeleteCustomer: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_CUSTOMER),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
-	}
 	componentDidMount() {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
 			invoiz.user.logout(true);
@@ -277,8 +269,12 @@ class ChartofaccountNewComponent extends React.Component {
 	// }
 	render() {
 		const { resources } = this.props;
-		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, customerData, submenuVisible } = this.state;
-		const classLeft = submenuVisible ? "alignChartOfAccount" : "";
+		const { canCreateCustomer, canUpdateCustomer, canDeleteCustomer, customerData } = this.state;
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignChartOfAccount"
+				: "";
 		return (
 			<div className="customer-list-component-wrapper">
 				{this.createTopbar()}
@@ -572,19 +568,17 @@ class ChartofaccountNewComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
+		sideBarVisibleStatic,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChartofaccountNewComponent);

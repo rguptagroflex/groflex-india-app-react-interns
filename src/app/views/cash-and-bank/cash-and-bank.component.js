@@ -6,16 +6,17 @@ import CashListComponent from "./cash-list.component";
 import invoiz from "../../services/invoiz.service";
 import { connect } from "react-redux";
 const CashAndBankComponent = (props) => {
-	const submenVisible = props.isSubmenuVisible;
 	useEffect(() => {
 		if (!invoiz.user.hasPermission(userPermissions.VIEW_ACCOUNTING)) {
 			invoiz.user.logout(true);
 		}
 	}, []);
 
-	const [submenuVisible, setSubmenuVisible] = useState(props.isSubmenuVisible);
-
-	const classLeft = submenVisible ? "leftAlignCashAndBank" : "";
+	const classLeft =
+		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+		props.sideBarVisibleStatic["expenditure"].sidebarVisible
+			? "leftAlignCashAndBank"
+			: "";
 	return (
 		<div style={{ padding: "35px 65px" }} className={`cash-and-bank-component-wrapper ${classLeft}`}>
 			<TopbarComponent title={`Cash and Bank`} viewIcon={`icon-coins`} />
@@ -26,9 +27,9 @@ const CashAndBankComponent = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
-		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

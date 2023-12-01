@@ -16,6 +16,9 @@ import expense_hover from "assets/images/icons/expense_hover.svg";
 import Tooltip from "@material-ui/core/Tooltip";
 import profile_new from "assets/images/icons/profile_new.svg";
 import profile_hover from "assets/images/icons/profile_hover.svg";
+import { connect } from "react-redux";
+import { setSideBarVisibleHover } from "../../../redux/ducks/global";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 const MenuItemComponent = (props) => {
 	const {
 		name,
@@ -27,7 +30,9 @@ const MenuItemComponent = (props) => {
 		resources,
 		closeSearchOnMenuItemClick,
 		submenuHover,
-		setSubmenuVisibleHoverFalse,
+		// setSubmenuVisibleHoverFalse,
+		setSideBarVisibleHover,
+		setSideBarVisibleStatic,
 	} = props;
 
 	const [iconHoverActive, setIconHoverActive] = useState(false);
@@ -69,17 +74,33 @@ const MenuItemComponent = (props) => {
 		invoiz.router.navigate(url);
 	};
 	// console.log(menuIcons[icon]);
-	console.log("Icon: ", icon);
+	// console.log("Icon: ", icon);
+
+	const setSideBarVisibleHoverFalse = () => {
+		setSideBarVisibleHover({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+	};
+
+	const setSideBarVisibleStaticFalse = () => {
+		setSideBarVisibleStatic({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+	};
 	return (
 		<div>
 			<Tooltip title={menuIconsToolTipTitle[icon]} placement="right" arrow>
 				<a
 					className={className}
-					onClick={() => navigateToPage(url)}
+					onClick={() => {
+						navigateToPage(url), setSideBarVisibleStaticFalse();
+					}}
 					data-href={url}
 					data-qs-id={`global-menu-item-${name}`}
 					onMouseEnter={() => {
-						setIconHoverActive(true), setSubmenuVisibleHoverFalse();
+						setIconHoverActive(true), setSideBarVisibleHoverFalse();
 					}}
 					onMouseLeave={() => setIconHoverActive(false)}
 				>
@@ -108,4 +129,16 @@ MenuItemComponent.defaultProps = {
 	resourceKey: "",
 };
 
-export default MenuItemComponent;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setSideBarVisibleHover: (payload) => {
+			dispatch(setSideBarVisibleHover(payload));
+		},
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
+		},
+	};
+};
+
+// export default MenuItemComponent;
+export default connect(null, mapDispatchToProps)(MenuItemComponent);

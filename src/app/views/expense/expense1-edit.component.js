@@ -354,7 +354,10 @@ class ExpenseEditComponent extends React.Component {
 		return (
 			<div
 				className={`expense1-edit-component-wrapper ${
-					this.props.isSubmenuVisible ? "expenseEditLeftAlign" : ""
+					this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+					this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+						? "expenseEditLeftAlign"
+						: ""
 				}`}
 			>
 				{topbar}
@@ -1387,10 +1390,10 @@ class ExpenseEditComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
-		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

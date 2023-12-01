@@ -51,16 +51,7 @@ class CancellationListComponent extends React.Component {
 			planRestricted:
 				(invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_CREDIT_NOTE)) ||
 				(invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_DEBIT_NOTE)),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentDidMount() {
@@ -220,8 +211,12 @@ class CancellationListComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { cancelType, planRestricted, canChangeAccountData, submenuVisible } = this.state;
-		const classLeft = submenuVisible ? "alignLeftCredit" : "";
+		const { cancelType, planRestricted, canChangeAccountData } = this.state;
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftCredit"
+				: "";
 		return (
 			<div className="cancellation-list-component-wrapper">
 				{planRestricted ? (
@@ -564,10 +559,12 @@ class CancellationListComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
+		sideBarVisibleStatic,
 	};
 };
 

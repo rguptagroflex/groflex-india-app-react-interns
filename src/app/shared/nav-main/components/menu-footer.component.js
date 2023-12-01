@@ -14,6 +14,7 @@ import search_hover from "assets/images/icons/search_hover.svg";
 import bell_hover from "assets/images/icons/bell_new.svg";
 import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
 import Tooltip from "@material-ui/core/Tooltip";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 class MenuFooterComponent extends React.Component {
 	constructor(props) {
 		super(props);
@@ -97,9 +98,11 @@ class MenuFooterComponent extends React.Component {
 	}
 
 	navigateToPage(url) {
-		const { submenuVisible, isSubmenuVisible } = this.props;
-		submenuVisible(false);
-		// console.log("Footer: ", isSubmenuVisible);
+		this.props.setSideBarVisibleStatic({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+
 		invoiz.trigger("updateNewsfeedCount");
 		invoiz.trigger("triggerSubmenuHide");
 		invoiz.router.navigate(url);
@@ -127,7 +130,7 @@ class MenuFooterComponent extends React.Component {
 
 	render() {
 		const { submenuVisibleVar, resources, activeItem, activeSubmenuItem } = this.props;
-		const { submenuVisible } = this.props;
+
 		let { newsfeedUnreadCount } = this.props;
 		const { resetNewsFeedCount } = this.props;
 		const {
@@ -306,13 +309,11 @@ class MenuFooterComponent extends React.Component {
 const mapStateToProps = (state) => {
 	const { unreadCount, resetCount } = state.newsfeed;
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 
 	return {
 		resources,
 		newsfeedUnreadCount: unreadCount,
 		resetNewsFeedCount: resetCount,
-		isSubmenuVisible,
 	};
 };
 
@@ -327,8 +328,9 @@ const mapDispatchToProps = (dispatch) => {
 		updateNewsfeedCountReset: () => {
 			dispatch(updateNewsfeedCountReset());
 		},
-		submenuVisible: (payload) => {
-			dispatch(setSubmenuVisibleGlobal(payload));
+
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
 		},
 	};
 };

@@ -34,16 +34,7 @@ class ExpenseListNewComponent extends React.Component {
 			printing: false,
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_EXPENDITURE),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentWillUnmount() {
@@ -235,8 +226,12 @@ class ExpenseListNewComponent extends React.Component {
 
 	render() {
 		const { resources } = this.props;
-		const { canChangeAccountData, planRestricted, submenuVisible } = this.state;
-		const classLeft = submenuVisible ? "alignLeftExpense" : "";
+		const { canChangeAccountData, planRestricted } = this.state;
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftExpense"
+				: "";
 		return (
 			<div className="expense-list-component-wrapper">
 				{planRestricted ? (
@@ -607,10 +602,12 @@ class ExpenseListNewComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
+		sideBarVisibleStatic,
 	};
 };
 

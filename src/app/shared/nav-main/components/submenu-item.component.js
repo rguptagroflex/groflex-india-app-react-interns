@@ -3,21 +3,45 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setSubmenuVisibleGlobal } from "../../../redux/ducks/global";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 const SubmenuItemComponent = ({
 	url,
 	active,
 	name,
 	resourceKey,
 	resources,
-	submenuVisible,
+
 	closeSearchOnMenuItemClick,
 	closeNotificationOnMenuItemClick,
-	isSubmenuVisible,
+
+	setSideBarVisibleStatic,
 }) => {
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
+	const setGlobalSideBarVisibleStatic = () => {
+		// console.log("Name: ", name);
+		if (name === "offer" || name === "recurringInvoice" || name === "timetracking" || name === "invoice") {
+			setSideBarVisibleStatic({
+				invoices: { name: "invoices", sidebarVisible: true },
+				expenditure: { name: "expenditure", sidebarVisible: false },
+			});
+		} else if (
+			name === "transactions" ||
+			name === "cashAndBank" ||
+			name === "debitNotes" ||
+			name === "creditNotes" ||
+			name === "expenditures" ||
+			name === "reports" ||
+			name === "chartOfAccounts"
+		) {
+			setSideBarVisibleStatic({
+				invoices: { name: "invoices", sidebarVisible: false },
+				expenditure: { name: "expenditure", sidebarVisible: true },
+			});
+		}
+	};
+
 	const navigateToPage = (url) => {
-		console.log("Side state: ", isSubmenuVisible);
 		closeNotificationOnMenuItemClick();
 		closeSearchOnMenuItemClick();
 
@@ -30,12 +54,14 @@ const SubmenuItemComponent = ({
 		invoiz.router.navigate(url);
 	};
 
+	// console.log("Name: ", name);
+
 	return (
 		<li className={className}>
 			<a
 				onClick={() => {
+					setGlobalSideBarVisibleStatic();
 					navigateToPage(url);
-					submenuVisible(true);
 				}}
 				data-href={url}
 				data-qs-id={`global-submenu-item-${name}`}
@@ -59,17 +85,13 @@ SubmenuItemComponent.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
-
-	return {
-		isSubmenuVisible,
-	};
+	return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		submenuVisible: (payload) => {
-			dispatch(setSubmenuVisibleGlobal(payload));
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
 		},
 	};
 };

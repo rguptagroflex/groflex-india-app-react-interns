@@ -1319,7 +1319,6 @@ class ListAdvancedComponent extends React.Component {
 		// 		gridOptions.api.getFilterModel()
 		// 	);
 		// }
-		// console.log(this.props.isSubmenuVisible, "Is submenu visible in list davanced");
 
 		const emptyListContent = emptyState ? (
 			<div className="list-advanced-component-empty-list">
@@ -1484,7 +1483,12 @@ class ListAdvancedComponent extends React.Component {
 								// hasSecondHeadBar ? "has-second-head-bar" : ""
 								false ? "has-second-head-bar" : ""
 						  } ${searchFieldInSecondHeadBar ? "search-field-in-second-head-bar" : ""}
-							${!this.props.isSubmenuVisible ? "listAdvancedinactiveSidebarSectionGap" : ""}
+							${
+								this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+								this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+									? ""
+									: "listAdvancedinactiveSidebarSectionGap"
+							}
 							`
 						: `list-advanced-component-manual-entry ag-theme-alpine no-pagination`
 				}`}
@@ -1618,18 +1622,16 @@ class ListAdvancedComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
+		sideBarVisibleStatic,
 	};
 };
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListAdvancedComponent);

@@ -48,16 +48,7 @@ class RecurringInvoiceListNewComponent extends React.Component {
 				invoiz.user && invoiz.user.hasPermission(userPermissions.FINISH_RECURRING_INVOICE),
 			canChangeAccountData: invoiz.user && invoiz.user.hasPermission(userPermissions.CHANGE_ACCOUNT_DATA),
 			planRestricted: invoiz.user && invoiz.user.hasPlanPermission(planPermissions.NO_RECURRING),
-			submenuVisible: this.props.isSubmenuVisible,
 		};
-	}
-
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
 	}
 
 	componentWillUnmount() {
@@ -318,10 +309,13 @@ class RecurringInvoiceListNewComponent extends React.Component {
 			canFinishRecurringInvoice,
 			planRestricted,
 			canChangeAccountData,
-			submenuVisible,
 		} = this.state;
 
-		const classLeft = submenuVisible ? "alignLeftContent" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
 			<div className="recurring-invoice-list-component-wrapper">
 				{planRestricted ? (
@@ -664,20 +658,17 @@ class RecurringInvoiceListNewComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+
+		sideBarVisibleStatic,
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
-	return {
-		submenuVisible: (payload) => {
-			dispatch(submenuVisible(payload));
-		},
-	};
+	return {};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RecurringInvoiceListNewComponent);

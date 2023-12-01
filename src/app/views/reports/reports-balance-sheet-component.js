@@ -399,8 +399,11 @@ const ReportBalanceSheet = (props) => {
 			});
 	};
 
-	const submenVisible = props.isSubmenuVisible;
-	const classLeft = submenVisible ? "leftAlignBalanceSheet" : "";
+	const classLeft =
+		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+		props.sideBarVisibleStatic["expenditure"].sidebarVisible
+			? "leftAlignBalanceSheet"
+			: "";
 	const onExportButtonItemClicked = (entry) => {
 		switch (entry.action) {
 			case "pdf":
@@ -590,9 +593,9 @@ const ReportBalanceSheet = (props) => {
 						<h6 className="headingRight">Total</h6>
 					</div>
 
-					{tableHeaders.map((item) => {
+					{tableHeaders.map((item, index) => {
 						return (
-							<div>
+							<div key={index}>
 								<Accordion elevation={0}>
 									<AccordionSummary
 										expandIcon={<ExpandMoreIcon />}
@@ -607,8 +610,8 @@ const ReportBalanceSheet = (props) => {
 										<div className="balance-sheet-accordian-details">
 											{rowData
 												.filter((filteredItem) => filteredItem.accountTypeId === item)
-												.map((subItem, index) => (
-													<React.Fragment>
+												.map((subItem, subIndex) => (
+													<React.Fragment key={subIndex}>
 														<div className="accordian-details-row-entry">
 															<div className="accordian-detail-name">
 																{subItem.accountSubTypeId
@@ -665,11 +668,11 @@ const ReportBalanceSheet = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	const { resources } = state.language.lang;
 	return {
-		isSubmenuVisible,
 		resources,
+		sideBarVisibleStatic,
 	};
 };
 

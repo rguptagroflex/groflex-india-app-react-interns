@@ -2,14 +2,24 @@
  * Actions
  */
 const USER_LOGOUT = "invoiz/global/USER_LOGOUT";
-const SUBMENU_VISIBLE = "invoiz/global/SUBMENU_VISIBLE";
+
+const SIDEBAR_VISIBLE_HOVER = "invoiz/global/SIDEBAR_VISIBLE_HOVER";
+const SIDEBAR_VISIBLE_STATIC = "invoiz/global/SIDEBAR_VISIBLE_STATIC";
 
 /*
  * Reducer
  */
 const initialState = {
 	isLoggedOut: false,
-	isSubmenuVisible: false,
+
+	sideBarVisibleHover: {
+		invoices: { name: "invoices", sidebarVisible: false },
+		expenditure: { name: "expenditure", sidebarVisible: false },
+	},
+	sideBarVisibleStatic: {
+		invoices: { name: "invoices", sidebarVisible: false },
+		expenditure: { name: "expenditure", sidebarVisible: false },
+	},
 };
 
 export default function reducer(state = initialState, action) {
@@ -18,9 +28,14 @@ export default function reducer(state = initialState, action) {
 			return Object.assign({}, state, {
 				isLoggedOut: true,
 			});
-		case SUBMENU_VISIBLE:
+
+		case SIDEBAR_VISIBLE_HOVER:
 			return Object.assign({}, state, {
-				isSubmenuVisible: action.payload,
+				sideBarVisibleHover: action.payload,
+			});
+		case SIDEBAR_VISIBLE_STATIC:
+			return Object.assign({}, state, {
+				sideBarVisibleStatic: action.payload,
 			});
 
 		default:
@@ -38,13 +53,24 @@ export const userLoggedOut = () => {
 	};
 };
 
-export const setSubmenuVisibleGlobal = (payload) => {
+export const setSideBarVisibleHover = (payload) => {
 	// console.log(payload);
 	return (dispatch, getstate) => {
 		dispatch({
-			type: SUBMENU_VISIBLE,
+			type: SIDEBAR_VISIBLE_HOVER,
 			payload,
 		});
-		// console.log("global state is :", getstate());
+		// console.log("global state is :", payload);
+	};
+};
+
+export const setSideBarVisibleStatic = (payload) => {
+	// console.log(payload);
+	return (dispatch, getstate) => {
+		dispatch({
+			type: SIDEBAR_VISIBLE_STATIC,
+			payload,
+		});
+		// console.log("global state is :", payload);
 	};
 };

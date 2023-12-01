@@ -12,6 +12,8 @@ import sales_hover from "assets/images/icons/sales_hover.svg";
 import expense_hover from "assets/images/icons/expense_hover.svg";
 import SVGInline from "react-svg-inline";
 import Tooltip from "@material-ui/core/Tooltip";
+import { setSideBarVisibleHover } from "../../../redux/ducks/global";
+import { setSideBarVisibleStatic } from "../../../redux/ducks/global";
 // import store from "../../redux/store";
 const buildSubmenuComponents = (
 	permissions,
@@ -112,6 +114,8 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.submenuItemClicked = this.submenuItemClicked.bind(this);
 		this.submenuCloseIconClicked = this.submenuCloseIconClicked.bind(this);
 		this.iconChangeOnHover = this.iconChangeOnHover.bind(this);
+		this.setGlobalSideBarVisibleHoverTrue = this.setGlobalSideBarVisibleHoverTrue.bind(this);
+		this.setGlobalSideBarVisibleHoverFalse = this.setGlobalSideBarVisibleHoverFalse.bind(this);
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -245,8 +249,30 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.setState({ submenuClick: false });
 	}
 
+	setGlobalSideBarVisibleHoverTrue() {
+		if (this.props.name === "invoices") {
+			this.props.setSideBarVisibleHover({
+				invoices: { name: "invoices", sidebarVisible: true },
+				expenditure: { name: "expenditure", sidebarVisible: false },
+			});
+		} else if (this.props.name === "expenditure") {
+			this.props.setSideBarVisibleHover({
+				invoices: { name: "invoices", sidebarVisible: false },
+				expenditure: { name: "expenditure", sidebarVisible: true },
+			});
+		}
+	}
+
+	setGlobalSideBarVisibleHoverFalse() {
+		this.props.setSideBarVisibleHover({
+			invoices: { name: "invoices", sidebarVisible: false },
+			expenditure: { name: "expenditure", sidebarVisible: false },
+		});
+	}
+
 	render() {
 		// console.log("Mid submenu", this.props.submenuHover);
+		// console.log(this.props.sideBarVisiblity[this.props.name]);
 		const {
 			submenuVisible,
 			activeSubmenuItem,
@@ -309,6 +335,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 
 		// const className = `menuItem menuItem-hasSubmenu ${iconClass} ${activeClass} `;
 		const className = `menuItem menuItem-hasSubmenu  ${activeClass} `;
+		// console.log(icon);
 
 		return (
 			<li key={name} id={name}>
@@ -322,11 +349,13 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 							onMouseEnter={() => {
 								this.showSubmenu();
 								this.iconChangeOnHover();
-								setSubmenuVisibleHoverTrue();
+								// setSubmenuVisibleHoverTrue();
+								this.setGlobalSideBarVisibleHoverTrue();
 							}}
 							onMouseLeave={() => {
 								this.iconChangeOnHover();
-								setSubmenuVisibleHoverTrue();
+								// setSubmenuVisibleHoverTrue();
+								// this.setGlobalSideBarVisibleHoverFalse();
 							}}
 							onClick={() => {
 								closeSearchOnMenuItemClick();
@@ -337,7 +366,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 						</div>
 
 						<SubMenuBarComponent
-							key={`sub-item-${isSubmenuVisible.name}`}
+							key={`sub-item`}
 							visible={submenuVisible}
 							title={title}
 							name={name}
@@ -388,13 +417,26 @@ MenuItemWithSubmenuComponent1.defaultProps = {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleHover = state.global.sideBarVisibleHover;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 
 	return {
-		isSubmenuVisible,
+		sideBarVisibleHover,
+		sideBarVisibleStatic,
 	};
 };
 
-export default connect(mapStateToProps, null)(MenuItemWithSubmenuComponent1);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setSideBarVisibleHover: (payload) => {
+			dispatch(setSideBarVisibleHover(payload));
+		},
+		setSideBarVisibleStatic: (payload) => {
+			dispatch(setSideBarVisibleStatic(payload));
+		},
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MenuItemWithSubmenuComponent1);
 
 // export default MenuItemWithSubmenuComponent1;

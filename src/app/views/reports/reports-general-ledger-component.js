@@ -417,8 +417,11 @@ const ReportsGeneralLedger = (props) => {
 		setSelectedDate({ ...selectedDate, endDate: endDate });
 	};
 
-	const submenVisible = props.isSubmenuVisible;
-	const classLeft = submenVisible ? "leftAlignGeneralLedger" : "";
+	const classLeft =
+		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+		props.sideBarVisibleStatic["expenditure"].sidebarVisible
+			? "leftAlignGeneralLedger"
+			: "";
 	// console.log("Table Heads: ", tableHeaders);
 	// console.log("Row Data: ", rowData);
 
@@ -696,9 +699,9 @@ const ReportsGeneralLedger = (props) => {
 								<h6 className="headingBalance">Balance</h6>
 							</div>
 
-							{tableHeaders.map((item) => {
+							{tableHeaders.map((item, index) => {
 								return (
-									<div style={{ borderBottom: "1px solid #ddd" }}>
+									<div style={{ borderBottom: "1px solid #ddd" }} key={index}>
 										<Accordion elevation={0}>
 											<AccordionSummary
 												expandIcon={<ExpandMoreIcon />}
@@ -718,8 +721,8 @@ const ReportsGeneralLedger = (props) => {
 															(filteredItem) =>
 																filteredItem.chartOfAccount.accountTypeId === item
 														)
-														.map((subItem, index) => (
-															<React.Fragment>
+														.map((subItem, subIndex) => (
+															<React.Fragment key={subIndex}>
 																<div className="accordian-details-row-entry">
 																	<div className="row-entry-date">
 																		{moment(subItem.date).format("DD/MM/YYYY")}
@@ -769,11 +772,11 @@ const ReportsGeneralLedger = (props) => {
 };
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
-		isSubmenuVisible,
 		resources,
+		sideBarVisibleStatic,
 	};
 };
 

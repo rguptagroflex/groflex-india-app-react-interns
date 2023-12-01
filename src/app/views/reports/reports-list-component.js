@@ -5,8 +5,11 @@ import SVGInline from "react-svg-inline";
 import Vector from "../../../assets/images/icons/Reports.svg";
 import { connect } from "react-redux";
 function ReportsListComponent(props) {
-	const submenVisible = props.isSubmenuVisible;
-	const classLeft = submenVisible ? "leftAlignReports" : "";
+	const classLeft =
+		props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+		props.sideBarVisibleStatic["expenditure"].sidebarVisible
+			? "leftAlignReports"
+			: "";
 	return (
 		<div className={`reports-component ${classLeft}`}>
 			<div>
@@ -185,9 +188,9 @@ function ReportsListComponent(props) {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
-		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 
