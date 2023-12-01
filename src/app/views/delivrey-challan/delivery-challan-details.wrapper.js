@@ -35,17 +35,17 @@ class DeliveryChallanDetailWrapper extends React.Component {
 		const id = this.props && this.props.match && this.props.match.params && this.props.match.params.id;
 
 		const fetchChallanData = () => {
-			return Promise.all([invoiz.request(`${config.challan.resourceUrl}/${parseInt(id, 10)}`, { auth: true })]);
+			return Promise.all([invoiz.request(`${config.deliveryChallan.resourceUrl}/${parseInt(id, 10)}`, { auth: true })]);
 		};
 
 		const whenRequestsDone = ([challanStateResponse]) => {
-			// const dunnings = dunningListResponse ? dunningListResponse.body.data : [];
+			const challan = challanStateResponse ? challanStateResponse.body.data : [];
 
-			const {
-				body: {
-					data: { challan },
-				},
-			} = challanStateResponse;
+			// const {
+			// 	body: {
+			// 		data: { challan },
+			// 	},
+			// } = challanStateResponse;
 
 			try {
 				if (!this.ignoreLastFetch) {

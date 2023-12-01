@@ -99,11 +99,11 @@ import ReportsGeneralLedger from "./app/views/reports/reports-general-ledger-com
 import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
 import TransactionsListWrapper from "./app/views/transactions/transactions-list-wrapper";
 
-// import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
-// import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
-// import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
-// import DeliveryChallanDetailsWrapper from "./app/views/delivrey-challan/delivery-challan-details.wrapper";
-// import DeliveryChallanSendMailWrapper from "./app/views/delivrey-challan/delivery-challan-send-mail.wrapper";
+import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
+import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
+import DeliveryChallanEditWrapper from "./app/views/delivrey-challan/delivery-challan-edit.wrapper";
+import DeliveryChallanDetailsWrapper from "./app/views/delivrey-challan/delivery-challan-details.wrapper";
+import DeliveryChallanSendMailWrapper from "./app/views/delivrey-challan/delivery-challan-send-mail.wrapper";
 // console.log("Routes called");
 const PageClassNames = {
 	NO_SIDE_MARGIN: "no-side-margin",
@@ -275,60 +275,60 @@ const routes = [
 		resourceKey: "billingDetails",
 	},
 	//delivery-challan
-	// {
-	// 	path: "/challan/new",
-	// 	type: RouteTypes.PRIVATE,
-	// 	component: DeliveryChallanNewWrapper,
-	// 	exact: true,
-	// 	title: "Rechnung erstellen",
-	// 	menuItem: "invoices",
-	// 	submenuItem: "deliverychallan",
-	// 	pageClass: PageClassNames.NO_SIDE_MARGIN,
-	// 	resourceKey: "challans",
-	// },
-	// {
-	// 	path: "/deliverychallans",
-	// 	type: RouteTypes.PRIVATE,
-	// 	component: DeliveryChallanListWrapper,
-	// 	exact: true,
-	// 	title: "Lieferung-Challan",
-	// 	menuItem: "invoices",
-	// 	submenuItem: "deliverychallan",
-	// 	pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
-	// 	resourceKey: "challans",
-	// },
-	// {
-	// 	path: "/challan/edit/:id",
-	// 	type: RouteTypes.PRIVATE,
-	// 	component: DeliveryChallanEditWrapper,
-	// 	exact: true,
-	// 	title: "Rechnung bearbeiten",
-	// 	menuItem: "invoices",
-	// 	submenuItem: "deliverychallan",
-	// 	pageClass: PageClassNames.NO_SIDE_MARGIN,
-	// 	resourceKey: "editChallan",
-	// },
-	// {
-	// 	path: "/challan/:id",
-	// 	type: RouteTypes.PRIVATE,
-	// 	component: DeliveryChallanDetailsWrapper,
-	// 	exact: true,
-	// 	title: "Angebots-Details",
-	// 	menuItem: "invoices",
-	// 	submenuItem: "deliverychallan",
-	// 	pageClass: PageClassNames.NO_SIDE_MARGIN,
-	// 	resourceKey: "offerDetails",
-	// },
-	// {
-	// 	path: "/challan/send/:id",
-	// 	type: RouteTypes.PRIVATE,
-	// 	component: DeliveryChallanSendMailWrapper,
-	// 	exact: true,
-	// 	title: "Angebot versenden",
-	// 	menuItem: "invoices",
-	// 	submenuItem: "deliverychallan",
-	// 	resourceKey: "offerSend",
-	// },
+	{
+		path: "/challan/new",
+		type: RouteTypes.PRIVATE,
+		component: DeliveryChallanNewWrapper,
+		exact: true,
+		title: "Rechnung erstellen",
+		menuItem: "invoices",
+		submenuItem: "deliverychallan",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "challans",
+	},
+	{
+		path: "/deliverychallans",
+		type: RouteTypes.PRIVATE,
+		component: DeliveryChallanListWrapper,
+		exact: true,
+		title: "Lieferung-Challan",
+		menuItem: "invoices",
+		submenuItem: "deliverychallan",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "challans",
+	},
+	{
+		path: "/challan/edit/:id",
+		type: RouteTypes.PRIVATE,
+		component: DeliveryChallanEditWrapper,
+		exact: true,
+		title: "Rechnung bearbeiten",
+		menuItem: "invoices",
+		submenuItem: "deliverychallan",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "editChallan",
+	},
+	{
+		path: "/challan/:id",
+		type: RouteTypes.PRIVATE,
+		component: DeliveryChallanDetailsWrapper,
+		exact: true,
+		title: "Angebots-Details",
+		menuItem: "invoices",
+		submenuItem: "deliverychallan",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "offerDetails",
+	},
+	{
+		path: "/challan/send/:id",
+		type: RouteTypes.PRIVATE,
+		component: DeliveryChallanSendMailWrapper,
+		exact: true,
+		title: "Angebot versenden",
+		menuItem: "invoices",
+		submenuItem: "deliverychallan",
+		resourceKey: "offerSend",
+	},
 	///////////////////////
 	{
 		path: "/invoices",

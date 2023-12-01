@@ -200,35 +200,35 @@ const createTimelineObjects = (challan, resources) => {
 		},
 	];
 
-	challan.history.forEach((entry) => {
-		// const date = formatDate(entry.date, 'YYYY-MM-DD', 'DD.MM.YYYY');
-		const date = formatClientDate(entry.date);
+	// challan.history.forEach((entry) => {
+	// 	// const date = formatDate(entry.date, 'YYYY-MM-DD', 'DD.MM.YYYY');
+	// 	const date = formatClientDate(entry.date);
 
-		switch (entry.state) {
-			case DeliveryChallanState.OPEN:
-				entries[0].dateText = date;
-				entries[0].done = true;
-				break;
-			case DeliveryChallanState.DELIVERED:
-				entries[1].dateText = date;
-				entries[1].done = true;
-				break;
-			case DeliveryChallanState.INVOICED:
-				entries[2] = {
-					dateText: date,
-					done: true,
-					label: resources.str_createAccount,
-				};
-				break;
-			case DeliveryChallanState.DECLINED:
-				entries[2] = {
-					dateText: date,
-					done: true,
-					label: resources.str_declined,
-				};
-				break;
-		}
-	});
+	// 	switch (entry.state) {
+	// 		case DeliveryChallanState.OPEN:
+	// 			entries[0].dateText = date;
+	// 			entries[0].done = true;
+	// 			break;
+	// 		case DeliveryChallanState.DELIVERED:
+	// 			entries[1].dateText = date;
+	// 			entries[1].done = true;
+	// 			break;
+	// 		case DeliveryChallanState.INVOICED:
+	// 			entries[2] = {
+	// 				dateText: date,
+	// 				done: true,
+	// 				label: resources.str_createAccount,
+	// 			};
+	// 			break;
+	// 		case DeliveryChallanState.DECLINED:
+	// 			entries[2] = {
+	// 				dateText: date,
+	// 				done: true,
+	// 				label: resources.str_declined,
+	// 			};
+	// 			break;
+	// 	}
+	// });
 
 	return entries;
 };
@@ -292,7 +292,7 @@ const createDetailViewHeadObjects = (challan, activeAction, resources) => {
 	// 	});
 	// }
 
-	// let subHeadline = null;
+	let subHeadline = null;
 	// if (challan.invoice && offer.invoice.id) {
 	// 	const id = offer.invoice.id;
 	// 	const title = offer.invoice.state === InvoiceState.DRAFT ? resources.str_draft : offer.invoice.number;
@@ -363,7 +363,7 @@ class DeliveryChallanDetailComponent extends React.Component {
 			challan,
 			downloading: false,
 			printing: false,
-			letterPaperType: offer.printCustomDocument
+			letterPaperType: challan.printCustomDocument
 				? TransactionPrintSetting.CUSTOM_LETTER_PAPER
 				: TransactionPrintSetting.DEFAULT_LETTER_PAPER,
 			challanTexts: null,
@@ -376,81 +376,81 @@ class DeliveryChallanDetailComponent extends React.Component {
 		};
 
 		this.debounceResize = null;
-		this.handleResize = this.handleResize.bind(this);
+		// this.handleResize = this.handleResize.bind(this);
 	}
 
-	componentDidMount() {
-		if (!invoiz.user.hasPermission(userPermissions.VIEW_CHALLAN)) {
-			invoiz.user.logout(true);
-		}
-		window.addEventListener("resize", this.handleResize);
-		this.setState({
-			canCreateChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CHALLAN),
-			canDeleteChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_CHALLAN),
-			canUpdateChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_CHALLAN),
-			canDeliverChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.ACCEPT_CHALLAN),
-			canDeclineChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.DECLINE_CHALLAN),
-			canConvertToInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.SET_OPEN_CHALLAN),
-		});
+	// componentDidMount() {
+	// 	if (!invoiz.user.hasPermission(userPermissions.VIEW_CHALLAN)) {
+	// 		invoiz.user.logout(true);
+	// 	}
+	// 	// window.addEventListener("resize", this.handleResize);
+	// 	// this.setState({
+	// 	// 	canCreateChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.CREATE_CHALLAN),
+	// 	// 	canDeleteChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.DELETE_CHALLAN),
+	// 	// 	canUpdateChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.UPDATE_CHALLAN),
+	// 	// 	canDeliverChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.ACCEPT_CHALLAN),
+	// 	// 	canDeclineChallan: invoiz.user && invoiz.user.hasPermission(userPermissions.DECLINE_CHALLAN),
+	// 	// 	canConvertToInvoice: invoiz.user && invoiz.user.hasPermission(userPermissions.SET_OPEN_CHALLAN),
+	// 	// });
 
-		const { challan } = this.state;
-		invoiz
-			.request(`${config.challan.resourceUrl}/${parseInt(challan.id, 10)}/document`, {
-				auth: true,
-				method: "POST",
-				data: {
-					isPrint: false,
-				},
-			})
-			.then((pdfPathResponse) => {
-				const { path } = pdfPathResponse.body.data;
-				challan.pdfPath = config.imageResourceHost + path;
-				fetch(challan.pdfPath, {
-					method: "GET",
-				})
-					.then((response) => response.arrayBuffer())
-					.then((arrayBuffer) => PDFJS.getDocument(arrayBuffer))
-					.then((pdf) => {
-						let currentPage = 1;
-						const numPages = pdf.numPages;
-						const myPDF = pdf;
+	// 	// const { challan } = this.state;
+	// 	// invoiz
+	// 	// 	.request(`${config.deliveryChallan.resourceUrl}/${parseInt(challan.id, 10)}/document`, {
+	// 	// 		auth: true,
+	// 	// 		method: "POST",
+	// 	// 		data: {
+	// 	// 			isPrint: false,
+	// 	// 		},
+	// 	// 	})
+	// 	// 	.then((pdfPathResponse) => {
+	// 	// 		const { path } = pdfPathResponse.body.data;
+	// 	// 		challan.pdfPath = config.imageResourceHost + path;
+	// 	// 		fetch(challan.pdfPath, {
+	// 	// 			method: "GET",
+	// 	// 		})
+	// 	// 			.then((response) => response.arrayBuffer())
+	// 	// 			.then((arrayBuffer) => PDFJS.getDocument(arrayBuffer))
+	// 	// 			.then((pdf) => {
+	// 	// 				let currentPage = 1;
+	// 	// 				const numPages = pdf.numPages;
+	// 	// 				const myPDF = pdf;
 
-						const handlePages = (page) => {
-							const wrapper = document.getElementById("invoice-detail-pdf-wrapper");
-							const canvas = document.createElement("canvas");
-							canvas.width = "925";
-							const context = canvas.getContext("2d");
-							const viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
-							canvas.height = viewport.height;
-							page.render({
-								canvasContext: context,
-								viewport,
-							});
-							if (wrapper) wrapper.appendChild(canvas);
-							currentPage++;
-							if (currentPage <= numPages) {
-								myPDF.getPage(currentPage).then(handlePages);
-							}
-						};
+	// 	// 				const handlePages = (page) => {
+	// 	// 					const wrapper = document.getElementById("invoice-detail-pdf-wrapper");
+	// 	// 					const canvas = document.createElement("canvas");
+	// 	// 					canvas.width = "925";
+	// 	// 					const context = canvas.getContext("2d");
+	// 	// 					const viewport = page.getViewport(canvas.width / page.getViewport(1.0).width);
+	// 	// 					canvas.height = viewport.height;
+	// 	// 					page.render({
+	// 	// 						canvasContext: context,
+	// 	// 						viewport,
+	// 	// 					});
+	// 	// 					if (wrapper) wrapper.appendChild(canvas);
+	// 	// 					currentPage++;
+	// 	// 					if (currentPage <= numPages) {
+	// 	// 						myPDF.getPage(currentPage).then(handlePages);
+	// 	// 					}
+	// 	// 				};
 
-						myPDF.getPage(currentPage).then(handlePages);
-					});
-			});
-		invoiz.request(`${config.resourceHost}setting/textModule`, { auth: true }).then((textModuleResponse) => {
-			const {
-				body: {
-					data: { challan: challanTexts },
-				},
-			} = textModuleResponse;
-			challanTexts.email = challanTexts.email.replace(/<\/?[^>]+>/gi, "");
-			challanTexts.email = challanTexts.email.replace("<br>", "%0D%0A");
-			this.setState({ challanTexts });
-		});
-	}
+	// 	// 				myPDF.getPage(currentPage).then(handlePages);
+	// 	// 			});
+	// 	// 	});
+	// 	// invoiz.request(`${config.resourceHost}setting/textModule`, { auth: true }).then((textModuleResponse) => {
+	// 	// 	const {
+	// 	// 		body: {
+	// 	// 			data: { challan: challanTexts },
+	// 	// 		},
+	// 	// 	} = textModuleResponse;
+	// 	// 	challanTexts.email = challanTexts.email.replace(/<\/?[^>]+>/gi, "");
+	// 	// 	challanTexts.email = challanTexts.email.replace("<br>", "%0D%0A");
+	// 	// 	this.setState({ challanTexts });
+	// 	// });
+	// }
 
-	componentWillUnmount() {
-		window.removeEventListener("resize", this.handleResize);
-	}
+	// componentWillUnmount() {
+	// 	// window.removeEventListener("resize", this.handleResize);
+	// }
 
 	hasCustomerAndPositions() {
 		const { challan } = this.state;
@@ -494,12 +494,12 @@ class DeliveryChallanDetailComponent extends React.Component {
 
 		let images = [];
 		let count = 0;
-		this.state.challan.thumbnails.forEach((thumbnail) => {
-			thumbnail.imageUrls.forEach((url) => {
-				count++;
-				images.push(<img key={`challan-image-${count}`} src={config.imageResourceHost + url} width="100%" />);
-			});
-		});
+		// this.state.challan.thumbnails.forEach((thumbnail) => {
+		// 	thumbnail.imageUrls.forEach((url) => {
+		// 		count++;
+		// 		images.push(<img key={`challan-image-${count}`} src={config.imageResourceHost + url} width="100%" />);
+		// 	});
+		// });
 
 		const { letterPaperType, canUpdateChallan, canDeleteChallan } = this.state;
 
@@ -518,11 +518,11 @@ class DeliveryChallanDetailComponent extends React.Component {
 		const detailHeadContent = (
 			<div>
 				<DetailViewHeadPrintPopoverComponent
-					printSettingUrl={`${config.challan.resourceUrl}/${this.state.challan.id}/print/setting`}
+					printSettingUrl={`${config.deliveryChallan.resourceUrl}/${this.state.challan.id}/print/setting`}
 					letterPaperType={letterPaperType}
 					letterPaperChangeCallback={(letterPaperType) => {
 						invoiz
-							.request(`${config.challan.resourceUrl}/${this.state.challan.id}/document`, {
+							.request(`${config.deliveryChallan.resourceUrl}/${this.state.challan.id}/document`, {
 								auth: true,
 								method: "POST",
 								data: {
@@ -550,7 +550,7 @@ class DeliveryChallanDetailComponent extends React.Component {
 					onElementClicked={() => {
 						if (!this.state.customerCenterLink) {
 							invoiz
-								.request(`${config.challan.resourceUrl}/${this.state.challan.id}/external/link`, {
+								.request(`${config.deliveryChallan.resourceUrl}/${this.state.challan.id}/external/link`, {
 									auth: true,
 								})
 								.then((response) => {
