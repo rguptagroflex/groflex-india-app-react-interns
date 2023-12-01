@@ -144,6 +144,13 @@ const config = {
 				// 	resourceKey: "challan",
 				// },
 				{
+					name: "proformaInvoices",
+					title: "proformaInvoices",
+					url: "/invoices/proformaInvoices",
+					mainSubmenuItem: "invoices",
+					resourceKey: "proformaInvoices",
+				},
+				{
 					name: "recurringInvoice",
 					title: "Abo-Rechnungen",
 					url: "/invoices/recurringInvoice",
@@ -198,21 +205,22 @@ const config = {
 		// },
 		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
 		{ name: "articles", icon: "article_outlined", title: "Artikel", url: "/articles", resourceKey: "article" },
+		//Inventory
 		// {
-		// 	name: 'inventory',
-		// 	icon: 'doc_table',
-		// 	title: 'Inventory',
-		// 	url: '',
-		// 	resourceKey: 'inventory',
+		// 	name: "inventory",
+		// 	icon: "sales",
+		// 	title: "Inventory",
+		// 	url: "",
+		// 	resourceKey: "inventory",
 		// 	submenuItems: [
 		// 		{
-		// 			name: 'inventoryStockMovement',
-		// 			title: 'Stock Movement',
-		// 			url: '/inventory', //url: '/inventory/stock-movement',
-		// 			mainSubmenuItem: 'inventory',
-		// 			resourceKey: 'stockMovement'
-		// 		}
-		// 	]
+		// 			name: "inventoryStockMovement",
+		// 			title: "Stock Movement",
+		// 			url: "/inventory", //url: '/inventory/stock-movement',
+		// 			mainSubmenuItem: "inventory",
+		// 			resourceKey: "stockMovement",
+		// 		},
+		// 	],
 		// },
 		// {
 		// 	name: "documentExport",

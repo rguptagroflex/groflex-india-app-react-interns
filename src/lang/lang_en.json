@@ -1969,7 +1969,8 @@
 		"cashAndBank": "Cash and bank",
 		"transactions": "Transactions",
 		"chartOfAccounts": "Chart of Accounts",
-		"stockMovement": "Stock Movement"
+		"stockMovement": "Stock Movement",
+		"proformaInvoices": "Proforma Invoices"
 	},
 	"routesTitle": {
 		"login": "Login",
@@ -2009,6 +2010,7 @@
 		"impressOffers": "Groflex Quotations",
 		"offers": "Quotations",
 		"offerCreate": "Create Quotation",
+		"proformaInvoiceCreate": "Create Proforma Invoice",
 		"offerEdit": "Edit Quotation",
 		"impressTemplate": "Groflex templates",
 		"impressOfferEdit": "Edit Groflex Quotation",

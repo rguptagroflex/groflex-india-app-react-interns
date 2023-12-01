@@ -99,6 +99,10 @@ import ReportsGeneralLedger from "./app/views/reports/reports-general-ledger-com
 import CashAndBankWrapper from "./app/views/cash-and-bank/cash-and-bank-wrapper";
 import TransactionsListWrapper from "./app/views/transactions/transactions-list-wrapper";
 import expenseDetailWrapper from "./app/views/expense/expense-detail.wrapper";
+import ProformaInvoiceNewWrapper from "./app/views/proformaInvoice/offer-new.wrapper";
+import ProformaInvoiceListWrapper from "views/proformaInvoice/offer-list.wrapper";
+import ProformaDetailWrapper from "./app/views/proformaInvoice/offer-detail.wrapper";
+import ProformaEditWrapper from "./app/views/proformaInvoice/offer-edit.wrapper";
 
 // import DeliveryChallanListWrapper from "./app/views/delivrey-challan/delivery-challan-list.wrapper";
 // import DeliveryChallanNewWrapper from "./app/views/delivrey-challan/delivery-challan-new.wrapper";
@@ -587,6 +591,52 @@ const routes = [
 		submenuItem: "invoice",
 		pageClass: PageClassNames.NO_SIDE_MARGIN,
 		resourceKey: "reminder",
+	},
+
+	//Proforma Invoice
+	{
+		path: "/invoices/proformaInvoices",
+		type: RouteTypes.PRIVATE,
+		component: ProformaInvoiceListWrapper,
+		exact: true,
+		title: "proformaInvoices",
+		menuItem: "invoices",
+		submenuItem: "proformaInvoices",
+		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
+		resourceKey: "proformaInvoices",
+	},
+	{
+		path: "/proformaInvoice/new",
+		type: RouteTypes.PRIVATE,
+		component: ProformaInvoiceNewWrapper,
+		exact: true,
+		title: "proformaInvoices",
+		menuItem: "invoices",
+		submenuItem: "proformaInvoices",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "proformaInvoiceCreate",
+	},
+	{
+		path: "/proformaInvoice/:id",
+		type: RouteTypes.PRIVATE,
+		component: ProformaDetailWrapper,
+		exact: true,
+		title: "Angebots-Details",
+		menuItem: "invoices",
+		submenuItem: "proformaInvoices",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "proformaInvoiceDetails",
+	},
+	{
+		path: "/proformaInvoice/edit/:id",
+		type: RouteTypes.PRIVATE,
+		component: ProformaEditWrapper,
+		exact: true,
+		title: "Angebot bearbeiten",
+		menuItem: "invoices",
+		submenuItem: "proformaInvoices",
+		pageClass: PageClassNames.NO_SIDE_MARGIN,
+		resourceKey: "proformaInvoiceEdit",
 	},
 
 	// Offer
@@ -1089,7 +1139,7 @@ const routes = [
 		path: "/expense/:id",
 		type: RouteTypes.PRIVATE,
 		component: expenseDetailWrapper,
-		exact: true, 
+		exact: true,
 		menuItem: "expenditure",
 		submenuItem: "expenses",
 		resourceKey: "expenseDetail",
