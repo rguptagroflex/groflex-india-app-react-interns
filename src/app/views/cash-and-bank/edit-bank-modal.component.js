@@ -30,15 +30,6 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 		IFSCCodeError: "",
 	});
 
-	useEffect(() => {
-		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-		return () => {
-			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-		};
-	}, []);
-
 	const handleAccountNumberChange = (event) => {
 		let enteredAccountNumber = event.target.value;
 
@@ -255,11 +246,11 @@ const EditBankModalComponent = ({ formData, onConfirm }) => {
 			</div>
 
 			<div style={{ position: "relative" }} className="modal-base-footer">
-				<div className="modal-base-cancel">
-					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
-				</div>
 				<div className="modal-base-confirm">
 					<ButtonComponent disabled={false} buttonIcon="icon-check" callback={handleSave} label={"Save"} />
+				</div>
+				<div className="modal-base-cancel">
+					<ButtonComponent callback={() => ModalService.close()} type="cancel" label={"Cancel"} />
 				</div>
 			</div>
 		</div>

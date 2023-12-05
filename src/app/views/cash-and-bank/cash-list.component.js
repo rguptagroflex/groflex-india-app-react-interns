@@ -46,6 +46,7 @@ const CashListComponent = () => {
 
 		ModalService.open(<AddCashModalComponent onConfirm={handleAddCash} />, {
 			width: 630,
+			padding: 0,
 		});
 	};
 

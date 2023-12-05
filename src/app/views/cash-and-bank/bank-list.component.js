@@ -40,6 +40,7 @@ const BankListComponent = () => {
 		};
 		ModalService.open(<AddBankModalComponent onConfirm={handleAddBank} />, {
 			width: 630,
+			padding: 0,
 		});
 	};
 
@@ -61,6 +62,7 @@ const BankListComponent = () => {
 		getBankDetails(id).then((res) =>
 			ModalService.open(<EditBankModalComponent formData={res.body.data} onConfirm={handleEditBank} />, {
 				width: 630,
+				padding: 0,
 			})
 		);
 	};

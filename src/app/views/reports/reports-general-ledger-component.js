@@ -322,6 +322,8 @@ const ReportsGeneralLedger = (props) => {
 		// ModalService.open(<GeneralLedgerSendEmail selectedDate={selectedDate} />, {
 		// 	modalClass: "edit-contact-person-modal-component",
 		// 	width: 630,
+		//  padding: 0,
+		//  borderRadius: "8px"
 		// });
 		ModalService.open(
 			<SendEmailModalComponent
@@ -334,6 +336,8 @@ const ReportsGeneralLedger = (props) => {
 			{
 				modalClass: "send-ledger-email-modal-component-wrapper",
 				width: 630,
+				padding: 0,
+				borderRadius: "8px",
 			}
 		);
 	};

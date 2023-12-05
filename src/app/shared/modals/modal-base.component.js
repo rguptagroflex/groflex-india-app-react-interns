@@ -19,6 +19,7 @@ const DEFAULT_OPTIONS = {
 	width: 500,
 	resizePopupOnWindowResize: false,
 	padding: null,
+	borderRadius: null,
 	onConfirm: null,
 	afterClose: () => {
 		return;
@@ -57,6 +58,7 @@ class ModalBaseComponent extends React.Component {
 		const style = {
 			width: options.width || "auto",
 			padding: options.padding,
+			borderRadius: options.borderRadius
 		};
 
 		if (options.noTransform) {

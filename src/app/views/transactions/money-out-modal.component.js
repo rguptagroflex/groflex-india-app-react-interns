@@ -23,15 +23,6 @@ const Label = ({ label, style, sublabel = "" }) => {
 };
 
 const MoneyOutModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
-	useEffect(() => {
-		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-		return () => {
-			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-		};
-	}, []);
-
 	const [moneyOutData, setMoneyOutData] = useState({
 		reconcileStatus: false,
 		type: "out",

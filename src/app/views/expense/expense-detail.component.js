@@ -126,6 +126,7 @@ const ExpenseDetailComponent = ({ expense, miscOptions, resources, isSubmenuVisi
 			case "registerPayment":
 				ModalService.open(<RegisterPaymentModalComponent expense={expense} />, {
 					width: 630,
+					padding: 0,
 				});
 				break;
 

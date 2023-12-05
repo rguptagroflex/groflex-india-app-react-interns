@@ -227,6 +227,8 @@ class LedgerComponent extends React.Component {
 			{
 				modalClass: "send-ledger-email-modal-component-wrapper",
 				width: 630,
+				padding: 0,
+				borderRadius: "8px",
 			}
 		);
 	}

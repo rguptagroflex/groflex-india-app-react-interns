@@ -146,6 +146,7 @@ class ChartofaccountNewComponent extends React.Component {
 		ModalService.open(<ChartOfAccountPersonModalComponent onConfirm={handleNewAccount} />, {
 			modalClass: "edit-contact-person-modal-component",
 			width: 632,
+			padding: 0,
 			borderRadius: 8,
 		});
 	}
@@ -180,6 +181,8 @@ class ChartofaccountNewComponent extends React.Component {
 			{
 				modalClass: "edit-contact-person-modal-component",
 				width: 630,
+				padding: 0,
+				borderRadius: "8px",
 			}
 		);
 	}

@@ -213,16 +213,6 @@ const ReconcileModalComponent = ({ refreshTable, bankOptions }) => {
 	const [selectedTransactionsList, setSelectedTransactionsList] = useState([]);
 	const [selectedBankStatementList, setSelectedBankStatementList] = useState([]);
 	const [formError, setFormError] = useState("");
-	useEffect(() => {
-		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-		document.getElementsByClassName("modal-base")[0].style.userSelect = "auto";
-		return () => {
-			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-			document.getElementsByClassName("modal-base")[0].style.userSelect = "none";
-		};
-	}, []);
 
 	const handleBankChange = (option) => {
 		if (!option) {

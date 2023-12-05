@@ -14,15 +14,6 @@ const checkCircleIcon = require("assets/images/icons/check_circle.svg");
 const trashcanIcon = require("assets/images/icons/trashcan.svg");
 
 class SendEmailModalComponent extends React.Component {
-	// componentDidMount() {
-	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-	// 	document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-	// }
-
-	// componentWillUnmount() {
-	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-	// 	document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-	// }
 	constructor(props) {
 		super(props);
 		const { resources } = this.props;
@@ -61,9 +52,6 @@ class SendEmailModalComponent extends React.Component {
 	}
 
 	componentDidMount() {
-		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-		document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
 		if (this.state.customerId) {
 			invoiz
 				.request(`${config.customer.resourceUrl}/${this.state.customerId}`, { auth: true })

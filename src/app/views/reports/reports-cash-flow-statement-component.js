@@ -242,6 +242,8 @@ const ReportsCashFlowStatement = (props) => {
 		// ModalService.open(<CashAndFlowSendEmail selectedDate={selectedDate} />, {
 		// 	modalClass: "edit-contact-person-modal-component",
 		// 	width: 630,
+		//  padding: 0,
+		//  borderRadius: "8px"
 		// });
 		ModalService.open(
 			<SendEmailModalComponent
@@ -254,6 +256,8 @@ const ReportsCashFlowStatement = (props) => {
 			{
 				modalClass: "send-ledger-email-modal-component-wrapper",
 				width: 630,
+				padding: 0,
+				borderRadius: "8px",
 			}
 		);
 	};

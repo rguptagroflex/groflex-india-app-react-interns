@@ -10,17 +10,6 @@ import config from "../../../config";
 import invoiz from "../../services/invoiz.service";
 
 function ChartOfAccountPersonModalComponent({ onConfirm }) {
-	useEffect(() => {
-		document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-		document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
-		document.getElementsByClassName("modal-base-content")[0].style.margin = 0;
-		return () => {
-			document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-			document.getElementsByClassName("modal-base-view")[0].style.borderRadius = "8px";
-			document.getElementsByClassName("modal-base-content")[0].style.margin = "20px 0 0";
-		};
-	});
-
 	const [active, setActive] = useState(false);
 	const [accountType, setAccountType] = useState("");
 	const [accountSubType, setAccountSubType] = useState("");

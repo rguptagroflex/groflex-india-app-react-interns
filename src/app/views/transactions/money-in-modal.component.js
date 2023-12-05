@@ -23,13 +23,6 @@ const Label = ({ label, style, sublabel = "" }) => {
 };
 
 const MoneyInModalComponent = ({ onConfirm, bankList, chartOfAccounts }) => {
-	// useEffect(() => {
-	// 	document.getElementsByClassName("modal-base-view")[0].style.padding = 0;
-	// 	return () => {
-	// 		document.getElementsByClassName("modal-base-view")[0].style.padding = "40px 40px 110px";
-	// 	};
-	// }, []);
-
 	const [moneyInData, setMoneyInData] = useState({
 		reconcileStatus: false,
 		type: "in",

@@ -191,11 +191,7 @@ class TransactionsListComponent extends React.Component {
 				bankList={this.state.bankOptions}
 				chartOfAccounts={this.state.chartOfAccountOptions}
 				onConfirm={handleAddTransaction}
-			/>,
-			{
-				width: 630,
-				padding: 0,
-			}
+			/>
 		);
 	}
 
@@ -236,6 +232,7 @@ class TransactionsListComponent extends React.Component {
 			/>,
 			{
 				width: 1100,
+				padding: 0,
 			}
 		);
 	}
