@@ -674,7 +674,7 @@ class DeliveryChallanListNewComponent extends React.Component {
 						// 	`${config.resourceHost}invoice?offset=0&searchText=&limit=9999999&orderBy=date&desc=true&filter=everything&trigger=true`,
 						// ]}
 						fetchUrls={[
-							`${config.resourceHost}invoice?offset=0&searchText=&limit=9999999&orderBy=date&desc=true&filter=all&trigger=true`,
+							`${config.resourceHost}deliveryChallan?offset=0&searchText=&limit=9999999&orderBy=date&desc=true&filter=all&trigger=true`,
 						]}
 						headTabbedFilterItemsFunc={(challans) => {
 							{

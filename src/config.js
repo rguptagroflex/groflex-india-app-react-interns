@@ -136,13 +136,13 @@ const config = {
 					mainSubmenuItem: "invoices",
 					resourceKey: "offer",
 				},
-				// {
-				// 	name: "deliverychallan",
-				// 	title: "Lieferung-Challan",
-				// 	url: "/deliverychallans",
-				// 	mainSubmenuItem: "invoices",
-				// 	resourceKey: "challan",
-				// },
+				{
+					name: "deliverychallan",
+					title: "Lieferung-Challan",
+					url: "/deliverychallans",
+					mainSubmenuItem: "invoices",
+					resourceKey: "challan",
+				},
 				{
 					name: "proformaInvoices",
 					title: "proformaInvoices",
