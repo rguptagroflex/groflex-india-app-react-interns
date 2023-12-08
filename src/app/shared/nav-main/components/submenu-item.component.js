@@ -19,8 +19,14 @@ const SubmenuItemComponent = ({
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
 	const setGlobalSideBarVisibleStatic = () => {
-		// console.log("Name: ", name);
-		if (name === "offer" || name === "recurringInvoice" || name === "timetracking" || name === "invoice") {
+		console.log("Name: ", name);
+		if (
+			name === "offer" ||
+			name === "recurringInvoice" ||
+			name === "timetracking" ||
+			name === "invoice" ||
+			name === "proformaInvoices"
+		) {
 			setSideBarVisibleStatic({
 				invoices: { name: "invoices", sidebarVisible: true },
 				expenditure: { name: "expenditure", sidebarVisible: false },

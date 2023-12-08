@@ -57,14 +57,6 @@ class OfferListNewComponent extends React.Component {
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		const { isSubmenuVisible } = this.props;
-
-		if (prevProps.isSubmenuVisible !== isSubmenuVisible) {
-			this.setState({ submenuVisible: isSubmenuVisible });
-		}
-	}
-
 	componentWillUnmount() {
 		this.isUnmounted = true;
 	}
@@ -474,7 +466,12 @@ class OfferListNewComponent extends React.Component {
 			submenuVisible,
 		} = this.state;
 
-		const classLeft = submenuVisible ? "alignLeftContent" : "";
+		// const classLeft = submenuVisible ? "alignLeftContent" : "";
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
 			<div className="invoice-list-component-wrapper">
 				{planRestricted ? (
@@ -851,11 +848,11 @@ class OfferListNewComponent extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
 	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-		isSubmenuVisible,
+		sideBarVisibleStatic,
 	};
 };
 

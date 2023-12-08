@@ -575,6 +575,12 @@ class OfferDetailComponent extends React.Component {
 			];
 		}
 
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftEdit"
+				: "";
+
 		const detailHeadContent = (
 			<div>
 				<DetailViewHeadPrintPopoverComponent
@@ -682,9 +688,9 @@ class OfferDetailComponent extends React.Component {
 
 		return (
 			<div
-				className={`offer-detail-wrapper wrapper-has-topbar ${!timelineIsHorizontal ? "viewport-large" : ""} ${
-					this.props.isSubmenuVisible ? "offerDetailOnSidebarActive" : ""
-				}`}
+				className={`offer-detail-wrapper wrapper-has-topbar ${
+					!timelineIsHorizontal ? "viewport-large" : ""
+				} ${classLeft}`}
 			>
 				{canUpdateOffer && canDeleteOffer ? (
 					<TopbarComponent
@@ -1127,10 +1133,11 @@ class OfferDetailComponent extends React.Component {
 	}
 }
 const mapStateToProps = (state) => {
-	const isSubmenuVisible = state.global.isSubmenuVisible;
-
+	const { resources } = state.language.lang;
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
-		isSubmenuVisible,
+		resources,
+		sideBarVisibleStatic,
 	};
 };
 

@@ -80,6 +80,7 @@ class TransactionEditComponent extends React.Component {
 				invoiz.cache.invoice.times = null;
 			}
 		}
+		//Modifying props
 		props.letter.sender = "BILLED TO";
 		props.transaction.columns = [
 			{
@@ -91,6 +92,12 @@ class TransactionEditComponent extends React.Component {
 			},
 			...props.transaction.columns,
 		];
+		if (props.isDeliveryChallan) {
+			props.transaction.title = "Delivery Challan";
+		} else if (props.isProforma) {
+			props.transaction.title = "Proforma Invoice";
+			props.transaction.texts.introduction = "Thank you for your order. Your proforma invoice is as follows:";
+		}
 		this.state = {
 			transaction: props.transaction,
 			letter: props.letter,
@@ -285,8 +292,17 @@ class TransactionEditComponent extends React.Component {
 
 			// ,initialInvoizPayData
 		} = this.state;
-		const { isRecurring, isProject, isDeposit, isClosing, isOffer, resources, isPurchaseOrder, isDeliveryChallan } =
-			this.props;
+		const {
+			isRecurring,
+			isProject,
+			isDeposit,
+			isClosing,
+			isOffer,
+			resources,
+			isPurchaseOrder,
+			isDeliveryChallan,
+			isProforma,
+		} = this.props;
 		// console.log(letter, "letter in transaction edit");
 		// console.log(transaction, "transaction in transaction edit");
 		// console.log(letter, "letter in transaction edit");
@@ -306,6 +322,8 @@ class TransactionEditComponent extends React.Component {
 			title = transaction.id ? resources.editChallan : resources.str_createChallan;
 		} else if (isPurchaseOrder) {
 			title = transaction.id ? resources.editPurchaseOrder : resources.str_createPurchaseOrder;
+		} else if (isProforma) {
+			title = transaction.id ? resources.str_editProformaInvoice : resources.str_createProformaInvoice;
 		}
 		const topbar = (
 			<TopbarComponent
@@ -335,7 +353,7 @@ class TransactionEditComponent extends React.Component {
 				? resources.invoiceDeliveryPeriodFieldText
 				: null;
 
-		if (!isOffer && !isPurchaseOrder && !isDeliveryChallan) {
+		if (!isOffer && !isPurchaseOrder && !isDeliveryChallan && !isProforma) {
 			paymentSetting.usePayPal = transaction.useAdvancedPaymentPayPal;
 			paymentSetting.useTransfer = transaction.useAdvancedPaymentTransfer;
 		}
@@ -551,7 +569,7 @@ class TransactionEditComponent extends React.Component {
 								  }`
 								: ""}
 						</div>
-						<div className="transaction-no-delivery-date">{noDeliveryDateText}</div>
+						{!isProforma && <div className="transaction-no-delivery-date">{noDeliveryDateText}</div>}
 
 						{isPurchaseOrder ? (
 							<div className="transaction-form-textarea outlined">
@@ -613,17 +631,19 @@ class TransactionEditComponent extends React.Component {
 							<div className="transaction-form-smallbusiness">{transaction.smallBusinessText}</div>
 						)}
 
-						<div className="transaction-form-textarea outlined">
-							<span className="edit-icon" />
-							<div className="inline">
-								<HtmlInputComponent
-									value={transaction.texts.conclusion}
-									ref={"transaction-conclusion-ref"}
-									onBlur={(quill) => this.onConclusionChange(quill.value)}
-									placeholder={resources.str_enterSupportOptions}
-								/>
+						{!isProforma && (
+							<div className="transaction-form-textarea outlined">
+								<span className="edit-icon" />
+								<div className="inline">
+									<HtmlInputComponent
+										value={transaction.texts.conclusion}
+										ref={"transaction-conclusion-ref"}
+										onBlur={(quill) => this.onConclusionChange(quill.value)}
+										placeholder={resources.str_enterSupportOptions}
+									/>
+								</div>
 							</div>
-						</div>
+						)}
 
 						{/* {
 								!isOffer && !isPurchaseOrder && !isRecurring && (
@@ -1642,7 +1662,6 @@ const mapStateToProps = (state) => {
 	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
-
 		sideBarVisibleStatic,
 	};
 };

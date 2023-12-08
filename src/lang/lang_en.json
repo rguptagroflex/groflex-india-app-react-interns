@@ -890,6 +890,9 @@
 	"str_inviteCA": "Free CA invite",
 	"str_buySeats": "Buy seats",
 	"str_recentlyUsed": "Recently Used",
+	"str_editProformaInvoice": "Edit Proforma Invoice",
+	"str_createProformaInvoice": "Create Proforma Invoice",
+
 	"upgradeStandardPlanSubHeading": "<b>Unlimited</b> invoices values / 365 days",
 	"upgradeTextSubHeadline": "Invoices up to <b>%s</b> / 365 days",
 	"upgradeStandardQuotationHeadline": "<b>Unlimited</b> standard quotations",

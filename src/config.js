@@ -136,13 +136,13 @@ const config = {
 					mainSubmenuItem: "invoices",
 					resourceKey: "offer",
 				},
-				{
-					name: "deliverychallan",
-					title: "Lieferung-Challan",
-					url: "/deliverychallans",
-					mainSubmenuItem: "invoices",
-					resourceKey: "challan",
-				},
+				// {
+				// 	name: "deliverychallan",
+				// 	title: "Lieferung-Challan",
+				// 	url: "/deliverychallans",
+				// 	mainSubmenuItem: "invoices",
+				// 	resourceKey: "challan",
+				// },
 				{
 					name: "proformaInvoices",
 					title: "proformaInvoices",
@@ -310,6 +310,13 @@ const config = {
 					url: "/expenses/cancellationsC",
 					mainSubmenuItem: "expenditure",
 					resourceKey: "creditNotes",
+				},
+				{
+					name: "deliverychallan",
+					title: "Lieferung-Challan",
+					url: "/deliverychallans",
+					mainSubmenuItem: "expenditure",
+					resourceKey: "challan",
 				},
 				{
 					name: "expenditures",

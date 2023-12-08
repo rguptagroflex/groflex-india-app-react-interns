@@ -100,13 +100,13 @@ class OfferEditWrapper extends React.Component {
 		const { resources } = this.props;
 
 		return preFetchData ? (
-			<ProformaEditComponent
+			<TransactionEditComponent
 				transaction={preFetchData.offer}
 				letter={preFetchData.letter}
 				numerationOptions={preFetchData.numerationOptions}
 				miscOptions={preFetchData.miscOptions}
 				payConditions={preFetchData.payConditions}
-				isOffer={true}
+				isProforma={true}
 				resources={resources}
 				isEdit={true}
 			/>
