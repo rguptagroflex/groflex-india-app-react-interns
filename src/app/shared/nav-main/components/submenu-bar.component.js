@@ -35,6 +35,7 @@ const SubmenuBarComponent = ({
 	setSideBarVisibleStatic,
 }) => {
 	// console.log("Slected Key", selectedName);
+	// console.log("Name", name);
 	let hoverClass = "";
 
 	const [iconClose, setIconClose] = useState(visible);
@@ -54,6 +55,7 @@ const SubmenuBarComponent = ({
 	}, [visible]);
 
 	// const visibleClass = submenuHover || submenuClick ? "submenu-visible" : "u_hidden";
+	// console.log(sideBarVisibleHover[name], "Sidebar visible hiver and name");
 	const visibleClass =
 		sideBarVisibleHover[name].sidebarVisible || sideBarVisibleStatic[name].sidebarVisible
 			? "submenu-visible"
@@ -82,6 +84,7 @@ const SubmenuBarComponent = ({
 		setSideBarVisibleStatic({
 			invoices: { name: "invoices", sidebarVisible: false },
 			expenditure: { name: "expenditure", sidebarVisible: false },
+			inventory: { name: "inventory", sidebarVisible: false },
 		});
 	};
 
@@ -108,6 +111,7 @@ const SubmenuBarComponent = ({
 		setSideBarVisibleHover({
 			invoices: { name: "invoices", sidebarVisible: false },
 			expenditure: { name: "expenditure", sidebarVisible: false },
+			inventory: { name: "inventory", sidebarVisible: false },
 		});
 	};
 

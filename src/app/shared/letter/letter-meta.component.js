@@ -101,6 +101,7 @@ class LetterMetaComponent extends React.Component {
 
 	render() {
 		const { data, active } = this.state;
+		// console.log(data, "Data from Letter meta component");
 		if (!data) {
 			return null;
 		}
@@ -542,6 +543,8 @@ class LetterMetaComponent extends React.Component {
 					}
 			}
 
+			// console.log(valueField, "Valuefield");
+
 			return (
 				<div className="letter-meta-form-row" key={`letter-meta-form-row-${name}`}>
 					<div className="letter-meta-form-label">
@@ -723,6 +726,7 @@ class LetterMetaComponent extends React.Component {
 					break;
 				}
 
+				case "challanNumber":
 				case "purchaseOrderNumber":
 				case "offerNumber": {
 					let nextNewNumber = numerationOptions.currentValue + 1;
@@ -754,6 +758,7 @@ class LetterMetaComponent extends React.Component {
 				case "offerDate":
 				case "purchaseOrderDate":
 				case "invoiceDate":
+				case "challanDate":
 					valueField = (
 						<div className="letter-meta-display-value">
 							{isRecurring ? recurringInvoice.displayStartDate : data.displayDate}

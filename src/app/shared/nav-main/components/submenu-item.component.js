@@ -19,7 +19,7 @@ const SubmenuItemComponent = ({
 	const className = `submenuItem ${active ? "submenuItem-active" : ""}`;
 
 	const setGlobalSideBarVisibleStatic = () => {
-		console.log("Name: ", name);
+		// console.log("NamSubmenu item: ", name);
 		if (
 			name === "offer" ||
 			name === "recurringInvoice" ||
@@ -30,8 +30,10 @@ const SubmenuItemComponent = ({
 			setSideBarVisibleStatic({
 				invoices: { name: "invoices", sidebarVisible: true },
 				expenditure: { name: "expenditure", sidebarVisible: false },
+				inventory: { name: "inventory", sidebarVisible: false },
 			});
 		} else if (
+			name === "deliverychallan" ||
 			name === "transactions" ||
 			name === "cashAndBank" ||
 			name === "debitNotes" ||
@@ -43,6 +45,13 @@ const SubmenuItemComponent = ({
 			setSideBarVisibleStatic({
 				invoices: { name: "invoices", sidebarVisible: false },
 				expenditure: { name: "expenditure", sidebarVisible: true },
+				inventory: { name: "inventory", sidebarVisible: false },
+			});
+		} else if (name === "inventoryStockMovement") {
+			setSideBarVisibleStatic({
+				invoices: { name: "invoices", sidebarVisible: false },
+				expenditure: { name: "expenditure", sidebarVisible: false },
+				inventory: { name: "inventory", sidebarVisible: true },
 			});
 		}
 	};

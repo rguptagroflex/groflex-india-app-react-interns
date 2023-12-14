@@ -254,11 +254,19 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 			this.props.setSideBarVisibleHover({
 				invoices: { name: "invoices", sidebarVisible: true },
 				expenditure: { name: "expenditure", sidebarVisible: false },
+				inventory: { name: "inventory", sidebarVisible: false },
 			});
 		} else if (this.props.name === "expenditure") {
 			this.props.setSideBarVisibleHover({
 				invoices: { name: "invoices", sidebarVisible: false },
 				expenditure: { name: "expenditure", sidebarVisible: true },
+				inventory: { name: "inventory", sidebarVisible: false },
+			});
+		} else if (this.props.name === "inventory") {
+			this.props.setSideBarVisibleHover({
+				invoices: { name: "invoices", sidebarVisible: false },
+				expenditure: { name: "expenditure", sidebarVisible: false },
+				inventory: { name: "inventory", sidebarVisible: true },
 			});
 		}
 	}
@@ -267,6 +275,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		this.props.setSideBarVisibleHover({
 			invoices: { name: "invoices", sidebarVisible: false },
 			expenditure: { name: "expenditure", sidebarVisible: false },
+			inventory: { name: "inventory", sidebarVisible: false },
 		});
 	}
 
@@ -326,6 +335,7 @@ class MenuItemWithSubmenuComponent1 extends React.Component {
 		const menuIcons = {
 			sales: iconHoverActive ? sales_hover : sales,
 			expense: iconHoverActive ? expense_hover : expense,
+			inventory: iconHoverActive ? expense_hover : expense,
 		};
 
 		const menuIconsToolTipTitle = {

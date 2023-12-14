@@ -80,6 +80,8 @@ const MenuItemComponent = (props) => {
 		setSideBarVisibleHover({
 			invoices: { name: "invoices", sidebarVisible: false },
 			expenditure: { name: "expenditure", sidebarVisible: false },
+			inventory: { name: "inventory", sidebarVisible: false },
+
 		});
 	};
 
@@ -87,6 +89,7 @@ const MenuItemComponent = (props) => {
 		setSideBarVisibleStatic({
 			invoices: { name: "invoices", sidebarVisible: false },
 			expenditure: { name: "expenditure", sidebarVisible: false },
+			inventory: { name: "inventory", sidebarVisible: false },
 		});
 	};
 	return (

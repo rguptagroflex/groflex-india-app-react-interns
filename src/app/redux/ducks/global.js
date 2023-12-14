@@ -15,10 +15,12 @@ const initialState = {
 	sideBarVisibleHover: {
 		invoices: { name: "invoices", sidebarVisible: false },
 		expenditure: { name: "expenditure", sidebarVisible: false },
+		inventory: { name: "inventory", sidebarVisible: false },
 	},
 	sideBarVisibleStatic: {
 		invoices: { name: "invoices", sidebarVisible: false },
 		expenditure: { name: "expenditure", sidebarVisible: false },
+		inventory: { name: "inventory", sidebarVisible: false },
 	},
 };
 
@@ -30,10 +32,12 @@ export default function reducer(state = initialState, action) {
 			});
 
 		case SIDEBAR_VISIBLE_HOVER:
+			console.log(state, "STATE IN REDUCER SWITCH hOVER");
 			return Object.assign({}, state, {
 				sideBarVisibleHover: action.payload,
 			});
 		case SIDEBAR_VISIBLE_STATIC:
+			console.log(state, "STATE IN REDUCER SWITCH static");
 			return Object.assign({}, state, {
 				sideBarVisibleStatic: action.payload,
 			});
