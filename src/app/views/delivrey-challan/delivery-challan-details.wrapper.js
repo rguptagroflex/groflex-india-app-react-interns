@@ -35,7 +35,9 @@ class DeliveryChallanDetailWrapper extends React.Component {
 		const id = this.props && this.props.match && this.props.match.params && this.props.match.params.id;
 
 		const fetchChallanData = () => {
-			return Promise.all([invoiz.request(`${config.deliveryChallan.resourceUrl}/${parseInt(id, 10)}`, { auth: true })]);
+			return Promise.all([
+				invoiz.request(`${config.deliveryChallan.resourceUrl}/${parseInt(id, 10)}`, { auth: true }),
+			]);
 		};
 
 		const whenRequestsDone = ([challanStateResponse]) => {
@@ -92,7 +94,9 @@ class DeliveryChallanDetailWrapper extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
-	return { resources };
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
+
+	return { resources, sideBarVisibleStatic };
 };
 
 export default connect(mapStateToProps)(DeliveryChallanDetailWrapper);

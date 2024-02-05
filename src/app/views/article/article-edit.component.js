@@ -60,7 +60,7 @@ class ArticleEditComponent extends React.Component {
 			inventory: this.props.inventory || new Inventory(),
 			currentStockError: "",
 			disableOpeningBalance: false,
-			noInventory: true, //invoiz.user && invoiz.user.hasPlanPermission(planPermissionsEnum.NO_INVENTORY),   open when we lunch inventory
+			noInventory: false, //invoiz.user && invoiz.user.hasPlanPermission(planPermissionsEnum.NO_INVENTORY),   open when we lunch inventory
 			canCreateStockMovement: invoiz.user && invoiz.user.hasPermission(userPermissionsEnum.CREATE_STOCK_MOVEMENT),
 		};
 		this.vatPercentOptions = {
@@ -124,8 +124,6 @@ class ArticleEditComponent extends React.Component {
 			});
 		}, 0);
 
-	
-
 		if (inventory.currentStock !== null && inventory.openingBalance !== null) {
 			this.setState({ disableOpeningBalance: true });
 		}
@@ -144,7 +142,7 @@ class ArticleEditComponent extends React.Component {
 	componentWillUnmount() {
 		changeDetection.unbindEventListeners();
 	}
-	
+
 	addFile(files) {
 		console.log("Files:", files);
 		console.log("this.manualUploader:", this.manualUploader);
@@ -223,7 +221,7 @@ class ArticleEditComponent extends React.Component {
 		const { selectedImageFile } = this.state;
 		console.log("Adding selected image file to manualUploader:", selectedImageFile);
 		if (!selectedImageFile) {
-			return; 
+			return;
 		}
 
 		this.manualUploader = new Uploader.FineUploaderBasic(
@@ -294,7 +292,7 @@ class ArticleEditComponent extends React.Component {
 		console.log("Mouse left");
 		this.setState({ showDeleteButton: false });
 	}
-	
+
 	deleteImage() {
 		this.setState((prevState) => ({
 			article: {
@@ -306,9 +304,7 @@ class ArticleEditComponent extends React.Component {
 
 	render() {
 		const { imageUrl, selectedImageFile } = this.state;
-		const {
-			showDeleteButton,
-		} = this.state;
+		const { showDeleteButton } = this.state;
 		const { units, categories, resources } = this.props;
 		const { article, inventory, currentStockError, canCreateStockMovement, noInventory } = this.state;
 		const unitOptions = units.map((unit) => {
@@ -507,7 +503,6 @@ class ArticleEditComponent extends React.Component {
 										</div>
 									</div>
 
-								
 									<div className="row">
 										<div className="col-xs-12">
 											<TextInputExtendedComponent

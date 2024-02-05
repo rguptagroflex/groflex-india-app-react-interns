@@ -775,7 +775,7 @@ const routes = [
 	{
 		path: "/offer/:id",
 		type: RouteTypes.PRIVATE,
-		component: OfferDetailWrapper,
+		component: OfferDetailWrapper,	
 		exact: true,
 		title: "Angebots-Details",
 		menuItem: "invoices",
@@ -802,7 +802,8 @@ const routes = [
 		exact: true,
 		title: "Purchase Orders",
 		// menuItem: 'purchaseOrders',
-		menuItem: "expenditure",
+		// menuItem: "expenditure",
+		menuItem: "inventory",
 		submenuItem: "purchaseOrders",
 		pageClass: `${PageClassNames.NO_SIDE_MARGIN} ${PageClassNames.NO_TOP_MARGIN} ${PageClassNames.FULLSIZE_VIEW}`,
 		resourceKey: "purchaseOrder",

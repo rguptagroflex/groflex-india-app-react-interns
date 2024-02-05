@@ -32,7 +32,8 @@ class DeliveryChallanEditWrapper extends React.Component {
 		if (!id) return;
 
 		Promise.all([
-			invoiz.request(`${config.invoice.resourceUrl}/${parseInt(id, 10)}`, { auth: true }),
+			// invoiz.request(`${config.invoice.resourceUrl}/${parseInt(id, 10)}`, { auth: true }),
+			invoiz.request(`${config.deliveryChallan.resourceUrl}/${parseInt(id, 10)}`, { auth: true }),
 			invoiz.request(config.settings.endpoints.getNumerationSettings, { auth: true, method: "GET" }),
 			// getPayConditions(),
 			getMiscellaneousData(),

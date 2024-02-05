@@ -579,9 +579,7 @@ class InvoiceListNewComponent extends React.Component {
 								filterParams: {
 									suppressAndOrCondition: true,
 								},
-								valueFormatter: (evt) => {
-									return evt.value ? evt.value + " days" : "";
-								},
+								
 							},
 							{
 								headerName: "Total gross",

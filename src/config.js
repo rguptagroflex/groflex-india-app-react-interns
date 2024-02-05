@@ -198,23 +198,7 @@ const config = {
 		// },
 		{ name: "customers", icon: "customer", title: "Kunden", url: "/customers", resourceKey: "contacts" },
 		{ name: "articles", icon: "article_outlined", title: "Artikel", url: "/articles", resourceKey: "article" },
-		//Inventory
-		{
-			name: "inventory",
-			icon: "sales",
-			title: "Inventory",
-			url: "",
-			resourceKey: "inventory",
-			submenuItems: [
-				{
-					name: "inventoryStockMovement",
-					title: "Stock Movement",
-					url: "/inventory", //url: '/inventory/stock-movement',
-					mainSubmenuItem: "inventory",
-					resourceKey: "stockMovement",
-				},
-			],
-		},
+
 		// {
 		// 	name: "documentExport",
 		// 	icon: "tax",
@@ -345,6 +329,37 @@ const config = {
 				// 	mainSubmenuItem: "expenditure",
 				// 	resourceKey: "purchaseOrder",
 				// },
+			],
+		},
+		//Inventory
+		{
+			name: "inventory",
+			icon: "sales",
+			title: "Inventory",
+			url: "",
+			resourceKey: "inventory",
+			submenuItems: [
+				{
+					name: "inventoryDashboard",
+					title: "Inventory Dashboard",
+					url: "/inventory-dashboard", //url: '/inventory/stock-movement',
+					mainSubmenuItem: "inventory",
+					resourceKey: "inventoryDashboard",
+				},
+				{
+					name: "inventoryStockMovement",
+					title: "Stock Movement",
+					url: "/inventory", //url: '/inventory/stock-movement',
+					mainSubmenuItem: "inventory",
+					resourceKey: "stockMovement",
+				},
+				{
+					name: "purchaseOrder",
+					title: "Purchase Order",
+					url: "/purchase-orders", //url: '/inventory/stock-movement',
+					mainSubmenuItem: "inventory",
+					resourceKey: "purchaseOrder",
+				},
 			],
 		},
 		// { name: 'expenses', icon: 'expense', title: 'Ausgaben', url: '/expenses', resourceKey: 'expense' },

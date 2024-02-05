@@ -247,9 +247,9 @@ class DeliveryChallanListNewComponent extends React.Component {
 					width: 500,
 					headline: "Delete challan",
 					cancelLabel: "Cancel",
-					confirmIcon: "icon-trashcan",
+					// confirmIcon: "icon-trashcan",
 					confirmLabel: "Delete",
-					confirmButtonType: "danger",
+					confirmButtonType: "primary",
 					onConfirm: () => {
 						invoiz
 							.request(`${config.resourceHost}challan/${challan.id}`, {
@@ -391,8 +391,13 @@ class DeliveryChallanListNewComponent extends React.Component {
 		const { canCreateChallan, canDeleteChallan, canUpdateChallan, planRestricted, canChangeAccountData } =
 			this.state;
 		// console.log(canCreateChallan, "challan");
+		const classLeft =
+			this.props.sideBarVisibleStatic["invoices"].sidebarVisible ||
+			this.props.sideBarVisibleStatic["expenditure"].sidebarVisible
+				? "alignLeftContent"
+				: "";
 		return (
-			<div className="invoice-list-component-wrapper">
+			<div className={`invoice-list-component-wrapper`}>
 				{/* {planRestricted ? (
 					<RestrictedOverlayComponent
 						buttonLabel="Buy Now"
@@ -409,7 +414,7 @@ class DeliveryChallanListNewComponent extends React.Component {
 				) : null} */}
 				{this.createTopbar()}
 
-				<div className="invoice-list-wrapper">
+				<div className={`invoice-list-wrapper ${classLeft}`}>
 					<ListAdvancedComponent
 						resources={this.props.resources}
 						ref="listAdvanced"
@@ -439,6 +444,9 @@ class DeliveryChallanListNewComponent extends React.Component {
 								field: "date",
 								filter: true,
 								comparator: (date1, date2) => dateCompareSort(date1, date2, config.dateFormat.client),
+								cellRenderer: (evt) => {
+									return new Date(evt.value).toLocaleDateString("en-IN");
+								},
 								// filterParams: {
 								// 	suppressAndOrCondition: true,
 								// 	filterOptions: ListAdvancedDefaultSettings.DATE_FILTER_PARAMS_OPTIONS,
@@ -448,7 +456,8 @@ class DeliveryChallanListNewComponent extends React.Component {
 							},
 							{
 								headerName: "Customer name",
-								field: "customerName",
+								// field: "customerName",
+								field: "customerData.name",
 								minWidth: ListAdvancedDefaultSettings.COLUMN_MIN_WIDTH,
 								comparator: localeCompare,
 								filter: "agSetColumnFilter",
@@ -853,28 +862,28 @@ class DeliveryChallanListNewComponent extends React.Component {
 									// 	}
 									// }
 
-									if (canUpdateChallan) {
-										if (challan.state === DeliveryChallanState.OPEN) {
-											entries.push({
-												label: "Edit",
-												action: "edit",
-												dataQsId: "challan-list-item-dropdown-entry-edit",
-											});
-											entries.push({
-												label: "Copy and edit",
-												action: "copyAndEdit",
-												dataQsId: "challan-list-item-dropdown-copyandedit",
-											});
-										}
-
-										// if (!NOT_ALLOWED_TO_COPY.includes(challan.type)) {
-										// 	entries.push({
-										// 		label: "Copy and edit",
-										// 		action: "copyAndEdit",
-										// 		dataQsId: "invoice-list-item-dropdown-copyandedit",
-										// 	});
-										// }
+									// if (canUpdateChallan) {
+									if (challan.state === DeliveryChallanState.OPEN) {
+										entries.push({
+											label: "Edit",
+											action: "edit",
+											dataQsId: "challan-list-item-dropdown-entry-edit",
+										});
+										entries.push({
+											label: "Copy and edit",
+											action: "copyAndEdit",
+											dataQsId: "challan-list-item-dropdown-copyandedit",
+										});
 									}
+
+									// if (!NOT_ALLOWED_TO_COPY.includes(challan.type)) {
+									// 	entries.push({
+									// 		label: "Copy and edit",
+									// 		action: "copyAndEdit",
+									// 		dataQsId: "invoice-list-item-dropdown-copyandedit",
+									// 	});
+									// }
+									// }
 
 									// entries.push({
 									// 	dataQsId: `invoice-list-item-dropdown-entry-print`,
@@ -882,14 +891,14 @@ class DeliveryChallanListNewComponent extends React.Component {
 									// 	action: 'print',
 									// });
 
-									if (canDeleteChallan) {
-										if (challan.state === DeliveryChallanState.OPEN) {
-											entries.push({
-												label: "Delete",
-												action: "delete",
-												dataQsId: "invoice-list-item-dropdown-delete",
-											});
-										}
+									// if (canDeleteChallan) {
+									if (challan.state === DeliveryChallanState.OPEN) {
+										entries.push({
+											label: "Delete",
+											action: "delete",
+											dataQsId: "invoice-list-item-dropdown-delete",
+										});
+										// }
 
 										// if (!challan.metaData.closingChallanExists) {
 										// 	if (CANCEL_OR_DELETE_STATES.includes(challan.state)) {
@@ -956,8 +965,11 @@ class DeliveryChallanListNewComponent extends React.Component {
 
 const mapStateToProps = (state) => {
 	const { resources } = state.language.lang;
+
+	const sideBarVisibleStatic = state.global.sideBarVisibleStatic;
 	return {
 		resources,
+		sideBarVisibleStatic,
 	};
 };
 

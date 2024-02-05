@@ -53,7 +53,7 @@ class ArticleSearchSelectComponent extends React.Component {
 
 					return { value: eanData.name, label: `${name}, ${formatCurrency(mrp)}`, eanData };
 				});
-
+				console.log(mappedOptions);
 				return { options: mappedOptions };
 			});
 		};
